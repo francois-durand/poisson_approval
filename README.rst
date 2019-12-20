@@ -22,12 +22,18 @@ Poisson Approval studies the Poisson Game of Approval Voting.
 * Free software: GNU General Public License v3
 * Documentation: https://poisson-approval.readthedocs.io.
 
-
+--------
 Features
 --------
 
-* TODO
+* Implement only the case of 3 candidates.
+* Deal with ordinal or cardinal profiles.
+* Compute the asymptotic developments of the probability of pivot events when the number of players tends to infinity.
+* Compute the best response to a given tau-vector.
+* Explore automatically a grid of ordinal profiles or a grid of tau-vectors.
+* Perform Monte-Carlo experiments on profiles or tau-vectors.
 
+-------
 Credits
 -------
 

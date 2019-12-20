@@ -5,7 +5,7 @@
 import pytest
 
 
-from poisson_approval import poisson_approval
+import poisson_approval
 
 
 @pytest.fixture
