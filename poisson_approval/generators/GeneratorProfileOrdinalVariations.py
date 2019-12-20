@@ -1,3 +1,4 @@
+from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import initialize_random_seeds
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
 import random
@@ -17,8 +18,8 @@ class GeneratorProfileOrdinalVariations:
         >>> generator = GeneratorProfileOrdinalVariations(base_profile, epsilon=0.01)
         >>> profile = generator()
         >>> print(profile)
-        <abc: 0.25043511946419417, acb: 0.004075382095746225, bac: 0.7341024098066171, bca: 0.002508930076416973, \
-cab: 0.004954304904190168, cba: 0.003923853652835375> (Condorcet winner: b)
+        <abc: 0.25043511946419417, acb: 0.007344656519664636, bac: 0.7308331353826986, bca: 0.002508930076416972, \
+cab: 0.004954304904190167, cba: 0.003923853652835374> (Condorcet winner: b)
     """
 
     def __init__(self, base_profile, epsilon, well_informed_voters=True):
@@ -30,7 +31,7 @@ cab: 0.004954304904190168, cba: 0.003923853652835375> (Condorcet winner: b)
         """
         :return: a profile
         """
-        return ProfileOrdinal({ranking: share + self.epsilon * random.random()
-                               for ranking, share in self.base_profile.d_ranking_share.items()},
+        return ProfileOrdinal({ranking: self.base_profile.d_ranking_share[ranking] + self.epsilon * random.random()
+                               for ranking in RANKINGS},
                               normalization_warning=False,
                               well_informed_voters=self.well_informed_voters)
