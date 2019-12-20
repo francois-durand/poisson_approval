@@ -13,6 +13,10 @@ class StrategyOrdinal(StrategyThreshold):
         >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
         >>> sigma
         StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+        >>> print(type(sigma.d_ranking_ballot))
+        <class 'poisson_approval.utils.DictPrintingInOrderIgnoringZeros.DictPrintingInOrderIgnoringZeros'>
+        >>> print(sorted(sigma.d_ranking_ballot))
+        ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
         >>> print(sigma)
         <abc: a, bac: ab, cab: c>
         >>> sigma.abc
