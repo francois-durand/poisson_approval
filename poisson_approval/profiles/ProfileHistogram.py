@@ -170,9 +170,9 @@ class ProfileHistogram(ProfileCardinal):
 
     def __str__(self):
         result = '<' + ', '.join([
-            '%s: %s %s' % (ranking, share, self.d_ranking_histogram[ranking])
-            for ranking, share in self.d_ranking_share.items()
-            if share > 0 or len(self.d_ranking_histogram[ranking]) > 0
+            '%s: %s %s' % (ranking, self.d_ranking_share[ranking], self.d_ranking_histogram[ranking])
+            for ranking in sorted(self.d_ranking_share)
+            if self.d_ranking_share[ranking] > 0 or len(self.d_ranking_histogram[ranking]) > 0
         ]) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners

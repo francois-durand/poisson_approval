@@ -82,9 +82,10 @@ class StrategyThreshold(StrategyTwelve):
 
     def __str__(self):
         result = '<' + ', '.join([
-            '%s: %s' % (ranking, ballot)
-            + (' (%s)' % self.d_ranking_threshold[ranking] if ballot == UTILITY_DEPENDENT else '')
-            for ranking, ballot in self.d_ranking_ballot.items() if ballot
+            '%s: %s' % (ranking, self.d_ranking_ballot[ranking])
+            + (' (%s)' % self.d_ranking_threshold[ranking]
+               if self.d_ranking_ballot[ranking] == UTILITY_DEPENDENT else '')
+            for ranking in sorted(self.d_ranking_ballot) if self.d_ranking_ballot[ranking]
         ]) + '>'
         if self.profile is not None:
             result += ' ==> ' + str(self.winners)
