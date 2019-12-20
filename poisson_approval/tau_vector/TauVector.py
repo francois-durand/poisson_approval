@@ -115,7 +115,7 @@ phi_ab = 0.654654>
         <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
 phi_ab = 0.707107>
         >>> tau.pivot_tjk_abc
-         <asymptotic = exp(- inf)>
+        <asymptotic = exp(- inf)>
         >>> tau.pivot_tjk_acb
         <asymptotic = exp(- inf)>
         >>> tau.pivot_tjk_bac

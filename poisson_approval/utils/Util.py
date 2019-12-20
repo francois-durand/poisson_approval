@@ -20,7 +20,7 @@ def rand_simplex(d=6):
     :return: a numpy array of length d, whose sum is 1.
 
     >>> initialize_random_seeds()
-    >>> rand_simplex(d=6)
+    >>> rand_simplex(d=6)  # doctest: +SKIP
     array([0.4236548 , 0.12122838, 0.00393032, 0.05394987, 0.11242599, 0.28481063])
     """
     x = np.sort(np.random.rand(d - 1))

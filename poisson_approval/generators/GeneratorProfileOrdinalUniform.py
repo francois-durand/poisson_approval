@@ -15,7 +15,7 @@ class GeneratorProfileOrdinalUniform:
         >>> profile = generator()
         >>> print(profile)
         <abc: 0.4236547993389047, acb: 0.12122838365799216, bac: 0.0039303209304278885, bca: 0.05394987214431912, \
-    cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
+cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
     """
 
     def __init__(self, well_informed_voters=True):
