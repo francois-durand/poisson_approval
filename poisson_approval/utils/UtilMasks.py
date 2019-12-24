@@ -5,15 +5,18 @@ from itertools import product
 
 
 def masks_area_naive(inf, sup, masks):
-    """
-    Area of some masks. Naive implementation (used as a sanity test for the recursive implementation)
+    """Area of some masks. Naive implementation (used as a sanity test for the recursive implementation)
 
+    Notes
+    -----
+    Same specifications as :meth:`masks_area`.
+
+    Examples
+    --------
         >>> area = masks_area_naive(inf=[0, 0], sup=[1, 2],
         ...                         masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
         >>> isclose(area, 0.8 * 0.6 + 0.3 * 1.6 - 0.1 * 0.2)
         True
-
-    Same specifications as :meth:`mask_area`.
     """
     dim = len(inf)
     limits = [sorted({mask[d][0] for mask in masks}.union({inf[d], sup[d]})) for d in range(dim)]
@@ -28,26 +31,35 @@ def masks_area_naive(inf, sup, masks):
 
 
 def masks_area(inf, sup, masks):
-    """
-    Area of some masks (recursive `divide and conquer` implementation).
+    """Area of some masks (recursive `divide and conquer` implementation).
 
-    Denote ``dim`` the dimension of the Euclidean space under study.
+    We denote by `d` the dimension of the Euclidean space under study.
 
-    :param inf: a list of ``d`` numbers. The inf limit of the bounding rectangle in each dimension.
-    :param sup: a list of ``d`` numbers. The sup limit of the bounding rectangle in each dimension.
-    :param masks: a list of masks. Each mask is a list of ``d`` pairs ``(lim, direction)``, where ``lim`` is the limit
+    Parameters
+    ----------
+    inf : list of Number
+        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.
+    sup : list of Number
+        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
+    masks : list of list of tuple
+        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
         of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
-        meet the condition ``x_d >= lim`` (resp. x_d <= lim).
+        meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
+
+    Returns
+    -------
+    float
+        The area of ``Intersection(bounding rectangle, Union(masks))``.
+
+    Examples
+    --------
+    In the following example, the bounding rectangle is the set of points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
+    The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``. The second mask is the set of points
+    where ``x_1 <= 0.3 and x_2 >= 0.4``.
 
         >>> area = masks_area(inf=[0, 0], sup=[1, 2], masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
         >>> isclose(area, 0.8 * 0.6 + 0.3 * 1.6 - 0.1 * 0.2)
         True
-
-    Bounding rectangle: points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
-    First mask: points where ``x_1 >= 0.2 and x_2 <= 0.6``.
-    Second mask: points where ``x_1 <= 0.3 and x_2 >= 0.4``.
-
-    The function returns the area of ``Intersection(bounding rectangle, Union(masks))``.
     """
     dim = len(inf)
     # Is there a mask covering everything?
@@ -67,15 +79,19 @@ def masks_area(inf, sup, masks):
 
 
 def masks_distribution_naive(inf, sup, masks):
-    """
-    Distribution of the number of masks. Naive implementation (used as a sanity test for the recursive implementation)
+    """Distribution of the number of masks. Naive implementation (used as a sanity test for the recursive
+    implementation)
 
+    Notes
+    -----
+    Same specifications as :meth:`mask_distribution`.
+
+    Examples
+    --------
         >>> histogram = masks_distribution_naive(inf=[0, 0], sup=[1, 2],
         ...                                      masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
         >>> histogram
         array([1.06, 0.92, 0.02])
-
-    Same specifications as :meth:`mask_distribution`.
     """
     dim = len(inf)
     limits = [sorted({mask[d][0] for mask in masks}.union({inf[d], sup[d]})) for d in range(dim)]
@@ -91,31 +107,43 @@ def masks_distribution_naive(inf, sup, masks):
 
 
 def masks_distribution(inf, sup, masks, histogram=None, cover_alls=0):
-    """
-    Distribution of the number of masks (recursive `divide and conquer` implementation).
+    """Distribution of the number of masks (recursive `divide and conquer` implementation).
 
-    Denote ``dim`` the dimension of the Euclidean space under study.
+    We denote by `d` the dimension of the Euclidean space under study.
 
-    :param inf: a list of ``d`` numbers. The inf limit of the bounding rectangle in each dimension.
-    :param sup: a list of ``d`` numbers. The sup limit of the bounding rectangle in each dimension.
-    :param masks: a list of masks. Each mask is a list of ``d`` pairs ``(lim, direction)``, where ``lim`` is the limit
+    Parameters
+    ----------
+    inf : list of Number
+        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.
+    sup : list of Number
+        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
+    masks : list of list of tuple
+        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
         of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
-        meet the condition ``x_d >= lim`` (resp. x_d <= lim).
-    :param histogram: a list. This parameter should only be used for recursive calls. If specified, then instead of
-        creating a new list for the output, it is added to the given list ``histogram``.
-    :param cover_alls: an int. This parameter should only be used for recursive calls. If specified, then we consider
-        that we have this number of implicit masks (i.e. not given in the argument ``masks``) that cover the whole area.
-    :return: a list of length ``dim + 1``. The ``i``-th coefficient is the area covered by ``i`` masks exactly (in
-        the bounding rectangle).
+        meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
+    histogram : list
+        This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
+        the output, it is added to the given list `histogram`.
+    cover_alls : int
+        This parameter should only be used for recursive calls. If specified, then we consider that we have this number
+        of implicit masks (i.e. not given in the argument `masks`) that cover the whole area.
+
+    Returns
+    -------
+    list
+        A list of length `d + 1`. The `i`-th coefficient is the area covered by `i` masks exactly (and in the bounding
+        rectangle).
+
+    Examples
+    --------
+    In the following example, the bounding rectangle is the set of points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
+    The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``. The second mask is the set of points
+    where ``x_1 <= 0.3 and x_2 >= 0.4``.
 
         >>> histogram = masks_distribution(inf=[0, 0], sup=[1, 2],
         ...                                masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
         >>> histogram
         array([1.06, 0.92, 0.02])
-
-    Bounding rectangle: points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
-    First mask: points where ``x_1 >= 0.2 and x_2 <= 0.6``.
-    Second mask: points where ``x_1 <= 0.3 and x_2 >= 0.4``.
     """
     dim = len(inf)
     if histogram is None:
@@ -141,30 +169,42 @@ def masks_distribution(inf, sup, masks, histogram=None, cover_alls=0):
 
 
 def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=None):
-    """
-    Distribution of the number of winners (recursive `divide and conquer` implementation).
+    """Distribution of the number of winners (recursive `divide and conquer` implementation).
 
-    Denote ``dim`` the dimension of the Euclidean space under study.
+    We denote by `d` the dimension of the Euclidean space under study.
 
-    :param inf: a list of ``d`` numbers. The inf limit of the bounding rectangle in each dimension.
-    :param sup: a list of ``d`` numbers. The sup limit of the bounding rectangle in each dimension.
-    :param masks_winners: a list of couples ``(mask, winners)``. A mask is defined as usual. A winner is a set of
-        winning candidates in this mask, e.g. {'a', 'b'}.
-    :param histogram: a list. This parameter should only be used for recursive calls. If specified, then instead of
-        creating a new list for the output, it is added to the given list ``histogram``.
-    :param cover_alls: a set. e.g. {'a', 'b'}. This parameter should only be used for recursive calls. If specified,
-        then we consider that we have all these candidates winning in the whole area.
-    :return: a list of length 4. The ``i``-th coefficient is the area where ``i`` candidates may win.
+    Parameters
+    ----------
+    inf : list of Number
+        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.
+    sup : list of Number
+        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
+    masks_winners : list of tuple
+        A list of pairs ``(mask, winners)``. A mask is defined as usual (cf. :meth:`masks_area` for instance).
+        A winner is a set of winning candidates in this mask, e.g. ``{'a', 'b'}``.
+    histogram : list
+        This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
+        the output, it is added to the given list `histogram`.
+    cover_alls : set
+        E.g. {'a', 'b'}. This parameter should only be used for recursive calls. If specified, then we consider that
+        we have all these candidates winning in the whole area.
+
+    Returns
+    -------
+    list
+        A list of length 4. The `i`-th coefficient is the area where `i` candidates may win.
+
+    Examples
+    --------
+    In the following example, the bounding rectangle is the set of points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
+    The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``, where the winner can be ``{'a'}``.
+    The second mask is the set of points where ``x_1 <= 0.3 and x_2 >= 0.4``, where the winner can be ``{'b'}``.
 
         >>> histogram = winners_distribution(
         ...     inf=[0, 0], sup=[1, 2],
         ...     masks_winners=[([(.2, True), (.6, False)], {'a'}), ([(.3, False), (.4, True)], {'a', 'b'})])
         >>> histogram
         array([1.06, 0.46, 0.48, 0.  ])
-
-    Bounding rectangle: points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
-    First mask: points where ``x_1 >= 0.2 and x_2 <= 0.6``. Winner ``{'a'}``.
-    Second mask: points where ``x_1 <= 0.3 and x_2 >= 0.4``. Winner ``{'b'}``.
     """
     dim = len(inf)
     if histogram is None:
@@ -197,32 +237,44 @@ def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=Non
 
 
 def random_mask(dim):
-    """
-    Random mask.
+    """Random mask.
 
-    :param dim: dimension of the Euclidean space.
-    :return: a mask of dimension ``d``, whose limits are in [0, 1].
+    Parameters
+    ----------
+    dim : int
+        Dimension of the Euclidean space under study.
 
-    Cf. :meth:`mask_area`.
+    Returns
+    -------
+    list of tuple
+        A mask of dimension `dim`, whose limits are in [0, 1]. For the definition of a mask, cf. :meth:`masks_area`.
     """
     return [(random.random(), random.choice([True, False])) for _ in range(dim)]
 
 
 def random_masks(dim, n_masks):
-    """
-    List of random masks.
+    """List of random masks.
 
-    :param dim: dimension of the Euclidean space.
-    :param n_masks: number of masks.
-    :return: a list of ``n_masks`` masks of dimension ``d``, whose limits are in [0, 1].
+    Parameters
+    ----------
+    dim : int
+        Dimension of the Euclidean space under study.
+    n_masks : int
+        Number of masks.
 
+    Returns
+    -------
+    list of list of tuple
+        A list of `n_masks` masks of dimension `d`, whose limits are in [0, 1]. For the definition of a mask, cf.
+        :meth:`masks_area`.
+
+    Examples
+    --------
         >>> dim = 6
         >>> n_masks = 4
         >>> masks = random_masks(dim=dim, n_masks=n_masks)
         >>> isclose(masks_area(inf=[0]*dim, sup=[1]*dim, masks=masks),
         ...         masks_area_naive(inf=[0]*dim, sup=[1]*dim, masks=masks))
         True
-
-    Cf. :meth:`mask_area`.
     """
     return [random_mask(dim) for _ in range(n_masks)]

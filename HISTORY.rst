@@ -3,6 +3,12 @@ History
 =======
 
 ------------------
+0.1.1 (2019-12-24)
+------------------
+
+* Convert all the documentation to NumPy format, making it more readable in plain text.
+
+------------------
 0.1.0 (2019-12-20)
 ------------------
 

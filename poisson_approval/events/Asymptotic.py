@@ -5,24 +5,24 @@ from poisson_approval.utils.Util import isnan, isposinf, isneginf
 
 # noinspection NonAsciiCharacters
 class Asymptotic:
-    """An asymptotic development of the form exp(mu n + nu log n + xi + o(1)).
+    r"""An asymptotic development of the form :math:`\exp(\mu n + \nu \log n + \xi + o(1))`.
 
     Parameters
     ----------
-    mu : Number, ``np.nan`` or ``np.inf``.
-        Coefficient of the term in n (called "magnitude").
-    nu : Number, ``np.nan`` or ``np.inf``.
-        Coefficient of the term in log n.
-    xi : Number, ``np.nan`` or ``np.inf``.
+    mu : Number, ``np.nan`` or ``np.inf``
+        Coefficient of the term in `n` (called "magnitude").
+    nu : Number, ``np.nan`` or ``np.inf``
+        Coefficient of the term in `log n`.
+    xi : Number, ``np.nan`` or ``np.inf``
         Constant coefficient.
 
     Attributes
     ----------
-    μ : Number, ``np.nan`` or ``np.inf``.
+    μ : Number, ``np.nan`` or ``np.inf``
         Alias for :attr:`mu`.
-    ν : Number, ``np.nan`` or ``np.inf``.
+    ν : Number, ``np.nan`` or ``np.inf``
         Alias for :attr:`nu`.
-    ξ : Number, ``np.nan`` or ``np.inf``.
+    ξ : Number, ``np.nan`` or ``np.inf``
         Alias for :attr:`xi`.
 
     Notes
@@ -120,12 +120,7 @@ class Asymptotic:
 
     @property
     def limit(self):
-        """Limit when ``n`` tends to infinity.
-
-        Returns
-        -------
-        limit : Number, ``np.nan`` or ```np.inf``
-            ``np.nan`` means that the limit is unknown.
+        """Number, ``np.nan`` or ``np.inf`` : Limit when `n` tends to infinity.
 
         Examples
         --------
@@ -133,12 +128,15 @@ class Asymptotic:
             0
             >>> Asymptotic(mu=1, nu=0, xi=0).limit
             inf
-            >>> Asymptotic(mu=0, nu=0, xi=np.nan).limit
-            nan
             >>> Asymptotic(mu=-1, nu=np.nan, xi=np.nan).limit
             0
             >>> Asymptotic(mu=0, nu=-1, xi=np.nan).limit
             0
+
+        ``np.nan`` means that the limit is unknown:
+
+            >>> Asymptotic(mu=0, nu=0, xi=np.nan).limit
+            nan
         """
         if isnan(float(self.mu)):
             return np.nan
@@ -281,13 +279,16 @@ class Asymptotic:
         Returns
         -------
         isclose : bool
-            True if the two asymptotic developments are approximately equal.
+            True if this asymptotic development is approximately equal to `other`.
 
         Examples
         --------
-            >>> Asymptotic(mu=1, nu=2, xi=3).isclose(Asymptotic(mu=0.999999999999, nu=2.00000000001, xi=3))
+            >>> Asymptotic(mu=1, nu=2, xi=3).isclose(
+            ...     Asymptotic(mu=0.999999999999, nu=2.00000000001, xi=3))
             True
         """
+        if not isinstance(other, Asymptotic):
+            return False
         if isnan(float(self.mu)) or isnan(float(self.nu)) or isnan(float(self.xi))\
                 or isnan(float(other.mu)) or isnan(float(other.nu)) or isnan(float(other.xi)):
             raise ValueError('Can assert isclose only when all coefficients are known.')
@@ -299,19 +300,19 @@ class Asymptotic:
 
     @classmethod
     def poisson_value(cls, tau, k):
-        """Asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau n)``.
+        """Asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau * n)``.
 
         Parameters
         ----------
         tau : Number
-            The parameter of the Poisson distribution is ``tau * n``, where ``n`` tends to infinity.
+            The parameter of the Poisson distribution is ``tau * n``, where `n` tends to infinity.
         k : int
             The desired value in ``P(X = k)``.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau n)``.
+            The asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau * n)``.
 
         Examples
         --------
@@ -322,7 +323,8 @@ class Asymptotic:
             >>> print(Asymptotic.poisson_value(tau=1, k=1))
             exp(- n + log n + o(1))
             >>> from math import log
-            >>> Asymptotic.poisson_value(tau=2, k=3).isclose(Asymptotic(mu=-2, nu=3, xi=3 * log(2) - log(6)))
+            >>> Asymptotic.poisson_value(tau=2, k=3).isclose(
+            ...     Asymptotic(mu=-2, nu=3, xi=3 * log(2) - log(6)))
             True
         """
         if tau == 0:
@@ -334,19 +336,19 @@ class Asymptotic:
 
     @classmethod
     def poisson_x1_eq_x2_plus_k(cls, tau_1, tau_2, k):
-        """Asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2 : Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         k : int
             The desired value in ``P(X_1 = X_2 + k)``.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -391,17 +393,17 @@ class Asymptotic:
 
     @classmethod
     def poisson_eq(cls, tau_1, tau_2):
-        """Asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2: Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -418,17 +420,17 @@ class Asymptotic:
 
     @classmethod
     def poisson_one_more(cls, tau_1, tau_2):
-        """Asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2: Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -443,19 +445,19 @@ class Asymptotic:
 
     @classmethod
     def poisson_x1_ge_x2_plus_k(cls, tau_1, tau_2, k):
-        """Asymptotic development of ``P(X_1 >= X_2 + k)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 >= X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2: Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         k : int
             The desired value in ``P(X_1 >= X_2 + k)``.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 >= X_2 + k)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 >= X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -470,7 +472,8 @@ class Asymptotic:
             ...     Asymptotic(mu=0, nu=0, xi=- log(2)))
             True
             >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=2, k=3).isclose(Asymptotic(
-            ...     mu=- (1 - sqrt(2)) ** 2, nu=- 1 / 2, xi=(- 1 / 2 * log(32 * pi * sqrt(2)) - log(1 - sqrt(1 / 2)))))
+            ...     mu=- (1 - sqrt(2)) ** 2, nu=- 1 / 2,
+            ...     xi=(- 1 / 2 * log(32 * pi * sqrt(2)) - log(1 - sqrt(1 / 2)))))
             True
         """
         if tau_1 == 0:
@@ -495,17 +498,17 @@ class Asymptotic:
 
     @classmethod
     def poisson_ge(cls, tau_1, tau_2):
-        """Asymptotic development of ``P(X_1 >= X_2)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 >= X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2: Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 >= X_2)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 >= X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -516,30 +519,33 @@ class Asymptotic:
             exp(- 0.1 n + o(1))
             >>> print(Asymptotic.poisson_ge(tau_1=1/10, tau_2=0))
             exp(o(1))
-            >>> Asymptotic.poisson_ge(tau_1=9/10, tau_2=1/10).isclose(Asymptotic(mu=0, nu=0, xi=0))
+            >>> Asymptotic.poisson_ge(tau_1=9/10, tau_2=1/10).isclose(
+            ...     Asymptotic(mu=0, nu=0, xi=0))
             True
-            >>> Asymptotic.poisson_ge(tau_1=3/10, tau_2=3/10).isclose(Asymptotic(mu=0, nu=0, xi=-log(2)))
+            >>> Asymptotic.poisson_ge(tau_1=3/10, tau_2=3/10).isclose(
+            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))
             True
             >>> asymptotic = Asymptotic.poisson_ge(tau_1=1/10, tau_2=9/10)
             >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)
-            >>> asymptotic.isclose(Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi + log(3/2)))
+            >>> asymptotic.isclose(
+            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi + log(3/2)))
             True
         """
         return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 0)
 
     @classmethod
     def poisson_gt(cls, tau_1, tau_2):
-        """Asymptotic development of ``P(X_1 > X_2)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 > X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2: Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 > X_2)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 > X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -550,30 +556,33 @@ class Asymptotic:
             exp(- inf)
             >>> print(Asymptotic.poisson_gt(tau_1=1/10, tau_2=0))
             exp(o(1))
-            >>> Asymptotic.poisson_gt(tau_1=9/10, tau_2=1/10).isclose(Asymptotic(mu=0, nu=0, xi=0))
+            >>> Asymptotic.poisson_gt(tau_1=9/10, tau_2=1/10).isclose(
+            ...     Asymptotic(mu=0, nu=0, xi=0))
             True
-            >>> Asymptotic.poisson_gt(tau_1=3/10, tau_2=3/10).isclose(Asymptotic(mu=0, nu=0, xi=-log(2)))
+            >>> Asymptotic.poisson_gt(tau_1=3/10, tau_2=3/10).isclose(
+            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))
             True
             >>> asymptotic = Asymptotic.poisson_gt(tau_1=1/10, tau_2=9/10)
             >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)
-            >>> asymptotic.isclose(Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(2)))
+            >>> asymptotic.isclose(
+            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(2)))
             True
         """
         return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 1)
 
     @classmethod
     def poisson_gt_one_more(cls, tau_1, tau_2):
-        """Asymptotic development of ``P(X_1 > X_2 + 1)``, where ``X_i ~ Poison(tau_i)``.
+        """Asymptotic development of ``P(X_1 > X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
         ----------
-        tau_1, tau_2: Number
-            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where ``n`` tends to infinity.
+        tau_1,tau_2 : Number
+            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
 
         Returns
         -------
         Asymptotic
-            The asymptotic development of ``P(X_1 > X_2 + 1)``, where ``X_i ~ Poison(tau_i)``.
+            The asymptotic development of ``P(X_1 > X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Examples
         --------
@@ -584,13 +593,16 @@ class Asymptotic:
             exp(- inf)
             >>> print(Asymptotic.poisson_gt_one_more(tau_1=1/10, tau_2=0))
             exp(o(1))
-            >>> Asymptotic.poisson_gt_one_more(tau_1=9/10, tau_2=1/10).isclose(Asymptotic(mu=0, nu=0, xi=0))
+            >>> Asymptotic.poisson_gt_one_more(tau_1=9/10, tau_2=1/10).isclose(
+            ...     Asymptotic(mu=0, nu=0, xi=0))
             True
-            >>> Asymptotic.poisson_gt_one_more(tau_1=3/10, tau_2=3/10).isclose(Asymptotic(mu=0, nu=0, xi=-log(2)))
+            >>> Asymptotic.poisson_gt_one_more(tau_1=3/10, tau_2=3/10).isclose(
+            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))
             True
             >>> asymptotic = Asymptotic.poisson_gt_one_more(tau_1=1/10, tau_2=9/10)
             >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)
-            >>> asymptotic.isclose(Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(6)))
+            >>> asymptotic.isclose(
+            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(6)))
             True
         """
         return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 2)

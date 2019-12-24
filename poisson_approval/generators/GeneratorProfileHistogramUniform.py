@@ -4,12 +4,19 @@ from poisson_approval.profiles.ProfileHistogram import ProfileHistogram
 
 
 class GeneratorProfileHistogramUniform:
-    """A generator of histogram-profiles following the uniform distribution.
+    """A generator of histogram-profiles (:class:`ProfileHistogram`) following the uniform distribution.
 
-    :param n_bins: the numbers of bins for each histogram.
+    Parameters
+    ----------
+    n_bins : int
+        The numbers of bins for each histogram.
 
+    Notes
+    -----
     The ordinal profile is drawn uniformly on the simplex. Then each histogram is drawn uniformly on the simplex.
 
+    Examples
+    --------
         >>> initialize_random_seeds()
         >>> generator = GeneratorProfileHistogramUniform(n_bins=3)
         >>> profile = generator()

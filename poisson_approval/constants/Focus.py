@@ -1,14 +1,16 @@
 class Focus:
-    """
+    r"""
     A type of focus for a tau-vector.
 
     The possible values are:
 
-    * Focus.DIRECT (``mu_1 > mu_2 > mu_3``),
-    * Focus.FORWARD_FOCUSED (``mu_1 > mu_2 = mu_3``),
-    * Focus.BACKWARD_FOCUSED (``mu_1 = mu_2 > mu_3``),
-    * Focus.UNFOCUSED (``mu_1 = mu_2 = mu_3``).
+    * ``Focus.DIRECT`` (:math:`\mu_1 > \mu_2 > \mu_3`),
+    * ``Focus.FORWARD_FOCUSED`` (:math:`\mu_1 > \mu_2 = \mu_3`),
+    * ``Focus.BACKWARD_FOCUSED`` (:math:`\mu_1 = \mu_2 > \mu_3`),
+    * ``Focus.UNFOCUSED`` (:math:`\mu_1 = \mu_2 = \mu_3`).
 
+    Examples
+    --------
         >>> print(Focus.DIRECT)
         D
         >>> print(Focus.FORWARD_FOCUSED)

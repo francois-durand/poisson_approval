@@ -7,15 +7,23 @@ from fractions import Fraction
 class ExploreGridProfilesOrdinal:
     """Explore a grid of ordinal profiles and analyze each profile.
 
-    :param denominator: an integer or a list of integers. The grain of the grid. For example, if ``denominator=9``,
-        we will examine profiles such as (1/9, 2/9, 2/9, 1/9, 1/3, 0) or (1/9, 5/9, 0, 3/9, 0, 0), etc. If a list of
-        integers is given, then all the corresponding denominators will be examined.
-    :param test: a function ``ProfileOrdinal -> bool``. Only the profiles satisfying this test will be examined.
+    Parameters
+    ----------
+    denominator : int or list of int
+        The grain of the grid. For example, if ``denominator=9``, we examine profiles such as
+        (1/9, 2/9, 2/9, 1/9, 1/3, 0) or (1/9, 5/9, 0, 3/9, 0, 0), etc. If a list of integers is given, then all the
+        corresponding denominators are examined.
+    test : callable
+        A function ``ProfileOrdinal -> bool``. Only the profiles satisfying this test will be examined.
         Default: always True.
-    :param standardized: if True, then we examine only the standardized profiles (i.e. up to relabelling the
-        candidates).
-    :param well_informed_voters: cf. class:`ProfileOrdinal`.
+    standardized : bool
+        If True, then we examine only the `standardized` profiles (i.e. up to relabelling the candidates).
+        Cf. :attr:`Profile.is_standardized`.
+    well_informed_voters : bool
+        Cf. the corresponding parameter in :class:`Profile`.
 
+    Examples
+    --------
         >>> def test(r):
         ...     return(
         ...         r.is_profile_condorcet

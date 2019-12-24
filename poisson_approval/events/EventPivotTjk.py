@@ -5,13 +5,18 @@ from poisson_approval.events.EventPivotWeak import EventPivotWeak
 
 
 class EventPivotTjk(Event):
-    """
-    A `personalized pivot` with all its attributes (magnitudes, etc.)
+    """A `personalized pivot` of type ``Tjk``.
 
+    Notes
+    -----
     We consider the personalized pivot for the two least-liked candidates of a voter ``zyx``, i.e. situations
     where, if the voter add a reasonable ballot (``z`` or ``yz``), it become a strict pivot for ``xy``. In other words,
     situations where ``S_x = S_y > S_z + 1`` or ``S_x = S_y + 1 > S_z + 1``.
 
+    For parameters and attributes, cf. :class:`Event`.
+
+    Examples
+    --------
         >>> EventPivotTjk(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
         <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     """

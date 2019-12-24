@@ -6,15 +6,19 @@ from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrinting
 
 # noinspection PyUnresolvedReferences
 class StrategyThreshold(StrategyTwelve):
-    """
-    A strategy profile for a cardinal profile.
+    """A strategy profile for a cardinal profile.
 
-    :param d_ranking_threshold: a dictionary whose keys are rankings and values are utility thresholds.
-        E.g. ``'abc': 0.4`` means that a voter ``abc`` vote for ``ab`` if her utility for ``b`` is strictly greater
-        than 0.4, and for ``a`` otherwise. A threshold can be ``None``, meaning that the behavior of these voters is
-        not specified in the strategy.
-    :param profile: an optional profile ("context" in which the strategy is used).
+    Parameters
+    ----------
+    d_ranking_threshold : dict
+        Keys are rankings and values are utility thresholds. E.g. ``'abc': 0.4`` means that a voter ``abc`` vote for
+        ``ab`` if her utility for ``b`` is strictly greater than 0.4, and for ``a`` otherwise. A threshold can be
+        ``None``, meaning that the behavior of these voters is not specified in the strategy.
+    profile : Profile, optional
+        The "context" in which the strategy is used.
 
+    Examples
+    --------
         >>> sigma = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
         >>> sigma
         StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
@@ -55,6 +59,17 @@ class StrategyThreshold(StrategyTwelve):
     def __eq__(self, other):
         """Equality test.
 
+        Parameters
+        ----------
+        other : object
+
+        Returns
+        -------
+        bool
+            True if this strategy is equal to `other`.
+
+        Examples
+        --------
             >>> sigma = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
             >>> sigma == StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
             True
@@ -62,11 +77,23 @@ class StrategyThreshold(StrategyTwelve):
         return isinstance(other, StrategyThreshold) and self.d_ranking_threshold == other.d_ranking_threshold
 
     def isclose(self, other, *args, **kwargs):
-        """
-        Test near-equality.
+        """Test near-equality.
 
-        About the optional arguments, cf. math.isclose.
+        Parameters
+        ----------
+        other : Object
+        *args
+            Cf. :func:`math.isclose`.
+        **kwargs
+            Cf. :func:`math.isclose`.
 
+        Returns
+        -------
+        isclose : bool
+            True if this strategy is approximately equal to `other`.
+
+        Examples
+        --------
             >>> sigma = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
             >>> sigma.isclose(StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 0.999999999999999999999999}))
             True

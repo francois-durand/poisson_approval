@@ -6,14 +6,19 @@ from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrinting
 
 # noinspection PyUnresolvedReferences
 class StrategyTwelve(Strategy):
-    """
-    A strategy profile for a 12-type profile.
+    """A strategy profile for a 12-type profile.
 
-    :param d_ranking_ballot: a dictionary whose keys are rankings and values are strategies, e.g. 'abc': 'ab'. A
-        strategy can be typically 'a', 'ab', UTILITY_DEPENDENT or '' if the behavior of these voters is not specified
-        in the strategy. Cf. ``ProfileTwelve``.
-    :param profile: an optional profile ("context" in which the strategy is used).
+    Parameters
+    ----------
+    d_ranking_ballot : dict
+        Keys are rankings and values are strategies, e.g. ``'abc': 'ab'``. A strategy can be a valid ballot
+        (e.g. ``'a'`` or ``'ab'`` when the ranking is ``'abc'``), ``UTILITY_DEPENDENT`` or ``''`` if the behavior
+        of these voters is not specified in the strategy. Cf. :class:`ProfileTwelve`.
+    profile : Profile, optional
+        The "context" in which the strategy is used.
 
+    Examples
+    --------
         >>> sigma = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
         >>> sigma
         StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
@@ -53,6 +58,17 @@ class StrategyTwelve(Strategy):
     def __eq__(self, other):
         """Equality test.
 
+        Parameters
+        ----------
+        other : object
+
+        Returns
+        -------
+        bool
+            True if this strategy is equal to `other`.
+
+        Examples
+        --------
             >>> sigma = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
             >>> sigma == StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
             True
@@ -83,7 +99,8 @@ def make_property_ranking_ballot(ranking, doc):
 
 
 for my_ranking in RANKINGS:
-    setattr(StrategyTwelve, my_ranking, make_property_ranking_ballot(my_ranking, 'Ballot of this ranking.'))
+    setattr(StrategyTwelve, my_ranking, make_property_ranking_ballot(my_ranking,
+                                                                     'str : Ballot of ranking ``%s``.' % my_ranking))
 
 
 def make_property_ranking_low_u_ballot(ranking, doc):
@@ -95,7 +112,8 @@ def make_property_ranking_low_u_ballot(ranking, doc):
 
 for my_ranking in RANKINGS:
     my_t = my_ranking[0] + '_' + my_ranking[1:]
-    setattr(StrategyTwelve, my_t, make_property_ranking_low_u_ballot(my_ranking, 'Ballot of this type.'))
+    setattr(StrategyTwelve, my_t, make_property_ranking_low_u_ballot(my_ranking,
+                                                                     'str : Ballot of type ``%s``.' % my_t))
 
 
 def make_property_ranking_high_u_ballot(ranking, doc):
@@ -107,4 +125,5 @@ def make_property_ranking_high_u_ballot(ranking, doc):
 
 for my_ranking in RANKINGS:
     my_t = my_ranking[:2] + '_' + my_ranking[2]
-    setattr(StrategyTwelve, my_t, make_property_ranking_high_u_ballot(my_ranking, 'Ballot of this type.'))
+    setattr(StrategyTwelve, my_t, make_property_ranking_high_u_ballot(my_ranking,
+                                                                      'str : Ballot of type ``%s``.' % my_t))

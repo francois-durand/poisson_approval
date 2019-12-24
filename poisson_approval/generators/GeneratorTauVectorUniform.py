@@ -4,10 +4,14 @@ from poisson_approval.tau_vector.TauVector import TauVector
 
 
 class GeneratorTauVectorUniform:
-    """A generator of tau-vectors following the uniform distribution.
+    """A generator of tau-vectors (:class:`TauVector`) following the uniform distribution.
 
+    Notes
+    -----
     The tau-vector is drawn uniformly on the simplex.
 
+    Examples
+    --------
         >>> initialize_random_seeds()
         >>> generator = GeneratorTauVectorUniform()
         >>> tau = generator()

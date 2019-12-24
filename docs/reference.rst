@@ -110,16 +110,19 @@ StrategyTwelve
 --------------
 .. autoclass:: poisson_approval.StrategyTwelve
     :members:
+    :inherited-members:
 
 StrategyThreshold
 -----------------
 .. autoclass:: poisson_approval.StrategyThreshold
     :members:
+    :inherited-members:
 
 StrategyOrdinal
 ---------------
 .. autoclass:: poisson_approval.StrategyOrdinal
     :members:
+    :inherited-members:
 
 Profiles
 ========
@@ -133,21 +136,25 @@ ProfileOrdinal
 --------------
 .. autoclass:: poisson_approval.ProfileOrdinal
     :members:
+    :inherited-members:
 
 ProfileCardinal
 ---------------
 .. autoclass:: poisson_approval.ProfileCardinal
     :members:
+    :inherited-members:
 
 ProfileTwelve
 -------------
 .. autoclass:: poisson_approval.ProfileTwelve
     :members:
+    :inherited-members:
 
 ProfileHistogram
 ----------------
 .. autoclass:: poisson_approval.ProfileHistogram
     :members:
+    :inherited-members:
 
 Grid exploration
 ================

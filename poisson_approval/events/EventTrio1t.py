@@ -5,10 +5,16 @@ from poisson_approval.events.EventTrio import EventTrio
 
 
 class EventTrio1t(Event):
-    """A 3-candidate almost-tie of the type (X - 1, X, X)
+    """A 3-candidate almost-tie of the type (X - 1, X, X).
 
-    Situations where ``S_x + 1 = S_y = S_z``.
+    Notes
+    -----
+    We consider the trios of type 1, i.e. situations where ``S_x + 1 = S_y = S_z``.
 
+    For parameters and attributes, cf. :class:`Event`.
+
+    Examples
+    --------
         >>> EventTrio1t(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
         <asymptotic = exp(- inf)>
     """

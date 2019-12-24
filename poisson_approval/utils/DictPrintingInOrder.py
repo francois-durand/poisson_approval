@@ -1,7 +1,8 @@
 class DictPrintingInOrder(dict):
-    """
-    A dictionary that prints in the order of the keys.
+    """A dictionary that prints in the order of the keys.
 
+    Examples
+    --------
         >>> d = DictPrintingInOrder({'b': 'x', 'a': 'y', 'c': 'z'})
         >>> print(d)
         {a: y, b: x, c: z}

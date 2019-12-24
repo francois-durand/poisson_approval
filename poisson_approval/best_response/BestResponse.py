@@ -9,29 +9,31 @@ class BestResponse:
     Parameters
     ----------
     ranking : str
-        Voter's ranking, e.g. 'abc'.
-    pivot_tij : :class:`EventPivotTij`.
+        Voter's ranking, e.g. ``'abc'``.
+    pivot_tij : EventPivotTij
         `Personalized pivot` between her first and second candidate.
-    pivot_tjk : :class:`EventPivotTjk`
+    pivot_tjk : EventPivotTjk
         `Personalized pivot` between her second and third candidate.
-    trio_1t : :class:`EventTrio1t`
+    trio_1t : EventTrio1t
         First `personalized trio`.
-    trio_2t : :class:`EventTrio2t`
+    trio_2t : EventTrio2t
         Second `personalized trio`.
-    trio : :class:`EventTrio`
+    trio : EventTrio
         3-candidate tie.
 
     Attributes
     ----------
     ballot : str
-        Typically 'a', 'ab', 'utility-dependent' or 'inconclusive' (but the latter is not used anymore in
-        the current version of the algorithm).
+        This can be a valid ballot (e.g. ``'a'`` or ``'ab'`` if `ranking` is ``'abc'``) or ``'utility-dependent'``.
+        Historically, it could also be ``'inconclusive'``, but this value is not used anymore in the current version
+        of the algorithm.
     threshold_utility : Number
         The threshold value of the utility for the second candidate (where the optimal ballot changes). If 1, then
         always vote for the first candidate. If 0, then always vote for the two most-liked candidates.
     justification : str
-        How the program made its decision. Nowadays, possible values are 'Asymptotic method',
-        'Simplified asymptotic method', 'Easy vs difficult pivot', 'Difficult vs easy pivot', 'Offset method'.
+        How the program made its decision. Nowadays, possible values are ``'Asymptotic method'``,
+        ``'Simplified asymptotic method'``, ``'Easy vs difficult pivot'``, ``'Difficult vs easy pivot'``,
+        ``'Offset method'``.
 
     Examples
     --------

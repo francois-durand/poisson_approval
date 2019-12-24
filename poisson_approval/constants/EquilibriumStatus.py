@@ -4,11 +4,13 @@ class EquilibriumStatus:
 
     The possible values are:
 
-    * EquilibriumStatus.EQUILIBRIUM,
-    * EquilibriumStatus.UTILITY_DEPENDENT,
-    * EquilibriumStatus.INCONCLUSIVE,
-    * EquilibriumStatus.NOT_EQUILIBRIUM.
+    * ``EquilibriumStatus.EQUILIBRIUM``,
+    * ``EquilibriumStatus.UTILITY_DEPENDENT``,
+    * ``EquilibriumStatus.INCONCLUSIVE``,
+    * ``EquilibriumStatus.NOT_EQUILIBRIUM``.
 
+    Examples
+    --------
         >>> min(EquilibriumStatus.EQUILIBRIUM, EquilibriumStatus.INCONCLUSIVE)
         EquilibriumStatus.INCONCLUSIVE
     """

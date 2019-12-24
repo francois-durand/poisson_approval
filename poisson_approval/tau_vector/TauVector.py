@@ -21,15 +21,22 @@ from poisson_approval.constants.Focus import Focus
 
 # noinspection PyUnresolvedReferences
 class TauVector:
-    """
-    A vector 'tau' (ballot distribution)
+    """A vector 'tau' (ballot distribution)
 
-    :param d_ballot_share: ballot distribution, e.g. {'a': 0.1, 'ab': 0.6, 'c':0.3}
-    :param normalization_warning: whether a warning should be issued if the input distribution is not normalized.
+    Parameters
+    ----------
+    d_ballot_share : dict
+        Ballot distribution, e.g. ``{'a': 0.1, 'ab': 0.6, 'c':0.3}``.
+    normalization_warning : bool
+        Whether a warning should be issued if the input distribution is not normalized.
 
-    If the input distribution ``d_ballot_share`` is not normalized, the tau vector will be normalized anyway and a
-    warning is issued (unless ``normalization_warning`` is False).
+    Notes
+    -----
+    If the input distribution `d_ballot_share` is not normalized, the tau vector will be normalized anyway and a
+    warning is issued (unless `normalization_warning` is False).
 
+    Examples
+    --------
         >>> from fractions import Fraction
         >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
         >>> tau
@@ -184,8 +191,10 @@ phi_ab = 0.707107>
 
     @cached_property
     def scores(self):
-        """The scores.
+        """Scores : The scores.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.scores
@@ -197,8 +206,10 @@ phi_ab = 0.707107>
 
     @property
     def winners(self):
-        """The winners.
+        """Winners : The winners.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.winners
@@ -207,12 +218,19 @@ phi_ab = 0.707107>
         return self.scores.winners
 
     def __eq__(self, other):
-        """
-        Equality test.
+        """Equality test.
 
-        :param other: another object.
-        :return: True iff it is the same tau-vector.
+        Parameters
+        ----------
+        other : Object
 
+        Returns
+        -------
+        bool
+            True iff it is the same tau-vector.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau == TauVector({'a': Fraction(10, 100), 'ab': Fraction(60, 100), 'c': Fraction(30, 100)})
@@ -222,13 +240,16 @@ phi_ab = 0.707107>
 
     @cached_property
     def standardized_version(self):
-        """
-        Standardized version of the profile (makes it unique, up to permutations).
+        """Standardized version of the profile (makes it unique, up to permutations).
 
+        Notes
+        -----
         It returns the same profile, up to a permutation of the candidates. how the permutation is chosen in
-        practice does not really matter: the important point is that the 'standardized version' is the same for all the
+        practice does not really matter: the important point is that the `standardized version` is the same for all the
         profile that are identical up to a permutation of the candidates.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.standardized_version
@@ -250,8 +271,10 @@ phi_ab = 0.707107>
 
     @cached_property
     def is_standardized(self):
-        """Whether the profile is standardized or not. Cf. :meth:``standardized_version``.
+        """Whether the profile is standardized or not. Cf. :meth:`standardized_version`.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.is_standardized
@@ -269,11 +292,10 @@ phi_ab = 0.707107>
 
     @property
     def focus(self):
-        """
-        Focus of this tau-vector.
+        """Focus : Focus of this tau-vector.
 
-        Cf. :class:`Focus`.
-
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.focus
@@ -292,6 +314,8 @@ phi_ab = 0.707107>
     def print_weak_pivots(self):
         """Print the weak pivots (including the 3-way tie).
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.print_weak_pivots()
@@ -310,6 +334,8 @@ phi_ab = 0.707107>
     def print_all_pivots(self):
         """Print all the pivots.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.print_all_pivots()
@@ -376,12 +402,13 @@ phi_ab = 0.707107>
 
     @cached_property
     def d_ranking_best_response(self):
-        """
-        Best response profile.
+        """dict : Best response profile.
 
-        * Key: ranking (e.g. 'abc').
+        * Key: a ranking (e.g. ``'abc'``).
         * Value: a :class:`BestResponse`.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.d_ranking_best_response['abc']
@@ -410,8 +437,11 @@ def _f_ballot_share(self, ballot):
 
 for my_ballot in BALLOTS_WITH_INVERSIONS:
     setattr(TauVector, my_ballot, property(partial(_f_ballot_share, ballot=my_ballot)))
-    getattr(TauVector, my_ballot).__doc__ = _f_ballot_share.__doc__
-
+    if sort_ballot(my_ballot) == my_ballot:
+        getattr(TauVector, my_ballot).__doc__ = "Number: Share of the ballot ``'%s'``." % my_ballot
+    else:
+        getattr(TauVector, my_ballot).__doc__ = \
+            "Number: Share of the ballot ``'%s'`` (alternate notation)." % sort_ballot(my_ballot)
 
 # Events based on a duo: create cached properties like duo_ab, etc.
 
@@ -425,11 +455,13 @@ def _f_duo(self, candidate_x, candidate_y, candidate_z, cls, stub):
 
 
 for event_class, event_stub, event_doc in [
-        (EventDuo, 'duo', 'Event: duo.'),
-        (EventPivotWeak, 'pivot_weak', 'Event: weak pivot.'),
-        (EventPivotStrict, 'pivot_strict', 'Event: strict pivot.'),
+        (EventDuo, 'duo', 'EventDuo : These two candidates have the same score.'),
+        (EventPivotWeak, 'pivot_weak',
+            'EventPivotWeak : These two candidates have the same score, at least as high as the other.'),
+        (EventPivotStrict, 'pivot_strict',
+            'EventPivotStrict : These two candidates have the same score, strictly higher than the other.'),
         (EventTrio2t, 'trio_2t',
-         'Event: trio of type 2t (these two candidates have one point less than the other one).')]:
+            'EventTrio1t : These candidates have one vote less than the other.')]:
     for x, y, z in RANKINGS:
         name = event_stub + '_%s%s' % (x, y)
         setattr(TauVector, name, partial(_f_duo, candidate_x=x, candidate_y=y, candidate_z=z,
@@ -447,8 +479,11 @@ def _f_ranking(self, candidate_x, candidate_y, candidate_z, cls):
                tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
 
 
-for event_class, event_stub, event_doc in [(EventPivotTij, 'pivot_tij', 'Event: `personalized pivot` of type Tij.'),
-                                           (EventPivotTjk, 'pivot_tjk', 'Event: `personalized pivot` of type Tjk.')]:
+for event_class, event_stub, event_doc in [
+        (EventPivotTij, 'pivot_tij',
+            'EventPivotTij: Personalized pivot of type Tij (between the two most-liked candidates).'),
+        (EventPivotTjk, 'pivot_tjk',
+            'EventPivotTjk: Personalized pivot of type Tjk (between the two least-liked candidates).')]:
     for x, y, z in RANKINGS:
         name = event_stub + '_%s%s%s' % (x, y, z)
         if event_stub == 'pivot_tjk':
@@ -464,8 +499,7 @@ for event_class, event_stub, event_doc in [(EventPivotTij, 'pivot_tij', 'Event: 
 
 
 for event_class, event_stub, event_doc in [
-        (EventTrio1t, 'trio_1t',
-         'Event: trio of type 1t (this candidate has one point less than the other two.')]:
+        (EventTrio1t, 'trio_1t', 'EventTrio1t : This candidate has one vote less than the two others.')]:
     for x, y, z in RANKINGS:
         if y > z:
             continue

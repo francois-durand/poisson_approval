@@ -4,9 +4,13 @@ import numpy as np
 class DictPrintingInOrderIgnoringZeros(dict):
     """A dictionary that prints in the order of the keys, ignoring values such as 0, None...
 
+    Notes
+    -----
     All values whose boolean conversion is False are ignored when converting to string: 0, None, [], all empty
-    containers, etc.
+    containers, etc. Empty numpy arrays are also ignored.
 
+    Examples
+    --------
         >>> d = DictPrintingInOrderIgnoringZeros({'b': 'x', 'a': 'y', 'c': 'z', 'd': 0, 'e': None, 'f': []})
         >>> print(d)
         {a: y, b: x, c: z}

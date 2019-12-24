@@ -5,14 +5,23 @@ import random
 
 
 class GeneratorProfileOrdinalVariations:
-    """A generator of ordinal profiles describing variations of a given base profile.
+    """A generator of ordinal profiles (:class:`ProfileOrdinal`) describing variations of a given base profile.
 
-    :param base_profile: a :class:``ProfileOrdinal``.
-    :param epsilon: the noise.
-    :param well_informed_voters: cf. :class:`ProfileOrdinal`.
+    Parameters
+    ----------
+    base_profile : ProfileOrdinal
+        The base profile.
+    epsilon : Number
+        The noise.
+    well_informed_voters : bool
+        Cf. the corresponding parameter in :class:`ProfileOrdinal`.
 
+    Notes
+    -----
     We add ``epsilon * random()`` to each component of the base profile. Then we normalize to have a sum of 1.
 
+    Examples
+    --------
         >>> initialize_random_seeds()
         >>> base_profile = ProfileOrdinal({'abc': 0.25, 'bac': 0.75})
         >>> generator = GeneratorProfileOrdinalVariations(base_profile, epsilon=0.01)

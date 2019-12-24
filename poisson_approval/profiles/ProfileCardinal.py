@@ -11,36 +11,58 @@ from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 
 # noinspection PyUnresolvedReferences
 class ProfileCardinal(Profile):
-    """A cardinal profile of preference.
-    """
+    """A cardinal profile of preference (abstract class)."""
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """
-        Share of voters who have a given ranking and (strictly) above a given utility for their middle candidate.
+        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
 
-        :param ranking: a ranking, e.g. 'abc'.
-        :param u: a utility between 0 and 1 (included).
-        :return: the share of voters who meet the condition.
+        Parameters
+        ----------
+        ranking : str
+            A ranking, e.g. ``'abc'``.
+        u : Number
+            A utility between 0 and 1 (included).
+
+        Returns
+        -------
+        Number
+            The share of voters who have ranking `ranking` and a utility for their middle candidate strictly greater
+            than `u`.
         """
         raise NotImplementedError
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """
-        Share of voters who have a given ranking and a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a given utility for their middle candidate.
 
-        :param ranking: a ranking, e.g. 'abc'.
-        :param u: a utility between 0 and 1 (included).
-        :return: the share of voters who meet the condition.
+        Parameters
+        ----------
+        ranking : str
+            A ranking, e.g. ``'abc'``.
+        u : Number
+            A utility between 0 and 1 (included).
+
+        Returns
+        -------
+        Number
+            The share of voters who have ranking `ranking` and a utility for their middle candidate equal to `u`.
         """
         raise NotImplementedError
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """
-        Share of voters who have a given ranking and (strictly) below a given utility for their middle candidate.
+        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
 
-        :param ranking: a ranking, e.g. 'abc'.
-        :param u: a utility between 0 and 1 (included).
-        :return: the share of voters who meet the condition.
+        Parameters
+        ----------
+        ranking : str
+            A ranking, e.g. ``'abc'``.
+        u : Number
+            A utility between 0 and 1 (included).
+
+        Returns
+        -------
+        Number
+            The share of voters who have ranking `ranking` and a utility for their middle candidate strictly lower
+            than `u`.
         """
         raise NotImplementedError
 
@@ -63,8 +85,14 @@ class ProfileCardinal(Profile):
     def tau(self, sigma):
         """Tau-vector associated to a strategy.
 
-        :param sigma: a :class:`StrategyThreshold`.
-        :return: the tau-vector.
+        Parameters
+        ----------
+        sigma : StrategyThreshold
+
+        Returns
+        -------
+        TauVector
+            Tau-vector associated to this profile and strategy `sigma`.
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking, threshold in sigma.d_ranking_threshold.items():
@@ -78,8 +106,14 @@ class ProfileCardinal(Profile):
     def is_equilibrium(self, sigma):
         """Whether a strategy is an equilibrium.
 
-        :param sigma: a :class:`StrategyThreshold`.
-        :return: whether it is an equilibrium.
+        Parameters
+        ----------
+        sigma : StrategyThreshold
+
+        Returns
+        -------
+        EquilibriumStatus
+            Whether `sigma` is an equilibrium in this profile.
         """
         d_ranking_best_response = self.tau(sigma).d_ranking_best_response
         status = EquilibriumStatus.EQUILIBRIUM
@@ -99,14 +133,23 @@ class ProfileCardinal(Profile):
         return status
 
     def iterated_voting(self, sigma_ini, n_max_episodes, verbose=False):
-        """Seeks for convergence by iterated voting.
+        """Seek for convergence by iterated voting.
 
-        :param sigma_ini: initial :class:`StrategyThreshold`.
-        :param n_max_episodes: maximal number of iterations.
-        :param verbose: if True, print all intermediate strategies.
-        :return: a list of :class:`StrategyThreshold`. If length 1, the process converges to this strategy.
-            If length > 1, the process reaches a periodical orbit between these strategies. If length = 0, by
-            convention, it means that the process does not converge and does not reach a periodical orbit.
+        Parameters
+        ----------
+        sigma_ini : StrategyThreshold
+            Initial strategy.
+        n_max_episodes : int
+            Maximal number of iterations.
+        verbose : bool
+            If True, print all intermediate strategies.
+
+        Returns
+        -------
+        list of :class:`StrategyThreshold`
+            If length 1, the process converges to this strategy. If length > 1, the process reaches a periodical orbit
+            between these strategies. If length = 0, by convention, it means that the process does not converge and
+            does not reach a periodical orbit.
         """
         sigma = StrategyThreshold({
             ranking: threshold for ranking, threshold in sigma_ini.d_ranking_threshold.items()

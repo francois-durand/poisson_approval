@@ -7,24 +7,42 @@ from poisson_approval.generators.GeneratorProfileOrdinalUniform import Generator
 
 # noinspection PyUnresolvedReferences
 class NiceStatsProfileOrdinal:
-    """
-    Compute nice stats on ordinal profiles.
+    """Compute nice stats on ordinal profiles.
 
-    :param tests_r: a list of pairs ``(test, name)``. ``test`` is a function ``ProfileOrdinal -> bool``. ``name`` is a
+    Parameters
+    ----------
+    tests_r : list
+        A list of pairs ``(test, name)``. ``test`` is a function ``ProfileOrdinal -> bool``. ``name`` is a
         string.
-    :param tests_sigma: a list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name``
-        is a string. For these tests, we compute only the probability that a equilibrium meeting the test exists.
-    :param tests_sigma_dist: a list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``.
-        ``name`` is a string. For tests, we compute the distribution of numbers of equilibria meeting the test.
-    :param tests_sigma_winners: a list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``.
-        ``name`` is a string. For tests, we compute the distribution of numbers of winners in equilibria meeting
-        the test.
-    :param conditional_on: a function ``ProfileOrdinal -> bool``.
-    :param generator_profiles: a callable that inputs nothing and outputs a profile. Default:
-        ``GeneratorProfileOrdinalUniform()``.
+    tests_sigma : list
+        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
+        For these tests, we compute only the probability that a equilibrium meeting the test exists.
+    tests_sigma_dist : list
+        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
+        For these tests, we compute the distribution of numbers of equilibria meeting the test.
+    tests_sigma_winners : list
+        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
+        For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.
+    conditional_on : callable
+        A function ``ProfileOrdinal -> bool``.
+    generator_profiles : callable
+        A callable that inputs nothing and outputs a profile. Default: ``GeneratorProfileOrdinalUniform()``.
 
+    Notes
+    -----
+    The tests in `tests_r` concern the profile: what proportions of profiles meet the condition?
+
+    The tests in `tests_sigma` concern the strategies, in the cases where they are equilibrium. For each
+    ordinal profile, we compute the probability (for a uniform distribution of utilities) that at least one sigma
+    is an equilibrium and meet the given condition. This is used to draw plots `à la Antonin`.
+
+    The tests in `tests_sigma_dist` or `tests_sigma_winners` concern also the strategies, in the cases where
+    they are equilibrium.
+
+    Examples
+    --------
         >>> initialize_random_seeds()
-        >>> nice = NiceStatsProfileOrdinal(
+        >>> nice_stats = NiceStatsProfileOrdinal(
         ...     tests_r=[
         ...         (lambda r: any([sigma for sigma in r.analyzed_strategies.equilibria
         ...                         if sigma.profile.condorcet_winners == sigma.winners]),
@@ -40,20 +58,11 @@ class NiceStatsProfileOrdinal:
         ...     ],
         ...     conditional_on=lambda r: r.is_profile_condorcet == 1.
         ... )
-        >>> nice.run(n_samples=10)
-        >>> profile = nice.find_example('There exists a true equilibrium electing the CW', False)
+        >>> nice_stats.run(n_samples=10)
+        >>> profile = nice_stats.find_example('There exists a true equilibrium electing the CW', False)
         >>> print(profile)
         <abc: 0.4236547993389047, acb: 0.12122838365799216, bac: 0.0039303209304278885, bca: 0.05394987214431912, \
 cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
-
-    The tests in ``tests_r`` concern the profile: what proportions of profiles meet the condition?
-
-    The tests in ``tests_sigma`` concern the strategies, in the cases where they are equilibrium. For each
-    ordinal profile, we compute the probability (for a uniform distribution of utilities) that at least one sigma
-    is an equilibrium and meet the given condition. This is used to draw plots 'à la Antonin'.
-
-    The tests in ``tests_sigma_dist`` or ``tests_sigma_winners`` concern also the strategies, in the cases where
-    they are equilibrium.
     """
 
     def __init__(self, tests_r=None, tests_sigma=None, tests_sigma_dist=None, tests_sigma_winners=None,
@@ -75,7 +84,10 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
     def run(self, n_samples):
         """Run the simulations and store the results.
 
-        :param n_samples: number of profiles (meeting ``conditional_on``).
+        Parameters
+        ----------
+        n_samples : int
+            Number of profiles meeting the precondition `conditional_on`.
         """
         self.n_samples = n_samples
         i_sample = 0
@@ -107,13 +119,20 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
             histogram /= n_samples
 
     def plot_test_sigma(self, test, ylabel=True, legend=False, replacement_name=None, style=''):
-        """Plot of a test on sigma.
+        """Plot a test on sigma.
 
-        :param test: name (or index) of a test in ``tests_sigma``.
-        :param ylabel: if True, the name is used in the y-label. Otherwise, the label is 'P' (probability)
-        :param legend: if True, the legend is displayed.
-        :param replacement_name: if specified, it will be used intead of ``name`` in the plot.
-        :param style: cf. ``plt.plot``.
+        Parameters
+        ----------
+        test : str or int
+            Name or index of a test in `tests_sigma`.
+        ylabel : bool
+            If True, the name is used in the y-label. Otherwise, the label is `P` (probability).
+        legend : bool
+            If True, the legend is displayed.
+        replacement_name : str, optional
+            If specified, it will be used instead of the test name in the plot.
+        style : str
+            Cf. :meth:`matplotlib.pyplot.plot`.
         """
         if isinstance(test, str):
             i = [name for _, name in self.tests_sigma].index(test)
@@ -135,10 +154,16 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
     def plot_cutoff(self, test, left='', right='', style=''):
         """Plot the cutoff of a test on the profile.
 
-        :param test: name (or index) of a test in ``tests_r``.
-        :param left: text to be written on the left.
-        :param right: test to be written on the right.
-        :param style: cf. ``plt.plot``.
+        Parameters
+        ----------
+        test : str or int
+            Name or index of a test in `tests_r`.
+        left : str
+            Text to be written on the left.
+        right : str
+            Text to be written on the right.
+        style : str
+            Cf. :meth:`matplotlib.pyplot.plot`.
         """
         if isinstance(test, str):
             i = [name for _, name in self.tests_r].index(test)
@@ -151,8 +176,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         plt.text(1 - x / 2, 0.1, right)
 
     def display_results(self):
-        """Display the results.
-        """
+        """Display the results."""
         for i, (_, name) in enumerate(self.tests_r):
             print('P(%s) = %s' % (name, np.sum(self.results_r[i]) / self.n_samples))
         for i, (_, name) in enumerate(self.tests_sigma):
@@ -182,9 +206,17 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
     def find_example(self, test, value=True):
         """Find an example profile.
 
-        :param test: int or str. Number or name of the test under study.
-        :param value: bool. Whether we want an example or a counter-example.
-        :return: a profile for which the test returned ``value`` in the simulation.
+        Parameters
+        ----------
+        test : str or int
+            Name or index of a test in `tests_r`.
+        value : bool
+            Whether we want an example (True) or a counter-example (False).
+
+        Returns
+        -------
+        ProfileOrdinal
+            A profile for which the test returned `value` in the simulation.
         """
         if isinstance(test, str):
             i_test = [name for _, name in self.tests_r].index(test)

@@ -2,24 +2,43 @@ from poisson_approval.utils.Util import isnan
 
 
 class Event:
-    """
-    An event with all its attributes (magnitudes, offsets, asymptotic if possible).
+    """An event with all its attributes: magnitudes, offsets, asymptotic if possible (abstract class).
 
-    :param candidate_x: a string, one candidate (e.g. 'a').
-    :param candidate_y: a string, one candidate (e.g. 'b').
-    :param candidate_z: a string, one candidate (e.g. 'c').
-    :param kwargs: use tau_xx for the values of tau (probability for each kind of ballot).
+    Parameters
+    ----------
+    candidate_x : str
+        A candidate (e.g. ``'a'``).
+    candidate_y : str
+        A candidate (e.g. ``'b'``).
+    candidate_z : str
+        A candidate (e.g. ``'c'``).
+    kwargs
+        Use ``tau_..`` for the values of the tau-vector (probability for each kind of ballot). For example, ``tau_a``,
+        ``tau_ab``, etc.
 
+    Attributes
+    ----------
+    asymptotic : Asymptotic
+        The asymptotic development of the probability of the event when `n` tends to infinity.
+    mu : Number, ``np.nan`` or ``np.inf``
+        Shortcut for ``asymptotic.mu``.
+    nu : Number, ``np.nan`` or ``np.inf``
+        Shortcut for ``asymptotic.nu``.
+    xi : Number, ``np.nan`` or ``np.inf``
+        Shortcut for ``asymptotic.xi``.
+    phi_ab : Number or ``np.nan``
+        The offset for this kind of ballot. An offset is ``np.nan`` if it is not defined.
+        Other offsets are denoted ``phi_a``, etc.
+
+    Notes
+    -----
     The permutation of ``candidate_x``, ``candidate_y`` and ``candidate_z`` is generally important in the subclasses.
-    For example, in :class:`EventDuo`, we implicitly consider a tie between candidates ``x`` and ``y`` (hence in that
-    case, if is the same if ``x`` and ``y`` are exchanged, but not for another permutation).
+    For example, in :class:`EventDuo`, we consider a tie between candidates ``x`` and ``y`` (hence in that case, if is
+    the same if ``x`` and ``y`` are exchanged, but not if ``x`` and ``z`` are exchanged for example).
 
-    :attr asymptotic: the asymptotic development of the event.
-    :attr mu: shortcut for ``asymptotic.mu``.
-    :attr nu: shortcut for ``asymptotic.nu``.
-    :attr xi: shortcut for ``asymptotic.xi``.
-    :attr phi_ab: (for example: the name of these variables depend on the names of the candidates): the offset for this
-        type of ballot. Note that an offset can be ``np.nan`` if it is not defined.
+    Examples
+    --------
+    Cf. :class:`EventPivotWeak`.
     """
 
     def __init__(self, candidate_x, candidate_y, candidate_z, **kwargs):

@@ -6,11 +6,16 @@ from poisson_approval.events.EventTrio import EventTrio
 
 
 class EventPivotWeak(Event):
-    """
-    A 2-candidate pivot with all its attributes (magnitudes, etc.)
+    """A 2-candidate weak pivot.
 
-    We consider the (weak) pivot between ``x`` and ``y``, i.e. situations where ``S_x = S_y >= S_z``.
+    Notes
+    -----
+    We consider the weak pivot between ``x`` and ``y``, i.e. situations where ``S_x = S_y >= S_z``.
 
+    For parameters and attributes, cf. :class:`Event`.
+
+    Examples
+    --------
         >>> event = EventPivotWeak(candidate_x='c', candidate_y='b', candidate_z='a', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
         >>> event
         <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>

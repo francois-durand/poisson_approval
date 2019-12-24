@@ -1,7 +1,8 @@
 class Winners(set):
-    """
-    A set of winners, e.g. {'a', 'b'}
+    """A set of winners.
 
+    Examples
+    --------
         >>> print(Winners({'b', 'a'}))
         a, b
     """

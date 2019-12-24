@@ -3,10 +3,12 @@ from poisson_approval.utils.UtilCache import cached_property
 
 
 class Strategy:
-    """
-    A strategy profile (abstract class).
+    """A strategy profile (abstract class).
 
-    :param profile: an optional profile ("context" in which the strategy is used).
+    Parameters
+    ----------
+    profile : Profile, optional
+        The "context" in which the strategy is used.
     """
 
     def __init__(self, profile=None):
@@ -22,14 +24,16 @@ class Strategy:
 
     @cached_property
     def is_equilibrium(self):
-        """Whether this strategy is an equilibrium (in the context of the given profile).
+        """EquilibriumStatus : Whether this strategy is an equilibrium (in the context of the given profile). Cf.
+        :meth:`Profile.is_equilibrium`.
         """
         if self.profile is not None:
             return self.profile.is_equilibrium(self)
 
     @cached_property
     def tau(self):
-        """The tau-vector associated to this strategy (in the context of the given profile).
+        """TauVector : The tau-vector associated to this strategy (in the context of the given profile). Cf.
+        :meth:`Profile.tau`.
         """
         if self.profile is not None:
             return self.profile.tau(self)
@@ -37,29 +41,28 @@ class Strategy:
     # noinspection NonAsciiCharacters
     @property
     def τ(self):
-        """The tau-vector (alternate notation).
+        """TauVector : The tau-vector (alternate notation). Cf. :meth:`Profile.τ`.
         """
         return self.tau
 
 
-def make_method(name, doc):
+def make_method(name):
     def _method(self):
         if self.tau is not None:
             return getattr(self.tau, name)()
-    _method.__doc__ = doc
+    _method.__doc__ = "Defined when a profile is given. Cf. :meth:`TauVector.%s`." % name
     return _method
 
 
-for my_method, my_doc in [('print_weak_pivots', 'Print the weak pivots (including the 3-way tie).'),
-                          ('print_all_pivots', 'Print all the pivots.')]:
-    setattr(Strategy, my_method, make_method(my_method, my_doc))
+for my_method in ['print_weak_pivots', 'print_all_pivots']:
+    setattr(Strategy, my_method, make_method(my_method))
 
 
 def make_property(name, doc):
     def _property(self):
         if self.tau is not None:
             return getattr(self.tau, name)
-    _property.__doc__ = doc
+    _property.__doc__ = "Defined when a profile is given. Cf. :attr:`TauVector.%s`." % name
     return property(_property)
 
 

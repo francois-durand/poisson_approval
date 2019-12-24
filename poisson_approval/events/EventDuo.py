@@ -5,10 +5,17 @@ from poisson_approval.events.Asymptotic import Asymptotic
 
 
 class EventDuo(Event):
-    """A 2-candidate tie with all its attributes
+    """A 2-candidate tie.
 
-    Situations where ``S_x = S_y``. CAUTION: it is not necessary a pivot, because ``z`` can have a greater score.
+    Notes
+    -----
+    We consider the situations where ``S_x = S_y``. It is not necessary a pivot, because ``z`` can
+    have a greater score.
 
+    For parameters and attributes, cf. :class:`Event`.
+
+    Examples
+    --------
         >>> EventDuo(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
         <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     """

@@ -3,13 +3,18 @@ from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrinting
 
 
 class StrategyOrdinal(StrategyThreshold):
-    """
-    A strategy profile for an ordinal preference profile.
+    """A strategy profile for an ordinal preference profile.
 
-    :param d_ranking_ballot: a dictionary whose keys are rankings and values are ballots, e.g. 'abc': 'ab'. A
-        ballot can be '' if the behavior of these voters is not specified in the strategy.
-    :param profile: an optional profile ("context" in which the strategy is used).
+    Parameters
+    ----------
+    d_ranking_ballot : dict
+        Keys are rankings and values are ballots, e.g. ``'abc': 'ab'``. A
+        ballot can be ``''`` if the behavior of these voters is not specified in the strategy.
+    profile : Profile, optional
+        The "context" in which the strategy is used.
 
+    Examples
+    --------
         >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
         >>> sigma
         StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
@@ -46,6 +51,17 @@ class StrategyOrdinal(StrategyThreshold):
     def __eq__(self, other):
         """Equality test.
 
+        Parameters
+        ----------
+        other : object
+
+        Returns
+        -------
+        bool
+            True if this strategy is equal to `other`.
+
+        Examples
+        --------
             >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
             >>> sigma == StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
             True

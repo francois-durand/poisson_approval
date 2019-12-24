@@ -6,11 +6,16 @@ from poisson_approval.events.EventTrio import EventTrio
 
 
 class EventPivotStrict(Event):
-    """
-    A 2-candidate strict pivot with all its attributes (magnitudes, etc.)
+    """A 2-candidate strict pivot.
 
-    We consider the (strict) pivot between ``x`` and ``y``, i.e. situations where ``S_x = S_y > S_z``.
+    Notes
+    -----
+    We consider the strict pivot between ``x`` and ``y``, i.e. situations where ``S_x = S_y > S_z``.
 
+    For parameters and attributes, cf. :class:`Event`.
+
+    Examples
+    --------
         >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
         <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     """

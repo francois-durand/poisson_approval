@@ -1,7 +1,8 @@
 class SetPrintingInOrder(set):
-    """
-    A set that prints in order.
+    """A set that prints in order.
 
+    Examples
+    --------
         >>> s = SetPrintingInOrder({'b', 'a', 'c'})
         >>> print(s)
         {a, b, c}

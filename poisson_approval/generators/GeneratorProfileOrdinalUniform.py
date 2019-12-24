@@ -4,12 +4,19 @@ from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
 
 
 class GeneratorProfileOrdinalUniform:
-    """A generator of ordinal profiles following the uniform distribution.
+    """A generator of ordinal profiles (:class:`ProfileOrdinal`) following the uniform distribution.
 
-    :param well_informed_voters: cf. :class:`ProfileOrdinal`.
+    Parameters
+    ----------
+    well_informed_voters : bool
+        Cf. the corresponding parameter in :class:`ProfileOrdinal`.
 
+    Notes
+    -----
     The profile is drawn uniformly on the simplex.
 
+    Examples
+    --------
         >>> initialize_random_seeds()
         >>> generator = GeneratorProfileOrdinalUniform(well_informed_voters=True)
         >>> profile = generator()

@@ -16,15 +16,24 @@ from poisson_approval.utils.UtilCache import cached_property
 class ProfileOrdinal(Profile):
     """An ordinal profile of preference.
 
-    :param d_ranking_share: dictionary, e.g. ``{'abc': 0.4, 'cab': 0.6}``. ``d_ranking_share['abc']`` is the
-        probability that a voter prefers candidate ``a``, then candidate ``b``, then candidate ``c``.
-    :param normalization_warning: whether a warning should be issued if the input distribution is not normalized.
-    :param well_informed_voters: bool. If True (default), it is the usual model. If False, voters ``see`` only
-        the candidates' expected scores and believe that the scores follow independent Poisson distributions.
+    Parameters
+    ----------
+    d_ranking_share : dict
+        E.g. ``{'abc': 0.4, 'cab': 0.6}``. ``d_ranking_share['abc']`` is the probability that a voter prefers
+        candidate ``a``, then candidate ``b``, then candidate ``c``.
+    normalization_warning : bool
+        Whether a warning should be issued if the input distribution is not normalized.
+    well_informed_voters : bool.
+        If True (default), it is the usual model. If False, voters "see" only the candidates' expected scores and
+        believe that the scores follow independent Poisson distributions.
 
-    If the input distribution ``d_ranking_share`` is not normalized, the profile will be normalized anyway and a
-    warning is issued (unless ``normalization_warning`` is False).
+    Notes
+    -----
+    If the input distribution `d_ranking_share` is not normalized, the profile will be normalized anyway and a
+    warning is issued (unless `normalization_warning` is False).
 
+    Examples
+    --------
         >>> from fractions import Fraction
         >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
         >>> r
@@ -97,6 +106,17 @@ class ProfileOrdinal(Profile):
     def __eq__(self, other):
         """Equality test.
 
+        Parameters
+        ----------
+        other : Object
+
+        Returns
+        -------
+        bool
+            True iff this profile is equal to `other`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r == ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
@@ -106,8 +126,10 @@ class ProfileOrdinal(Profile):
 
     @cached_property
     def standardized_version(self):
-        """Standardized version of the profile (makes it unique, up to permutations of the candidates).
+        """ProfileOrdinal : Standardized version of the profile (makes it unique, up to permutations of the candidates).
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.standardized_version
@@ -131,8 +153,10 @@ class ProfileOrdinal(Profile):
     # Has full support
     @cached_property
     def support(self):
-        """Alternate notation for :meth:`support_in_rankings`
+        """:class:`SetPrintingInOrder` of str : Alternate notation for :meth:`support_in_rankings`.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.support
@@ -142,8 +166,10 @@ class ProfileOrdinal(Profile):
 
     @cached_property
     def is_generic(self):
-        """Alternate notation for :meth:`is_generic_in_rankings`
+        """bool : Alternate notation for :meth:`is_generic_in_rankings`
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.is_generic
@@ -156,9 +182,17 @@ class ProfileOrdinal(Profile):
     def tau(self, sigma):
         """Tau-vector associated to a strategy.
 
-        :param sigma: a :class:`StrategyOrdinal`.
-        :return: the associated tau-vector.
+        Parameters
+        ----------
+        sigma : StrategyOrdinal
 
+        Returns
+        -------
+        TauVector
+            Tau-vector associated to this profile and strategy `sigma`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
@@ -183,9 +217,17 @@ class ProfileOrdinal(Profile):
     def is_equilibrium(self, sigma):
         """Whether a strategy is an equilibrium.
 
-        :param sigma: a :class:`StrategyOrdinal`.
-        :return: an :class:`EquilibriumStatus`.
+        Parameters
+        ----------
+        sigma : StrategyOrdinal
 
+        Returns
+        -------
+        EquilibriumStatus
+            Whether `sigma` is an equilibrium in this profile.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
@@ -210,9 +252,10 @@ class ProfileOrdinal(Profile):
 
     @cached_property
     def analyzed_strategies(self):
-        """
-        Analyzed strategies of the profile.
+        """AnalyzedStrategies : Analyzed strategies of the profile.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.analyzed_strategies
@@ -263,12 +306,24 @@ class ProfileOrdinal(Profile):
         return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
     def proba_equilibrium(self, test=None):
-        """
-        Probability that an equilibrium exists (depending on the utilities).
+        """Probability that an equilibrium exists (depending on the utilities).
 
-        :param test: a function that gives a condition on the strategy. Default: always True.
-        :return: the probability that an equilibrium strategy exists, that meets the ``test`` condition.
+        Parameters
+        ----------
+        test : callable
+            A function ``StrategyOrdinal -> bool`` that gives a condition on the strategy. Default: always True.
 
+        Returns
+        -------
+        float
+            The probability that an equilibrium strategy exists, that meets the `test` condition.
+
+        Notes
+        -----
+        The result is exact (not based on a Monte-Carlo estimation).
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.proba_equilibrium()
@@ -290,13 +345,24 @@ class ProfileOrdinal(Profile):
         return masks_area(inf=[0] * dim, sup=[1] * dim, masks=masks)
 
     def distribution_equilibria(self, test=None):
-        """
-        Distribution of numbers of equilibria (depending on the utilities).
+        """Distribution of numbers of equilibria (depending on the utilities).
 
-        :param test: a function that gives a condition on the strategy. Default: always True.
-        :return: a list that represents an histogram. The distribution of number of equilibria (meeting the ``test``
-            condition).
+        Parameters
+        ----------
+        test : callable
+            A function ``StrategyOrdinal -> bool`` that gives a condition on the strategy. Default: always True.
 
+        Returns
+        -------
+        list
+            A list that represents an histogram. The distribution of number of equilibria (meeting the `test` condition).
+
+        Notes
+        -----
+        The result is exact (not based on a Monte-Carlo estimation).
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.distribution_equilibria()
@@ -317,13 +383,25 @@ class ProfileOrdinal(Profile):
         return masks_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks=masks, cover_alls=cover_alls)
 
     def distribution_winners(self, test=None):
-        """
-        Distribution of the number of equilibrium winners (depending on the utilities).
+        """Distribution of the number of equilibrium winners (depending on the utilities).
 
-        :param test: a function that gives a condition on the strategy. Default: always True.
-        :return: a list that represents an histogram. The distribution of number of possible equilibrium winner (with
-            strategies that meet the ``test`` condition).
+        Parameters
+        ----------
+        test : callable
+            A function ``StrategyOrdinal -> bool`` that gives a condition on the strategy. Default: always True.
 
+        Returns
+        -------
+        list
+            A list that represents an histogram. The distribution of number of possible equilibrium winner (with
+            strategies that meet the `test` condition).
+
+        Notes
+        -----
+        The result is exact (not based on a Monte-Carlo estimation).
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> r.distribution_winners()

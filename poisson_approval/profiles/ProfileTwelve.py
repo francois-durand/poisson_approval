@@ -16,15 +16,23 @@ from poisson_approval.utils.UtilCache import cached_property
 class ProfileTwelve(ProfileCardinal):
     """A profile of preference with twelve types.
 
-    :param d_type_share: dictionary, e.g. ``{'ab_c': 0.4, 'c_ab': 0.6}``. ``d['ab_c']`` is the probability
+    Parameters
+    ----------
+    d_type_share : dict
+        E.g. ``{'ab_c': 0.4, 'c_ab': 0.6}``. ``d_type_share['ab_c']`` is the probability
         that a voter prefers candidate ``a``, then candidate ``b``, then candidate ``c``, with a utility for ``b``
-        that is close to 1. In contrast, ``d_type_share['c_ab']`` is the probability that a voter prefers
-        ``c`` then ``a`` then ``b``, with a utility for ``a`` that is close to 0.
-    :param normalization_warning: whether a warning should be issued if the input distribution is not normalized.
+        that is infinitely close to 1. In contrast, ``d_type_share['a_bc']`` is the probability that a voter prefers
+        ``a`` then ``b`` then ``c``, with a utility for ``b`` that is infinitely close to 0.
+    normalization_warning : bool
+        Whether a warning should be issued if the input distribution is not normalized.
 
-    If the input distribution ``d_type_share`` is not normalized, the profile will be normalized anyway and a
-    warning is issued (unless ``normalization_warning`` is False).
+    Notes
+    -----
+    If the input distribution `d_type_share` is not normalized, the profile will be normalized anyway and a
+    warning is issued (unless `normalization_warning` is False).
 
+    Examples
+    --------
         >>> from fractions import Fraction
         >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
         ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -82,7 +90,12 @@ class ProfileTwelve(ProfileCardinal):
                 self.d_type_share[t] = self.d_type_share[t] / total
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """
+        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
+
+        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_above_u`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -98,7 +111,12 @@ class ProfileTwelve(ProfileCardinal):
         return high_u
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """
+        """Share of voters who have a given ranking and a given utility for their middle candidate.
+
+        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -108,7 +126,12 @@ class ProfileTwelve(ProfileCardinal):
         return 0
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """
+        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
+
+        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_below_u`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -139,6 +162,17 @@ class ProfileTwelve(ProfileCardinal):
     def __eq__(self, other):
         """Equality test.
 
+        Parameters
+        ----------
+        other : Object
+
+        Returns
+        -------
+        bool
+            True iff this profile is equal to `other`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -152,8 +186,10 @@ class ProfileTwelve(ProfileCardinal):
 
     @cached_property
     def standardized_version(self):
-        """Standardized version of the profile (makes it unique, up to permutations of the candidates).
+        """ProfileTwelve : Standardized version of the profile (makes it unique, up to permutations of the candidates).
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -177,8 +213,10 @@ class ProfileTwelve(ProfileCardinal):
 
     @cached_property
     def has_majority_type(self):
-        """Whether there is a majority type (a type shared by strictly more than half of the voters).
+        """bool : Whether there is a majority type (a type shared by strictly more than half of the voters).
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -190,8 +228,10 @@ class ProfileTwelve(ProfileCardinal):
     # Has full support
     @cached_property
     def support_in_types(self):
-        """Support of the profile (in terms of types).
+        """:class:`SetPrintingInOrder` of str : Support of the profile (in terms of types).
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -202,8 +242,10 @@ class ProfileTwelve(ProfileCardinal):
 
     @cached_property
     def is_generic_in_types(self):
-        """Whether the profile is generic in types (contains all types).
+        """bool : Whether the profile is generic in types (contains all types).
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -217,9 +259,17 @@ class ProfileTwelve(ProfileCardinal):
     def tau(self, sigma):
         """Tau-vector associated to a strategy.
 
-        :param sigma: a :class:`StrategyTwelve`.
-        :return: the tau-vector.
+        Parameters
+        ----------
+        sigma : StrategyTwelve
 
+        Returns
+        -------
+        TauVector
+            Tau-vector associated to this profile and strategy `sigma`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -246,9 +296,17 @@ class ProfileTwelve(ProfileCardinal):
     def is_equilibrium(self, sigma):
         """Whether a strategy is an equilibrium.
 
-        :param sigma: a :class:`StrategyTwelve`.
-        :return: whether it is an equilibrium.
+        Parameters
+        ----------
+        sigma : StrategyTwelve
 
+        Returns
+        -------
+        EquilibriumStatus
+            Whether `sigma` is an equilibrium in this profile.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -283,9 +341,10 @@ class ProfileTwelve(ProfileCardinal):
 
     @cached_property
     def analyzed_strategies(self):
-        """
-        Analyzed strategies of the profile.
+        """AnalyzedStrategies : Analyzed strategies of the profile.
 
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
@@ -349,4 +408,4 @@ def make_property_type_share(t, doc):
 
 
 for my_t in TWELVE_TYPES:
-    setattr(ProfileTwelve, my_t, make_property_type_share(my_t, 'Share of this type.'))
+    setattr(ProfileTwelve, my_t, make_property_type_share(my_t, 'Number : Share of voters with this type.'))

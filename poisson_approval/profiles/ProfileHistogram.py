@@ -11,19 +11,29 @@ from poisson_approval.utils.UtilCache import cached_property
 class ProfileHistogram(ProfileCardinal):
     """A profile of preference with histogram distributions of utility.
 
-    :param d_ranking_share: dictionary, e.g. ``{'abc': 0.4, 'cab': 0.6}``. ``d_ranking_share['abc']`` is the
-        probability that a voter prefers candidate ``a``, then candidate ``b``, then candidate ``c``.
-    :param d_ranking_histogram: dictionary. Each key is a ranking, e.g. 'abc'. Each value is a list that represents
-        the histogram of the PDF of having a utility u for the middle candidate, e.g. ``b``. For example, if
-        the list is [0.4, 0.3, 0.2, 0.1], it means that a fraction 0.4 of voters 'abc' have a utility for b that
-        is in the first quarter, i.e. between 0 and 0.25. These voters are uniformly distributed in this segment.
-        This list must sum to 1, i.e. it is expressed in terms of the fraction of voters 'abc' (and not in fraction
-        of all the voters).
-    :param normalization_warning: whether a warning should be issued if the input distribution is not normalized.
+    Parameters
+    ----------
+    d_ranking_share : dict
+        E.g. ``{'abc': 0.4, 'cab': 0.6}``. ``d_ranking_share['abc']`` is the probability that a voter prefers candidate
+        ``a``, then candidate ``b``, then candidate ``c``.
+    d_ranking_histogram : dict
+        Each key is a ranking, e.g. ``'abc'``. Each value is a list that represents a piecewise constant probability
+        density function (PDF) of having a utility `u` for the middle candidate, e.g. ``b``. By convention, the list
+        sums to 1 (contrary to the usual convention where the integral of the function would sum to 1).
 
+        For example, if the list is ``[0.4, 0.3, 0.2, 0.1]``, it means that a fraction 0.4 of voters ``'abc'`` have a
+        utility for ``b`` that is in the first quarter, i.e. between 0 and 0.25. These voters are uniformly distributed
+        in this segment.
+    normalization_warning : bool
+        Whether a warning should be issued if the input distribution is not normalized.
+
+    Notes
+    -----
     If the input distribution is not normalized, the profile will be normalized anyway and a warning is
-    issued (unless ``normalization_warning`` is False).
+    issued (unless `normalization_warning` is False).
 
+    Examples
+    --------
         >>> from fractions import Fraction
         >>> r = ProfileHistogram(
         ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
@@ -109,7 +119,12 @@ class ProfileHistogram(ProfileCardinal):
         return self._d_ranking_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """
+        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
+
+        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_above_u`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
@@ -126,7 +141,12 @@ class ProfileHistogram(ProfileCardinal):
         return self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u)
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """
+        """Share of voters who have a given ranking and a given utility for their middle candidate.
+
+        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
@@ -137,7 +157,12 @@ class ProfileHistogram(ProfileCardinal):
         return 0
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """
+        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
+
+        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_below_u`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
@@ -185,6 +210,17 @@ class ProfileHistogram(ProfileCardinal):
     def __eq__(self, other):
         """Equality test.
 
+        Parameters
+        ----------
+        other : Object
+
+        Returns
+        -------
+        bool
+            True iff this profile is equal to `other`.
+
+        Examples
+        --------
             >>> from fractions import Fraction
             >>> r = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
@@ -202,8 +238,10 @@ class ProfileHistogram(ProfileCardinal):
 
     @cached_property
     def standardized_version(self):
-        """Standardized version of the profile (makes it unique, up to permutations of the candidates).
+        """ProfileTwelve : Standardized version of the profile (makes it unique, up to permutations of the candidates).
 
+         Examples
+         --------
             >>> from fractions import Fraction
             >>> r = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
