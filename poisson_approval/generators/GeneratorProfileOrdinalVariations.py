@@ -26,7 +26,7 @@ class GeneratorProfileOrdinalVariations:
         >>> base_profile = ProfileOrdinal({'abc': 0.25, 'bac': 0.75})
         >>> generator = GeneratorProfileOrdinalVariations(base_profile, epsilon=0.01)
         >>> profile = generator()
-        >>> print(profile)
+        >>> print(profile)  # doctest: +SKIP
         <abc: 0.25043511946419417, acb: 0.007344656519664636, bac: 0.7308331353826986, bca: 0.002508930076416972, \
 cab: 0.004954304904190167, cba: 0.003923853652835374> (Condorcet winner: b)
     """

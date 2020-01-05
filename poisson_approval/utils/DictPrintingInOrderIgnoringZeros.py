@@ -21,13 +21,15 @@ class DictPrintingInOrderIgnoringZeros(dict):
     def __repr__(self):
         return "{" + ", ".join([
             "%r: %r" % (key, self[key]) for key in sorted(self)
-            if (isinstance(self[key], np.ndarray) and len(self[key]) > 0) or self[key]
+            if (isinstance(self[key], np.ndarray) and len(self[key]) > 0) or (
+                not isinstance(self[key], np.ndarray) and self[key])
         ]) + "}"
 
     def __str__(self):
         return "{" + ", ".join([
             "%s: %s" % (key, self[key]) for key in sorted(self)
-            if (isinstance(self[key], np.ndarray) and len(self[key]) > 0) or self[key]
+            if (isinstance(self[key], np.ndarray) and len(self[key]) > 0) or (
+                not isinstance(self[key], np.ndarray) and self[key])
         ]) + "}"
 
     def _repr_pretty_(self, p, cycle):
