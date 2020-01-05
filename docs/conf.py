@@ -162,4 +162,4 @@ texinfo_documents = [
 
 # -- Options for nbsphinx ----------------------------------------
 
-nbsphinx_execute = 'always'
+nbsphinx_execute = 'auto'
