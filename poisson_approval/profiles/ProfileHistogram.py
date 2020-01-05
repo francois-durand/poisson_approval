@@ -1,5 +1,6 @@
 import warnings
 from math import isclose
+from matplotlib import pyplot as plt
 import numpy as np
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
@@ -35,43 +36,43 @@ class ProfileHistogram(ProfileCardinal):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> r = ProfileHistogram(
+        >>> profile = ProfileHistogram(
         ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
         ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-        >>> r  # doctest: +NORMALIZE_WHITESPACE
+        >>> profile  # doctest: +NORMALIZE_WHITESPACE
         ProfileHistogram({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)}, {'abc': array([1]), \
 'bac': array([1, 0]), 'cab': array([Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)],
             dtype=object)})
-        >>> print(r)
+        >>> print(profile)
         <abc: 1/10 [1], bac: 3/5 [1 0], cab: 3/10 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)]> (Condorcet winner: b)
-        >>> r.abc
+        >>> profile.abc
         Fraction(1, 10)
-        >>> r.d_ranking_share['abc']  # Alternate syntax for r.abc
+        >>> profile.d_ranking_share['abc']  # Alternate syntax for profile.abc
         Fraction(1, 10)
-        >>> r.weighted_maj_graph
+        >>> profile.weighted_maj_graph
         array([[0, Fraction(-1, 5), Fraction(2, 5)],
                [Fraction(1, 5), 0, Fraction(2, 5)],
                [Fraction(-2, 5), Fraction(-2, 5), 0]], dtype=object)
-        >>> r.condorcet_winners
+        >>> profile.condorcet_winners
         Winners({'b'})
-        >>> r.is_profile_condorcet
+        >>> profile.is_profile_condorcet
         1.0
-        >>> r.has_majority_favorite  # Is one candidate 'top' in a majority of ballots?
+        >>> profile.has_majority_favorite  # Is one candidate 'top' in a majority of ballots?
         True
-        >>> r.has_majority_ranking  # Does one ranking represent a majority of ballots?
+        >>> profile.has_majority_ranking  # Does one ranking represent a majority of ballots?
         True
-        >>> r.is_single_peaked  # Is the profile single-peaked?
+        >>> profile.is_single_peaked  # Is the profile single-peaked?
         True
-        >>> r.support_in_rankings
+        >>> profile.support_in_rankings
         {'abc', 'bac', 'cab'}
-        >>> r.is_generic_in_rankings  # Are all rankings there?
+        >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
-        >>> sigma = StrategyThreshold({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=r)
-        >>> print(r.tau(sigma))
+        >>> strategy = StrategyThreshold({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
+        >>> print(profile.tau(strategy))
         <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
-        >>> r.is_equilibrium(sigma)
+        >>> profile.is_equilibrium(strategy)
         EquilibriumStatus.EQUILIBRIUM
-        >>> cycle = r.iterated_voting(StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5}),  100)
+        >>> cycle = profile.iterated_voting(StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5}),  100)
         >>> len(cycle)
         1
         >>> print(cycle[0])
@@ -126,16 +127,16 @@ class ProfileHistogram(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileHistogram(
+            >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> r.have_ranking_with_utility_above_u(ranking='cab', u=0)
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=0)
             Fraction(3, 10)
-            >>> r.have_ranking_with_utility_above_u(ranking='cab', u=Fraction(1, 100))
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=Fraction(1, 100))
             Fraction(7, 25)
-            >>> r.have_ranking_with_utility_above_u(ranking='cab', u=Fraction(99, 100))
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=Fraction(99, 100))
             Fraction(1, 100)
-            >>> r.have_ranking_with_utility_above_u(ranking='cab', u=1)
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=1)
             Fraction(0, 1)
         """
         return self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u)
@@ -148,10 +149,10 @@ class ProfileHistogram(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileHistogram(
+            >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> r.have_ranking_with_utility_u(ranking='cab', u=Fraction(1, 100))
+            >>> profile.have_ranking_with_utility_u(ranking='cab', u=Fraction(1, 100))
             0
         """
         return 0
@@ -164,16 +165,16 @@ class ProfileHistogram(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileHistogram(
+            >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> r.have_ranking_with_utility_below_u(ranking='cab', u=0)
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=0)
             Fraction(0, 1)
-            >>> r.have_ranking_with_utility_below_u(ranking='cab', u=Fraction(1, 100))
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=Fraction(1, 100))
             Fraction(1, 50)
-            >>> r.have_ranking_with_utility_below_u(ranking='cab', u=Fraction(99, 100))
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=Fraction(99, 100))
             Fraction(29, 100)
-            >>> r.have_ranking_with_utility_below_u(ranking='cab', u=1)
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=1)
             Fraction(3, 10)
         """
         share_ranking = self.d_ranking_share[ranking]
@@ -222,10 +223,10 @@ class ProfileHistogram(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileHistogram(
+            >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> r == ProfileHistogram(
+            >>> profile == ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
             True
@@ -243,13 +244,13 @@ class ProfileHistogram(ProfileCardinal):
          Examples
          --------
             >>> from fractions import Fraction
-            >>> r = ProfileHistogram(
+            >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> print(r.standardized_version)
+            >>> print(profile.standardized_version)
             <abc: 3/5 [1 0], bac: 1/10 [1], cba: 3/10 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)]> \
 (Condorcet winner: a)
-            >>> r.is_standardized
+            >>> profile.is_standardized
             False
         """
         def translate(s, permute):
@@ -276,3 +277,71 @@ class ProfileHistogram(ProfileCardinal):
             d_ranking_histogram={ranking: best_d_ranking_histogram[xyz_ranking]
                                  for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)}
         )
+
+    def plot_cdf(self, ranking, x_label=None, y_label=None, **kwargs):
+        """Plot the cumulative distribution function (CDF) for a given ranking.
+
+        Parameters
+        ----------
+        ranking : str
+            A ranking.
+        x_label : str, optional
+            The label for x-axis. If not specified, an appropriate label is provided.
+        y_label
+            The label for y-axis. If not specified, an appropriate label is provided.
+        kwargs
+            The additional keyword arguments are passed to :meth:`pyplot.plot`.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> profile = ProfileHistogram(
+            ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
+            >>> profile.plot_cdf('cab')
+        """
+        if x_label is None:
+            x_label = 'Utility for %s' % ranking[1]
+        if y_label is None:
+            y_label = 'Cumulative proportion of the voters %s' % ranking
+        n_bins = len(self.d_ranking_histogram[ranking])
+        x = np.array(range(0, n_bins + 1)) / n_bins
+        y = np.concatenate(([0], np.cumsum(self.d_ranking_histogram[ranking])))
+        plt.plot(x, y, **kwargs)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+
+    def plot_histogram(self, ranking, x_label=None, y_label=None, **kwargs):
+        """Plot the histogram for a given ranking.
+
+        Up to a renormalization, it is the probability density function (PDF).
+
+        Parameters
+        ----------
+        ranking : str
+            A ranking.
+        x_label : str, optional
+            The label for x-axis. If not specified, an appropriate label is provided.
+        y_label
+            The label for y-axis. If not specified, an appropriate label is provided.
+        kwargs
+            The additional keyword arguments are passed to :meth:`pyplot.plot`.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> profile = ProfileHistogram(
+            ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
+            >>> profile.plot_histogram('cab')
+        """
+        if x_label is None:
+            x_label = 'Utility for %s' % ranking[1]
+        if y_label is None:
+            y_label = 'Proportion of the voters %s' % ranking
+        n_bins = len(self.d_ranking_histogram[ranking])
+        x = np.array(range(0, n_bins + 1)) / n_bins
+        y = np.concatenate(([0], self.d_ranking_histogram[ranking]))
+        plt.step(x, y, **kwargs)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)

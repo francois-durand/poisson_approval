@@ -82,20 +82,20 @@ class ProfileCardinal(Profile):
 
     # Tau and strategy-related stuff
 
-    def tau(self, sigma):
+    def tau(self, strategy):
         """Tau-vector associated to a strategy.
 
         Parameters
         ----------
-        sigma : StrategyThreshold
+        strategy : StrategyThreshold
 
         Returns
         -------
         TauVector
-            Tau-vector associated to this profile and strategy `sigma`.
+            Tau-vector associated to this profile and strategy `strategy`.
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        for ranking, threshold in sigma.d_ranking_threshold.items():
+        for ranking, threshold in strategy.d_ranking_threshold.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
             t[ballot_one(ranking)] += (self.have_ranking_with_utility_u(ranking, u=threshold)
@@ -103,41 +103,41 @@ class ProfileCardinal(Profile):
             t[ballot_one_two(ranking)] += self.have_ranking_with_utility_above_u(ranking, u=threshold)
         return TauVector(t)
 
-    def is_equilibrium(self, sigma):
+    def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
 
         Parameters
         ----------
-        sigma : StrategyThreshold
+        strategy : StrategyThreshold
 
         Returns
         -------
         EquilibriumStatus
-            Whether `sigma` is an equilibrium in this profile.
+            Whether `strategy` is an equilibrium in this profile.
         """
-        d_ranking_best_response = self.tau(sigma).d_ranking_best_response
+        d_ranking_best_response = self.tau(strategy).d_ranking_best_response
         status = EquilibriumStatus.EQUILIBRIUM
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if sigma.d_ranking_threshold[ranking] is None:
+            if strategy.d_ranking_threshold[ranking] is None:
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             elif best_response.ballot == INCONCLUSIVE:
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             else:
                 should_vote_12 = self.have_ranking_with_utility_above_u(ranking, u=best_response.threshold_utility)
-                do_vote_12 = self.have_ranking_with_utility_above_u(ranking, u=sigma.d_ranking_threshold[ranking])
+                do_vote_12 = self.have_ranking_with_utility_above_u(ranking, u=strategy.d_ranking_threshold[ranking])
                 if not isclose(should_vote_12, do_vote_12):
                     return EquilibriumStatus.NOT_EQUILIBRIUM
         return status
 
-    def iterated_voting(self, sigma_ini, n_max_episodes, verbose=False):
+    def iterated_voting(self, strategy_ini, n_max_episodes, verbose=False):
         """Seek for convergence by iterated voting.
 
         Parameters
         ----------
-        sigma_ini : StrategyThreshold
+        strategy_ini : StrategyThreshold
             Initial strategy.
         n_max_episodes : int
             Maximal number of iterations.
@@ -151,34 +151,34 @@ class ProfileCardinal(Profile):
             between these strategies. If length = 0, by convention, it means that the process does not converge and
             does not reach a periodical orbit.
         """
-        sigma = StrategyThreshold({
-            ranking: threshold for ranking, threshold in sigma_ini.d_ranking_threshold.items()
+        strategy = StrategyThreshold({
+            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
             if self.d_ranking_share[ranking] > 0
         }, profile=self)
-        sigmas = [sigma]
+        strategies = [strategy]
         if verbose:
             print(-1)
-            print(sigma)
+            print(strategy)
         for i in range(n_max_episodes):
-            sigma = StrategyThreshold(
+            strategy = StrategyThreshold(
                 {ranking: best_response.threshold_utility
-                 for ranking, best_response in sigma.d_ranking_best_response.items()
+                 for ranking, best_response in strategy.d_ranking_best_response.items()
                  if self.d_ranking_share[ranking] > 0},
                 profile=self)
             if verbose:
                 print(i)
-                print(sigma)
-            if sigma in sigmas:
+                print(strategy)
+            if strategy in strategies:
                 # If there is an exact cycle, it is useless to continue looping.
-                sigmas.append(sigma)
+                strategies.append(strategy)
                 break
             else:
-                sigmas.append(sigma)
+                strategies.append(strategy)
         try:
             begin, end = next((begin, end)
-                              for end in range(len(sigmas) - 1, 0, -1)
+                              for end in range(len(strategies) - 1, 0, -1)
                               for begin in range(end - 1, -1, -1)
-                              if sigmas[begin].isclose(sigmas[end]))
-            return sigmas[begin:end]
+                              if strategies[begin].isclose(strategies[end]))
+            return strategies[begin:end]
         except StopIteration:
             return []

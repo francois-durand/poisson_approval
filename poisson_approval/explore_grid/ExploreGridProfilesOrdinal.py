@@ -24,10 +24,10 @@ class ExploreGridProfilesOrdinal:
 
     Examples
     --------
-        >>> def test(r):
+        >>> def test(profile):
         ...     return(
-        ...         r.is_profile_condorcet
-        ...         and len(r.analyzed_strategies.utility_dependent) > 0
+        ...         profile.is_profile_condorcet
+        ...         and len(profile.analyzed_strategies.utility_dependent) > 0
         ...     )
         >>> exploration = ExploreGridProfilesOrdinal(denominator=3, test=test)
         >>> exploration
@@ -47,15 +47,15 @@ class ExploreGridProfilesOrdinal:
         2 equilibria, 1 utility-dependent equilibrium, 5 non-equilibria
         <abc: 1/3, bac: 1/3, cab: 1/3> (Condorcet winner: a)
         <BLANKLINE>
-        >>> r = exploration[(0, 1, 3)][0]
-        >>> print(r)
+        >>> profile = exploration[(0, 1, 3)][0]
+        >>> print(profile)
         <abc: 2/3, cab: 1/3> (Condorcet winner: a)
 
     If the test breaks the symmetry between candidates, you should use the option ``𝚜𝚝𝚊𝚗𝚍𝚊𝚛𝚍𝚒𝚣𝚎𝚍=𝙵𝚊𝚕𝚜𝚎``:
 
-        >>> def test(r):
+        >>> def test(profile):
         ...     return (
-        ...         'a' in r.condorcet_winners
+        ...         'a' in profile.condorcet_winners
         ...     )
         >>> exploration = ExploreGridProfilesOrdinal(test=test, denominator=2, standardized=False)
         >>> exploration
@@ -109,7 +109,7 @@ class ExploreGridProfilesOrdinal:
                             for r_cab in range(0, r_cab_max + 1):
                                 r_cba = (
                                     d - r_abc - r_acb - r_bac - r_bca - r_cab)
-                                r = ProfileOrdinal({
+                                profile = ProfileOrdinal({
                                     'abc': Fraction(r_abc, d),
                                     'acb': Fraction(r_acb, d),
                                     'bac': Fraction(r_bac, d),
@@ -117,11 +117,11 @@ class ExploreGridProfilesOrdinal:
                                     'cab': Fraction(r_cab, d),
                                     'cba': Fraction(r_cba, d)
                                 }, well_informed_voters=well_informed_voters)
-                                if standardized and not r.is_standardized:
+                                if standardized and not profile.is_standardized:
                                     continue
-                                if not test(r):
+                                if not test(profile):
                                     continue
-                                analyzed_strat = r.analyzed_strategies
+                                analyzed_strat = profile.analyzed_strategies
                                 eq, ud, non_eq = (
                                     analyzed_strat.equilibria,
                                     analyzed_strat.utility_dependent,
@@ -130,8 +130,8 @@ class ExploreGridProfilesOrdinal:
                                 stats = (len(eq), len(ud), len(non_eq))
                                 if stats not in self.d_stats_profiles:
                                     self.d_stats_profiles[stats] = []
-                                if r not in self.d_stats_profiles[stats]:
-                                    self.d_stats_profiles[stats].append(r)
+                                if profile not in self.d_stats_profiles[stats]:
+                                    self.d_stats_profiles[stats].append(profile)
 
     def __getitem__(self, item):
         return self.d_stats_profiles[item]

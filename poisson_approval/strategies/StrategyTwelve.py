@@ -19,16 +19,16 @@ class StrategyTwelve(Strategy):
 
     Examples
     --------
-        >>> sigma = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
-        >>> sigma
+        >>> strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
+        >>> strategy
         StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
-        >>> print(sigma)
+        >>> print(strategy)
         <abc: utility-dependent, bac: b>
-        >>> sigma.abc
+        >>> strategy.abc
         'utility-dependent'
-        >>> sigma.a_bc
+        >>> strategy.a_bc
         'a'
-        >>> sigma.ab_c
+        >>> strategy.ab_c
         'ab'
     """
 
@@ -69,8 +69,8 @@ class StrategyTwelve(Strategy):
 
         Examples
         --------
-            >>> sigma = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
-            >>> sigma == StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
+            >>> strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
+            >>> strategy == StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
             True
         """
         return isinstance(other, StrategyTwelve) and self.d_ranking_ballot == other.d_ranking_ballot

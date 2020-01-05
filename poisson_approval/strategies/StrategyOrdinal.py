@@ -15,18 +15,18 @@ class StrategyOrdinal(StrategyThreshold):
 
     Examples
     --------
-        >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-        >>> sigma
+        >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+        >>> strategy
         StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-        >>> print(sigma)
+        >>> print(strategy)
         <abc: a, bac: ab, cab: c>
-        >>> sigma.abc
+        >>> strategy.abc
         'a'
-        >>> sigma.a_bc
+        >>> strategy.a_bc
         'a'
-        >>> sigma.ab_c
+        >>> strategy.ab_c
         'a'
-        >>> sigma.d_ranking_threshold['abc']
+        >>> strategy.d_ranking_threshold['abc']
         1
     """
 
@@ -62,8 +62,8 @@ class StrategyOrdinal(StrategyThreshold):
 
         Examples
         --------
-            >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-            >>> sigma == StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+            >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+            >>> strategy == StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
             True
         """
         return isinstance(other, StrategyOrdinal) and self.d_ranking_ballot == other.d_ranking_ballot

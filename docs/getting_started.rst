@@ -1,12 +1,15 @@
 .. highlight:: shell
 
-============
-Installation
-============
+===============
+Getting Started
+===============
 
+
+Installation
+------------
 
 Stable release
---------------
+++++++++++++++
 
 To install Poisson Approval, run this command in your terminal:
 
@@ -24,7 +27,7 @@ you through the process.
 
 
 From sources
-------------
+++++++++++++
 
 The sources for Poisson Approval can be downloaded from the `Github repo`_.
 
@@ -49,3 +52,11 @@ Once you have a copy of the source, you can install it with:
 
 .. _Github repo: https://github.com/francois-durand/poisson_approval
 .. _tarball: https://github.com/francois-durand/poisson_approval/tarball/master
+
+
+Usage
+-----
+
+To use Poisson Approval in a project::
+
+    import poisson_approval

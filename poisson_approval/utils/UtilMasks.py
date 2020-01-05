@@ -106,7 +106,7 @@ def masks_distribution_naive(inf, sup, masks):
     return histogram
 
 
-def masks_distribution(inf, sup, masks, histogram=None, cover_alls=0):
+def masks_distribution(inf, sup, masks, cover_alls=0):
     """Distribution of the number of masks (recursive `divide and conquer` implementation).
 
     We denote by `d` the dimension of the Euclidean space under study.
@@ -121,18 +121,14 @@ def masks_distribution(inf, sup, masks, histogram=None, cover_alls=0):
         A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
         of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
         meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
-    histogram : list
-        This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
-        the output, it is added to the given list `histogram`.
-    cover_alls : int
-        This parameter should only be used for recursive calls. If specified, then we consider that we have this number
-        of implicit masks (i.e. not given in the argument `masks`) that cover the whole area.
+    cover_alls : int, optional
+        If specified, then we consider that we have this number of implicit masks (i.e. not given in the argument
+        `masks`) that cover the whole area.
 
     Returns
     -------
     list
-        A list of length `d + 1`. The `i`-th coefficient is the area covered by `i` masks exactly (and in the bounding
-        rectangle).
+        A list. The `i`-th coefficient is the area covered by `i` masks exactly (and in the bounding rectangle).
 
     Examples
     --------
@@ -144,6 +140,41 @@ def masks_distribution(inf, sup, masks, histogram=None, cover_alls=0):
         ...                                masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
         >>> histogram
         array([1.06, 0.92, 0.02])
+    """
+    result = masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=cover_alls)
+    last_non_zero = result.size - 1
+    while result[last_non_zero] == 0:
+        last_non_zero -= 1
+    return result[:last_non_zero + 1]
+
+
+def masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
+    """Distribution of the number of masks (recursive `divide and conquer` implementation).
+
+    We denote by `d` the dimension of the Euclidean space under study.
+
+    Parameters
+    ----------
+    inf : list of Number
+        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.
+    sup : list of Number
+        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
+    masks : list of list of tuple
+        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
+        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
+        meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
+    histogram : list, optional
+        This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
+        the output, it is added to the given list `histogram`.
+    cover_alls : int, optional
+        This parameter should only be used for recursive calls. If specified, then we consider that we have this number
+        of implicit masks (i.e. not given in the argument `masks`) that cover the whole area.
+
+    Returns
+    -------
+    list
+        A list of length `d + 1`. The `i`-th coefficient is the area covered by `i` masks exactly (and in the bounding
+        rectangle).
     """
     dim = len(inf)
     if histogram is None:
@@ -163,8 +194,10 @@ def masks_distribution(inf, sup, masks, histogram=None, cover_alls=0):
         mask = random.choice(new_masks)
         d_lim = random.choice([d for d in range(dim) if inf[d] < mask[d][0] < sup[d]])
         lim = mask[d_lim][0]
-        masks_distribution(inf, [lim if d == d_lim else sup[d] for d in range(dim)], new_masks, histogram, cover_alls)
-        masks_distribution([lim if d == d_lim else inf[d] for d in range(dim)], sup, new_masks, histogram, cover_alls)
+        masks_distribution_aux(inf, [lim if d == d_lim else sup[d] for d in range(dim)], new_masks,
+                               histogram, cover_alls)
+        masks_distribution_aux([lim if d == d_lim else inf[d] for d in range(dim)], sup, new_masks,
+                               histogram, cover_alls)
     return histogram
 
 

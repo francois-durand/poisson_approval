@@ -294,6 +294,8 @@ phi_ab = 0.707107>
     def focus(self):
         """Focus : Focus of this tau-vector.
 
+        This is based on the weak pivots.
+
         Examples
         --------
             >>> from fractions import Fraction

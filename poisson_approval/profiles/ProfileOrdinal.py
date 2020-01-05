@@ -35,32 +35,32 @@ class ProfileOrdinal(Profile):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-        >>> r
+        >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+        >>> profile
         ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)})
-        >>> print(r)
+        >>> print(profile)
         <abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b)
-        >>> r.abc
+        >>> profile.abc
         Fraction(1, 10)
-        >>> r.d_ranking_share['abc']  # Alternate syntax for r.abc
+        >>> profile.d_ranking_share['abc']  # Alternate syntax for profile.abc
         Fraction(1, 10)
-        >>> r.weighted_maj_graph
+        >>> profile.weighted_maj_graph
         array([[0, Fraction(-1, 5), Fraction(2, 5)],
                [Fraction(1, 5), 0, Fraction(2, 5)],
                [Fraction(-2, 5), Fraction(-2, 5), 0]], dtype=object)
-        >>> r.condorcet_winners
+        >>> profile.condorcet_winners
         Winners({'b'})
-        >>> r.is_profile_condorcet
+        >>> profile.is_profile_condorcet
         1.0
-        >>> r.has_majority_favorite  # Is one candidate 'top' in a majority of ballots?
+        >>> profile.has_majority_favorite  # Is one candidate 'top' in a majority of ballots?
         True
-        >>> r.has_majority_ranking  # Does one ranking represent a majority of ballots?
+        >>> profile.has_majority_ranking  # Does one ranking represent a majority of ballots?
         True
-        >>> r.is_single_peaked  # Is the profile single-peaked?
+        >>> profile.is_single_peaked  # Is the profile single-peaked?
         True
-        >>> r.support_in_rankings
+        >>> profile.support_in_rankings
         {'abc', 'bac', 'cab'}
-        >>> r.is_generic_in_rankings  # Are all rankings there?
+        >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
     """
 
@@ -118,8 +118,8 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r == ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile == ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             True
         """
         return isinstance(other, ProfileOrdinal) and self.d_ranking_share == other.d_ranking_share
@@ -131,10 +131,10 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.standardized_version
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.standardized_version
             ProfileOrdinal({'abc': Fraction(3, 5), 'bac': Fraction(1, 10), 'cba': Fraction(3, 10)})
-            >>> r.is_standardized
+            >>> profile.is_standardized
             False
         """
         def translate(s, permute):
@@ -158,8 +158,8 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.support
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.support
             {'abc', 'bac', 'cab'}
         """
         return self.support_in_rankings
@@ -171,40 +171,40 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.is_generic
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.is_generic
             False
         """
         return self.is_generic_in_rankings
 
     # Tau and strategy-related stuff
 
-    def tau(self, sigma):
+    def tau(self, strategy):
         """Tau-vector associated to a strategy.
 
         Parameters
         ----------
-        sigma : StrategyOrdinal
+        strategy : StrategyOrdinal
 
         Returns
         -------
         TauVector
-            Tau-vector associated to this profile and strategy `sigma`.
+            Tau-vector associated to this profile and strategy `strategy`.
 
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-            >>> tau = r.tau(sigma)
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+            >>> tau = profile.tau(strategy)
             >>> print(tau)
             <a: 1/10, ab: 3/5, c: 3/10> ==> a
-            >>> tau = r.τ(sigma)  # Alternate notation
+            >>> tau = profile.τ(strategy)  # Alternate notation
             >>> print(tau)
             <a: 1/10, ab: 3/5, c: 3/10> ==> a
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        for ranking, ballot in sigma.d_ranking_ballot.items():
+        for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] > 0:
                 t[ballot] += self.d_ranking_share[ranking]
         if self.well_informed_voters:
@@ -214,39 +214,39 @@ class ProfileOrdinal(Profile):
                 {'a': t['a'] + t['ab'] + t['ac'], 'b': t['b'] + t['ab'] + t['bc'], 'c': t['c'] + t['ac'] + t['bc']},
                 normalization_warning=False)
 
-    def is_equilibrium(self, sigma):
+    def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
 
         Parameters
         ----------
-        sigma : StrategyOrdinal
+        strategy : StrategyOrdinal
 
         Returns
         -------
         EquilibriumStatus
-            Whether `sigma` is an equilibrium in this profile.
+            Whether `strategy` is an equilibrium in this profile.
 
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> sigma = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-            >>> r.is_equilibrium(sigma)
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+            >>> profile.is_equilibrium(strategy)
             EquilibriumStatus.EQUILIBRIUM
         """
-        d_ranking_best_response = self.tau(sigma).d_ranking_best_response
+        d_ranking_best_response = self.tau(strategy).d_ranking_best_response
         status = EquilibriumStatus.EQUILIBRIUM
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if sigma.d_ranking_ballot[ranking] == '':
+            if strategy.d_ranking_ballot[ranking] == '':
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             elif best_response.ballot == INCONCLUSIVE:
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             elif best_response.ballot == UTILITY_DEPENDENT:
                 status = min(status, EquilibriumStatus.UTILITY_DEPENDENT)
-            elif sigma.d_ranking_ballot[ranking] != best_response.ballot:
+            elif strategy.d_ranking_ballot[ranking] != best_response.ballot:
                 return EquilibriumStatus.NOT_EQUILIBRIUM
         return status
 
@@ -257,8 +257,8 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.analyzed_strategies
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.analyzed_strategies
             Equilibria:
             <abc: a, bac: b, cab: ac> ==> b (FF)
             <abc: a, bac: ab, cab: c> ==> a (D)
@@ -272,7 +272,7 @@ class ProfileOrdinal(Profile):
             <abc: ab, bac: b, cab: ac> ==> b (FF)
             <abc: ab, bac: ab, cab: c> ==> a, b (FF)
             <abc: ab, bac: ab, cab: ac> ==> a (D)
-            >>> print(r.analyzed_strategies.equilibria[0])
+            >>> print(profile.analyzed_strategies.equilibria[0])
             <abc: a, bac: b, cab: ac> ==> b
         """
         equilibria = []
@@ -291,18 +291,19 @@ class ProfileOrdinal(Profile):
                     for s_bca in strat_bca:
                         for s_cab in strat_cab:
                             for s_cba in strat_cba:
-                                sigma = StrategyOrdinal({'abc': s_abc, 'acb': s_acb, 'bac': s_bac,
+                                strategy = StrategyOrdinal({'abc': s_abc, 'acb': s_acb, 'bac': s_bac,
                                                          'bca': s_bca, 'cab': s_cab, 'cba': s_cba}, profile=self)
-                                status = sigma.is_equilibrium
+                                status = strategy.is_equilibrium
                                 if status == EquilibriumStatus.EQUILIBRIUM:
-                                    equilibria.append(sigma)
+                                    equilibria.append(strategy)
                                 elif status == EquilibriumStatus.UTILITY_DEPENDENT:
-                                    utility_dependent.append(sigma)
+                                    utility_dependent.append(strategy)
                                 elif status == EquilibriumStatus.INCONCLUSIVE:
-                                    inconclusive.append(sigma)
-                                    warnings.warn('Met an inconclusive case: \nr = %r\nsigma = %r' % (self, sigma))
+                                    inconclusive.append(strategy)
+                                    warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
+                                                  % (self, strategy))
                                 else:
-                                    non_equilibria.append(sigma)
+                                    non_equilibria.append(strategy)
         return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
     def proba_equilibrium(self, test=None):
@@ -325,22 +326,22 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.proba_equilibrium()
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.proba_equilibrium()
             1
         """
         if test is None:
             # noinspection PyUnusedLocal
-            def test(sigma):
+            def test(strategy):
                 return True
-        if any([test(sigma) for sigma in self.analyzed_strategies.equilibria]):
+        if any([test(strategy) for strategy in self.analyzed_strategies.equilibria]):
             return 1
         support = sorted(self.support)
         dim = len(support)
         masks = [
-            [(sigma.d_ranking_best_response[ranking].threshold_utility, len(sigma.d_ranking_ballot[ranking]) == 2)
+            [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
-            for sigma in self.analyzed_strategies.utility_dependent if test(sigma)
+            for strategy in self.analyzed_strategies.utility_dependent if test(strategy)
         ]
         return masks_area(inf=[0] * dim, sup=[1] * dim, masks=masks)
 
@@ -364,21 +365,21 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.distribution_equilibria()
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.distribution_equilibria()
             array([0.        , 0.        , 0.86290531, 0.13709469])
         """
         if test is None:
             # noinspection PyUnusedLocal
-            def test(sigma):
+            def test(strategy):
                 return True
-        cover_alls = np.sum([test(sigma) for sigma in self.analyzed_strategies.equilibria], dtype=int)
+        cover_alls = np.sum([test(strategy) for strategy in self.analyzed_strategies.equilibria], dtype=int)
         support = sorted(self.support)
         dim = len(support)
         masks = [
-            [(sigma.d_ranking_best_response[ranking].threshold_utility, len(sigma.d_ranking_ballot[ranking]) == 2)
+            [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
-            for sigma in self.analyzed_strategies.utility_dependent if test(sigma)
+            for strategy in self.analyzed_strategies.utility_dependent if test(strategy)
         ]
         return masks_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks=masks, cover_alls=cover_alls)
 
@@ -403,27 +404,28 @@ class ProfileOrdinal(Profile):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> r.distribution_winners()
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> profile.distribution_winners()
             array([0., 0., 1., 0.])
         """
         if test is None:
             # noinspection PyUnusedLocal
-            def test(sigma):
+            def test(strategy):
                 return True
         cover_alls = set.union(*([set()] + [
-            sigma.winners for sigma in self.analyzed_strategies.equilibria
-            if test(sigma)
+            strategy.winners for strategy in self.analyzed_strategies.equilibria
+            if test(strategy)
         ]))
         support = sorted(self.support)
         dim = len(support)
         masks_winners = [
             (
-                [(sigma.d_ranking_best_response[ranking].threshold_utility, len(sigma.d_ranking_ballot[ranking]) == 2)
+                [(strategy.d_ranking_best_response[ranking].threshold_utility,
+                  len(strategy.d_ranking_ballot[ranking]) == 2)
                  for ranking in support],
-                sigma.winners
+                strategy.winners
             )
-            for sigma in self.analyzed_strategies.utility_dependent if test(sigma)
+            for strategy in self.analyzed_strategies.utility_dependent if test(strategy)
         ]
         return winners_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks_winners=masks_winners,
                                     cover_alls=cover_alls)

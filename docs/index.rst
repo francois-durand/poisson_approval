@@ -6,8 +6,8 @@ Welcome to Poisson Approval's documentation!
    :caption: Contents:
 
    readme
-   installation
-   usage
+   getting_started
+   tutorials
    reference
    contributing
    authors

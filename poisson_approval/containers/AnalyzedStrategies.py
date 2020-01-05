@@ -27,15 +27,15 @@ class AnalyzedStrategies:
             s = 'Equilibria:'
         if not self.equilibria:
             s += '\nNone'
-        for sigma_eq in self.equilibria:
-            s += '\n' + str(sigma_eq) + ' (' + str(sigma_eq.tau.focus) + ')'
+        for strategy in self.equilibria:
+            s += '\n' + str(strategy) + ' (' + str(strategy.tau.focus) + ')'
         # Print utility-dependent strategies only if there are some (this restriction is useful for ProfileTwelve).
         if len(self.utility_dependent) == 1:
             s += '\n\nUtility-dependent equilibrium:'
         elif len(self.utility_dependent) > 1:
             s += '\n\nUtility-dependent equilibria:'
-        for sigma_eq in self.utility_dependent:
-            s += '\n' + str(sigma_eq) + ' (' + str(sigma_eq.tau.focus) + ')'
+        for strategy in self.utility_dependent:
+            s += '\n' + str(strategy) + ' (' + str(strategy.tau.focus) + ')'
         # Non-equilibria (print even if there is none).
         if len(self.non_equilibria) == 1:
             s += '\n\nNon-equilibrium:'
@@ -43,13 +43,13 @@ class AnalyzedStrategies:
             s += '\n\nNon-equilibria:'
         if not self.non_equilibria:
             s += '\nNone'
-        for sigma_eq in self.non_equilibria:
-            s += '\n' + str(sigma_eq) + ' (' + str(sigma_eq.tau.focus) + ')'
+        for strategy in self.non_equilibria:
+            s += '\n' + str(strategy) + ' (' + str(strategy.tau.focus) + ')'
         # Print inconclusive strategies only if there are some (which should not happen).
         if len(self.inconclusive) == 1:
             s += '\n\nInconclusive strategy profile:'
         elif len(self.inconclusive) > 1:
             s += '\n\nInconclusive strategy profiles:'
-        for sigma_eq in self.inconclusive:
-            s += '\n' + str(sigma_eq)
+        for strategy in self.inconclusive:
+            s += '\n' + str(strategy)
         return s

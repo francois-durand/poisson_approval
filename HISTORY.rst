@@ -3,6 +3,18 @@ History
 =======
 
 ------------------
+0.2.0 (2020-01-05)
+------------------
+
+* Add ``GeneratorProfileStrategyThreshold``.
+* Add ``ProfileHistogram.plot_cdf``.
+* Modify ``masks_distribution``: remove the trailing zeros. This has the same impact on
+  ``ProfileOrdinal.distribution_equilibria``.
+* Modify ``NiceStatsProfileOrdinal.plot_cutoff``: center the textual indications.
+* Replace all notations ``r`` with ``profile`` and ``sigma`` with ``strategy``.
+* Add tutorials.
+
+------------------
 0.1.1 (2019-12-24)
 ------------------
 

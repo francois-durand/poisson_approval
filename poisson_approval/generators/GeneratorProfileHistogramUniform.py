@@ -34,7 +34,10 @@ cba: 0.2848106336275805 [0.0202184 0.0669109 0.9128707]> (Condorcet winner: a)
 
     def __call__(self):
         """
-        :return: a profile.
+        Returns
+        -------
+        ProfileHistogram
+            A profile.
         """
         x = rand_simplex(d=6)
         return ProfileHistogram({ranking: x[i] for i, ranking in enumerate(RANKINGS)},

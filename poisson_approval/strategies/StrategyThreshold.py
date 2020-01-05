@@ -19,18 +19,18 @@ class StrategyThreshold(StrategyTwelve):
 
     Examples
     --------
-        >>> sigma = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-        >>> sigma
+        >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+        >>> strategy
         StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-        >>> print(sigma)
+        >>> print(strategy)
         <abc: utility-dependent (0.4), bac: utility-dependent (0.51), cab: c>
-        >>> sigma.abc
+        >>> strategy.abc
         'utility-dependent'
-        >>> sigma.a_bc
+        >>> strategy.a_bc
         'a'
-        >>> sigma.ab_c
+        >>> strategy.ab_c
         'ab'
-        >>> sigma.d_ranking_threshold['abc']
+        >>> strategy.d_ranking_threshold['abc']
         0.4
     """
 
@@ -70,8 +70,8 @@ class StrategyThreshold(StrategyTwelve):
 
         Examples
         --------
-            >>> sigma = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            >>> sigma == StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+            >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+            >>> strategy == StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
             True
         """
         return isinstance(other, StrategyThreshold) and self.d_ranking_threshold == other.d_ranking_threshold
@@ -94,8 +94,8 @@ class StrategyThreshold(StrategyTwelve):
 
         Examples
         --------
-            >>> sigma = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            >>> sigma.isclose(StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 0.999999999999999999999999}))
+            >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+            >>> strategy.isclose(StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 0.999999999999999999999999}))
             True
         """
         return isinstance(other, StrategyThreshold) and all([

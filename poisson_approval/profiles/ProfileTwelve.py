@@ -34,38 +34,38 @@ class ProfileTwelve(ProfileCardinal):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-        ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-        >>> r
+        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+        ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+        >>> profile
         ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5), 'c_ab': Fraction(1, 5), \
 'ca_b': Fraction(1, 10)})
-        >>> print(r)
+        >>> print(profile)
         <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b)
-        >>> r.c_ab
+        >>> profile.c_ab
         Fraction(1, 5)
-        >>> r.d_type_share['c_ab']  # Alternate syntax for r.c_ab
+        >>> profile.d_type_share['c_ab']  # Alternate syntax for profile.c_ab
         Fraction(1, 5)
-        >>> r.cab
+        >>> profile.cab
         Fraction(3, 10)
-        >>> r.d_ranking_share['cab']  # Alternate syntax for r.cab
+        >>> profile.d_ranking_share['cab']  # Alternate syntax for profile.cab
         Fraction(3, 10)
-        >>> r.weighted_maj_graph
+        >>> profile.weighted_maj_graph
         array([[0, Fraction(-1, 5), Fraction(2, 5)],
                [Fraction(1, 5), 0, Fraction(2, 5)],
                [Fraction(-2, 5), Fraction(-2, 5), 0]], dtype=object)
-        >>> r.condorcet_winners
+        >>> profile.condorcet_winners
         Winners({'b'})
-        >>> r.is_profile_condorcet
+        >>> profile.is_profile_condorcet
         1.0
-        >>> r.has_majority_favorite  # Is one candidate 'top' in a majority of ballots?
+        >>> profile.has_majority_favorite  # Is one candidate 'top' in a majority of ballots?
         True
-        >>> r.has_majority_ranking  # Does one ranking represent a majority of ballots?
+        >>> profile.has_majority_ranking  # Does one ranking represent a majority of ballots?
         True
-        >>> r.is_single_peaked  # Is the profile single-peaked?
+        >>> profile.is_single_peaked  # Is the profile single-peaked?
         True
-        >>> r.support_in_rankings
+        >>> profile.support_in_rankings
         {'abc', 'bac', 'cab'}
-        >>> r.is_generic_in_rankings  # Are all rankings there?
+        >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
     """
 
@@ -97,9 +97,9 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.have_ranking_with_utility_above_u(ranking='cab', u=.5)
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=.5)
             Fraction(1, 10)
         """
         high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
@@ -118,9 +118,9 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.have_ranking_with_utility_u(ranking='cab', u=.5)
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.have_ranking_with_utility_u(ranking='cab', u=.5)
             0
         """
         return 0
@@ -133,9 +133,9 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.have_ranking_with_utility_below_u(ranking='cab', u=.5)
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=.5)
             Fraction(1, 5)
         """
         high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
@@ -174,10 +174,10 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r == ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                     'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile == ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                           'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
             True
         """
         return isinstance(other, ProfileTwelve) and self.d_type_share == other.d_type_share
@@ -191,11 +191,11 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> print(r.standardized_version)
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> print(profile.standardized_version)
             <a_bc: 3/5, ba_c: 1/10, c_ba: 1/5, cb_a: 1/10> (Condorcet winner: a)
-            >>> r.is_standardized
+            >>> profile.is_standardized
             False
         """
         def translate(s, permute):
@@ -218,9 +218,9 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.has_majority_type
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.has_majority_type
             True
         """
         return max(self.d_type_share.values()) > 0.5
@@ -233,9 +233,9 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.support_in_types
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.support_in_types
             {'ab_c', 'b_ac', 'c_ab', 'ca_b'}
         """
         return SetPrintingInOrder({t for t, share in self.d_type_share.items() if share > 0})
@@ -247,42 +247,42 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.is_generic_in_types
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.is_generic_in_types
             False
         """
         return 0 not in self.d_type_share.values()
 
     # Tau and strategy-related stuff
 
-    def tau(self, sigma):
+    def tau(self, strategy):
         """Tau-vector associated to a strategy.
 
         Parameters
         ----------
-        sigma : StrategyTwelve
+        strategy : StrategyTwelve
 
         Returns
         -------
         TauVector
-            Tau-vector associated to this profile and strategy `sigma`.
+            Tau-vector associated to this profile and strategy `strategy`.
 
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> sigma = StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': 'utility-dependent'})
-            >>> tau = r.tau(sigma)
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> strategy = StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': 'utility-dependent'})
+            >>> tau = profile.tau(strategy)
             >>> print(tau)
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
-            >>> tau = r.τ(sigma)  # Alternate notation
+            >>> tau = profile.τ(strategy)  # Alternate notation
             >>> print(tau)
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         """
         t = {'a': 0, 'b': 0, 'c': 0, 'ab': 0, 'ac': 0, 'bc': 0}
-        for ranking, ballot in sigma.d_ranking_ballot.items():
+        for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
             # For a ranking abc, ballot can be '', 'a', 'ab' or 'utility-dependent'.
@@ -293,34 +293,34 @@ class ProfileTwelve(ProfileCardinal):
                 t[ballot] += self.d_ranking_share[ranking]
         return TauVector(t)
 
-    def is_equilibrium(self, sigma):
+    def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
 
         Parameters
         ----------
-        sigma : StrategyTwelve
+        strategy : StrategyTwelve
 
         Returns
         -------
         EquilibriumStatus
-            Whether `sigma` is an equilibrium in this profile.
+            Whether `strategy` is an equilibrium in this profile.
 
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> sigma = StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': 'utility-dependent'})
-            >>> r.is_equilibrium(sigma)
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> strategy = StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': 'utility-dependent'})
+            >>> profile.is_equilibrium(strategy)
             EquilibriumStatus.EQUILIBRIUM
         """
-        d_ranking_best_response = self.tau(sigma).d_ranking_best_response
+        d_ranking_best_response = self.tau(strategy).d_ranking_best_response
         status = EquilibriumStatus.EQUILIBRIUM
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if sigma.d_ranking_ballot[ranking] == '':
+            if strategy.d_ranking_ballot[ranking] == '':
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             elif best_response.ballot == INCONCLUSIVE:
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
@@ -333,9 +333,9 @@ class ProfileTwelve(ProfileCardinal):
                 else:
                     best_ballot_1 = best_response.ballot
                     best_ballot_12 = best_response.ballot
-                if self.d_type_share[type_1] > 0 and getattr(sigma, type_1) != best_ballot_1:
+                if self.d_type_share[type_1] > 0 and getattr(strategy, type_1) != best_ballot_1:
                     return EquilibriumStatus.NOT_EQUILIBRIUM
-                if self.d_type_share[type_12] > 0 and getattr(sigma, type_12) != best_ballot_12:
+                if self.d_type_share[type_12] > 0 and getattr(strategy, type_12) != best_ballot_12:
                     return EquilibriumStatus.NOT_EQUILIBRIUM
         return status
 
@@ -346,9 +346,9 @@ class ProfileTwelve(ProfileCardinal):
         Examples
         --------
             >>> from fractions import Fraction
-            >>> r = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                    'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> r.analyzed_strategies
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> profile.analyzed_strategies
             Equilibria:
             <abc: a, bac: b, cab: ac> ==> b (FF)
             <abc: a, bac: ab, cab: c> ==> a (D)
@@ -384,19 +384,21 @@ class ProfileTwelve(ProfileCardinal):
                     for s_bca in possible_strategies(self.b_ca, self.bc_a, 'b', 'bc'):
                         for s_cab in possible_strategies(self.c_ab, self.ca_b, 'c', 'ac'):
                             for s_cba in possible_strategies(self.c_ba, self.cb_a, 'c', 'bc'):
-                                sigma = StrategyTwelve({'abc': s_abc, 'acb': s_acb, 'bac': s_bac,
+                                strategy = StrategyTwelve({'abc': s_abc, 'acb': s_acb, 'bac': s_bac,
                                                         'bca': s_bca, 'cab': s_cab, 'cba': s_cba}, profile=self)
-                                status = sigma.is_equilibrium
+                                status = strategy.is_equilibrium
                                 if status == EquilibriumStatus.EQUILIBRIUM:
-                                    equilibria.append(sigma)
+                                    equilibria.append(strategy)
                                 elif status == EquilibriumStatus.UTILITY_DEPENDENT:
-                                    utility_dependent.append(sigma)
-                                    warnings.warn('Met a utility-dependent case: \nr = %r\nsigma = %r' % (self, sigma))
+                                    utility_dependent.append(strategy)
+                                    warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r'
+                                                  % (self, strategy))
                                 elif status == EquilibriumStatus.INCONCLUSIVE:
-                                    inconclusive.append(sigma)
-                                    warnings.warn('Met an inconclusive case: \nr = %r\nsigma = %r' % (self, sigma))
+                                    inconclusive.append(strategy)
+                                    warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
+                                                  % (self, strategy))
                                 else:
-                                    non_equilibria.append(sigma)
+                                    non_equilibria.append(strategy)
         return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
 

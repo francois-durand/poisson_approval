@@ -98,46 +98,46 @@ class Profile():
 
     # Tau and strategy-related stuff
 
-    def tau(self, sigma):
+    def tau(self, strategy):
         """Tau-vector associated to this profile and a given strategy.
 
         Parameters
         ----------
-        sigma : Strategy
+        strategy : Strategy
 
         Returns
         -------
         TauVector
-            Tau-vector associated to this profile and strategy `sigma`.
+            Tau-vector associated to this profile and strategy `strategy`.
         """
         raise NotImplementedError
 
     # noinspection NonAsciiCharacters
-    def τ(self, sigma):
+    def τ(self, strategy):
         """Tau-vector (alternate notation).
 
         Parameters
         ----------
-        sigma : Strategy
+        strategy : Strategy
 
         Returns
         -------
         TauVector
-            Tau-vector associated to this profile and strategy `sigma`.
+            Tau-vector associated to this profile and strategy `strategy`.
         """
-        return self.tau(sigma)
+        return self.tau(strategy)
 
-    def is_equilibrium(self, sigma):
+    def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium in this profile.
 
         Parameters
         ----------
-        sigma : Strategy
+        strategy : Strategy
 
         Returns
         -------
         EquilibriumStatus
-            Whether `sigma` is an equilibrium in this profile.
+            Whether `strategy` is an equilibrium in this profile.
         """
         raise NotImplementedError
 
