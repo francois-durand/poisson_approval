@@ -29,38 +29,38 @@ class GeneratorExample:
     In this basic example with one generator, we generate a random integer between 0 included and 100 excluded that
     is divisible by 7:
 
-    >>> import numpy as np
-    >>> initialize_random_seeds()
-    >>> def generator_integer():
-    ...     return np.random.randint(0, 100)
-    >>> def test_divisible_7(n):
-    ...     return n % 7 == 0
-    >>> generator_example = GeneratorExample(generator=generator_integer,
-    ...                                      test=test_divisible_7, n_trials_max=None)
-    >>> generator_example()
-    21
+        >>> import numpy as np
+        >>> initialize_random_seeds()
+        >>> def generator_integer():
+        ...     return np.random.randint(0, 100)
+        >>> def test_divisible_7(n):
+        ...     return n % 7 == 0
+        >>> generator_example = GeneratorExample(generator=generator_integer,
+        ...                                      test=test_divisible_7, n_trials_max=None)
+        >>> generator_example()
+        21
 
     In this example with a tuple of generators, we generate a random 2*2 matrix and a random vector of size 2, both
     with integer coefficients between -10 included and 11 excluded, such that their dot product is null, but without
     being null themselves:
 
-    >>> import numpy as np
-    >>> initialize_random_seeds()
-    >>> def generator_matrix():
-    ...     return np.random.randint(-10, 11, (2, 2))
-    >>> def generator_vector():
-    ...     return np.random.randint(-10, 11, 2)
-    >>> def test_non_trivial_dot_zero(matrix, vector):
-    ...     return (np.all(np.dot(matrix, vector) == 0)
-    ...             and not np.all(matrix == 0) and not np.all(vector == 0))
-    >>> generator_example = GeneratorExample(generator=(generator_matrix, generator_vector),
-    ...                                      test=test_non_trivial_dot_zero, n_trials_max=None)
-    >>> matrix, vector = generator_example()
-    >>> matrix
-    array([[ 2, -8],
-           [-1,  4]])
-    >>> vector
-    array([-4, -1])
+        >>> import numpy as np
+        >>> initialize_random_seeds()
+        >>> def generator_matrix():
+        ...     return np.random.randint(-10, 11, (2, 2))
+        >>> def generator_vector():
+        ...     return np.random.randint(-10, 11, 2)
+        >>> def test_non_trivial_dot_zero(matrix, vector):
+        ...     return (np.all(np.dot(matrix, vector) == 0)
+        ...             and not np.all(matrix == 0) and not np.all(vector == 0))
+        >>> generator_example = GeneratorExample(generator=(generator_matrix, generator_vector),
+        ...                                      test=test_non_trivial_dot_zero, n_trials_max=None)
+        >>> matrix, vector = generator_example()
+        >>> matrix
+        array([[ 2, -8],
+               [-1,  4]])
+        >>> vector
+        array([-4, -1])
     """
 
     def __init__(self, generator, test, n_trials_max):
