@@ -4,7 +4,7 @@ from poisson_approval.utils.Util import initialize_random_seeds
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 
 
-class GeneratorProfileStrategyThreshold:
+class GeneratorStrategyThresholdUniform:
     """A generator of threshold strategies (:class:`StrategyThreshold`) following the uniform distribution.
 
     Notes
@@ -14,7 +14,7 @@ class GeneratorProfileStrategyThreshold:
     Examples
     --------
         >>> initialize_random_seeds()
-        >>> generator = GeneratorProfileStrategyThreshold()
+        >>> generator = GeneratorStrategyThresholdUniform()
         >>> strategy = generator()
         >>> print(strategy)
         <abc: utility-dependent (0.5488135039273248), acb: utility-dependent (0.7151893663724195), \
