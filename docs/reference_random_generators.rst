@@ -11,6 +11,11 @@ GeneratorProfileOrdinalUniform
 .. autoclass:: poisson_approval.GeneratorProfileOrdinalUniform
     :members:
 
+GeneratorProfileOrdinalGridUniform
+----------------------------------
+.. autoclass:: poisson_approval.GeneratorProfileOrdinalGridUniform
+    :members:
+
 GeneratorProfileOrdinalVariations
 ---------------------------------
 .. autoclass:: poisson_approval.GeneratorProfileOrdinalVariations
@@ -21,12 +26,22 @@ GeneratorProfileHistogramUniform
 .. autoclass:: poisson_approval.GeneratorProfileHistogramUniform
     :members:
 
-GeneratorProfileStrategyThreshold
+GeneratorStrategyOrdinalUniform
+-------------------------------
+.. autoclass:: poisson_approval.GeneratorStrategyOrdinalUniform
+    :members:
+
+GeneratorStrategyThresholdUniform
 ---------------------------------
-.. autoclass:: poisson_approval.GeneratorProfileStrategyThreshold
+.. autoclass:: poisson_approval.GeneratorStrategyThresholdUniform
     :members:
 
 GeneratorTauVectorUniform
 -------------------------
 .. autoclass:: poisson_approval.GeneratorTauVectorUniform
+    :members:
+
+GeneratorTauVectorGridUniform
+-----------------------------
+.. autoclass:: poisson_approval.GeneratorTauVectorGridUniform
     :members:
