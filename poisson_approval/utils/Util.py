@@ -38,6 +38,61 @@ def rand_simplex(d=6):
     return np.concatenate((x, [1])) - np.concatenate(([0], x))
 
 
+def rand_integers_fixed_sum(n_integers, fixed_sum):
+    """Generate integers with a given sum (uniformly).
+
+    Parameters
+    ----------
+    n_integers : int
+        The desired number of integers.
+    fixed_sum : int
+        The fixed sum.
+
+    Returns
+    -------
+    numpy.ndarray
+        A numpy array of `d` integers, whose sum is `fixed_sum`, and drawn uniformly.
+
+    Examples
+    --------
+        >>> initialize_random_seeds()
+        >>> rand_integers_fixed_sum(n_integers=6, fixed_sum=100)
+        array([ 2, 23, 34,  0, 22, 19])
+    """
+    n_separators = n_integers - 1
+    separators = np.concatenate((
+        [-1],
+        np.sort(np.random.choice(fixed_sum + n_separators, n_separators, replace=False)),
+        [fixed_sum + n_separators]))
+    return np.array([up - down - 1 for down, up in zip(separators[:-1], separators[1:])])
+
+
+def rand_simplex_grid(d, denominator):
+    """Draw a random point in the simplex, with rational coordinates of given denominator
+
+    Parameters
+    ----------
+    d : int
+        Number of coordinates. In other words, we consider the simplex of dimension `d - 1`.
+    denominator : int
+        The coordinates will be fractions with this denominator.
+
+    Returns
+    -------
+    numpy.ndarray
+        A numpy array of length `d`, whose coordinates are fractions of the given denominator, and whose sum is 1.
+
+    Examples
+    --------
+        >>> initialize_random_seeds()
+        >>> rand_simplex_grid(d=3, denominator=100)
+        array([Fraction(13, 50), Fraction(13, 20), Fraction(9, 100)], dtype=object)
+    """
+    return np.array([
+        Fraction(n, denominator)
+        for n in rand_integers_fixed_sum(n_integers=d, fixed_sum=denominator)])
+
+
 def probability(generator, n_samples, test, conditional_on=None):
     """Probability that a random `something` meets some given test.
 
