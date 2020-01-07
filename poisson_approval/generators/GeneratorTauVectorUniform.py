@@ -22,7 +22,10 @@ bc: 0.2848106336275805, c: 0.0039303209304278885> ==> a
 
     def __call__(self):
         """
-        :return: a tau-vector.
+        Returns
+        -------
+        TauVector
+            A tau-vector.
         """
         x = rand_simplex(d=6)
         return TauVector({ballot: x[i] for i, ballot in enumerate(BALLOTS_WITHOUT_INVERSIONS)})
