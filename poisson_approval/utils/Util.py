@@ -44,7 +44,7 @@ def probability(generator, n_samples, test, conditional_on=None):
     Parameters
     ----------
     generator : callable
-        A callable that takes no input and that output a (random) `something`.
+        A callable that takes no input and that outputs a (random) `something`.
     test : callable
         A function ``something -> bool``.
     conditional_on : callable

@@ -59,6 +59,7 @@ from poisson_approval.explore_grid.ExploreGridProfilesOrdinal import ExploreGrid
 from poisson_approval.explore_grid.ExploreGridTaus import ExploreGridTaus
 
 # Random generators
+from poisson_approval.generators.GeneratorExample import GeneratorExample
 from poisson_approval.generators.GeneratorProfileOrdinalUniform import GeneratorProfileOrdinalUniform
 from poisson_approval.generators.GeneratorProfileOrdinalVariations import GeneratorProfileOrdinalVariations
 from poisson_approval.generators.GeneratorProfileHistogramUniform import GeneratorProfileHistogramUniform

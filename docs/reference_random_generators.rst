@@ -1,6 +1,11 @@
 Random Generators
 =================
 
+GeneratorExample
+----------------
+.. autoclass:: poisson_approval.GeneratorExample
+    :members:
+
 GeneratorProfileOrdinalUniform
 ------------------------------
 .. autoclass:: poisson_approval.GeneratorProfileOrdinalUniform
