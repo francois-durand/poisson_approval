@@ -3,6 +3,13 @@ History
 =======
 
 ------------------
+0.4.0 (2020-01-08)
+------------------
+
+* Add ``image_distribution``: estimate the distribution of ``f(something)`` for a random ``something``.
+* Update the tutorial on mass simulations with this new feature.
+
+------------------
 0.3.0 (2020-01-08)
 ------------------
 
