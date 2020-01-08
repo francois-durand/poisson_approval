@@ -68,7 +68,7 @@ def rand_integers_fixed_sum(n_integers, fixed_sum):
 
 
 def rand_simplex_grid(d, denominator):
-    """Draw a random point in the simplex, with rational coordinates of given denominator
+    """Draw a random point in the simplex, with rational coordinates of a given denominator
 
     Parameters
     ----------

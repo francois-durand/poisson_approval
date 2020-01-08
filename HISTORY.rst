@@ -3,6 +3,28 @@ History
 =======
 
 ------------------
+0.3.0 (2020-01-08)
+------------------
+
+* Add new random generators:
+
+  * ``GeneratorExamples``: run another generator until the generated object meets a given test.
+  * ``GeneratorStrategyOrdinalUniform``: draw a StrategyOrdinal uniformly.
+  * ``GeneratorProfileOrdinalGridUniform``: draw a ProfileOrdinal uniformly on a grid of rational numbers.
+  * ``GeneratorTauVectorGridUniform``: draw a TauVector uniformly on a grid of rational numbers.
+
+* Utilities:
+
+  * Add ``rand_integers_fixed_sum``: draw an array of integers with a given sum.
+  * Add ``rand_simplex_grid``: draw a random point in the simplex, with rational coordinates of a given denominator.
+  * Update ``probability``: allow for a tuple of generators.
+
+* Tutorials:
+
+  * Add a tutorial on asymptotic developments.
+  * Update the tutorial on mass simulations with the new features.
+
+------------------
 0.2.1 (2020-01-05)
 ------------------
 
