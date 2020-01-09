@@ -256,8 +256,8 @@ phi_ab = 0.707107>
 
         Examples
         --------
-            >>> tau = TauVector({'ab': 0.4, 'b': 0.51, 'ca': 1})
-            >>> tau.isclose(TauVector({'ab': 0.4, 'b': 0.51, 'ca': 0.999999999999999999999999}))
+            >>> tau = TauVector({'ab': 0.4, 'b': 0.6})
+            >>> tau.isclose(TauVector({'ab': 0.4, 'b': 0.59999999999999999999999999}))
             True
         """
         return isinstance(other, TauVector) and all([

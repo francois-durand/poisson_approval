@@ -10,6 +10,8 @@ class GeneratorProfileHistogramUniform:
     ----------
     n_bins : int
         The numbers of bins for each histogram.
+    kwargs : keyword arguments
+        These additional arguments will be passed directly to :class:`ProfileHistogram`.
 
     Notes
     -----
@@ -29,8 +31,9 @@ cab: 0.1124259903007756 [0.07103606 0.85456058 0.07440336], \
 cba: 0.2848106336275805 [0.0202184 0.0669109 0.9128707]> (Condorcet winner: a)
     """
 
-    def __init__(self, n_bins):
+    def __init__(self, n_bins, **kwargs):
         self.n_bins = n_bins
+        self.kwargs = kwargs
 
     def __call__(self):
         """
@@ -41,4 +44,5 @@ cba: 0.2848106336275805 [0.0202184 0.0669109 0.9128707]> (Condorcet winner: a)
         """
         x = rand_simplex(d=6)
         return ProfileHistogram({ranking: x[i] for i, ranking in enumerate(RANKINGS)},
-                                {ranking: rand_simplex(d=self.n_bins) for ranking in RANKINGS})
+                                {ranking: rand_simplex(d=self.n_bins) for ranking in RANKINGS},
+                                **self.kwargs)

@@ -8,8 +8,8 @@ class GeneratorProfileOrdinalUniform:
 
     Parameters
     ----------
-    well_informed_voters : bool
-        Cf. the corresponding parameter in :class:`ProfileOrdinal`.
+    kwargs : keyword arguments
+        These additional arguments will be passed directly to :class:`ProfileOrdinal`.
 
     Notes
     -----
@@ -25,8 +25,8 @@ class GeneratorProfileOrdinalUniform:
 cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
     """
 
-    def __init__(self, well_informed_voters=True):
-        self.well_informed_voters = well_informed_voters
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
 
     def __call__(self):
         """
@@ -37,4 +37,4 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         """
         x = rand_simplex(d=6)
         return ProfileOrdinal({ranking: x[i] for i, ranking in enumerate(RANKINGS)},
-                              well_informed_voters=self.well_informed_voters)
+                              **self.kwargs)

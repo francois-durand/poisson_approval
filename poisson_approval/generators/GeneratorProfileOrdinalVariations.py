@@ -13,8 +13,8 @@ class GeneratorProfileOrdinalVariations:
         The base profile.
     epsilon : Number
         The noise.
-    well_informed_voters : bool
-        Cf. the corresponding parameter in :class:`ProfileOrdinal`.
+    kwargs : keyword arguments
+        These additional arguments will be passed directly to :class:`ProfileOrdinal`.
 
     Notes
     -----
@@ -31,10 +31,10 @@ class GeneratorProfileOrdinalVariations:
 cab: 0.004954304904190167, cba: 0.003923853652835374> (Condorcet winner: b)
     """
 
-    def __init__(self, base_profile, epsilon, well_informed_voters=True):
-        self.well_informed_voters = well_informed_voters
+    def __init__(self, base_profile, epsilon, **kwargs):
         self.base_profile = base_profile
         self.epsilon = epsilon
+        self.kwargs = kwargs
 
     def __call__(self):
         """
@@ -43,4 +43,4 @@ cab: 0.004954304904190167, cba: 0.003923853652835374> (Condorcet winner: b)
         return ProfileOrdinal({ranking: self.base_profile.d_ranking_share[ranking] + self.epsilon * random.random()
                                for ranking in RANKINGS},
                               normalization_warning=False,
-                              well_informed_voters=self.well_informed_voters)
+                              **self.kwargs)

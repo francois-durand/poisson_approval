@@ -10,8 +10,8 @@ class GeneratorProfileOrdinalGridUniform:
     ----------
     denominator : int
         The coefficients of the profile will be fractions with this denominator.
-    well_informed_voters : bool
-        Cf. the corresponding parameter in :class:`ProfileOrdinal`.
+    kwargs : keyword arguments
+        These additional arguments will be passed directly to :class:`ProfileOrdinal`.
 
     Notes
     -----
@@ -21,15 +21,17 @@ class GeneratorProfileOrdinalGridUniform:
     Examples
     --------
         >>> initialize_random_seeds()
-        >>> generator = GeneratorProfileOrdinalGridUniform(denominator=100)
+        >>> generator = GeneratorProfileOrdinalGridUniform(denominator=100, well_informed_voters=False)
         >>> profile = generator()
         >>> print(profile)
         <abc: 1/50, acb: 23/100, bac: 17/50, cab: 11/50, cba: 19/100>
+        >>> profile.well_informed_voters
+        False
     """
 
-    def __init__(self, denominator, well_informed_voters=True):
+    def __init__(self, denominator, **kwargs):
         self.denominator = denominator
-        self.well_informed_voters = well_informed_voters
+        self.kwargs = kwargs
 
     def __call__(self):
         """
@@ -40,4 +42,4 @@ class GeneratorProfileOrdinalGridUniform:
         """
         x = rand_simplex_grid(d=6, denominator=self.denominator)
         return ProfileOrdinal({ranking: x[i] for i, ranking in enumerate(RANKINGS)},
-                              well_informed_voters=self.well_informed_voters)
+                              **self.kwargs)
