@@ -238,6 +238,33 @@ phi_ab = 0.707107>
         """
         return isinstance(other, TauVector) and self.d_ballot_share == other.d_ballot_share
 
+    def isclose(self, other, *args, **kwargs):
+        """Test near-equality.
+
+        Parameters
+        ----------
+        other : Object
+        *args
+            Cf. :func:`math.isclose`.
+        **kwargs
+            Cf. :func:`math.isclose`.
+
+        Returns
+        -------
+        isclose : bool
+            True if this tau-vector is approximately equal to `other`.
+
+        Examples
+        --------
+            >>> tau = TauVector({'ab': 0.4, 'b': 0.51, 'ca': 1})
+            >>> tau.isclose(TauVector({'ab': 0.4, 'b': 0.51, 'ca': 0.999999999999999999999999}))
+            True
+        """
+        return isinstance(other, TauVector) and all([
+            isclose(share, other.d_ballot_share[ballot], *args, **kwargs)
+            for ballot, share in self.d_ballot_share.items()
+        ])
+
     @cached_property
     def standardized_version(self):
         """Standardized version of the profile (makes it unique, up to permutations).

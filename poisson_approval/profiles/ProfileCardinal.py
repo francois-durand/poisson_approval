@@ -1,4 +1,5 @@
 from math import isclose
+from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import ballot_one, ballot_one_two
 from poisson_approval.profiles.Profile import Profile
@@ -11,7 +12,17 @@ from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 
 # noinspection PyUnresolvedReferences
 class ProfileCardinal(Profile):
-    """A cardinal profile of preference (abstract class)."""
+    """A cardinal profile of preference (abstract class).
+
+    Parameters
+    ----------
+    ratio_sincere : Number
+        The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
+    """
+
+    def __init__(self, ratio_sincere=0):
+        super().__init__()
+        self.ratio_sincere = ratio_sincere
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
@@ -83,7 +94,47 @@ class ProfileCardinal(Profile):
     # Tau and strategy-related stuff
 
     def tau(self, strategy):
-        """Tau-vector associated to a strategy.
+        """Tau-vector associated to a strategy, with partial sincere voting.
+
+        Parameters
+        ----------
+        strategy : an argument accepted by :meth:`tau_strategic`.
+
+        Returns
+        -------
+        TauVector
+            A share :attr:`ratio_sincere` of the voters vote sincerely (in the sense of :attr:`tau_sincere`) and the
+            rest of them vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
+            is the barycenter of ``tau_sincere`` and ``tau_strategic(strategy)``, with respective weights
+            ``self.ratio_sincere`` and ``1 - self.ratio_sincere``.
+        """
+        tau_sincere = self.tau_sincere
+        tau_strategic = self.tau_strategic(strategy)
+        t = {ballot: self.ratio_sincere * tau_sincere.d_ballot_share[ballot]
+             + (1 - self.ratio_sincere) * tau_strategic.d_ballot_share[ballot]
+             for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        return TauVector(t)
+
+    @cached_property
+    def tau_sincere(self):
+        """Tau-vector associated to sincere voting.
+
+        Returns
+        -------
+        TauVector
+            All voters approve of their top candidate. Voters approve of their middle candidate if and only if
+            their utility for her is strictly greater than 0.5.
+        """
+        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for ranking in RANKINGS:
+            share_vote_one_two = self.have_ranking_with_utility_above_u(ranking, Fraction(1, 2))
+            share_vote_one = self.d_ranking_share[ranking] - share_vote_one_two
+            t[ballot_one(ranking)] += share_vote_one
+            t[ballot_one_two(ranking)] += share_vote_one_two
+        return TauVector(t)
+
+    def tau_strategic(self, strategy):
+        """Tau-vector associated to a strategy (fully strategic voting).
 
         Parameters
         ----------
@@ -113,24 +164,29 @@ class ProfileCardinal(Profile):
         Returns
         -------
         EquilibriumStatus
-            Whether `strategy` is an equilibrium in this profile.
+            Whether `strategy` is an equilibrium in this profile. This is based on the assumption that:
+
+            * A proportion :attr:`ratio_sincere` of voters cast their ballot sincerely (in the sense of
+              :attr:`tau_sincere`),
+            * And the rest of the voters use `strategy`.
         """
-        d_ranking_best_response = self.tau(strategy).d_ranking_best_response
-        status = EquilibriumStatus.EQUILIBRIUM
+        this_tau = self.tau(strategy)
+        d_ranking_best_response = this_tau.d_ranking_best_response
+        d_ranking_threshold = dict()
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
-            best_response = d_ranking_best_response[ranking]
             if strategy.d_ranking_threshold[ranking] is None:
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)
-            elif best_response.ballot == INCONCLUSIVE:
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)
-            else:
-                should_vote_12 = self.have_ranking_with_utility_above_u(ranking, u=best_response.threshold_utility)
-                do_vote_12 = self.have_ranking_with_utility_above_u(ranking, u=strategy.d_ranking_threshold[ranking])
-                if not isclose(should_vote_12, do_vote_12):
-                    return EquilibriumStatus.NOT_EQUILIBRIUM
-        return status
+                return EquilibriumStatus.INCONCLUSIVE
+            best_response = d_ranking_best_response[ranking]
+            if best_response.ballot == INCONCLUSIVE:
+                return EquilibriumStatus.INCONCLUSIVE
+            d_ranking_threshold[ranking] = best_response.threshold_utility
+        tau_response = self.tau(StrategyThreshold(d_ranking_threshold))
+        if tau_response.isclose(this_tau):
+            return EquilibriumStatus.EQUILIBRIUM
+        else:
+            return EquilibriumStatus.NOT_EQUILIBRIUM
 
     def iterated_voting(self, strategy_ini, n_max_episodes, verbose=False):
         """Seek for convergence by iterated voting.

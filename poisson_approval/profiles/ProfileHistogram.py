@@ -27,6 +27,8 @@ class ProfileHistogram(ProfileCardinal):
         in this segment.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
+    ratio_sincere : Number
+        The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
 
     Notes
     -----
@@ -68,6 +70,10 @@ class ProfileHistogram(ProfileCardinal):
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
         >>> strategy = StrategyThreshold({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
+        >>> print(profile.tau_sincere)
+        <a: 1/20, ab: 1/20, ac: 1/10, b: 3/5, c: 1/5> ==> b
+        >>> print(profile.tau_strategic(strategy))
+        <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> print(profile.tau(strategy))
         <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> profile.is_equilibrium(strategy)
@@ -79,8 +85,8 @@ class ProfileHistogram(ProfileCardinal):
         <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
     """
 
-    def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True):
-        super().__init__()
+    def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True, ratio_sincere=0):
+        super().__init__(ratio_sincere=ratio_sincere)
         # Populate the dictionary and check for typos in the input
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros()
         self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros()

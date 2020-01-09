@@ -25,6 +25,8 @@ class ProfileTwelve(ProfileCardinal):
         ``a`` then ``b`` then ``c``, with a utility for ``b`` that is infinitely close to 0.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
+    ratio_sincere : Number
+        The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
 
     Notes
     -----
@@ -67,10 +69,27 @@ class ProfileTwelve(ProfileCardinal):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
+
+    In the following example, one third of the voters are sincere:
+
+        >>> from fractions import Fraction
+        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+        ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
+        ...                         ratio_sincere=Fraction(1, 3))
+        >>> tau_sincere = profile.tau_sincere
+        >>> print(tau_sincere)
+        <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
+        >>> strategy = StrategyTwelve({'abc': 'a', 'bac': 'b', 'cab': 'utility-dependent'})
+        >>> tau_strategic = profile.tau_strategic(strategy)
+        >>> print(tau_strategic)
+        <a: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
+        >>> tau = profile.tau(strategy)
+        >>> print(tau)
+        <a: 1/15, ab: 1/30, ac: 1/10, b: 3/5, c: 1/5> ==> b
     """
 
-    def __init__(self, d_type_share, normalization_warning=True):
-        super().__init__()
+    def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0):
+        super().__init__(ratio_sincere=ratio_sincere)
         # Populate the dictionary and check for typos in the input
         self.d_type_share = DictPrintingInOrderIgnoringZeros()
         for t, share in d_type_share.items():
@@ -256,7 +275,7 @@ class ProfileTwelve(ProfileCardinal):
 
     # Tau and strategy-related stuff
 
-    def tau(self, strategy):
+    def tau_strategic(self, strategy):
         """Tau-vector associated to a strategy.
 
         Parameters
@@ -274,11 +293,8 @@ class ProfileTwelve(ProfileCardinal):
             >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
             >>> strategy = StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': 'utility-dependent'})
-            >>> tau = profile.tau(strategy)
-            >>> print(tau)
-            <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
-            >>> tau = profile.τ(strategy)  # Alternate notation
-            >>> print(tau)
+            >>> tau_strategic = profile.tau_strategic(strategy)
+            >>> print(tau_strategic)
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         """
         t = {'a': 0, 'b': 0, 'c': 0, 'ab': 0, 'ac': 0, 'bc': 0}
