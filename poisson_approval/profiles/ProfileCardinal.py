@@ -238,10 +238,10 @@ class ProfileCardinal(Profile):
             else:
                 strategies.append(strategy)
         try:
-            begin, end = next((begin, end)
-                              for end in range(len(strategies) - 1, 0, -1)
-                              for begin in range(end - 1, -1, -1)
-                              if strategies[begin].isclose(strategies[end]))
+            end = len(strategies) - 1
+            begin = next(begin
+                         for begin in range(end - 1, -1, -1)
+                         if strategies[begin].isclose(strategies[end]))
             return strategies[begin:end]
         except StopIteration:
             return []
