@@ -1,7 +1,7 @@
 from math import isclose
 from fractions import Fraction
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import ballot_one, ballot_one_two
+from poisson_approval.utils.Util import ballot_one, ballot_one_two, barycenter
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -110,8 +110,9 @@ class ProfileCardinal(Profile):
         """
         tau_sincere = self.tau_sincere
         tau_strategic = self.tau_strategic(strategy)
-        t = {ballot: self.ratio_sincere * tau_sincere.d_ballot_share[ballot]
-             + (1 - self.ratio_sincere) * tau_strategic.d_ballot_share[ballot]
+        t = {ballot: barycenter(a=tau_strategic.d_ballot_share[ballot],
+                                b=tau_sincere.d_ballot_share[ballot],
+                                ratio_b=self.ratio_sincere)
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
         return TauVector(t)
 
@@ -188,7 +189,7 @@ class ProfileCardinal(Profile):
         else:
             return EquilibriumStatus.NOT_EQUILIBRIUM
 
-    def iterated_voting(self, strategy_ini, n_max_episodes, verbose=False):
+    def iterated_voting(self, strategy_ini, n_max_episodes, update_ratio=1, verbose=False):
         """Seek for convergence by iterated voting.
 
         Parameters
@@ -197,6 +198,11 @@ class ProfileCardinal(Profile):
             Initial strategy.
         n_max_episodes : int
             Maximal number of iterations.
+        update_ratio : Number
+            The speed at which the utility threshold of the strategy being used moves toward the utility threshold of
+            the best response. For example, for voters `abc`, if the current threshold of their strategy is `t` and the
+            threshold of their best response is `u`, then the threshold of their updated strategy will be
+            ``(1 - update_ratio) * t + update_ratio * u``.
         verbose : bool
             If True, print all intermediate strategies.
 
@@ -217,9 +223,10 @@ class ProfileCardinal(Profile):
             print(strategy)
         for i in range(n_max_episodes):
             strategy = StrategyThreshold(
-                {ranking: best_response.threshold_utility
-                 for ranking, best_response in strategy.d_ranking_best_response.items()
-                 if self.d_ranking_share[ranking] > 0},
+                {ranking: barycenter(a=strategy.d_ranking_threshold[ranking],
+                                     b=strategy.d_ranking_best_response[ranking].threshold_utility,
+                                     ratio_b=update_ratio)
+                 for ranking in RANKINGS if self.d_ranking_share[ranking] > 0},
                 profile=self)
             if verbose:
                 print(i)

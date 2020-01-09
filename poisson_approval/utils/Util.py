@@ -436,3 +436,45 @@ def give_figure(n, singular, plural=None):
             return str(n) + ' ' + singular + 's'
         else:
             return str(n) + ' ' + plural
+
+
+def barycenter(a, b, ratio_b):
+    """Barycenter.
+
+    Parameters
+    ----------
+    a : Number
+    b : Number
+    ratio_b : the ratio of `b` in the result
+
+    Returns
+    -------
+    Number
+        The result of ``(1 - ratio_b) * a + ratio_b * b``. The added value of this function is to preserve the type
+        of `a` (resp. `b`) when `ratio_b` is 0 (resp. 1).
+
+    Examples
+    --------
+    In this first example, `barycenter` preserves the type Fraction, whereas a naive computation returns a float:
+
+        >>> a, b = Fraction(1, 10), 0.7
+        >>> ratio_b = 0
+        >>> barycenter(a, b, ratio_b)
+        Fraction(1, 10)
+        >>> (1 - ratio_b) * a + ratio_b * b
+        0.1
+
+    The second example is symmetric of the first one, in the sense that it preserves the type of `b`:
+
+        >>> a, b = 0.7, 42
+        >>> ratio_b = 1
+        >>> barycenter(a, b, ratio_b)
+        42
+        >>> (1 - ratio_b) * a + ratio_b * b
+        42.0
+    """
+    if ratio_b == 0:
+        return a
+    if ratio_b == 1:
+        return b
+    return (1 - ratio_b) * a + ratio_b * b
