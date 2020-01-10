@@ -3,6 +3,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.containers.Winners import Winners
 from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 
 
 # noinspection PyUnresolvedReferences
@@ -140,6 +141,26 @@ class Profile():
             Whether `strategy` is an equilibrium in this profile.
         """
         raise NotImplementedError
+
+    def best_responses_to_strategy(self, d_ranking_best_response):
+        """Convert best responses to a :class:`StrategyThreshold`.
+
+        Parameters
+        ----------
+        d_ranking_best_response : dict
+            Key: ranking. Value: :class:`BestResponse`.
+
+        Returns
+        -------
+        StrategyThreshold
+            The conversion of the best responses into a strategy. Only the rankings present in this profile are
+            mentioned in the strategy.
+        """
+        return StrategyThreshold({
+            ranking: best_response.threshold_utility
+            for ranking, best_response in d_ranking_best_response.items()
+            if self.d_ranking_share[ranking] > 0
+        })
 
 
 def make_property_ranking_share(ranking, doc):

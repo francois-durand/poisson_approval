@@ -189,8 +189,8 @@ class ProfileCardinal(Profile):
         else:
             return EquilibriumStatus.NOT_EQUILIBRIUM
 
-    def iterated_voting(self, strategy_ini, n_max_episodes, update_ratio=1, verbose=False):
-        """Seek for convergence by iterated voting.
+    def iterated_voting_strategies(self, strategy_ini, n_max_episodes, update_ratio=1, verbose=False):
+        """Seek for convergence by iterated voting (strategy update).
 
         Parameters
         ----------
@@ -217,31 +217,130 @@ class ProfileCardinal(Profile):
             ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
             if self.d_ranking_share[ranking] > 0
         }, profile=self)
-        strategies = [strategy]
+        tau = strategy.tau
+        taus = [tau]
         if verbose:
             print(-1)
             print(strategy)
         for i in range(n_max_episodes):
             strategy = StrategyThreshold(
-                {ranking: barycenter(a=strategy.d_ranking_threshold[ranking],
-                                     b=strategy.d_ranking_best_response[ranking].threshold_utility,
-                                     ratio_b=update_ratio)
+                {ranking: _my_round(barycenter(a=strategy.d_ranking_threshold[ranking],
+                                               b=strategy.d_ranking_best_response[ranking].threshold_utility,
+                                               ratio_b=update_ratio))
                  for ranking in RANKINGS if self.d_ranking_share[ranking] > 0},
                 profile=self)
+            tau = strategy.tau
             if verbose:
                 print(i)
                 print(strategy)
-            if strategy in strategies:
+            if tau in taus:
                 # If there is an exact cycle, it is useless to continue looping.
-                strategies.append(strategy)
+                taus.append(tau)
                 break
             else:
-                strategies.append(strategy)
+                taus.append(tau)
         try:
-            end = len(strategies) - 1
+            end = len(taus) - 1
             begin = next(begin
                          for begin in range(end - 1, -1, -1)
-                         if strategies[begin].isclose(strategies[end]))
-            return strategies[begin:end]
+                         if taus[begin].isclose(taus[end]))
+            cycle_taus = taus[begin:end]
         except StopIteration:
-            return []
+            cycle_taus = []
+        responses = [self.best_responses_to_strategy(tau.d_ranking_best_response) for tau in cycle_taus]
+        return {'cycle_taus': cycle_taus, 'responses': responses}
+
+    def iterated_voting_taus(self, strategy_ini, n_max_episodes, update_ratio=1, verbose=False):
+        """Seek for convergence by iterated voting (tau update).
+
+        Parameters
+        ----------
+        strategy_ini : StrategyThreshold
+            Initial strategy.
+        n_max_episodes : int
+            Maximal number of iterations.
+        update_ratio : Number
+            The speed at which the utility threshold of the strategy being used moves toward the utility threshold of
+            the best response. For example, for voters `abc`, if the current threshold of their strategy is `t` and the
+            threshold of their best response is `u`, then the threshold of their updated strategy will be
+            ``(1 - update_ratio) * t + update_ratio * u``.
+        verbose : bool
+            If True, print all intermediate tau-vectors.
+
+        Returns
+        -------
+        list of :class:`TauVector`
+            If length 1, the process converges to this tau-vector. If length > 1, the process reaches a periodical orbit
+            between these tau-vectors. If length = 0, by convention, it means that the process does not converge and
+            does not reach a periodical orbit.
+        """
+
+        strategy = StrategyThreshold({
+            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
+            if self.d_ranking_share[ranking] > 0
+        }, profile=self)
+        tau = strategy.tau
+        taus = [tau]
+        if verbose:
+            print(-1)
+            print(tau)
+        for i in range(n_max_episodes):
+            strategy = StrategyThreshold(
+                {ranking: tau.d_ranking_best_response[ranking].threshold_utility
+                 for ranking in RANKINGS if self.d_ranking_share[ranking] > 0},
+                profile=self)
+            tau_full_response = strategy.tau
+            tau = TauVector({
+                ballot: _my_round(barycenter(a=tau.d_ballot_share[ballot],
+                                             b=tau_full_response.d_ballot_share[ballot],
+                                             ratio_b=update_ratio))
+                for ballot in BALLOTS_WITHOUT_INVERSIONS
+            }, normalization_warning=False)
+            if verbose:
+                print(i)
+                print(tau)
+            if tau in taus:
+                # If there is an exact cycle, it is useless to continue looping.
+                taus.append(tau)
+                break
+            else:
+                taus.append(tau)
+        try:
+            end = len(taus) - 1
+            begin = next(begin
+                         for begin in range(end - 1, -1, -1)
+                         if taus[begin].isclose(taus[end]))
+            cycle_taus = taus[begin:end]
+        except StopIteration:
+            cycle_taus = []
+        responses = [self.best_responses_to_strategy(tau.d_ranking_best_response) for tau in cycle_taus]
+        return {'cycle_taus': cycle_taus, 'responses': responses}
+
+
+def _my_round(x):
+    """Round to 0 or 1 if the number is close enough.
+
+    Parameters
+    ----------
+    x : Number
+
+    Returns
+    -------
+    Number
+        Generally, return `x`. If `x` is close enough to 0 or 1, then return 0 or 1 respectively.
+
+    Examples
+    --------
+
+        >>> _my_round(1E-10)
+        0
+        >>> _my_round(0.999999999999999999)
+        1
+        >>> _my_round(0.123456789)
+        0.123456789
+    """
+    if isclose(x, 1):
+        return 1
+    if isclose(x, 0, abs_tol=1E-9):
+        return 0
+    return x
