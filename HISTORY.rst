@@ -3,6 +3,43 @@ History
 =======
 
 ------------------
+0.5.0 (2020-01-11)
+------------------
+
+* In iterated voting, implement the possibility to move only *progressively* towards the best response:
+
+  * Add ``ProfileCardinal.iterated_voting_taus``: at each iteration, a given ratio of voters update their ballot.
+  * Replace the former method ``ProfileCardinal.iterated_voting`` by ``ProfileCardinal.iterated_voting_strategies``:
+    as in former versions, at each iteration, the threshold utility of each ranking's strategy is moved in the
+    direction of the best response's threshold utility. The method now returns a cycle of tau-vectors and the
+    corresponding cycle of best response strategies, in order to be consistent with
+    ``ProfileCardinal.iterated_voting_taus``.
+  * Add the utility ``barycenter``: compute a barycenter while respecting the type of one input if the other input has
+    weight 0.
+  * Accelerate the algorithm used in iterated voting.
+
+* In ``ProfileCardinal``, add the possibility of partial sincere voting:
+
+  * Add parameter ``ratio_sincere``: ratio of sincere voters.
+  * Add property ``tau_sincere``: the tau-vector if all voters vote sincerely.
+  * The former method ``tau`` is renamed ``tau_strategic``: the tau_vector if all voters vote strategically.
+  * The new method ``tau`` takes both sincere and strategic voting into account.
+  * The method ``is_equilibrium`` has a new implementation to take this feature into account.
+
+* Add ``TauVector.isclose``: whether the tau-vector is close to another tau-vector (in the sense of
+  ``math.isclose``). This method is used by the new version of ``ProfileCardinal.is_equilibrium``.
+
+* Add ``Profile.best_responses_to_strategy``: convert a dictionary of best responses to a ``StrategyThreshold`` that
+  mentions only the rankings that are present in the profile.
+
+* In random generators of profiles (``GeneratorProfileOrdinalUniform``, ``GeneratorProfileOrdinalGridUniform``,
+  ``GeneratorProfileOrdinalVariations``, ``GeneratorProfileHistogramUniform``): instead of having explicit arguments
+  like ``well_informed_voters`` or ``ratio_sincere``, there are ``**kwargs`` that are directly passed to the
+  ``__init__`` of the relevant Profile subclass.
+
+* Update the tutorials with these new features.
+
+------------------
 0.4.0 (2020-01-08)
 ------------------
 

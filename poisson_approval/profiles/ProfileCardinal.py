@@ -208,10 +208,15 @@ class ProfileCardinal(Profile):
 
         Returns
         -------
-        list of :class:`StrategyThreshold`
-            If length 1, the process converges to this strategy. If length > 1, the process reaches a periodical orbit
-            between these strategies. If length = 0, by convention, it means that the process does not converge and
-            does not reach a periodical orbit.
+        dict
+            * Key ``cycle``: a list of :class:`TauVector`. The limit cycle of tau-vectors. If its length is 1, the
+              process converges to this tau-vector. If its length is greater than 1, the process reaches a periodical
+              orbit between these tau-vectors. If its length is 0, by convention, it means that the process does not
+              converge and does not reach a periodical orbit.
+            * Key ``responses``: a list of :class:`StrategyThreshold`. Its length is the same as ``cycle``. Each
+              element represent the strategy that is the best response to the corresponding tau-vector. For example,
+              if ``update_ratio == 1``, it is the strategy that all strategic voters use at the following step of the
+              cycle.
         """
         strategy = StrategyThreshold({
             ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
@@ -260,19 +265,25 @@ class ProfileCardinal(Profile):
         n_max_episodes : int
             Maximal number of iterations.
         update_ratio : Number
-            The speed at which the utility threshold of the strategy being used moves toward the utility threshold of
-            the best response. For example, for voters `abc`, if the current threshold of their strategy is `t` and the
-            threshold of their best response is `u`, then the threshold of their updated strategy will be
-            ``(1 - update_ratio) * t + update_ratio * u``.
+            The ratio of voters that update their ballot. At each iteration, this ratio of voters update their response
+            (they continue voting sincerely if they are sincere voters, they update their strategical ballot otherwise).
+            In other words, the updated tau-vector is a barycenter of the former tau-vector with weight
+            ``1 - update_ratio`` and the response tau-vector (as computed by :meth:``tau``) with weight
+            ``update_ratio``.
         verbose : bool
             If True, print all intermediate tau-vectors.
 
         Returns
         -------
-        list of :class:`TauVector`
-            If length 1, the process converges to this tau-vector. If length > 1, the process reaches a periodical orbit
-            between these tau-vectors. If length = 0, by convention, it means that the process does not converge and
-            does not reach a periodical orbit.
+        dict
+            * Key ``cycle``: a list of :class:`TauVector`. The limit cycle of tau-vectors. If its length is 1, the
+              process converges to this tau-vector. If its length is greater than 1, the process reaches a periodical
+              orbit between these tau-vectors. If its length is 0, by convention, it means that the process does not
+              converge and does not reach a periodical orbit.
+            * Key ``responses``: a list of :class:`StrategyThreshold`. Its length is the same as ``cycle``. Each
+              element represent the strategy that is the best response to the corresponding tau-vector. For example,
+              if ``update_ratio == 1``, it is the strategy that all strategic voters use at the following step of the
+              cycle.
         """
 
         strategy = StrategyThreshold({
