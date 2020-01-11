@@ -98,7 +98,7 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy : an argument accepted by :meth:`tau_strategic`.
+        strategy : an argument accepted by :meth:`tau_strategic`
 
         Returns
         -------
