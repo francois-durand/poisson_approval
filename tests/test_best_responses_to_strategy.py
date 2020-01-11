@@ -9,6 +9,6 @@ def test():
     >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'}, profile=profile)
     >>> strategy_response = profile.best_responses_to_strategy(strategy.d_ranking_best_response)
     >>> print(strategy_response)
-    <abc: a, bac: ab, cab: c>
+    <abc: a, bac: ab, cab: c> ==> a
     """
     pass

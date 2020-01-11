@@ -160,7 +160,7 @@ class Profile():
             ranking: best_response.threshold_utility
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0
-        })
+        }, profile=self)
 
 
 def make_property_ranking_share(ranking, doc):
