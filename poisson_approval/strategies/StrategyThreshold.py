@@ -34,10 +34,8 @@ class StrategyThreshold(StrategyTwelve):
         0.4
     """
 
-    def __init__(self, d_ranking_threshold=None, profile=None):
+    def __init__(self, d_ranking_threshold, profile=None):
         # Populate the dictionary of thresholds
-        if d_ranking_threshold is None:
-            d_ranking_threshold = dict()
         self.d_ranking_threshold = DictPrintingInOrderIgnoringZeros(d_ranking_threshold)
         for ranking in RANKINGS:
             if ranking not in self.d_ranking_threshold:

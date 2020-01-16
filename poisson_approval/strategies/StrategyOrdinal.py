@@ -30,10 +30,12 @@ class StrategyOrdinal(StrategyThreshold):
         1
     """
 
-    def __init__(self, d_ranking_ballot=None, profile=None):
-        # Populate the dictionary and check for typos in the input
-        if d_ranking_ballot is None:
-            d_ranking_ballot = dict()
+    def __init__(self, d_ranking_ballot, profile=None):
+        """
+            >>> strategy = StrategyOrdinal({'abc': 'non_existing_ballot'})
+            Traceback (most recent call last):
+            ValueError: Unknown strategy: non_existing_ballot
+        """
         # Prepare the dictionary of thresholds
         d_ranking_threshold = DictPrintingInOrderIgnoringZeros()
         for ranking, ballot in d_ranking_ballot.items():

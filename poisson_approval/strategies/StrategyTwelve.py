@@ -32,10 +32,16 @@ class StrategyTwelve(Strategy):
         'ab'
     """
 
-    def __init__(self, d_ranking_ballot=None, profile=None):
+    def __init__(self, d_ranking_ballot, profile=None):
+        """
+            >>> strategy = StrategyTwelve({'non_existing_ranking': 'utility-dependent'})
+            Traceback (most recent call last):
+            ValueError: Unknown key: non_existing_ranking
+            >>> strategy = StrategyTwelve({'abc': 'non_existing_ballot'})
+            Traceback (most recent call last):
+            ValueError: Unknown strategy: non_existing_ballot
+        """
         # Populate the dictionary and check for typos in the input
-        if d_ranking_ballot is None:
-            d_ranking_ballot = dict()
         self.d_ranking_ballot = DictPrintingInOrderIgnoringZeros()
         for ranking, ballot in d_ranking_ballot.items():
             if ranking not in RANKINGS:

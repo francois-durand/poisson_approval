@@ -11,6 +11,8 @@ def test():
     <abc: a, bac: ab, cab: c> ==> a
     >>> print(strategy.tau)
     <a: 1/10, ab: 3/5, c: 3/10> ==> a
+    >>> print(strategy.τ)
+    <a: 1/10, ab: 3/5, c: 3/10> ==> a
     >>> print(strategy.scores)
     {a: 7/10, b: 3/5, c: 3/10}
     >>> print(strategy.winners)
