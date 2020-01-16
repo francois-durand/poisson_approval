@@ -31,11 +31,12 @@ phi_bc = 1>
         >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
         ...                  tau_b=Fraction(1, 2), tau_ac=Fraction(1, 2))
         <asymptotic = exp(- inf)>
+
         >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...                  tau_a=Fraction(1, 8), tau_b=Fraction(1, 8),
-        ...                  tau_ab=Fraction(1, 8), tau_ac=Fraction(1, 8), tau_bc=Fraction(1, 2))
-        <asymptotic = exp(- 0.0844306 n - 0.5 log n - 0.801438 + o(1)), phi_a = 1.58114, phi_b = 0.632456, phi_ab = 1, \
-phi_ac = 1.58114, phi_bc = 0.632456>
+        ...                  tau_a=Fraction(1, 9), tau_b=Fraction(1, 9),
+        ...                  tau_ab=Fraction(1, 9), tau_ac=Fraction(1, 3), tau_bc=Fraction(1, 3))
+        <asymptotic = exp(- 0.0181103 n + ? log n + ? + o(1)), phi_a = 1.17454, phi_b = 1.17454, phi_ab = 1.37954, \
+phi_ac = 0.851397, phi_bc = 0.851397>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
