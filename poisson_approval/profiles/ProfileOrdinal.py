@@ -99,7 +99,7 @@ class ProfileOrdinal(Profile):
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         return result
 
-    def _repr_pretty_(self, p, cycle):
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 

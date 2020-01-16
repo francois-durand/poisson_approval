@@ -10,7 +10,7 @@ from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 class Profile():
     """A profile of preference (abstract class)."""
 
-    def _repr_pretty_(self, p, cycle):
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
