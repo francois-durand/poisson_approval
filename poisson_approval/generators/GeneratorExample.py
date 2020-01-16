@@ -61,6 +61,19 @@ class GeneratorExample:
                [-1,  4]])
         >>> vector
         array([-4, -1])
+
+    When no example is found, the generator returns None:
+
+        >>> import numpy as np
+        >>> def generator_integer():
+        ...     return np.random.randint(0, 100)
+        >>> def is_negative(n):
+        ...     return n < 0
+        >>> generator_example = GeneratorExample(generator=generator_integer,
+        ...                                      test=is_negative, n_trials_max=100)
+        >>> n = generator_example()
+        >>> print(n)
+        None
     """
 
     def __init__(self, generator, test, n_trials_max):
