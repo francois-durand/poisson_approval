@@ -13,7 +13,9 @@ Poisson Approval
         :target: https://poisson-approval.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-
+.. image:: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs/badge.svg
+        :target: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs/badge
+        :alt: Code Coverage
 
 
 Poisson Approval studies the Poisson Game of Approval Voting.
