@@ -110,7 +110,7 @@ class Asymptotic:
         s = "exp(%s)" % s
         return s
 
-    def _repr_pretty_(self, p, cycle):  # pragma : no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -180,6 +180,12 @@ class Asymptotic:
         )
 
     def __rmul__(self, other):
+        """
+        Examples
+        --------
+            >>> print(3 * Asymptotic(mu=42, nu=51, xi=69))
+            exp(42 n + 51 log n + 70.0986 + o(1))
+        """
         return self * other
 
     def __truediv__(self, other):
@@ -202,6 +208,8 @@ class Asymptotic:
             exp(41 n + ? log n + ? + o(1))
             >>> print(1 / Asymptotic(mu=42, nu=51, xi=69))
             exp(- 42 n - 51 log n - 69 + o(1))
+            >>> print(Asymptotic(mu=42, nu=51, xi=69) / 2)
+            exp(42 n + 51 log n + 68.3069 + o(1))
         """
         if not isinstance(other, Asymptotic):
             other = Asymptotic(0, 0, log(other))
