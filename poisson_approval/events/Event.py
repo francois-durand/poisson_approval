@@ -42,6 +42,13 @@ class Event:
     """
 
     def __init__(self, candidate_x, candidate_y, candidate_z, **kwargs):
+        """
+        Examples
+        --------
+            >>> event = Event(candidate_x='a', candidate_y='b', candidate_z='c', non_existing_argument=42)
+            Traceback (most recent call last):
+            ValueError: ('Unknown arguments: ', ['non_existing_argument'])
+        """
         # -------------
         # Preliminaries
         # -------------
@@ -72,7 +79,7 @@ class Event:
             setattr(self, 'tau_' + label, getattr(self, '_tau_' + label_std))
         # Check that no unused argument remains
         if kwargs:
-            raise ValueError('Unknown arguments: ', kwargs.keys())
+            raise ValueError('Unknown arguments: ', list(kwargs.keys()))
         # Declare the computed variables
         self._phi_x, self._phi_y, self._phi_z = None, None, None
         self._phi_xy, self._phi_xz, self._phi_yz = None, None, None
