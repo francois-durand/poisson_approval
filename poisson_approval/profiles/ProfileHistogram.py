@@ -86,6 +86,16 @@ class ProfileHistogram(ProfileCardinal):
     """
 
     def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True, ratio_sincere=0):
+        """
+            >>> profile = ProfileHistogram(d_ranking_share={'non_existing_ranking': 1},
+            ...                            d_ranking_histogram={'abc': [1]})
+            Traceback (most recent call last):
+            ValueError: Unknown key: non_existing_ranking
+            >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
+            ...                            d_ranking_histogram={'non_existing_ranking': [1]})
+            Traceback (most recent call last):
+            ValueError: Unknown key: non_existing_ranking
+        """
         super().__init__(ratio_sincere=ratio_sincere)
         # Populate the dictionary and check for typos in the input
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros()
@@ -119,7 +129,7 @@ class ProfileHistogram(ProfileCardinal):
             if not isclose(total, 1.):
                 if normalization_warning:
                     warnings.warn("Warning: profile is not normalized, I will normalize it.")
-                histogram /= total
+                self.d_ranking_histogram[ranking] = histogram / total
 
     @cached_property
     def d_ranking_share(self):
