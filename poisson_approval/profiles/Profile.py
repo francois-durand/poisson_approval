@@ -105,6 +105,7 @@ class Profile():
         Parameters
         ----------
         strategy : Strategy
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -120,6 +121,7 @@ class Profile():
         Parameters
         ----------
         strategy : Strategy
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -134,6 +136,7 @@ class Profile():
         Parameters
         ----------
         strategy : Strategy
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------

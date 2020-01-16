@@ -281,6 +281,7 @@ class ProfileTwelve(ProfileCardinal):
         Parameters
         ----------
         strategy : StrategyTwelve
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -315,6 +316,7 @@ class ProfileTwelve(ProfileCardinal):
         Parameters
         ----------
         strategy : StrategyTwelve
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -336,9 +338,7 @@ class ProfileTwelve(ProfileCardinal):
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if strategy.d_ranking_ballot[ranking] == '':
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)
-            elif best_response.ballot == INCONCLUSIVE:
+            if best_response.ballot == INCONCLUSIVE:
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             else:
                 type_1 = ranking[:1] + '_' + ranking[1:]  # E.g. a_bc
