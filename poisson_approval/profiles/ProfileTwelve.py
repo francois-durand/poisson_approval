@@ -89,6 +89,11 @@ class ProfileTwelve(ProfileCardinal):
     """
 
     def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0):
+        """
+            >>> profile = ProfileTwelve({'non_existing_type': 1})
+            Traceback (most recent call last):
+            ValueError: Unknown key: non_existing_type
+        """
         super().__init__(ratio_sincere=ratio_sincere)
         # Populate the dictionary and check for typos in the input
         self.d_type_share = DictPrintingInOrderIgnoringZeros()
@@ -120,6 +125,10 @@ class ProfileTwelve(ProfileCardinal):
             ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
             >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=.5)
             Fraction(1, 10)
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=0)
+            Fraction(3, 10)
+            >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=1)
+            0
         """
         high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
         low_u = self.d_type_share[ranking[:1] + '_' + ranking[1:]]   # E.g. a_bc
@@ -156,6 +165,10 @@ class ProfileTwelve(ProfileCardinal):
             ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
             >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=.5)
             Fraction(1, 5)
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=1)
+            Fraction(3, 10)
+            >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=0)
+            0
         """
         high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
         low_u = self.d_type_share[ranking[:1] + '_' + ranking[1:]]   # E.g. a_bc
@@ -338,7 +351,7 @@ class ProfileTwelve(ProfileCardinal):
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if best_response.ballot == INCONCLUSIVE:
+            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             else:
                 type_1 = ranking[:1] + '_' + ranking[1:]  # E.g. a_bc
@@ -405,11 +418,11 @@ class ProfileTwelve(ProfileCardinal):
                                 status = strategy.is_equilibrium
                                 if status == EquilibriumStatus.EQUILIBRIUM:
                                     equilibria.append(strategy)
-                                elif status == EquilibriumStatus.UTILITY_DEPENDENT:
+                                elif status == EquilibriumStatus.UTILITY_DEPENDENT:  # pragma: no cover
                                     utility_dependent.append(strategy)
                                     warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r'
                                                   % (self, strategy))
-                                elif status == EquilibriumStatus.INCONCLUSIVE:
+                                elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
                                     inconclusive.append(strategy)
                                     warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
                                                   % (self, strategy))
