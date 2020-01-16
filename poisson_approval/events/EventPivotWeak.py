@@ -92,22 +92,3 @@ class EventPivotWeak(Event):
                 # print(_phi_z_tilde)
                 # print(1 / (1 - _phi_z_tilde))
                 self.asymptotic = pivot_trio.asymptotic * (1 / (1 - _phi_z_tilde))
-
-
-if __name__ == '__main__':
-    tau = {'tau_a': 1/10, 'tau_b': 4/10, 'tau_ac': 4/10, 'tau_bc': 1/10}
-    print('EventPivotWeak ab')
-    pivot = EventPivotWeak('a', 'b', 'c', **tau)
-    print(pivot)
-    pivot = EventPivotWeak('b', 'a', 'c', **tau)
-    print(pivot)
-    print('EventPivotWeak ac')
-    pivot = EventPivotWeak('a', 'c', 'b', **tau)
-    print(pivot)
-    pivot = EventPivotWeak('c', 'a', 'b', **tau)
-    print(pivot)
-    print('EventPivotWeak bc')
-    pivot = EventPivotWeak('b', 'c', 'a', **tau)
-    print(pivot)
-    pivot = EventPivotWeak('c', 'b', 'a', **tau)
-    print(pivot)
