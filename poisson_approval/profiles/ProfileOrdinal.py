@@ -259,7 +259,7 @@ class ProfileOrdinal(Profile):
                 continue
             best_response = d_ranking_best_response[ranking]
             if best_response.ballot == INCONCLUSIVE:
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)
+                status = min(status, EquilibriumStatus.INCONCLUSIVE)  # pragma: no cover
             elif best_response.ballot == UTILITY_DEPENDENT:
                 status = min(status, EquilibriumStatus.UTILITY_DEPENDENT)
             elif strategy.d_ranking_ballot[ranking] != best_response.ballot:
@@ -314,7 +314,7 @@ class ProfileOrdinal(Profile):
                                     equilibria.append(strategy)
                                 elif status == EquilibriumStatus.UTILITY_DEPENDENT:
                                     utility_dependent.append(strategy)
-                                elif status == EquilibriumStatus.INCONCLUSIVE:
+                                elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
                                     inconclusive.append(strategy)
                                     warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
                                                   % (self, strategy))
