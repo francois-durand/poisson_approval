@@ -159,7 +159,12 @@ phi_ab = 0.707107>
         <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
     """
 
-    def __init__(self, d_ballot_share: dict = None, normalization_warning: bool = True):
+    def __init__(self, d_ballot_share: dict, normalization_warning: bool = True):
+        """
+            >>> tau = TauVector({'non_existing_ballot': 1})
+            Traceback (most recent call last):
+            ValueError: Unknown key: non_existing_ballot
+        """
         # Populate the dictionary and check for typos in the input
         self.d_ballot_share = DictPrintingInOrderIgnoringZeros()
         for ballot, share in d_ballot_share.items():

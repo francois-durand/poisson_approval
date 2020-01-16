@@ -124,8 +124,8 @@ class BestResponse:
                 self.threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
                 self.justification = self.OFFSET_METHOD
         if isnan(self.threshold_utility):
-            self.ballot = INCONCLUSIVE
-            raise ValueError('Unable to compute threshold utility')
+            self.ballot = INCONCLUSIVE  # pragma: no cover
+            raise ValueError('Unable to compute threshold utility')  # pragma: no cover
         elif isclose(self.threshold_utility, 1):
             self.ballot = ballot_one(ranking)
         elif isclose(self.threshold_utility, 0):
