@@ -56,6 +56,9 @@ class NiceStatsProfileOrdinal:
         ...         (lambda strategy: strategy.profile.condorcet_winners == strategy.winners,
         ...          'There exists an equilibrium that elects the CW')
         ...     ],
+        ...     tests_strategy_winners = [
+        ...         (lambda sigma: True, 'Number of possible winners')
+        ...     ],
         ...     conditional_on=lambda profile: profile.is_profile_condorcet == 1.
         ... )
         >>> nice_stats.run(n_samples=10)
@@ -118,7 +121,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         for histogram in self.results_strategy_winners:
             histogram /= n_samples
 
-    def plot_test_strategy(self, test, ylabel=True, legend=False, replacement_name=None, style=''):
+    def plot_test_strategy(self, test, ylabel=True, legend=False, replacement_name=None, style=''):  # pragma: no cover
         """Plot a test on strategy.
 
         Parameters
@@ -151,7 +154,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         if legend:
             plt.legend()
 
-    def plot_cutoff(self, test, left='', right='', style=''):
+    def plot_cutoff(self, test, left='', right='', style=''):  # pragma: no cover
         """Plot the cutoff of a test on the profile.
 
         Parameters
@@ -175,7 +178,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         plt.text((1 - x) / 2, 0.1, left, horizontalalignment='center', verticalalignment='center')
         plt.text(1 - x / 2, 0.1, right, horizontalalignment='center', verticalalignment='center')
 
-    def display_results(self):
+    def display_results(self):  # pragma: no cover
         """Display the results."""
         for i, (_, name) in enumerate(self.tests_profile):
             print('P(%s) = %s' % (name, np.sum(self.results_profile[i]) / self.n_samples))
