@@ -9,20 +9,20 @@ class Asymptotic:
 
     Parameters
     ----------
-    mu : Number, ``np.nan`` or ``np.inf``
+    mu : Number, ``np.nan`` or ``- np.inf``
         Coefficient of the term in `n` (called "magnitude").
-    nu : Number, ``np.nan`` or ``np.inf``
+    nu : Number, ``np.nan`` or ``- np.inf``
         Coefficient of the term in `log n`.
-    xi : Number, ``np.nan`` or ``np.inf``
+    xi : Number, ``np.nan`` or ``- np.inf``
         Constant coefficient.
 
     Attributes
     ----------
-    μ : Number, ``np.nan`` or ``np.inf``
+    μ : Number, ``np.nan`` or ``- np.inf``
         Alias for :attr:`mu`.
-    ν : Number, ``np.nan`` or ``np.inf``
+    ν : Number, ``np.nan`` or ``- np.inf``
         Alias for :attr:`nu`.
-    ξ : Number, ``np.nan`` or ``np.inf``
+    ξ : Number, ``np.nan`` or ``- np.inf``
         Alias for :attr:`xi`.
 
     Notes
@@ -89,10 +89,6 @@ class Asymptotic:
 
         def nice(x, suffix):
             x = float(x)
-            if isneginf(x):
-                return ' - inf ' + suffix if suffix else ' - inf'
-            if isposinf(x):
-                return ' + inf ' + suffix if suffix else ' + inf'
             if isnan(x):
                 return ' + ? ' + suffix if suffix else ' + ?'
             if isclose(x, 1) and suffix:

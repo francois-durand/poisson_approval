@@ -26,9 +26,21 @@ class EquilibriumStatus:
         self.r = r
 
     def __repr__(self):
+        """
+        Examples
+        --------
+            >>> repr(EquilibriumStatus.EQUILIBRIUM)
+            'EquilibriumStatus.EQUILIBRIUM'
+        """
         return self.r
 
     def __str__(self):
+        """
+        Examples
+        --------
+            >>> str(EquilibriumStatus.EQUILIBRIUM)
+            'equilibrium'
+        """
         return self.s
 
     def __eq__(self, other):

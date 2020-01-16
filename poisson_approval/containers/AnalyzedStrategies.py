@@ -20,6 +20,77 @@ class AnalyzedStrategies:
         self.non_equilibria = non_equilibria
 
     def __repr__(self):
+        """
+        Examples
+        --------
+        With plurals ("equilibria"):
+
+            >>> from poisson_approval import StrategyOrdinal, ProfileOrdinal
+            >>> profile = ProfileOrdinal({'abc': 0.2, 'acb': 0.3, 'bac': 0.5})
+            >>> analyzed_strategies = AnalyzedStrategies(
+            ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile),
+            ...                 StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'ab'}, profile)],
+            ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile),
+            ...                        StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'ab'}, profile)],
+            ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile),
+            ...                     StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'ab'}, profile)],
+            ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile),
+            ...                   StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'ab'}, profile)]
+            ... )
+            >>> analyzed_strategies
+            Equilibria:
+            <abc: a, acb: a, bac: b> ==> a, b (FF)
+            <abc: a, acb: a, bac: ab> ==> a (FF)
+            <BLANKLINE>
+            Utility-dependent equilibria:
+            <abc: a, acb: ac, bac: b> ==> a, b (FF)
+            <abc: a, acb: ac, bac: ab> ==> a (D)
+            <BLANKLINE>
+            Non-equilibria:
+            <abc: ab, acb: a, bac: b> ==> b (FF)
+            <abc: ab, acb: a, bac: ab> ==> a (FF)
+            <BLANKLINE>
+            Inconclusive strategy profiles:
+            <abc: ab, acb: ac, bac: b> ==> b
+            <abc: ab, acb: ac, bac: ab> ==> a
+
+        With singulars ("equilibrium"):
+
+            >>> analyzed_strategies = AnalyzedStrategies(
+            ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile)],
+            ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile)],
+            ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile)],
+            ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile)]
+            ... )
+            >>> analyzed_strategies
+            Equilibrium:
+            <abc: a, acb: a, bac: b> ==> a, b (FF)
+            <BLANKLINE>
+            Utility-dependent equilibrium:
+            <abc: a, acb: ac, bac: b> ==> a, b (FF)
+            <BLANKLINE>
+            Non-equilibrium:
+            <abc: ab, acb: a, bac: b> ==> b (FF)
+            <BLANKLINE>
+            Inconclusive strategy profile:
+            <abc: ab, acb: ac, bac: b> ==> b
+
+        With empty lists, equilibria and non-equilibria still appear, but utility-dependent and inconclusive are not
+        even mentioned:
+
+            >>> analyzed_strategies = AnalyzedStrategies(
+            ...     equilibria=[],
+            ...     utility_dependent=[],
+            ...     non_equilibria=[],
+            ...     inconclusive=[]
+            ... )
+            >>> analyzed_strategies
+            Equilibria:
+            None
+            <BLANKLINE>
+            Non-equilibria:
+            None
+        """
         # Equilibria (print even if there is none).
         if len(self.equilibria) == 1:
             s = 'Equilibrium:'
