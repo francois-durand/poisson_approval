@@ -15,7 +15,9 @@ class EventTrio2t(Event):
 
     Examples
     --------
-        >>> EventTrio2t(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
+        >>> from fractions import Fraction
+        >>> EventTrio2t(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...             tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
         <asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
     """
 

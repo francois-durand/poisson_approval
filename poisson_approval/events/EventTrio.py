@@ -17,7 +17,8 @@ class EventTrio(Event):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
+        >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...           tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
         <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
         >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c',
         ...           tau_a=Fraction(1, 6), tau_b=Fraction(1, 6), tau_c=Fraction(1, 6),
