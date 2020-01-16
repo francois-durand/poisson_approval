@@ -65,6 +65,11 @@ class ProfileOrdinal(Profile):
     """
 
     def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True):
+        """
+            >>> profile = ProfileOrdinal({'non_existing_ranking': 1})
+            Traceback (most recent call last):
+            ValueError: Unknown key: non_existing_ranking
+        """
         super().__init__()
         # Populate the dictionary and check for typos in the input
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros()
@@ -185,6 +190,7 @@ class ProfileOrdinal(Profile):
         Parameters
         ----------
         strategy : StrategyOrdinal
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -202,6 +208,17 @@ class ProfileOrdinal(Profile):
             >>> tau = profile.τ(strategy)  # Alternate notation
             >>> print(tau)
             <a: 1/10, ab: 3/5, c: 3/10> ==> a
+
+        In the case of badly informed voters, we do as if the tau-vector were the vector of scores (up to
+        a renormalization):
+
+            >>> from fractions import Fraction
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...                          well_informed_voters=False)
+            >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+            >>> tau = profile.tau(strategy)
+            >>> print(tau)
+            <a: 7/16, b: 3/8, c: 3/16> ==> a
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking, ballot in strategy.d_ranking_ballot.items():
@@ -220,6 +237,7 @@ class ProfileOrdinal(Profile):
         Parameters
         ----------
         strategy : StrategyOrdinal
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -240,9 +258,7 @@ class ProfileOrdinal(Profile):
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if strategy.d_ranking_ballot[ranking] == '':
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)
-            elif best_response.ballot == INCONCLUSIVE:
+            if best_response.ballot == INCONCLUSIVE:
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             elif best_response.ballot == UTILITY_DEPENDENT:
                 status = min(status, EquilibriumStatus.UTILITY_DEPENDENT)
