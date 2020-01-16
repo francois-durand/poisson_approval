@@ -16,8 +16,26 @@ class EventPivotStrict(Event):
 
     Examples
     --------
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau_a=0.1, tau_ab=0.6, tau_c=0.3)
+        >>> from fractions import Fraction
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...                  tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
         <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...                  tau_ab=Fraction(1, 10), tau_c=Fraction(9, 10))
+        <asymptotic = exp(- 0.4 n - 0.5 log n - 1.35667 + o(1)), phi_c = 0.333333, phi_ab = 3>
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...                  tau_a=Fraction(1, 6), tau_b=Fraction(1, 6), tau_c=Fraction(1, 6),
+        ...                  tau_ab=Fraction(1, 6), tau_ac=Fraction(1, 6), tau_bc=Fraction(1, 6))
+        <asymptotic = exp(- 0.5 log n - 1.40935 + o(1)), phi_a = 1, phi_b = 1, phi_c = 1, phi_ab = 1, phi_ac = 1, \
+phi_bc = 1>
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...                  tau_b=Fraction(1, 2), tau_ac=Fraction(1, 2))
+        <asymptotic = exp(- inf)>
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
+        ...                  tau_a=Fraction(1, 8), tau_b=Fraction(1, 8),
+        ...                  tau_ab=Fraction(1, 8), tau_ac=Fraction(1, 8), tau_bc=Fraction(1, 2))
+        <asymptotic = exp(- 0.0844306 n - 0.5 log n - 0.801438 + o(1)), phi_a = 1.58114, phi_b = 0.632456, phi_ab = 1, \
+phi_ac = 1.58114, phi_bc = 0.632456>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
