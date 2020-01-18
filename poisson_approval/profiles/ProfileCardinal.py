@@ -180,7 +180,7 @@ class ProfileCardinal(Profile):
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if best_response.ballot == INCONCLUSIVE:
+            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover
                 return EquilibriumStatus.INCONCLUSIVE
             d_ranking_threshold[ranking] = best_response.threshold_utility
         tau_response = self.tau(StrategyThreshold(d_ranking_threshold))
@@ -260,8 +260,8 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy_ini : StrategyThreshold
-            Initial strategy.
+        strategy_ini : an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`
+            The initial strategy.
         n_max_episodes : int
             Maximal number of iterations.
         update_ratio : Number
@@ -285,17 +285,13 @@ class ProfileCardinal(Profile):
               if ``update_ratio == 1``, it is the strategy that all strategic voters use at the following step of the
               cycle.
         """
-        strategy = StrategyThreshold({
-            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
-            if self.d_ranking_share[ranking] > 0
-        }, profile=self)
-        tau = strategy.tau
+        tau = self.tau(strategy_ini)
         taus = [tau]
         if verbose:
             print(-1)
             print(tau)
         for i in range(n_max_episodes):
-            strategy = profile.best_responses_to_strategy(tau.d_ranking_best_response)
+            strategy = self.best_responses_to_strategy(tau.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau = TauVector({
                 ballot: _my_round(barycenter(a=tau.d_ballot_share[ballot],
