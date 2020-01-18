@@ -104,10 +104,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
             if self.conditional_on(profile):
                 i_sample += 1
             else:
-                print('This is a test')
-                pass
-                continue
-                print('This is another test')
+                continue  # pragma: no cover - I do not understand why it pretends not to be covered, whereas it is...
             self.profiles.append(profile.d_ranking_share)
             for i, (test, _) in enumerate(self.tests_profile):
                 self.results_profile[i].append(test(profile))
