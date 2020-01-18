@@ -140,6 +140,7 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         strategy : StrategyThreshold
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -161,6 +162,7 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         strategy : StrategyThreshold
+            A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
         -------
@@ -177,8 +179,6 @@ class ProfileCardinal(Profile):
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
-            if strategy.d_ranking_threshold[ranking] is None:
-                return EquilibriumStatus.INCONCLUSIVE
             best_response = d_ranking_best_response[ranking]
             if best_response.ballot == INCONCLUSIVE:
                 return EquilibriumStatus.INCONCLUSIVE
@@ -285,7 +285,6 @@ class ProfileCardinal(Profile):
               if ``update_ratio == 1``, it is the strategy that all strategic voters use at the following step of the
               cycle.
         """
-
         strategy = StrategyThreshold({
             ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
             if self.d_ranking_share[ranking] > 0
@@ -296,10 +295,7 @@ class ProfileCardinal(Profile):
             print(-1)
             print(tau)
         for i in range(n_max_episodes):
-            strategy = StrategyThreshold(
-                {ranking: tau.d_ranking_best_response[ranking].threshold_utility
-                 for ranking in RANKINGS if self.d_ranking_share[ranking] > 0},
-                profile=self)
+            strategy = profile.best_responses_to_strategy(tau.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau = TauVector({
                 ballot: _my_round(barycenter(a=tau.d_ballot_share[ballot],
