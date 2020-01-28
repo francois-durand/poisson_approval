@@ -478,3 +478,40 @@ def barycenter(a, b, ratio_b):
     if ratio_b == 1:
         return b
     return (1 - ratio_b) * a + ratio_b * b
+
+
+def to_callable(o):
+    """Convert to a callable.
+
+    Parameters
+    ----------
+    o : object
+
+    Returns
+    -------
+    callable
+        The conversion of `o` to a callable.
+
+    Examples
+    --------
+    If `o` is callable, then return `o`:
+
+        >>> def square(x):
+        ...     return x**2
+        >>> my_function = to_callable(square)
+        >>> my_function(4)
+        16
+
+    If `o` is not callable, then return a function ``*args, **kwargs -> o``:
+
+        >>> x = 42
+        >>> my_function = to_callable(x)
+        >>> my_function('some_argument', keyword='some_value')
+        42
+    """
+    if callable(o):
+        return o
+    else:
+        def my_function(*args, **kwargs):
+            return o
+        return my_function
