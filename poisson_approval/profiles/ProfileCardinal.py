@@ -1,7 +1,7 @@
 from math import isclose
 from fractions import Fraction
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import ballot_one, ballot_one_two, barycenter
+from poisson_approval.utils.Util import ballot_one, ballot_one_two, barycenter, to_callable
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -318,6 +318,84 @@ class ProfileCardinal(Profile):
             cycle_taus = []
         responses = [self.best_responses_to_strategy(tau.d_ranking_best_response) for tau in cycle_taus]
         return {'cycle_taus': cycle_taus, 'responses': responses}
+
+    def fictitious_play(self, strategy_ini, n_max_episodes,
+                        perception_update_ratio=None, ballot_update_ratio=1, verbose=False):
+        """Seek for convergence by fictitious play (with tau update).
+
+        Parameters
+        ----------
+        strategy_ini : StrategyThreshold
+            Initial strategy.
+        n_max_episodes : int
+            Maximal number of iterations.
+        perception_update_ratio : callable or Number
+            The coefficient when updating the perceived tau:
+            ``tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) * tau``.
+            For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
+            is ``1 / (t + 1)``, which leads to an arithmetic average. If `perception_update_ratio` is a Number, it is
+             considered as a constant function.
+        ballot_update_ratio : callable or Number
+            The ratio of voters who update their ballot:
+            ``tau = (1 - ballot_update_ratio(t)) * tau + ballot_update_ratio(t) * tau_response``.
+            For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
+            is the constant 1, which corresponds to a full update. If `ballot_update_ratio` is a Number, it is
+            considered as a constant function.
+        verbose : bool
+            If True, print all intermediate steps.
+
+        Returns
+        -------
+        dict
+            * Key ``tau``: :class:`TauVector` or None. The limit tau-vector. If None, it means that the process did not
+              converge.
+            * Key ``response``: :class:`StrategyThreshold` or None. The limit strategy. If None, it means that the
+              process did not converge.
+            * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
+              convention, this value is `n_max_episodes`.
+        """
+        if perception_update_ratio is None:
+            def perception_update_ratio(_t): Fraction(1, _t + 1)
+        perception_update_ratio = to_callable(perception_update_ratio)
+        ballot_update_ratio = to_callable(ballot_update_ratio)
+
+        strategy = StrategyThreshold({
+            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
+            if self.d_ranking_share[ranking] > 0
+        }, profile=self)
+        tau_actual = strategy.tau
+        tau_perceived = tau_actual
+        if verbose:
+            print('t = %s' % 0)
+            print('strategy: %s' % strategy)
+            print('tau_actual: %s' % tau_actual)
+            print('tau_perceived: %s' % tau_perceived)
+
+        for t in range(1, n_max_episodes + 1):
+            tau_perceived = TauVector({
+                ballot: _my_round(barycenter(a=tau_perceived.d_ballot_share[ballot],
+                                             b=tau_actual.d_ballot_share[ballot],
+                                             ratio_b=perception_update_ratio(t)))
+                for ballot in BALLOTS_WITHOUT_INVERSIONS
+            })
+            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
+            tau_full_response = strategy.tau
+            tau_actual = TauVector({
+                ballot: _my_round(barycenter(a=tau_actual.d_ballot_share[ballot],
+                                             b=tau_full_response.d_ballot_share[ballot],
+                                             ratio_b=ballot_update_ratio(t)))
+                for ballot in BALLOTS_WITHOUT_INVERSIONS
+            }, normalization_warning=False)
+            if verbose:
+                print('t = %s' % t)
+                print('tau_perceived: %s' % tau_perceived)
+                print('strategy: %s' % strategy)
+                print('tau_full_response: %s' % tau_full_response)
+                print('tau_actual: %s' % tau_actual)
+            if tau_full_response.isclose(tau_perceived, abs_tol=1E-9) and tau_actual.isclose(
+                    tau_full_response, abs_tol=1E-9):
+                return {'tau': tau_full_response, 'response': strategy, 'n_episodes': t}
+        return {'tau': None, 'response': None, 'n_episodes': n_max_episodes}
 
 
 def _my_round(x):
