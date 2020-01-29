@@ -3,6 +3,24 @@ History
 =======
 
 ------------------
+0.6.0 (2020-01-29)
+------------------
+
+* Implement ``ProfileCardinal.fictitious_play``, where the update ratios of the perceived tau-vector and the actual
+  tau-vector can be functions of the time. It is also faster that ``ProfileCardinal.iterated_voting``, but can
+  not detect cycles (only convergence).
+* ``ProfileCardinal.iterated_voting_taus`` is renamed to ``ProfileCardinal.iterated_voting``. It has been generalized
+  by implementing a notion of perceived tau-vector, like for ``ProfileCardinal.fictitious_play``. The syntax has been
+  modified in consequence.
+* ``ProfileCardinal.iterated_voting_strategies`` is deprecated and suppressed.
+* Iterated voting and fictitious play do not need a ``StrategyThreshold`` as initial strategy, but any strategy that is
+  consistent with the profile subclass. For example, with ``ProfileTwelve``, you can use a ``StrategyTwelve``.
+* ``Strategy.profile`` is now a property that can be reassigned after the creation of the object.
+* Add ``Strategy.deepcopy_with_attached_profile``: make a deep copy and attach a given profile.
+* Add the utility ``to_callable``: convert an object to a callable (making it a constant function if it is not
+  callable already).
+
+------------------
 0.5.1 (2020-01-18)
 ------------------
 
