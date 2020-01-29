@@ -346,7 +346,7 @@ class ProfileCardinal(Profile):
         that it implies having constant update ratios.
         """
         if perception_update_ratio is None:
-            def perception_update_ratio(_t): Fraction(1, _t + 1)
+            def perception_update_ratio(_t): return Fraction(1, _t + 1)
         perception_update_ratio = to_callable(perception_update_ratio)
         ballot_update_ratio = to_callable(ballot_update_ratio)
 

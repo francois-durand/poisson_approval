@@ -69,3 +69,8 @@ def test_not_equilibrium(my_profile, my_strategy):
 def test_iterated_voting_without_convergence(my_profile, my_strategy):
     result = my_profile.iterated_voting(strategy_ini=my_strategy, n_max_episodes=1, ballot_update_ratio=1)
     assert result['cycle_taus_actual'] == []
+
+
+def test_fictitious_play_without_convergence(my_profile, my_strategy):
+    result = my_profile.fictitious_play(strategy_ini=my_strategy, n_max_episodes=1)
+    assert result['tau'] is None
