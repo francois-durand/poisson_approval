@@ -10,16 +10,8 @@ def test():
         >>> from fractions import Fraction
         >>> profile = ProfileTwelve(d_type_share={'a_bc': Fraction(1, 2), 'ab_c': Fraction(1, 2)})
         >>> strategy = StrategyThreshold(d_ranking_threshold={'abc': 0})
-        >>> result = profile.iterated_voting_strategies(strategy_ini=strategy, n_max_episodes=100,
-        ...                                             update_ratio=1, verbose=True)
-        -1
-        <abc: ab> ==> a, b
-        0
-        <abc: a> ==> a
-        1
-        <abc: a> ==> a
-        >>> result = profile.iterated_voting_taus(strategy_ini=strategy, n_max_episodes=100,
-        ...                                       ballot_update_ratio=1, verbose=True)
+        >>> result = profile.iterated_voting(strategy_ini=strategy, n_max_episodes=100,
+        ...                                  ballot_update_ratio=1, verbose=True)
         t = 0
         strategy: <abc: ab> ==> a, b
         tau_actual: <ab: 1> ==> a, b
@@ -65,14 +57,8 @@ def test():
     strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
     assert profile.is_equilibrium(strategy) == EquilibriumStatus.NOT_EQUILIBRIUM
 
-    # Case without convergence: iterated_voting_strategies
+    # Case without convergence: iterated_voting
     profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
     strategy = StrategyThreshold(d_ranking_threshold={'abc': 0})
-    result = profile.iterated_voting_strategies(strategy_ini=strategy, n_max_episodes=1, update_ratio=1)
-    assert result['cycle_taus'] == []
-
-    # Case without convergence: iterated_voting_taus
-    profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
-    strategy = StrategyThreshold(d_ranking_threshold={'abc': 0})
-    result = profile.iterated_voting_taus(strategy_ini=strategy, n_max_episodes=1, ballot_update_ratio=1)
+    result = profile.iterated_voting(strategy_ini=strategy, n_max_episodes=1, ballot_update_ratio=1)
     assert result['cycle_taus_actual'] == []

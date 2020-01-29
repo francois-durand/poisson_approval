@@ -79,12 +79,7 @@ class ProfileHistogram(ProfileCardinal):
         >>> profile.is_equilibrium(strategy)
         EquilibriumStatus.EQUILIBRIUM
         >>> strategy_ini = StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5})
-        >>> cycle = profile.iterated_voting_strategies(strategy_ini,  100)['responses']
-        >>> len(cycle)
-        1
-        >>> print(cycle[0])
-        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
-        >>> cycle = profile.iterated_voting_taus(strategy_ini, 100)['cycle_strategies']
+        >>> cycle = profile.iterated_voting(strategy_ini, 100)['cycle_strategies']
         >>> len(cycle)
         1
         >>> print(cycle[0])

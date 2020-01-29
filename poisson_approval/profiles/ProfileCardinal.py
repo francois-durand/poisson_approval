@@ -189,74 +189,8 @@ class ProfileCardinal(Profile):
         else:
             return EquilibriumStatus.NOT_EQUILIBRIUM
 
-    def iterated_voting_strategies(self, strategy_ini, n_max_episodes, update_ratio=1, verbose=False):
-        """Seek for convergence by iterated voting (strategy update).
-
-        Parameters
-        ----------
-        strategy_ini : StrategyThreshold
-            Initial strategy.
-        n_max_episodes : int
-            Maximal number of iterations.
-        update_ratio : Number
-            The speed at which the utility threshold of the strategy being used moves toward the utility threshold of
-            the best response. For example, for voters `abc`, if the current threshold of their strategy is `t` and the
-            threshold of their best response is `u`, then the threshold of their updated strategy will be
-            ``(1 - update_ratio) * t + update_ratio * u``.
-        verbose : bool
-            If True, print all intermediate strategies.
-
-        Returns
-        -------
-        dict
-            * Key ``cycle``: a list of :class:`TauVector`. The limit cycle of tau-vectors. If its length is 1, the
-              process converges to this tau-vector. If its length is greater than 1, the process reaches a periodical
-              orbit between these tau-vectors. If its length is 0, by convention, it means that the process does not
-              converge and does not reach a periodical orbit.
-            * Key ``responses``: a list of :class:`StrategyThreshold`. Its length is the same as ``cycle``. Each
-              element represent the strategy that is the best response to the corresponding tau-vector. For example,
-              if ``update_ratio == 1``, it is the strategy that all strategic voters use at the following step of the
-              cycle.
-        """
-        strategy = StrategyThreshold({
-            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
-            if self.d_ranking_share[ranking] > 0
-        }, profile=self)
-        tau = strategy.tau
-        taus = [tau]
-        if verbose:
-            print(-1)
-            print(strategy)
-        for i in range(n_max_episodes):
-            strategy = StrategyThreshold(
-                {ranking: _my_round(barycenter(a=strategy.d_ranking_threshold[ranking],
-                                               b=strategy.d_ranking_best_response[ranking].threshold_utility,
-                                               ratio_b=update_ratio))
-                 for ranking in RANKINGS if self.d_ranking_share[ranking] > 0},
-                profile=self)
-            tau = strategy.tau
-            if verbose:
-                print(i)
-                print(strategy)
-            if tau in taus:
-                # If there is an exact cycle, it is useless to continue looping.
-                taus.append(tau)
-                break
-            else:
-                taus.append(tau)
-        try:
-            end = len(taus) - 1
-            begin = next(begin
-                         for begin in range(end - 1, -1, -1)
-                         if taus[begin].isclose(taus[end]))
-            cycle_taus = taus[begin:end]
-        except StopIteration:
-            cycle_taus = []
-        responses = [self.best_responses_to_strategy(tau.d_ranking_best_response) for tau in cycle_taus]
-        return {'cycle_taus': cycle_taus, 'responses': responses}
-
-    def iterated_voting_taus(self, strategy_ini, n_max_episodes,
-                             perception_update_ratio=1, ballot_update_ratio=1, verbose=False):
+    def iterated_voting(self, strategy_ini, n_max_episodes,
+                        perception_update_ratio=1, ballot_update_ratio=1, verbose=False):
         """Seek for convergence by iterated voting.
 
         Parameters
@@ -294,14 +228,14 @@ class ProfileCardinal(Profile):
 
         Notes
         -----
-        Comparison between :meth:`iterated_voting_taus` and :meth:`fictitious_play`:
+        Comparison between :meth:`iterated_voting` and :meth:`fictitious_play`:
 
-        * :meth:`iterated_voting_taus` can detect cycles (whereas :meth:`fictitious_play` only looks for a limit).
+        * :meth:`iterated_voting` can detect cycles (whereas :meth:`fictitious_play` only looks for a limit).
         * :meth:`fictitious_play` accepts update ratios that are functions of the time (whereas
-          :meth:`iterated_voting_taus` only accepts constants).
+          :meth:`iterated_voting` only accepts constants).
         * :meth:`fictitious_play` is faster and uses less memory, because it only looks for a limit and not for a cycle.
 
-        In general, you should use :meth:`iterated_voting_taus` only if you care about cycles, with the constraint
+        In general, you should use :meth:`iterated_voting` only if you care about cycles, with the constraint
         that it implies having constant update ratios.
         """
         strategy = StrategyThreshold({
@@ -403,14 +337,14 @@ class ProfileCardinal(Profile):
 
         Notes
         -----
-        Comparison between :meth:`iterated_voting_taus` and :meth:`fictitious_play`:
+        Comparison between :meth:`iterated_voting` and :meth:`fictitious_play`:
 
-        * :meth:`iterated_voting_taus` can detect cycles (whereas :meth:`fictitious_play` only looks for a limit).
+        * :meth:`iterated_voting` can detect cycles (whereas :meth:`fictitious_play` only looks for a limit).
         * :meth:`fictitious_play` accepts update ratios that are functions of the time (whereas
-          :meth:`iterated_voting_taus` only accepts constants).
+          :meth:`iterated_voting` only accepts constants).
         * :meth:`fictitious_play` is faster and uses less memory, because it only looks for a limit and not for a cycle.
 
-        In general, you should use :meth:`iterated_voting_taus` only if you care about cycles, with the constraint
+        In general, you should use :meth:`iterated_voting` only if you care about cycles, with the constraint
         that it implies having constant update ratios.
         """
         if perception_update_ratio is None:
