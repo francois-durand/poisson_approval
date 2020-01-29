@@ -255,8 +255,9 @@ class ProfileCardinal(Profile):
         responses = [self.best_responses_to_strategy(tau.d_ranking_best_response) for tau in cycle_taus]
         return {'cycle_taus': cycle_taus, 'responses': responses}
 
-    def iterated_voting_taus(self, strategy_ini, n_max_episodes, update_ratio=1, verbose=False):
-        """Seek for convergence by iterated voting (tau update).
+    def iterated_voting_taus(self, strategy_ini, n_max_episodes,
+                             perception_update_ratio=1, ballot_update_ratio=1, verbose=False):
+        """Seek for convergence by iterated voting.
 
         Parameters
         ----------
@@ -264,64 +265,110 @@ class ProfileCardinal(Profile):
             The initial strategy.
         n_max_episodes : int
             Maximal number of iterations.
-        update_ratio : Number
-            The ratio of voters that update their ballot. At each iteration, this ratio of voters update their response
-            (they continue voting sincerely if they are sincere voters, they update their strategical ballot otherwise).
-            In other words, the updated tau-vector is a barycenter of the former tau-vector with weight
-            ``1 - update_ratio`` and the response tau-vector (as computed by :meth:``tau``) with weight
-            ``update_ratio``.
+        perception_update_ratio : Number in [0, 1]
+            The coefficient when updating the perceived tau:
+            ``tau_perceived = (1 - perception_update_ratio) * tau_perceived + perception_update_ratio * tau_actual``.
+        ballot_update_ratio : Number in [0, 1]
+            The ratio of voters who update their ballot:
+            ``tau_actual = (1 - ballot_update_ratio) * tau_actual + ballot_update_ratio * tau_response``.
         verbose : bool
-            If True, print all intermediate tau-vectors.
+            If True, print all intermediate steps.
 
         Returns
         -------
         dict
-            * Key ``cycle``: a list of :class:`TauVector`. The limit cycle of tau-vectors. If its length is 1, the
-              process converges to this tau-vector. If its length is greater than 1, the process reaches a periodical
-              orbit between these tau-vectors. If its length is 0, by convention, it means that the process does not
-              converge and does not reach a periodical orbit.
-            * Key ``responses``: a list of :class:`StrategyThreshold`. Its length is the same as ``cycle``. Each
-              element represent the strategy that is the best response to the corresponding tau-vector. For example,
-              if ``update_ratio == 1``, it is the strategy that all strategic voters use at the following step of the
-              cycle.
+            * Key ``cycle_taus_perceived``: list of :class:`TauVector`. The limit cycle of perceived tau-vectors.
+              ``cycle_taus_perceived[t]`` is a barycenter of ``cycle_taus_perceived[t - 1]`` with
+              ``cycle_taus_actual[t - 1]``, parametrized by `perception_update_ratio`.
+            * Key ``cycle_strategies``: list of :class:`StrategyThreshold`. The limit cycle of strategies.
+              ``cycle_strategies[t]`` is the best response to ``cycle_taus_perceived[t]``.
+            * Key ``cycle_taus_actual``: list of :class:`TauVector`. The limit cycle of actual tau-vectors.
+              ``cycle_taus_actual[t]`` is a barycenter of ``cycle_taus_actual[t - 1]`` and the tau-vector resulting
+              from ``strategies[t]``, parametrized by `ballot_update_ratio`.
+            * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
+              convention, this value is `n_max_episodes`.
+
+            `cycle_taus_perceived`, `cycle_strategies` and `cycle_taus_actual` have the same length. If it is 1, the
+            process converges to this limit. If it is greater than 1, the process reaches a periodical orbit. If it
+            is 0, by convention, it means that the process does not converge and does not reach a periodical orbit.
+
+        Notes
+        -----
+        Comparison between :meth:`iterated_voting_taus` and :meth:`fictitious_play`:
+
+        * :meth:`iterated_voting_taus` can detect cycles (whereas :meth:`fictitious_play` only looks for a limit).
+        * :meth:`fictitious_play` accepts update ratios that are functions of the time (whereas
+          :meth:`iterated_voting_taus` only accepts constants).
+        * :meth:`fictitious_play` is faster and uses less memory, because it only looks for a limit and not for a cycle.
+
+        In general, you should use :meth:`iterated_voting_taus` only if you care about cycles, with the constraint
+        that it implies having constant update ratios.
         """
-        tau = self.tau(strategy_ini)
-        taus = [tau]
+        strategy = StrategyThreshold({
+            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
+            if self.d_ranking_share[ranking] > 0
+        }, profile=self)
+        tau_actual = strategy.tau
+        tau_perceived = tau_actual
+        strategies = [strategy]
+        taus_actual = [tau_actual]
+        taus_perceived = [tau_perceived]
         if verbose:
-            print(-1)
-            print(tau)
-        for i in range(n_max_episodes):
-            strategy = self.best_responses_to_strategy(tau.d_ranking_best_response)
+            print('t = %s' % 0)
+            print('strategy: %s' % strategy)
+            print('tau_actual: %s' % tau_actual)
+        n_episodes = n_max_episodes
+        for t in range(1, n_max_episodes + 1):
+            tau_perceived = TauVector({
+                ballot: _my_round(barycenter(a=tau_perceived.d_ballot_share[ballot],
+                                             b=tau_actual.d_ballot_share[ballot],
+                                             ratio_b=perception_update_ratio))
+                for ballot in BALLOTS_WITHOUT_INVERSIONS
+            })
+            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
-            tau = TauVector({
-                ballot: _my_round(barycenter(a=tau.d_ballot_share[ballot],
+            tau_actual = TauVector({
+                ballot: _my_round(barycenter(a=tau_actual.d_ballot_share[ballot],
                                              b=tau_full_response.d_ballot_share[ballot],
-                                             ratio_b=update_ratio))
+                                             ratio_b=ballot_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, normalization_warning=False)
             if verbose:
-                print(i)
-                print(tau)
-            if tau in taus:
-                # If there is an exact cycle, it is useless to continue looping.
-                taus.append(tau)
+                print('t = %s' % t)
+                print('tau_perceived: %s' % tau_perceived)
+                print('strategy: %s' % strategy)
+                print('tau_full_response: %s' % tau_full_response)
+                print('tau_actual: %s' % tau_actual)
+            # If there is an exact cycle, it is useless to continue looping.
+            break_ = (tau_actual, tau_perceived) in zip(taus_actual, taus_perceived)
+
+            taus_actual.append(tau_actual)
+            taus_perceived.append(tau_perceived)
+            strategies.append(strategy)
+            if break_:
+                n_episodes = t
                 break
-            else:
-                taus.append(tau)
         try:
-            end = len(taus) - 1
+            end = len(taus_actual) - 1
             begin = next(begin
                          for begin in range(end - 1, -1, -1)
-                         if taus[begin].isclose(taus[end]))
-            cycle_taus = taus[begin:end]
+                         if taus_actual[begin].isclose(taus_actual[end], abs_tol=1E-9)
+                         and taus_perceived[begin].isclose(taus_perceived[end], abs_tol=1E-9))
+            cycle_taus_actual = taus_actual[begin:end]
+            cycle_taus_perceived = taus_perceived[begin:end]
+            cycle_strategies = strategies[begin:end]
         except StopIteration:
-            cycle_taus = []
-        responses = [self.best_responses_to_strategy(tau.d_ranking_best_response) for tau in cycle_taus]
-        return {'cycle_taus': cycle_taus, 'responses': responses}
+            cycle_taus_actual = []
+            cycle_taus_perceived = []
+            cycle_strategies = []
+        return {'cycle_taus_perceived': cycle_taus_perceived,
+                'cycle_strategies': cycle_strategies,
+                'cycle_taus_actual': cycle_taus_actual,
+                'n_episodes': n_episodes}
 
     def fictitious_play(self, strategy_ini, n_max_episodes,
                         perception_update_ratio=None, ballot_update_ratio=1, verbose=False):
-        """Seek for convergence by fictitious play (with tau update).
+        """Seek for convergence by fictitious play.
 
         Parameters
         ----------
@@ -331,13 +378,13 @@ class ProfileCardinal(Profile):
             Maximal number of iterations.
         perception_update_ratio : callable or Number
             The coefficient when updating the perceived tau:
-            ``tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) * tau``.
-            For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
-            is ``1 / (t + 1)``, which leads to an arithmetic average. If `perception_update_ratio` is a Number, it is
-             considered as a constant function.
+            ``tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) *
+            tau_actual``. For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The
+            default function is ``1 / (t + 1)``, which leads to an arithmetic average. If `perception_update_ratio` is
+            a Number, it is considered as a constant function.
         ballot_update_ratio : callable or Number
             The ratio of voters who update their ballot:
-            ``tau = (1 - ballot_update_ratio(t)) * tau + ballot_update_ratio(t) * tau_response``.
+            ``tau_actual = (1 - ballot_update_ratio(t)) * tau_actual + ballot_update_ratio(t) * tau_response``.
             For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
             is the constant 1, which corresponds to a full update. If `ballot_update_ratio` is a Number, it is
             considered as a constant function.
@@ -349,10 +396,22 @@ class ProfileCardinal(Profile):
         dict
             * Key ``tau``: :class:`TauVector` or None. The limit tau-vector. If None, it means that the process did not
               converge.
-            * Key ``response``: :class:`StrategyThreshold` or None. The limit strategy. If None, it means that the
+            * Key ``strategy``: :class:`StrategyThreshold` or None. The limit strategy. If None, it means that the
               process did not converge.
             * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
               convention, this value is `n_max_episodes`.
+
+        Notes
+        -----
+        Comparison between :meth:`iterated_voting_taus` and :meth:`fictitious_play`:
+
+        * :meth:`iterated_voting_taus` can detect cycles (whereas :meth:`fictitious_play` only looks for a limit).
+        * :meth:`fictitious_play` accepts update ratios that are functions of the time (whereas
+          :meth:`iterated_voting_taus` only accepts constants).
+        * :meth:`fictitious_play` is faster and uses less memory, because it only looks for a limit and not for a cycle.
+
+        In general, you should use :meth:`iterated_voting_taus` only if you care about cycles, with the constraint
+        that it implies having constant update ratios.
         """
         if perception_update_ratio is None:
             def perception_update_ratio(_t): Fraction(1, _t + 1)
@@ -394,8 +453,8 @@ class ProfileCardinal(Profile):
                 print('tau_actual: %s' % tau_actual)
             if tau_full_response.isclose(tau_perceived, abs_tol=1E-9) and tau_actual.isclose(
                     tau_full_response, abs_tol=1E-9):
-                return {'tau': tau_full_response, 'response': strategy, 'n_episodes': t}
-        return {'tau': None, 'response': None, 'n_episodes': n_max_episodes}
+                return {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t}
+        return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes}
 
 
 def _my_round(x):

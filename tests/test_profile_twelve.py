@@ -19,13 +19,41 @@ def test():
         1
         <abc: a> ==> a
         >>> result = profile.iterated_voting_taus(strategy_ini=strategy, n_max_episodes=100,
-        ...                                       update_ratio=1, verbose=True)
-        -1
-        <ab: 1> ==> a, b
-        0
-        <a: 1> ==> a
-        1
-        <a: 1> ==> a
+        ...                                       ballot_update_ratio=1, verbose=True)
+        t = 0
+        strategy: <abc: ab> ==> a, b
+        tau_actual: <ab: 1> ==> a, b
+        t = 1
+        tau_perceived: <ab: 1> ==> a, b
+        strategy: <abc: a> ==> a
+        tau_full_response: <a: 1> ==> a
+        tau_actual: <a: 1> ==> a
+        t = 2
+        tau_perceived: <a: 1> ==> a
+        strategy: <abc: a> ==> a
+        tau_full_response: <a: 1> ==> a
+        tau_actual: <a: 1> ==> a
+        t = 3
+        tau_perceived: <a: 1> ==> a
+        strategy: <abc: a> ==> a
+        tau_full_response: <a: 1> ==> a
+        tau_actual: <a: 1> ==> a
+        >>> result = profile.fictitious_play(strategy_ini=strategy, n_max_episodes=100,
+        ...                                  perception_update_ratio=1, ballot_update_ratio=1, verbose=True)
+        t = 0
+        strategy: <abc: ab> ==> a, b
+        tau_actual: <ab: 1> ==> a, b
+        tau_perceived: <ab: 1> ==> a, b
+        t = 1
+        tau_perceived: <ab: 1> ==> a, b
+        strategy: <abc: a> ==> a
+        tau_full_response: <a: 1> ==> a
+        tau_actual: <a: 1> ==> a
+        t = 2
+        tau_perceived: <a: 1> ==> a
+        strategy: <abc: a> ==> a
+        tau_full_response: <a: 1> ==> a
+        tau_actual: <a: 1> ==> a
     """
 
     # Check that normalization works as expected
@@ -46,5 +74,5 @@ def test():
     # Case without convergence: iterated_voting_taus
     profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
     strategy = StrategyThreshold(d_ranking_threshold={'abc': 0})
-    result = profile.iterated_voting_taus(strategy_ini=strategy, n_max_episodes=1, update_ratio=1)
-    assert result['cycle_taus'] == []
+    result = profile.iterated_voting_taus(strategy_ini=strategy, n_max_episodes=1, ballot_update_ratio=1)
+    assert result['cycle_taus_actual'] == []

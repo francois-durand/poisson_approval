@@ -78,10 +78,19 @@ class ProfileHistogram(ProfileCardinal):
         <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> profile.is_equilibrium(strategy)
         EquilibriumStatus.EQUILIBRIUM
-        >>> cycle = profile.iterated_voting_strategies(StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5}),  100)['responses']
+        >>> strategy_ini = StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5})
+        >>> cycle = profile.iterated_voting_strategies(strategy_ini,  100)['responses']
         >>> len(cycle)
         1
         >>> print(cycle[0])
+        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
+        >>> cycle = profile.iterated_voting_taus(strategy_ini, 100)['cycle_strategies']
+        >>> len(cycle)
+        1
+        >>> print(cycle[0])
+        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
+        >>> limit_strategy = profile.fictitious_play(strategy_ini, 100, perception_update_ratio=1)['strategy']
+        >>> print(limit_strategy)
         <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
     """
 
