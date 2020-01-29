@@ -1,4 +1,5 @@
 from math import isclose
+from copy import deepcopy
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import ballot_one, ballot_one_two, barycenter, to_callable
@@ -238,10 +239,7 @@ class ProfileCardinal(Profile):
         In general, you should use :meth:`iterated_voting` only if you care about cycles, with the constraint
         that it implies having constant update ratios.
         """
-        strategy = StrategyThreshold({
-            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
-            if self.d_ranking_share[ranking] > 0
-        }, profile=self)
+        strategy = strategy_ini.deepcopy_with_attached_profile(self)
         tau_actual = strategy.tau
         tau_perceived = tau_actual
         strategies = [strategy]
@@ -288,9 +286,9 @@ class ProfileCardinal(Profile):
                          for begin in range(end - 1, -1, -1)
                          if taus_actual[begin].isclose(taus_actual[end], abs_tol=1E-9)
                          and taus_perceived[begin].isclose(taus_perceived[end], abs_tol=1E-9))
-            cycle_taus_actual = taus_actual[begin:end]
-            cycle_taus_perceived = taus_perceived[begin:end]
-            cycle_strategies = strategies[begin:end]
+            cycle_taus_actual = taus_actual[begin + 1:end + 1]
+            cycle_taus_perceived = taus_perceived[begin + 1:end + 1]
+            cycle_strategies = strategies[begin + 1:end + 1]
         except StopIteration:
             cycle_taus_actual = []
             cycle_taus_perceived = []
@@ -306,8 +304,8 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy_ini : StrategyThreshold
-            Initial strategy.
+        strategy_ini : an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`
+            The initial strategy.
         n_max_episodes : int
             Maximal number of iterations.
         perception_update_ratio : callable or Number
@@ -352,10 +350,7 @@ class ProfileCardinal(Profile):
         perception_update_ratio = to_callable(perception_update_ratio)
         ballot_update_ratio = to_callable(ballot_update_ratio)
 
-        strategy = StrategyThreshold({
-            ranking: threshold for ranking, threshold in strategy_ini.d_ranking_threshold.items()
-            if self.d_ranking_share[ranking] > 0
-        }, profile=self)
+        strategy = strategy_ini.deepcopy_with_attached_profile(self)
         tau_actual = strategy.tau
         tau_perceived = tau_actual
         if verbose:

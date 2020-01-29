@@ -1,8 +1,9 @@
+from copy import deepcopy
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin
 
 
-class Strategy:
+class Strategy(DeleteCacheMixin):
     """A strategy profile (abstract class).
 
     Parameters
@@ -15,9 +16,34 @@ class Strategy:
         # Store the profile (if any)
         self.profile = profile
 
+    @property
+    def profile(self):
+        return self._profile
+
+    @profile.setter
+    def profile(self, value):
+        self.delete_cache()
+        self._profile = value
+
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
+
+    def deepcopy_with_attached_profile(self, profile):
+        """Deep copy with an attached profile.
+
+        Parameters
+        ----------
+        profile : Profile
+
+        Returns
+        -------
+        Strategy
+            A deep copy of this strategy, with the attached profile `profile`.
+        """
+        strategy = deepcopy(self)
+        strategy.profile = profile
+        return strategy
 
     # Additional stuff when a profile is given
     # For tests of this, see file ``test_strategy_embed_profile.py``.
