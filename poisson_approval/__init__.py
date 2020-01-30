@@ -49,6 +49,7 @@ from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 
 # Profiles
 from poisson_approval.profiles.Profile import Profile
+from poisson_approval.profiles.ProfileDiscrete import ProfileDiscrete
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.profiles.ProfileTwelve import ProfileTwelve

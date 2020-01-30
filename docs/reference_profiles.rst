@@ -24,6 +24,12 @@ ProfileTwelve
     :members:
     :inherited-members:
 
+ProfileDiscrete
+---------------
+.. autoclass:: poisson_approval.ProfileDiscrete
+    :members:
+    :inherited-members:
+
 ProfileHistogram
 ----------------
 .. autoclass:: poisson_approval.ProfileHistogram

@@ -259,7 +259,7 @@ class ProfileHistogram(ProfileCardinal):
 
     @cached_property
     def standardized_version(self):
-        """ProfileTwelve : Standardized version of the profile (makes it unique, up to permutations of the candidates).
+        """ProfileHistogram : Standardized version of the profile (makes it unique, up to permutations of the candidates).
 
          Examples
          --------
