@@ -108,12 +108,31 @@ class ProfileDiscrete(ProfileCardinal):
         return sum([share for utility, share in d_utility_share.items() if utility < u])
 
     def __repr__(self):
+        """
+        >>> from fractions import Fraction
+        >>> profile = ProfileDiscrete({
+        ...     'abc': {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},
+        ...     ('bac', 0.1): Fraction(21, 100)
+        ... }, ratio_sincere=Fraction(1, 10))
+        >>> profile
+        ProfileDiscrete({'abc': {0.3: Fraction(13, 50), 0.8: Fraction(53, 100)}, 'bac': {0.1: Fraction(21, 100)}}, \
+ratio_sincere=Fraction(1, 10))
+        """
         arguments = repr(self.d_ranking_utility_share)
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         return 'ProfileDiscrete(%s)' % arguments
 
     def __str__(self):
+        """
+        >>> from fractions import Fraction
+        >>> profile = ProfileDiscrete({
+        ...     'abc': {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},
+        ...     ('bac', 0.1): Fraction(21, 100)
+        ... }, ratio_sincere=Fraction(1, 10))
+        >>> print(profile)
+        <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a) (ratio_sincere: 1/10)
+        """
         result = '<' + ', '.join([
             '%s %s: %s' % (ranking, utility, self.d_ranking_utility_share[ranking][utility])
             for ranking in sorted(self.d_ranking_utility_share.keys()) if self.d_ranking_utility_share[ranking]
