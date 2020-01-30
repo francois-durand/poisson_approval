@@ -3,6 +3,15 @@ History
 =======
 
 ------------------
+0.7.0 (2020-01-30)
+------------------
+
+* Add ``ProfileDiscrete``: a profile with a discrete distribution of voters.
+* Subclasses of ``Profile``: better handling of the additional parameters like ``well_informed_voters`` or
+  ``ratio_sincere``. In the conversions to string (``str`` or ``repr``), they are now mentioned. They are also used in
+  the equality tests between two profiles.
+
+------------------
 0.6.0 (2020-01-29)
 ------------------
 
