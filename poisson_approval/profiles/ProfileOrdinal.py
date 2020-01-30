@@ -65,29 +65,18 @@ class ProfileOrdinal(Profile):
     """
 
     def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True):
-        """
-            >>> profile = ProfileOrdinal({'non_existing_ranking': 1})
-            Traceback (most recent call last):
-            ValueError: Unknown key: non_existing_ranking
-        """
         super().__init__()
-        # Populate the dictionary and check for typos in the input
-        self._d_ranking_share = DictPrintingInOrderIgnoringZeros()
+        # Populate the dictionary
+        self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
         for ranking, share in d_ranking_share.items():
-            if ranking in RANKINGS:
-                self._d_ranking_share[ranking] = share
-            else:
-                raise ValueError('Unknown key: ' + ranking)
-        for ranking in RANKINGS:
-            if ranking not in self._d_ranking_share:
-                self._d_ranking_share[ranking] = 0
+            self._d_ranking_share[ranking] += share
         # Normalize if necessary
         total = sum(self._d_ranking_share.values())
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for ranking in self._d_ranking_share.keys():
-                self._d_ranking_share[ranking] = self._d_ranking_share[ranking] / total
+                self._d_ranking_share[ranking] /= total
         # Well-informed voters?
         self.well_informed_voters = well_informed_voters
 

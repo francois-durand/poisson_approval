@@ -91,41 +91,29 @@ class ProfileHistogram(ProfileCardinal):
 
     def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True, ratio_sincere=0):
         """
-            >>> profile = ProfileHistogram(d_ranking_share={'non_existing_ranking': 1},
-            ...                            d_ranking_histogram={'abc': [1]})
-            Traceback (most recent call last):
-            ValueError: Unknown key: non_existing_ranking
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
             ...                            d_ranking_histogram={'non_existing_ranking': [1]})
             Traceback (most recent call last):
-            ValueError: Unknown key: non_existing_ranking
+            KeyError: 'non_existing_ranking'
         """
         super().__init__(ratio_sincere=ratio_sincere)
-        # Populate the dictionary and check for typos in the input
-        self._d_ranking_share = DictPrintingInOrderIgnoringZeros()
-        self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros()
+        # Populate the dictionary (and check for typos in the input)
+        self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
+        self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros({ranking: np.array([]) for ranking in RANKINGS})
         for ranking, share in d_ranking_share.items():
-            if ranking in RANKINGS:
-                self._d_ranking_share[ranking] = share
-            else:
-                raise ValueError('Unknown key: ' + ranking)
+            self._d_ranking_share[ranking] += share
         for ranking, histogram in d_ranking_histogram.items():
             if ranking in RANKINGS:
                 self.d_ranking_histogram[ranking] = np.array(histogram)
             else:
-                raise ValueError('Unknown key: ' + ranking)
-        for ranking in RANKINGS:
-            if ranking not in self._d_ranking_share:
-                self._d_ranking_share[ranking] = 0
-            if ranking not in self.d_ranking_histogram:
-                self.d_ranking_histogram[ranking] = np.array([])
+                raise KeyError('%s' % ranking)
         # Normalize if necessary
         total = sum(self._d_ranking_share.values())
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for ranking in self._d_ranking_share.keys():
-                self._d_ranking_share[ranking] = self._d_ranking_share[ranking] / total
+                self._d_ranking_share[ranking] /= total
         for ranking, histogram in self.d_ranking_histogram.items():
             if len(histogram) == 0:
                 continue

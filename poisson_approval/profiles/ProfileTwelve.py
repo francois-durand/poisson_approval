@@ -89,29 +89,18 @@ class ProfileTwelve(ProfileCardinal):
     """
 
     def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0):
-        """
-            >>> profile = ProfileTwelve({'non_existing_type': 1})
-            Traceback (most recent call last):
-            ValueError: Unknown key: non_existing_type
-        """
         super().__init__(ratio_sincere=ratio_sincere)
-        # Populate the dictionary and check for typos in the input
-        self.d_type_share = DictPrintingInOrderIgnoringZeros()
+        # Populate the dictionary
+        self.d_type_share = DictPrintingInOrderIgnoringZeros({t: 0 for t in TWELVE_TYPES})
         for t, share in d_type_share.items():
-            if t in TWELVE_TYPES:
-                self.d_type_share[t] = share
-            else:
-                raise ValueError('Unknown key: ' + t)
-        for t in TWELVE_TYPES:
-            if t not in self.d_type_share:
-                self.d_type_share[t] = 0
+            self.d_type_share[t] += share
         # Normalize if necessary
         total = sum(self.d_type_share.values())
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for t in self.d_type_share.keys():
-                self.d_type_share[t] = self.d_type_share[t] / total
+                self.d_type_share[t] /= total
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
