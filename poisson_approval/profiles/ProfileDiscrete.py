@@ -115,9 +115,9 @@ class ProfileDiscrete(ProfileCardinal):
 
     def __str__(self):
         result = '<' + ', '.join([
-            '%s %s: %s' % (ranking, utility, share)
-            for ranking, d_utility_share in self.d_ranking_utility_share.items() if d_utility_share
-            for utility, share in d_utility_share.items()
+            '%s %s: %s' % (ranking, utility, self.d_ranking_utility_share[ranking][utility])
+            for ranking in sorted(self.d_ranking_utility_share.keys()) if self.d_ranking_utility_share[ranking]
+            for utility in sorted(self.d_ranking_utility_share[ranking].keys())
         ]) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
