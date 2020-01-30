@@ -7,8 +7,8 @@ Welcome to Poisson Approval's documentation!
 
    readme
    getting_started
-   tutorials
-   reference
+   tutorials/index
+   reference/index
    contributing
    authors
    history
