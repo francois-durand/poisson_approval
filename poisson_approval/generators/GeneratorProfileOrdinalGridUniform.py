@@ -24,7 +24,7 @@ class GeneratorProfileOrdinalGridUniform:
         >>> generator = GeneratorProfileOrdinalGridUniform(denominator=100, well_informed_voters=False)
         >>> profile = generator()
         >>> print(profile)
-        <abc: 1/50, acb: 23/100, bac: 17/50, cab: 11/50, cba: 19/100>
+        <abc: 1/50, acb: 23/100, bac: 17/50, cab: 11/50, cba: 19/100> (badly informed voters)
         >>> profile.well_informed_voters
         False
     """

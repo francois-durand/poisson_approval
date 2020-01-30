@@ -108,7 +108,10 @@ class ProfileDiscrete(ProfileCardinal):
         return sum([share for utility, share in d_utility_share.items() if utility < u])
 
     def __repr__(self):
-        return 'ProfileDiscrete(%r)' % self.d_ranking_utility_share
+        arguments = repr(self.d_ranking_utility_share)
+        if self.ratio_sincere > 0:
+            arguments += ', ratio_sincere=%r' % self.ratio_sincere
+        return 'ProfileDiscrete(%s)' % arguments
 
     def __str__(self):
         result = '<' + ', '.join([
@@ -118,6 +121,8 @@ class ProfileDiscrete(ProfileCardinal):
         ]) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
+        if self.ratio_sincere > 0:
+            result += ' (ratio_sincere: %s)' % self.ratio_sincere
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover

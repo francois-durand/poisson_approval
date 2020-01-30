@@ -200,7 +200,10 @@ class ProfileHistogram(ProfileCardinal):
             return share_ranking * (np.sum(histogram[0:k]) + histogram[k] * (u * n_bins - k))
 
     def __repr__(self):
-        return 'ProfileHistogram(%r, %r)' % (self.d_ranking_share, self.d_ranking_histogram)
+        arguments = '%r, %r' % (self.d_ranking_share, self.d_ranking_histogram)
+        if self.ratio_sincere > 0:
+            arguments += ', ratio_sincere=%r' % self.ratio_sincere
+        return 'ProfileHistogram(%s)' % arguments
 
     def __str__(self):
         result = '<' + ', '.join([
@@ -210,6 +213,8 @@ class ProfileHistogram(ProfileCardinal):
         ]) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
+        if self.ratio_sincere > 0:
+            result += ' (ratio_sincere: %s)' % self.ratio_sincere
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -241,7 +246,8 @@ class ProfileHistogram(ProfileCardinal):
         """
         return (isinstance(other, ProfileHistogram)
                 and self.d_ranking_share == other.d_ranking_share
-                and self.d_ranking_histogram == self.d_ranking_histogram)
+                and self.d_ranking_histogram == self.d_ranking_histogram
+                and self.ratio_sincere == other.ratio_sincere)
 
     # Standardized version of the profile (makes it unique, up to permutations)
 

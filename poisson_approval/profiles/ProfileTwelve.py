@@ -168,12 +168,17 @@ class ProfileTwelve(ProfileCardinal):
         return low_u
 
     def __repr__(self):
-        return 'ProfileTwelve(%r)' % self.d_type_share
+        arguments = repr(self.d_type_share)
+        if self.ratio_sincere > 0:
+            arguments += ', ratio_sincere=%r' % self.ratio_sincere
+        return 'ProfileTwelve(%s)' % arguments
 
     def __str__(self):
         result = '<%s>' % str(self.d_type_share)[1:-1]
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
+        if self.ratio_sincere > 0:
+            result += ' (ratio_sincere: %s)' % self.ratio_sincere
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -201,7 +206,9 @@ class ProfileTwelve(ProfileCardinal):
             ...                           'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
             True
         """
-        return isinstance(other, ProfileTwelve) and self.d_type_share == other.d_type_share
+        return (isinstance(other, ProfileTwelve)
+                and self.d_type_share == other.d_type_share
+                and self.ratio_sincere == other.ratio_sincere)
 
     # Standardized version of the profile (makes it unique, up to permutations)
 

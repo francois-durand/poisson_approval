@@ -85,12 +85,17 @@ class ProfileOrdinal(Profile):
         return self._d_ranking_share
 
     def __repr__(self):
-        return 'ProfileOrdinal(%r)' % self._d_ranking_share
+        arguments = repr(self._d_ranking_share)
+        if not self.well_informed_voters:
+            arguments += ', well_informed_voters=False'
+        return 'ProfileOrdinal(%s)' % arguments
 
     def __str__(self):
         result = '<%s>' % str(self._d_ranking_share)[1:-1]
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
+        if not self.well_informed_voters:
+            result += ' (badly informed voters)'
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -116,7 +121,9 @@ class ProfileOrdinal(Profile):
             >>> profile == ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             True
         """
-        return isinstance(other, ProfileOrdinal) and self.d_ranking_share == other.d_ranking_share
+        return (isinstance(other, ProfileOrdinal)
+                and self.d_ranking_share == other.d_ranking_share
+                and self.well_informed_voters == other.well_informed_voters)
 
     @cached_property
     def standardized_version(self):
