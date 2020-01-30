@@ -85,12 +85,27 @@ class ProfileOrdinal(Profile):
         return self._d_ranking_share
 
     def __repr__(self):
+        """
+            >>> from fractions import Fraction
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...                          well_informed_voters=False)
+            >>> profile
+            ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)}, \
+well_informed_voters=False)
+        """
         arguments = repr(self._d_ranking_share)
         if not self.well_informed_voters:
             arguments += ', well_informed_voters=False'
         return 'ProfileOrdinal(%s)' % arguments
 
     def __str__(self):
+        """
+            >>> from fractions import Fraction
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...                          well_informed_voters=False)
+            >>> print(profile)
+            <abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b) (badly informed voters)
+        """
         result = '<%s>' % str(self._d_ranking_share)[1:-1]
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners

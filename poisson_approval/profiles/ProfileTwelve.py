@@ -168,12 +168,29 @@ class ProfileTwelve(ProfileCardinal):
         return low_u
 
     def __repr__(self):
+        """
+        >>> from fractions import Fraction
+        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+        ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
+        ...                         ratio_sincere=Fraction(1, 10))
+        >>> profile
+        ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5), 'c_ab': Fraction(1, 5), \
+'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10))
+        """
         arguments = repr(self.d_type_share)
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         return 'ProfileTwelve(%s)' % arguments
 
     def __str__(self):
+        """
+        >>> from fractions import Fraction
+        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+        ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
+        ...                         ratio_sincere=Fraction(1, 10))
+        >>> print(profile)
+        <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10)
+        """
         result = '<%s>' % str(self.d_type_share)[1:-1]
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners

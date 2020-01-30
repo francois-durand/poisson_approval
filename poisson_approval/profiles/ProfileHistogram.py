@@ -200,12 +200,33 @@ class ProfileHistogram(ProfileCardinal):
             return share_ranking * (np.sum(histogram[0:k]) + histogram[k] * (u * n_bins - k))
 
     def __repr__(self):
+        """
+            >>> from fractions import Fraction
+            >>> profile = ProfileHistogram(
+            ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]},
+            ...     ratio_sincere=Fraction(1, 10))
+            >>> profile
+            ProfileHistogram({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)}, \
+{'abc': array([1]), 'bac': array([1, 0]), 'cab': array([Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)],
+                  dtype=object)}, ratio_sincere=Fraction(1, 10))
+        """
         arguments = '%r, %r' % (self.d_ranking_share, self.d_ranking_histogram)
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         return 'ProfileHistogram(%s)' % arguments
 
     def __str__(self):
+        """
+            >>> from fractions import Fraction
+            >>> profile = ProfileHistogram(
+            ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+            ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]},
+            ...     ratio_sincere=Fraction(1, 10))
+            >>> print(profile)
+            <abc: 1/10 [1], bac: 3/5 [1 0], cab: 3/10 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)]> \
+(Condorcet winner: b) (ratio_sincere: 1/10)
+        """
         result = '<' + ', '.join([
             '%s: %s %s' % (ranking, self.d_ranking_share[ranking], self.d_ranking_histogram[ranking])
             for ranking in sorted(self.d_ranking_share)
