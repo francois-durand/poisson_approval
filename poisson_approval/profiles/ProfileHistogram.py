@@ -29,6 +29,9 @@ class ProfileHistogram(ProfileCardinal):
         Whether a warning should be issued if the input distribution is not normalized.
     ratio_sincere : Number
         The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
+    ratio_fanatic : Number
+        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
+        and `ratio_fanatic` must not exceed 1.
 
     Notes
     -----
@@ -72,6 +75,8 @@ class ProfileHistogram(ProfileCardinal):
         >>> strategy = StrategyThreshold({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
         >>> print(profile.tau_sincere)
         <a: 1/20, ab: 1/20, ac: 1/10, b: 3/5, c: 1/5> ==> b
+        >>> print(profile.tau_fanatic)
+        <a: 1/10, b: 3/5, c: 3/10> ==> b
         >>> print(profile.tau_strategic(strategy))
         <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> print(profile.tau(strategy))
@@ -89,14 +94,15 @@ class ProfileHistogram(ProfileCardinal):
         <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
     """
 
-    def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True, ratio_sincere=0):
+    def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True,
+                 ratio_sincere=0, ratio_fanatic=0):
         """
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
             ...                            d_ranking_histogram={'non_existing_ranking': [1]})
             Traceback (most recent call last):
             KeyError: 'non_existing_ranking'
         """
-        super().__init__(ratio_sincere=ratio_sincere)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic)
         # Populate the dictionary (and check for typos in the input)
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
         self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros({ranking: np.array([]) for ranking in RANKINGS})
@@ -205,15 +211,17 @@ class ProfileHistogram(ProfileCardinal):
             >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]},
-            ...     ratio_sincere=Fraction(1, 10))
+            ...     ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
             >>> profile
             ProfileHistogram({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)}, \
 {'abc': array([1]), 'bac': array([1, 0]), 'cab': array([Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)],
-                  dtype=object)}, ratio_sincere=Fraction(1, 10))
+                  dtype=object)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = '%r, %r' % (self.d_ranking_share, self.d_ranking_histogram)
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
+        if self.ratio_fanatic > 0:
+            arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
         return 'ProfileHistogram(%s)' % arguments
 
     def __str__(self):
@@ -222,10 +230,10 @@ class ProfileHistogram(ProfileCardinal):
             >>> profile = ProfileHistogram(
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]},
-            ...     ratio_sincere=Fraction(1, 10))
+            ...     ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
             >>> print(profile)
             <abc: 1/10 [1], bac: 3/5 [1 0], cab: 3/10 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)]> \
-(Condorcet winner: b) (ratio_sincere: 1/10)
+(Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
         result = '<' + ', '.join([
             '%s: %s %s' % (ranking, self.d_ranking_share[ranking], self.d_ranking_histogram[ranking])
@@ -236,6 +244,8 @@ class ProfileHistogram(ProfileCardinal):
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
             result += ' (ratio_sincere: %s)' % self.ratio_sincere
+        if self.ratio_fanatic > 0:
+            result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -268,7 +278,8 @@ class ProfileHistogram(ProfileCardinal):
         return (isinstance(other, ProfileHistogram)
                 and self.d_ranking_share == other.d_ranking_share
                 and self.d_ranking_histogram == self.d_ranking_histogram
-                and self.ratio_sincere == other.ratio_sincere)
+                and self.ratio_sincere == other.ratio_sincere
+                and self.ratio_fanatic == other.ratio_fanatic)
 
     # Standardized version of the profile (makes it unique, up to permutations)
 

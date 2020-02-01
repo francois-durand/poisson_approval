@@ -27,6 +27,9 @@ class ProfileTwelve(ProfileCardinal):
         Whether a warning should be issued if the input distribution is not normalized.
     ratio_sincere : Number
         The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
+    ratio_fanatic : Number
+        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
+        and `ratio_fanatic` must not exceed 1.
 
     Notes
     -----
@@ -88,8 +91,8 @@ class ProfileTwelve(ProfileCardinal):
         <a: 1/15, ab: 1/30, ac: 1/10, b: 3/5, c: 1/5> ==> b
     """
 
-    def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0):
-        super().__init__(ratio_sincere=ratio_sincere)
+    def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0):
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic)
         # Populate the dictionary
         self.d_type_share = DictPrintingInOrderIgnoringZeros({t: 0 for t in TWELVE_TYPES})
         for t, share in d_type_share.items():
@@ -172,14 +175,16 @@ class ProfileTwelve(ProfileCardinal):
         >>> from fractions import Fraction
         >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
         ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
-        ...                         ratio_sincere=Fraction(1, 10))
+        ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         >>> profile
         ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5), 'c_ab': Fraction(1, 5), \
-'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10))
+'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_type_share)
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
+        if self.ratio_fanatic > 0:
+            arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
         return 'ProfileTwelve(%s)' % arguments
 
     def __str__(self):
@@ -187,15 +192,17 @@ class ProfileTwelve(ProfileCardinal):
         >>> from fractions import Fraction
         >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
         ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
-        ...                         ratio_sincere=Fraction(1, 10))
+        ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         >>> print(profile)
-        <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10)
+        <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
         result = '<%s>' % str(self.d_type_share)[1:-1]
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
             result += ' (ratio_sincere: %s)' % self.ratio_sincere
+        if self.ratio_fanatic > 0:
+            result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -225,7 +232,8 @@ class ProfileTwelve(ProfileCardinal):
         """
         return (isinstance(other, ProfileTwelve)
                 and self.d_type_share == other.d_type_share
-                and self.ratio_sincere == other.ratio_sincere)
+                and self.ratio_sincere == other.ratio_sincere
+                and self.ratio_fanatic == other.ratio_fanatic)
 
     # Standardized version of the profile (makes it unique, up to permutations)
 

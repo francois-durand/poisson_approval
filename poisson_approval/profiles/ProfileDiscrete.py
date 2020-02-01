@@ -20,6 +20,9 @@ class ProfileDiscrete(ProfileCardinal):
         Whether a warning should be issued if the input distribution is not normalized.
     ratio_sincere : Number
         The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
+    ratio_fanatic : Number
+        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
+        and `ratio_fanatic` must not exceed 1.
 
     Attributes
     ----------
@@ -55,13 +58,13 @@ class ProfileDiscrete(ProfileCardinal):
         Fraction(13, 50)
     """
 
-    def __init__(self, d, normalization_warning=True, ratio_sincere=0):
+    def __init__(self, d, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0):
         """
             >>> profile = ProfileDiscrete({42: 51})
             Traceback (most recent call last):
             TypeError: Key should be tuple or str, got: <class 'int'> instead.
         """
-        super().__init__(ratio_sincere=ratio_sincere)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic)
         self.d_ranking_utility_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
         for key, value in d.items():
@@ -113,14 +116,16 @@ class ProfileDiscrete(ProfileCardinal):
         >>> profile = ProfileDiscrete({
         ...     'abc': {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},
         ...     ('bac', 0.1): Fraction(21, 100)
-        ... }, ratio_sincere=Fraction(1, 10))
+        ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
         >>> profile
         ProfileDiscrete({'abc': {0.3: Fraction(13, 50), 0.8: Fraction(53, 100)}, 'bac': {0.1: Fraction(21, 100)}}, \
-ratio_sincere=Fraction(1, 10))
+ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_ranking_utility_share)
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
+        if self.ratio_fanatic > 0:
+            arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
         return 'ProfileDiscrete(%s)' % arguments
 
     def __str__(self):
@@ -129,9 +134,10 @@ ratio_sincere=Fraction(1, 10))
         >>> profile = ProfileDiscrete({
         ...     'abc': {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},
         ...     ('bac', 0.1): Fraction(21, 100)
-        ... }, ratio_sincere=Fraction(1, 10))
+        ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
         >>> print(profile)
-        <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a) (ratio_sincere: 1/10)
+        <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a) (ratio_sincere: 1/10) \
+(ratio_fanatic: 1/5)
         """
         result = '<' + ', '.join([
             '%s %s: %s' % (ranking, utility, self.d_ranking_utility_share[ranking][utility])
@@ -142,6 +148,8 @@ ratio_sincere=Fraction(1, 10))
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
             result += ' (ratio_sincere: %s)' % self.ratio_sincere
+        if self.ratio_fanatic > 0:
+            result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -175,7 +183,9 @@ ratio_sincere=Fraction(1, 10))
         """
         return (isinstance(other, ProfileDiscrete)
                 and all([self.d_ranking_utility_share[ranking] == other.d_ranking_utility_share[ranking]
-                         for ranking in RANKINGS]))
+                         for ranking in RANKINGS])
+                and self.ratio_sincere == other.ratio_sincere
+                and self.ratio_fanatic == other.ratio_fanatic)
 
     @cached_property
     def standardized_version(self):

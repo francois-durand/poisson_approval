@@ -19,11 +19,15 @@ class ProfileCardinal(Profile):
     ----------
     ratio_sincere : Number
         The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.
+    ratio_fanatic : Number
+        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
+        and `ratio_fanatic` must not exceed 1.
     """
 
-    def __init__(self, ratio_sincere=0):
+    def __init__(self, ratio_sincere=0, ratio_fanatic=0):
         super().__init__()
         self.ratio_sincere = ratio_sincere
+        self.ratio_fanatic = ratio_fanatic
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
@@ -95,7 +99,7 @@ class ProfileCardinal(Profile):
     # Tau and strategy-related stuff
 
     def tau(self, strategy):
-        """Tau-vector associated to a strategy, with partial sincere voting.
+        """Tau-vector associated to a strategy, with partial sincere and fanatic voting.
 
         Parameters
         ----------
@@ -104,16 +108,18 @@ class ProfileCardinal(Profile):
         Returns
         -------
         TauVector
-            A share :attr:`ratio_sincere` of the voters vote sincerely (in the sense of :attr:`tau_sincere`) and the
-            rest of them vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
-            is the barycenter of ``tau_sincere`` and ``tau_strategic(strategy)``, with respective weights
-            ``self.ratio_sincere`` and ``1 - self.ratio_sincere``.
+            A share :attr:`ratio_sincere` of the voters vote sincerely (in the sense of :attr:`tau_sincere`),
+            a share :attr:`ratio_fanatic` vote only for their top candidate, and the rest of the voters
+            vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
+            is the barycenter of ``tau_sincere``, ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective
+            weights ``self.ratio_sincere``, ``self.ratio_fanatic`` and ``1 - self.ratio_sincere - self.ratio_fanatic``.
         """
         tau_sincere = self.tau_sincere
+        tau_fanatic = self.tau_fanatic
         tau_strategic = self.tau_strategic(strategy)
         t = {ballot: barycenter(a=tau_strategic.d_ballot_share[ballot],
-                                b=tau_sincere.d_ballot_share[ballot],
-                                ratio_b=self.ratio_sincere)
+                                b=[tau_sincere.d_ballot_share[ballot], tau_fanatic.d_ballot_share[ballot]],
+                                ratio_b=[self.ratio_sincere, self.ratio_fanatic])
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
         return TauVector(t)
 
@@ -133,6 +139,20 @@ class ProfileCardinal(Profile):
             share_vote_one = self.d_ranking_share[ranking] - share_vote_one_two
             t[ballot_one(ranking)] += share_vote_one
             t[ballot_one_two(ranking)] += share_vote_one_two
+        return TauVector(t)
+
+    @cached_property
+    def tau_fanatic(self):
+        """Tau-vector associated to fanatic voting.
+
+        Returns
+        -------
+        TauVector
+            All voters approve of their top candidate only.
+        """
+        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for ranking, share in self.d_ranking_share.items():
+            t[ballot_one(ranking)] += share
         return TauVector(t)
 
     def tau_strategic(self, strategy):
@@ -172,6 +192,7 @@ class ProfileCardinal(Profile):
 
             * A proportion :attr:`ratio_sincere` of voters cast their ballot sincerely (in the sense of
               :attr:`tau_sincere`),
+            * A proportion :attr:`ratio_fanatic` of voters vote for their top candidate only,
             * And the rest of the voters use `strategy`.
         """
         this_tau = self.tau(strategy)

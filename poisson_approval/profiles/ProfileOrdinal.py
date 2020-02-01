@@ -2,14 +2,15 @@ import warnings
 import numpy as np
 from math import isclose
 from poisson_approval.constants.constants import *
+from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
+from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.profiles.Profile import Profile
-from poisson_approval.utils.UtilMasks import masks_area, masks_distribution, winners_distribution
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
-from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
+from poisson_approval.utils.Util import ballot_one, barycenter
 from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.utils.UtilMasks import masks_area, masks_distribution, winners_distribution
 
 
 # noinspection PyUnresolvedReferences
@@ -26,6 +27,8 @@ class ProfileOrdinal(Profile):
     well_informed_voters : bool.
         If True (default), it is the usual model. If False, voters "see" only the candidates' expected scores and
         believe that the scores follow independent Poisson distributions.
+    ratio_fanatic : Number
+        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`.
 
     Notes
     -----
@@ -64,7 +67,7 @@ class ProfileOrdinal(Profile):
         False
     """
 
-    def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True):
+    def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True, ratio_fanatic=0):
         super().__init__()
         # Populate the dictionary
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
@@ -77,8 +80,9 @@ class ProfileOrdinal(Profile):
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for ranking in self._d_ranking_share.keys():
                 self._d_ranking_share[ranking] /= total
-        # Well-informed voters?
+        # Other parameters
         self.well_informed_voters = well_informed_voters
+        self.ratio_fanatic = ratio_fanatic
 
     @cached_property
     def d_ranking_share(self):
@@ -88,29 +92,33 @@ class ProfileOrdinal(Profile):
         """
             >>> from fractions import Fraction
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
-            ...                          well_informed_voters=False)
+            ...                          well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> profile
             ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)}, \
-well_informed_voters=False)
+well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         """
         arguments = repr(self._d_ranking_share)
         if not self.well_informed_voters:
             arguments += ', well_informed_voters=False'
+        if self.ratio_fanatic > 0:
+            arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
         return 'ProfileOrdinal(%s)' % arguments
 
     def __str__(self):
         """
             >>> from fractions import Fraction
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
-            ...                          well_informed_voters=False)
+            ...                          well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> print(profile)
-            <abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b) (badly informed voters)
+            <abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b) (badly informed voters) (ratio_fanatic: 1/10)
         """
         result = '<%s>' % str(self._d_ranking_share)[1:-1]
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if not self.well_informed_voters:
             result += ' (badly informed voters)'
+        if self.ratio_fanatic > 0:
+            result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -138,7 +146,8 @@ well_informed_voters=False)
         """
         return (isinstance(other, ProfileOrdinal)
                 and self.d_ranking_share == other.d_ranking_share
-                and self.well_informed_voters == other.well_informed_voters)
+                and self.well_informed_voters == other.well_informed_voters
+                and self.ratio_fanatic==other.ratio_fanatic)
 
     @cached_property
     def standardized_version(self):
@@ -196,6 +205,43 @@ well_informed_voters=False)
     # Tau and strategy-related stuff
 
     def tau(self, strategy):
+        """Tau-vector associated to a strategy, with partial fanatic voting.
+
+        Parameters
+        ----------
+        strategy : an argument accepted by :meth:`tau_strategic`
+
+        Returns
+        -------
+        TauVector
+            A share :attr:`ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters
+            vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
+            is the barycenter of ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective
+            weights ``self.ratio_fanatic`` and ``1 - self.ratio_fanatic``.
+        """
+        tau_fanatic = self.tau_fanatic
+        tau_strategic = self.tau_strategic(strategy)
+        t = {ballot: barycenter(a=tau_strategic.d_ballot_share[ballot],
+                                b=tau_fanatic.d_ballot_share[ballot],
+                                ratio_b=self.ratio_fanatic)
+             for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        return TauVector(t)
+
+    @cached_property
+    def tau_fanatic(self):
+        """Tau-vector associated to fanatic voting.
+
+        Returns
+        -------
+        TauVector
+            All voters approve of their top candidate only.
+        """
+        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for ranking, share in self.d_ranking_share.items():
+            t[ballot_one(ranking)] += share
+        return TauVector(t)
+
+    def tau_strategic(self, strategy):
         """Tau-vector associated to a strategy.
 
         Parameters
@@ -213,11 +259,8 @@ well_informed_voters=False)
             >>> from fractions import Fraction
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-            >>> tau = profile.tau(strategy)
-            >>> print(tau)
-            <a: 1/10, ab: 3/5, c: 3/10> ==> a
-            >>> tau = profile.τ(strategy)  # Alternate notation
-            >>> print(tau)
+            >>> tau_strategic = profile.tau_strategic(strategy)
+            >>> print(tau_strategic)
             <a: 1/10, ab: 3/5, c: 3/10> ==> a
 
         In the case of badly informed voters, we do as if the tau-vector were the vector of scores (up to
@@ -227,8 +270,8 @@ well_informed_voters=False)
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...                          well_informed_voters=False)
             >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
-            >>> tau = profile.tau(strategy)
-            >>> print(tau)
+            >>> tau_strategic = profile.tau_strategic(strategy)
+            >>> print(tau_strategic)
             <a: 7/16, b: 3/8, c: 3/16> ==> a
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
