@@ -444,14 +444,16 @@ def barycenter(a, b, ratio_b):
     Parameters
     ----------
     a : Number
-    b : Number
-    ratio_b : the ratio of `b` in the result
+    b : Number or iterable
+    ratio_b : Number or iterable
+        The ratio of `b` in the result. If an iterable, must be the same size as `b`.
 
     Returns
     -------
     Number
         The result of ``(1 - ratio_b) * a + ratio_b * b``. The added value of this function is to preserve the type
-        of `a` (resp. `b`) when `ratio_b` is 0 (resp. 1).
+        of `a` (resp. `b`) when `ratio_b` is 0 (resp. 1). If `b` and `ratio_b` are iterable, return
+        ``(1 - sum(ratio_b)) * a + sum(ratio_b * b)``.
 
     Examples
     --------
@@ -472,12 +474,24 @@ def barycenter(a, b, ratio_b):
         42
         >>> (1 - ratio_b) * a + ratio_b * b
         42.0
+
+    In the following example, `b` and `ratio_b` are iterables:
+
+        >>> a = 0
+        >>> b = [-1 , 1]
+        >>> barycenter(0, [-1, 1], [Fraction(2, 10), Fraction(3, 10)])
+        Fraction(1, 10)
     """
-    if ratio_b == 0:
-        return a
-    if ratio_b == 1:
-        return b
-    return (1 - ratio_b) * a + ratio_b * b
+    def multiply(ratio, x):
+        """Does not contaminate with `x`'s type if `ratio` == 0"""
+        return 0 if ratio == 0 else ratio * x
+    try:
+        # b and ratio_b are numbers
+        return multiply(1 - ratio_b, a) + multiply(ratio_b, b)
+    except TypeError:
+        # b and ratio_b are iterables
+        ratio_a = 1 - sum(ratio_b)
+        return multiply(ratio_a, a) + sum([multiply(r, x) for r, x in zip(b, ratio_b)])
 
 
 def to_callable(o):
