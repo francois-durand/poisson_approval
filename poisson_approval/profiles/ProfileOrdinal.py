@@ -219,6 +219,18 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
             is the barycenter of ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective
             weights ``self.ratio_fanatic`` and ``1 - self.ratio_fanatic``.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
+            >>> strategy = StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
+            >>> tau = profile.tau(strategy)
+            >>> print(tau)
+            <a: 1/10, ab: 3/5, c: 3/10> ==> a
+            >>> τ = profile.τ(strategy)  # Alternate syntax
+            >>> print(τ)
+            <a: 1/10, ab: 3/5, c: 3/10> ==> a
         """
         tau_fanatic = self.tau_fanatic
         tau_strategic = self.tau_strategic(strategy)
