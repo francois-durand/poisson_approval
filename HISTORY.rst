@@ -3,6 +3,16 @@ History
 =======
 
 ------------------
+0.8.0 (2020-01-30)
+------------------
+
+* Implement the notion of fanatic voting, a variant of sincere voting: a given ratio of voters vote for their top
+  candidate only. This is implemented for all subclasses of ``Profile``.
+* The utility ``barycenter`` now accepts iterables.
+* Corrected bug: ``Profile.standardized_version`` now takes into account the auxiliary parameters like
+  ``ratio_sincere``, ``well_informed_voters``, etc.
+
+------------------
 0.7.0 (2020-01-30)
 ------------------
 
