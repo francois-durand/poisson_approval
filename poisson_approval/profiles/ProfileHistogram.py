@@ -321,7 +321,8 @@ class ProfileHistogram(ProfileCardinal):
             d_ranking_share={ranking: best_d_ranking_share[xyz_ranking]
                              for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
             d_ranking_histogram={ranking: best_d_ranking_histogram[xyz_ranking]
-                                 for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)}
+                                 for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
+            ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic
         )
 
     def plot_cdf(self, ranking, x_label=None, y_label=None, **kwargs):

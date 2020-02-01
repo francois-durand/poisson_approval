@@ -173,7 +173,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d = d_test
-        return ProfileOrdinal({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)})
+        return ProfileOrdinal({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
+                              well_informed_voters=self.well_informed_voters, ratio_fanatic=self.ratio_fanatic)
 
     # Has full support
     @cached_property

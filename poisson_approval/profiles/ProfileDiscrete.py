@@ -216,4 +216,5 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d = d_test
-        return ProfileDiscrete({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)})
+        return ProfileDiscrete({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
+                               ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic)

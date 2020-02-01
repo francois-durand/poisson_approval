@@ -262,7 +262,8 @@ class ProfileTwelve(ProfileCardinal):
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d = d_test
-        return ProfileTwelve({t: best_d[xyz_t] for t, xyz_t in zip(TWELVE_TYPES, XYZ_TWELVE_TYPES)})
+        return ProfileTwelve({t: best_d[xyz_t] for t, xyz_t in zip(TWELVE_TYPES, XYZ_TWELVE_TYPES)},
+                             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic)
 
     @cached_property
     def has_majority_type(self):
