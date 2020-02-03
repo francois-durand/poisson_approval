@@ -70,31 +70,96 @@ class BestResponse:
         return threshold_utility, justification
 
     @cached_property
-    def results_limit_pivot_theorem(self):
-        """tuple (threshold_utility, justification)
+    def phi_i(self):
+        """Number or NaN
 
-        Results according to the limit pivot theorem. Cf. :attr:`threshold_utility` and :attr:`justification`.
+        "Virtual offset" for ballot `i`. Is equal to the vanilla ``phi_i`` if it exists, and ``phi_ij * phi_ik``
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        diagram".
         """
         phi_i = getattr(self.trio, 'phi_' + self.ranking[0])
         if isnan(phi_i):
             phi_i = (getattr(self.trio, 'phi_' + self.ranking[0] + self.ranking[1])
                      * getattr(self.trio, 'phi_' + self.ranking[0] + self.ranking[2]))
+        return phi_i
+
+    @cached_property
+    def phi_j(self):
+        """Number or NaN
+
+        "Virtual offset" for ballot `j`. Is equal to the vanilla ``phi_j`` if it exists, and ``phi_ij * phi_jk``
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        diagram".
+        """
         phi_j = getattr(self.trio, 'phi_' + self.ranking[1])
         if isnan(phi_j):
             phi_j = (getattr(self.trio, 'phi_' + self.ranking[1] + self.ranking[0])
                      * getattr(self.trio, 'phi_' + self.ranking[1] + self.ranking[2]))
+        return phi_j
+
+    @cached_property
+    def phi_k(self):
+        """Number or NaN
+
+        "Virtual offset" for ballot `k`. Is equal to the vanilla ``phi_k`` if it exists, and ``phi_ik * phi_jk``
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        diagram".
+        """
         phi_k = getattr(self.trio, 'phi_' + self.ranking[2])
         if isnan(phi_k):
             phi_k = (getattr(self.trio, 'phi_' + self.ranking[2] + self.ranking[0])
                      * getattr(self.trio, 'phi_' + self.ranking[2] + self.ranking[1]))
+        return phi_k
+
+    @cached_property
+    def phi_ij(self):
+        """Number or NaN
+
+        "Virtual offset" for ballot `ij`. Is equal to the vanilla ``phi_ij`` if it exists, and ``phi_i * phi_j``
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        diagram".
+        """
         phi_ij = getattr(self.trio, 'phi_' + self.ranking[0] + self.ranking[1])
         if isnan(phi_ij):
             phi_ij = getattr(self.trio, 'phi_' + self.ranking[0]) * getattr(self.trio, 'phi_' + self.ranking[1])
+        return phi_ij
+
+    @cached_property
+    def phi_ik(self):
+        """Number or NaN
+
+        "Virtual offset" for ballot `ik`. Is equal to the vanilla ``phi_ik`` if it exists, and ``phi_i * phi_k``
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        diagram".
+        """
         phi_ik = getattr(self.trio, 'phi_' + self.ranking[0] + self.ranking[2])
         if isnan(phi_ik):
             phi_ik = getattr(self.trio, 'phi_' + self.ranking[0]) * getattr(self.trio, 'phi_' + self.ranking[2])
-        phi_i_ge_1 = (isclose(phi_i, 1) or phi_i >= 1)
-        phi_k_ge_1 = (isclose(phi_k, 1) or phi_k >= 1)
+        return phi_ik
+
+    @cached_property
+    def phi_jk(self):
+        """Number or NaN
+
+        "Virtual offset" for ballot `jk`. Is equal to the vanilla ``phi_jk`` if it exists, and ``phi_j * phi_k``
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        diagram".
+        """
+        phi_jk = getattr(self.trio, 'phi_' + self.ranking[1] + self.ranking[2])
+        if isnan(phi_jk):
+            phi_jk = getattr(self.trio, 'phi_' + self.ranking[1]) * getattr(self.trio, 'phi_' + self.ranking[2])
+        return phi_jk
+
+    @cached_property
+    def results_limit_pivot_theorem(self):
+        """tuple (threshold_utility, justification)
+
+        Results according to the limit pivot theorem. Cf. :attr:`threshold_utility` and :attr:`justification`.
+        The threshold utility may be NaN, because this method is not always sufficient. It is proved to compute the
+        threshold utility when there are not two consecutive holes in the "compass diagram".
+        """
+        phi_i_ge_1 = (isclose(self.phi_i, 1) or self.phi_i >= 1)
+        phi_k_ge_1 = (isclose(self.phi_k, 1) or self.phi_k >= 1)
         if phi_i_ge_1 and phi_k_ge_1:
             # Both pivots are easy: we can forget the trios
             threshold_utility = ((
@@ -113,10 +178,10 @@ class BestResponse:
             justification = self.DIFFICULT_VS_EASY
         else:
             # Both pivots are difficult -> General case of the offset method
-            pij = (1 + phi_ik) / (1 - phi_k)
-            pjk = (1 + phi_j) * phi_i ** 2 / (1 - phi_i)
-            p1t = phi_i
-            p2t = phi_ij
+            pij = (1 + self.phi_ik) / (1 - self.phi_k)
+            pjk = (1 + self.phi_j) * self.phi_i ** 2 / (1 - self.phi_i)
+            p1t = self.phi_i
+            p2t = self.phi_ij
             threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
             justification = self.OFFSET_METHOD
         return threshold_utility, justification
@@ -125,9 +190,10 @@ class BestResponse:
     def results(self):
         """tuple (threshold_utility, justification)
 
-        Results that use the asymptotic method if possible (better numerical approximation, but does not always provide
-        the threshold utility), and the limit pivot theorem otherwise (that always computes a threshold utility). Cf.
-        :attr:`threshold_utility` and :attr:`justification`.
+        Cf. :attr:`threshold_utility` and :attr:`justification`. Results that use the asymptotic method if possible
+        (better numerical approximation, but does not always provide the threshold utility), and the limit pivot
+        theorem otherwise. The limit pivot theorem may not give a result when there are two consecutive holes in the
+        "compass diagram", but this kind of case is covered by the asymptotic method.
         """
         threshold_utility, justification = self.results_asymptotic_method
         if isnan(threshold_utility):
