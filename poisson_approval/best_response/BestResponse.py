@@ -166,7 +166,7 @@ class BestResponse:
             raise ValueError('Unable to compute threshold utility')  # pragma: no cover
         elif isclose(self.threshold_utility, 1):
             ballot = ballot_one(self.ranking)
-        elif isclose(self.threshold_utility, 0):
+        elif isclose(self.threshold_utility, 0, abs_tol=1E-9):
             ballot = ballot_one_two(self.ranking)
         else:
             ballot = UTILITY_DEPENDENT
