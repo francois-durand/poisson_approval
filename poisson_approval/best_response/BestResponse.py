@@ -55,7 +55,6 @@ class BestResponse:
         self.trio_1t = getattr(tau, 'trio_1t_' + self.i)
         self.trio_2t = getattr(tau, 'trio_2t_' + self.i + self.j)
         self.trio = getattr(tau, 'trio')
-        self.tau_has_two_consecutive_zeros = tau.has_two_consecutive_zeros
 
     @cached_property
     def results_asymptotic_method(self):
@@ -160,12 +159,12 @@ class BestResponse:
         """tuple (threshold_utility, justification)
 
         Results according to the limit pivot theorem. Cf. :attr:`threshold_utility` and :attr:`justification`.
-        If :attr:`self.tau_has_two_consecutive_zeros` is True, the theorem does not apply and this method returns
+        If the tau-vector has two consecutive zeros, the theorem does not apply and this method returns
         ``nan, ''``.
         """
         # print('Entering results_limit_pivot_theorem...')
         # print('ranking=%s' % self.ranking)
-        if self.tau_has_two_consecutive_zeros:
+        if self.tau.has_two_consecutive_zeros:
             return np.nan, ''
 
         def multiply(tau_something, phi_something):
@@ -251,7 +250,7 @@ class BestResponse:
         two consecutive zeros in the "compass diagram" of the tau-vector, and the the limit pivot theorem in the
         otherwise.
         """
-        if self.tau_has_two_consecutive_zeros:
+        if self.tau.has_two_consecutive_zeros:
             return self.results_asymptotic_method
         else:
             return self.results_limit_pivot_theorem
