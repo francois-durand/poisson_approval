@@ -243,6 +243,17 @@ phi_ab = 0.707107>
         """
         return isinstance(other, TauVector) and self.d_ballot_share == other.d_ballot_share
 
+    @cached_property
+    def has_two_consecutive_zeros(self):
+        """bool
+
+        Whether the tau-vector has two consecutive holes in the "compass" representation. True iff
+        ``self.a == 0 and self.ab == 0``, or ``self.ab == 0 and self.b == 0``, etc.
+        """
+        return ((self.a == 0 and (self.ab == 0 or self.ac == 0))
+                or (self.b == 0 and (self.ab == 0 or self.bc == 0))
+                or (self.c == 0 and (self.ac == 0 or self.bc == 0)))
+
     def isclose(self, other, *args, **kwargs):
         """Test near-equality.
 
@@ -459,6 +470,7 @@ trio = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1))>
                 trio_1t=getattr(self, 'trio_1t_' + ranking[0]),
                 trio_2t=getattr(self, 'trio_2t_' + ranking[0] + ranking[1]),
                 trio=self.trio,
+                tau_has_two_consecutive_zeros=self.has_two_consecutive_zeros
             )
         return _d_ranking_best_response
 

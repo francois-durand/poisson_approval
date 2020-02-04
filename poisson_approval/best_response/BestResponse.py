@@ -1,3 +1,4 @@
+import numpy as np
 from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import isnan, ballot_one, ballot_one_two
@@ -31,7 +32,8 @@ class BestResponse:
         >>> trio_1t = EventTrio1t(candidate_x='a', candidate_y='b', candidate_z='c', **tau)
         >>> trio_2t = EventTrio2t(candidate_x='a', candidate_y='b', candidate_z='c', **tau)
         >>> trio = EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', **tau)
-        >>> best_response = BestResponse('abc', pivot_tij, pivot_tjk, trio_1t, trio_2t, trio)
+        >>> best_response = BestResponse('abc', pivot_tij, pivot_tjk, trio_1t, trio_2t, trio,
+        ...                              tau_has_two_consecutive_zeros=False)
         >>> best_response.ballot
         'a'
         >>> best_response.threshold_utility
@@ -44,20 +46,21 @@ class BestResponse:
     DIFFICULT_VS_EASY = 'Difficult vs easy pivot'
     OFFSET_METHOD = 'Offset method'
 
-    def __init__(self, ranking, pivot_tij, pivot_tjk, trio_1t, trio_2t, trio):
+    def __init__(self, ranking, pivot_tij, pivot_tjk, trio_1t, trio_2t, trio, tau_has_two_consecutive_zeros):
         self.ranking = ranking
         self.pivot_tij = pivot_tij
         self.pivot_tjk = pivot_tjk
         self.trio_1t = trio_1t
         self.trio_2t = trio_2t
         self.trio = trio
+        self.tau_has_two_consecutive_zeros = tau_has_two_consecutive_zeros
 
     @cached_property
     def results_asymptotic_method(self):
         """tuple (threshold_utility, justification)
 
         Results according to the asymptotic method. Cf. :attr:`threshold_utility` and :attr:`justification`.
-        The threshold utility may be NaN, because the asymptotic method is not always sufficient.
+        The threshold utility may be NaN, because this method is not always sufficient.
         """
         threshold_utility = ((
             self.pivot_tij.asymptotic * (1 / 2)
@@ -73,7 +76,7 @@ class BestResponse:
     def psi_i(self):
         """Number or NaN
 
-        "Pseudo-offset" for ballot `i`. Is equal to the vanilla ``phi_i`` if it exists, and ``phi_ij * phi_ik``
+        "Pseudo-offset" for ballot `i`. Is equal to ``phi_i`` if it exists, and ``phi_ij * phi_ik``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -87,7 +90,7 @@ class BestResponse:
     def psi_j(self):
         """Number or NaN
 
-        "Pseudo-offset" for ballot `j`. Is equal to the vanilla ``phi_j`` if it exists, and ``phi_ij * phi_jk``
+        "Pseudo-offset" for ballot `j`. Is equal to ``phi_j`` if it exists, and ``phi_ij * phi_jk``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -101,7 +104,7 @@ class BestResponse:
     def psi_k(self):
         """Number or NaN
 
-        "Pseudo-offset" for ballot `k`. Is equal to the vanilla ``phi_k`` if it exists, and ``phi_ik * phi_jk``
+        "Pseudo-offset" for ballot `k`. Is equal to ``phi_k`` if it exists, and ``phi_ik * phi_jk``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -115,7 +118,7 @@ class BestResponse:
     def psi_ij(self):
         """Number or NaN
 
-        "Pseudo-offset" for ballot `ij`. Is equal to the vanilla ``phi_ij`` if it exists, and ``phi_i * phi_j``
+        "Pseudo-offset" for ballot `ij`. Is equal to ``phi_ij`` if it exists, and ``phi_i * phi_j``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -128,7 +131,7 @@ class BestResponse:
     def psi_ik(self):
         """Number or NaN
 
-        "Pseudo-offset" for ballot `ik`. Is equal to the vanilla ``phi_ik`` if it exists, and ``phi_i * phi_k``
+        "Pseudo-offset" for ballot `ik`. Is equal to ``phi_ik`` if it exists, and ``phi_i * phi_k``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -141,7 +144,7 @@ class BestResponse:
     def psi_jk(self):
         """Number or NaN
 
-        "Pseudo-offset" for ballot `jk`. Is equal to the vanilla ``phi_jk`` if it exists, and ``phi_j * phi_k``
+        "Pseudo-offset" for ballot `jk`. Is equal to ``phi_jk`` if it exists, and ``phi_j * phi_k``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -155,9 +158,11 @@ class BestResponse:
         """tuple (threshold_utility, justification)
 
         Results according to the limit pivot theorem. Cf. :attr:`threshold_utility` and :attr:`justification`.
-        The threshold utility may be NaN, because this method is not always sufficient. It is proved to compute the
-        threshold utility when there are not two consecutive holes in the "compass diagram".
+        If :attr:`self.tau_has_two_consecutive_zeros` is True, the theorem does not apply and this method returns
+        ``nan, ''``.
         """
+        if self.tau_has_two_consecutive_zeros:
+            return np.nan, ''
         psi_i_ge_1 = (isclose(self.psi_i, 1) or self.psi_i >= 1)
         psi_k_ge_1 = (isclose(self.psi_k, 1) or self.psi_k >= 1)
         if psi_i_ge_1 and psi_k_ge_1:
