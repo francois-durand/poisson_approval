@@ -22,4 +22,4 @@ def test():
     tau = TauVector({'a': 0.24382716330832704, 'ab': 0.0011384657401753433,
                      'ac': 0.25507268421895707, 'b': 0.2550449552509131,
                      'bc': 0.24379357320990255, 'c': 0.001123158271724989})
-    # assert 0 <= tau.d_ranking_best_response['cab'].threshold_utility <= 1
+    assert 0 <= tau.d_ranking_best_response['cab'].threshold_utility <= 1
