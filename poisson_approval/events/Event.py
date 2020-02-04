@@ -30,13 +30,13 @@ class Event:
         The offset for this kind of ballot. An offset is ``np.nan`` if it is not defined.
         Other offsets are denoted ``phi_a``, etc.
     phi : dict
-        The dictionary of the offsets. For example, ``self.phi[`a`]`` is just an alternate notation for ``self.phi_a``.
-    psi_ab : Number of ``np.nan``
+        The dictionary of the offsets. For example, ``self.phi['a']`` is just an alternate notation for ``self.phi_a``.
+    psi_ab : Number or ``np.nan``
         The pseudo-offset for this kind of ballot. It is equal to ``phi_ab`` if it exists, and ``phi_a * phi_b``
         otherwise. Similarly, the pseudo-offset ``psi_a`` is equal to ``phi_a`` if it exists, and ``phi_ab * phi_ac``
         otherwise. Other pseudo-offsets are denoted ``psi_b``, etc.
     psi : dict
-        The dictionary of pseudo-offsets. For example, ``self.psi[`a`]`` is just an alternate notation for
+        The dictionary of pseudo-offsets. For example, ``self.psi['a']`` is just an alternate notation for
         ``self.psi_a``.
 
     Notes

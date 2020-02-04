@@ -9,6 +9,8 @@ from poisson_approval.utils.UtilCache import cached_property
 class BestResponse:
     """Best response for a given ordinal type of voter.
 
+    The main objective of this class is to compute :attr:`threshold_utility`.
+
     Parameters
     ----------
     tau : TauVector
@@ -55,42 +57,42 @@ class BestResponse:
 
     @cached_property
     def duo_ij(self):
-        """EventDuo : the duo ij."""
+        """EventDuo : The duo ij."""
         return getattr(self.tau, 'duo_' + self.ij)
 
     @cached_property
     def duo_ik(self):
-        """EventDuo : the duo ik."""
+        """EventDuo : The duo ik."""
         return getattr(self.tau, 'duo_' + self.ik)
 
     @cached_property
     def duo_jk(self):
-        """EventDuo : the duo jk."""
+        """EventDuo : The duo jk."""
         return getattr(self.tau, 'duo_' + self.jk)
 
     @cached_property
     def pivot_tij(self):
-        """EventPivotTij : the `personalized pivot` between candidates i and j."""
+        """EventPivotTij : The `personalized pivot` between candidates i and j."""
         return getattr(self.tau, 'pivot_tij_' + self.ranking)
 
     @cached_property
     def pivot_tjk(self):
-        """EventPivotTjk : the `personalized pivot` between candidates j and k."""
+        """EventPivotTjk : The `personalized pivot` between candidates j and k."""
         return getattr(self.tau, 'pivot_tjk_' + self.ranking)
 
     @cached_property
     def trio_1t(self):
-        """EventTrio1t : the first `personalized trio`."""
+        """EventTrio1t : The first `personalized trio`."""
         return getattr(self.tau, 'trio_1t_' + self.i)
 
     @cached_property
     def trio_2t(self):
-        """EventTrio1t : the second `personalized trio`."""
+        """EventTrio1t : The second `personalized trio`."""
         return getattr(self.tau, 'trio_2t_' + self.ij)
 
     @cached_property
     def trio(self):
-        """EventTrio : the 3-candidate tie."""
+        """EventTrio : The 3-candidate tie."""
         return getattr(self.tau, 'trio')
 
     # =======
@@ -99,10 +101,9 @@ class BestResponse:
 
     @cached_property
     def results_asymptotic_method(self):
-        """tuple (threshold_utility, justification)
-
-        Results according to the asymptotic method. Cf. :attr:`threshold_utility` and :attr:`justification`.
-        The threshold utility may be NaN, because this method is not always sufficient.
+        """tuple (threshold_utility, justification) : Results according to the asymptotic method. Cf.
+        :attr:`threshold_utility` and :attr:`justification`. The threshold utility may be NaN, because this method is
+        not always sufficient.
         """
         threshold_utility = ((
             self.pivot_tij.asymptotic * Fraction(1, 2)
@@ -116,11 +117,9 @@ class BestResponse:
 
     @cached_property
     def results_limit_pivot_theorem(self):
-        """tuple (threshold_utility, justification)
-
-        Results according to the limit pivot theorem. Cf. :attr:`threshold_utility` and :attr:`justification`.
-        If the tau-vector has two consecutive zeros, the theorem does not apply and this method returns
-        ``nan, ''``.
+        """tuple (threshold_utility, justification) : Results according to the limit pivot theorem.
+        Cf. :attr:`threshold_utility` and :attr:`justification`. If the tau-vector has two consecutive zeros, the
+        theorem does not apply and this method returns ``nan, ''``.
         """
         if self.tau.has_two_consecutive_zeros:
             return np.nan, ''
@@ -207,12 +206,12 @@ class BestResponse:
 
     @cached_property
     def results(self):
-        """tuple (threshold_utility, justification)
+        """tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`.
+        These results use:
 
-        Cf. :attr:`threshold_utility` and :attr:`justification`. These results use:
-
-        * The asymptotic method if there are two consecutive zeros in the "compass diagram" of the tau-vector,
-        * The limit pivot theorem otherwise.
+        * :meth:`results_asymptotic_method` if there are two consecutive zeros in the "compass diagram" of the
+          tau-vector,
+        * :meth:`results_limit_pivot_theorem` otherwise.
         """
         if self.tau.has_two_consecutive_zeros:
             return self.results_asymptotic_method
@@ -221,18 +220,14 @@ class BestResponse:
 
     @cached_property
     def threshold_utility(self):
-        """Number
-
-        The threshold value of the utility for the second candidate (where the optimal ballot changes). If 1, then
-        always vote for the first candidate. If 0, then always vote for the two most-liked candidates.
+        """Number : The threshold value of the utility for the second candidate (where the optimal ballot changes).
+        If 1, then always vote for the first candidate. If 0, then always vote for the two most-liked candidates.
         """
         return self.results[0]
 
     @cached_property
     def justification(self):
-        """str
-
-        How the program computed the utility threshold. Nowadays, possible values are ``'Asymptotic method'``,
+        """str : How the program computed the utility threshold. Nowadays, possible values are ``'Asymptotic method'``,
         ``'Simplified asymptotic method'``, ``'Easy vs difficult pivot'``, ``'Difficult vs easy pivot'``,
         ``'Offset method'``, ``'Offset method with trio approximation correction'``.
         """
@@ -240,9 +235,8 @@ class BestResponse:
 
     @cached_property
     def ballot(self):
-        """str
-
-        This can be a valid ballot (e.g. ``'a'`` or ``'ab'`` if `ranking` is ``'abc'``) or ``'utility-dependent'``.
+        """str : This can be a valid ballot (e.g. ``'a'`` or ``'ab'`` if `ranking` is ``'abc'``) or
+        ``'utility-dependent'``.
         """
         if isnan(self.threshold_utility):
             raise ValueError('Unable to compute threshold utility')  # pragma: no cover
