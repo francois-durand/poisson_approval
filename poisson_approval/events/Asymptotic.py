@@ -1,6 +1,6 @@
 from math import sqrt, log, pi, isclose, exp, factorial
 import numpy as np
-from poisson_approval.utils.Util import isnan, isposinf, isneginf
+from poisson_approval.utils.Util import isnan, isneginf
 
 
 # noinspection NonAsciiCharacters
@@ -91,9 +91,9 @@ class Asymptotic:
             x = float(x)
             if isnan(x):
                 return ' + ? ' + suffix if suffix else ' + ?'
-            if isclose(x, 1) and suffix:
+            if x == 1 and suffix:
                 return ' + ' + suffix
-            if isclose(x, -1) and suffix:
+            if x == -1 and suffix:
                 return ' - ' + suffix
             if x == 0:
                 return ''
@@ -136,21 +136,24 @@ class Asymptotic:
         """
         if isnan(self.mu):
             return np.nan
-        if self.mu == 0:
-            if isnan(self.nu):
-                return np.nan
-            if self.nu == 0:
-                if isnan(self.xi):
-                    return np.nan
-                return exp(self.xi)
-            elif self.nu > 0:
-                return np.inf
-            else:
-                return 0
         elif self.mu > 0:
             return np.inf
-        else:
+        elif self.mu < 0:
             return 0
+        else:
+            # self.mu == 0
+            if isnan(self.nu):
+                return np.nan
+            elif self.nu > 0:
+                return np.inf
+            elif self.nu < 0:
+                return 0
+            else:
+                # self.nu == 0:
+                if isnan(self.xi):
+                    return np.nan
+                else:
+                    return exp(self.xi)
 
     def __mul__(self, other):
         """Multiplication of two asymptotic developments.
@@ -250,17 +253,20 @@ class Asymptotic:
         """
         if not isinstance(other, Asymptotic):
             other = Asymptotic(0, 0, log(other))
-        if isnan(float(self.mu)) or isnan(float(other.mu)):
+        if isnan(self.mu) or isnan(other.mu):
             return Asymptotic(np.nan, np.nan, np.nan)
         elif isclose(self.mu, other.mu):
-            if isnan(float(self.nu)) or isnan(float(other.nu)):
-                return Asymptotic(max(self.mu, other.mu), np.nan, np.nan)
+            mu = max(self.mu, other.mu)
+            if isnan(self.nu) or isnan(other.nu):
+                return Asymptotic(mu, np.nan, np.nan)
             elif isclose(self.nu, other.nu):
-                return Asymptotic(max(self.mu, other.mu), max(self.nu, other.nu), log(exp(self.xi) + exp(other.xi)))
+                nu = max(self.nu, other.nu)
+                xi = log(exp(self.xi) + exp(other.xi))
+                return Asymptotic(mu, nu, xi)
             elif self.nu > other.nu:
-                return Asymptotic(self.mu, self.nu, self.xi)
+                return Asymptotic(mu, self.nu, self.xi)
             else:
-                return Asymptotic(other.mu, other.nu, other.xi)
+                return Asymptotic(mu, other.nu, other.xi)
         elif self.mu > other.mu:
             return Asymptotic(self.mu, self.nu, self.xi)
         else:
@@ -293,14 +299,13 @@ class Asymptotic:
         """
         if not isinstance(other, Asymptotic):
             return False
-        if isnan(float(self.mu)) or isnan(float(self.nu)) or isnan(float(self.xi))\
-                or isnan(float(other.mu)) or isnan(float(other.nu)) or isnan(float(other.xi)):
+        some_coefficients_are_nan = (isnan(self.mu) or isnan(self.nu) or isnan(self.xi)
+                                     or isnan(other.mu) or isnan(other.nu) or isnan(other.xi))
+        if some_coefficients_are_nan:
             raise ValueError('Can assert isclose only when all coefficients are known.')
-        return (
-            isclose(self.mu, other.mu, *args, **kwargs)
-            and isclose(self.nu, other.nu, * args, ** kwargs)
-            and isclose(self.xi, other.xi, *args, **kwargs)
-        )
+        return (isclose(self.mu, other.mu, *args, **kwargs)
+                and isclose(self.nu, other.nu, * args, ** kwargs)
+                and isclose(self.xi, other.xi, *args, **kwargs))
 
     @classmethod
     def poisson_value(cls, tau, k):
