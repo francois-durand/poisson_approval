@@ -70,10 +70,10 @@ class BestResponse:
         return threshold_utility, justification
 
     @cached_property
-    def phi_i(self):
+    def psi_i(self):
         """Number or NaN
 
-        "Virtual offset" for ballot `i`. Is equal to the vanilla ``phi_i`` if it exists, and ``phi_ij * phi_ik``
+        "Pseudo-offset" for ballot `i`. Is equal to the vanilla ``phi_i`` if it exists, and ``phi_ij * phi_ik``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -84,10 +84,10 @@ class BestResponse:
         return phi_i
 
     @cached_property
-    def phi_j(self):
+    def psi_j(self):
         """Number or NaN
 
-        "Virtual offset" for ballot `j`. Is equal to the vanilla ``phi_j`` if it exists, and ``phi_ij * phi_jk``
+        "Pseudo-offset" for ballot `j`. Is equal to the vanilla ``phi_j`` if it exists, and ``phi_ij * phi_jk``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -98,10 +98,10 @@ class BestResponse:
         return phi_j
 
     @cached_property
-    def phi_k(self):
+    def psi_k(self):
         """Number or NaN
 
-        "Virtual offset" for ballot `k`. Is equal to the vanilla ``phi_k`` if it exists, and ``phi_ik * phi_jk``
+        "Pseudo-offset" for ballot `k`. Is equal to the vanilla ``phi_k`` if it exists, and ``phi_ik * phi_jk``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -112,10 +112,10 @@ class BestResponse:
         return phi_k
 
     @cached_property
-    def phi_ij(self):
+    def psi_ij(self):
         """Number or NaN
 
-        "Virtual offset" for ballot `ij`. Is equal to the vanilla ``phi_ij`` if it exists, and ``phi_i * phi_j``
+        "Pseudo-offset" for ballot `ij`. Is equal to the vanilla ``phi_ij`` if it exists, and ``phi_i * phi_j``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -125,10 +125,10 @@ class BestResponse:
         return phi_ij
 
     @cached_property
-    def phi_ik(self):
+    def psi_ik(self):
         """Number or NaN
 
-        "Virtual offset" for ballot `ik`. Is equal to the vanilla ``phi_ik`` if it exists, and ``phi_i * phi_k``
+        "Pseudo-offset" for ballot `ik`. Is equal to the vanilla ``phi_ik`` if it exists, and ``phi_i * phi_k``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -138,10 +138,10 @@ class BestResponse:
         return phi_ik
 
     @cached_property
-    def phi_jk(self):
+    def psi_jk(self):
         """Number or NaN
 
-        "Virtual offset" for ballot `jk`. Is equal to the vanilla ``phi_jk`` if it exists, and ``phi_j * phi_k``
+        "Pseudo-offset" for ballot `jk`. Is equal to the vanilla ``phi_jk`` if it exists, and ``phi_j * phi_k``
         otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
         diagram".
         """
@@ -158,9 +158,9 @@ class BestResponse:
         The threshold utility may be NaN, because this method is not always sufficient. It is proved to compute the
         threshold utility when there are not two consecutive holes in the "compass diagram".
         """
-        phi_i_ge_1 = (isclose(self.phi_i, 1) or self.phi_i >= 1)
-        phi_k_ge_1 = (isclose(self.phi_k, 1) or self.phi_k >= 1)
-        if phi_i_ge_1 and phi_k_ge_1:
+        psi_i_ge_1 = (isclose(self.psi_i, 1) or self.psi_i >= 1)
+        psi_k_ge_1 = (isclose(self.psi_k, 1) or self.psi_k >= 1)
+        if psi_i_ge_1 and psi_k_ge_1:
             # Both pivots are easy: we can forget the trios
             threshold_utility = ((
                 self.pivot_tij.asymptotic * (1 / 2)
@@ -168,20 +168,20 @@ class BestResponse:
                 self.pivot_tij.asymptotic * (1 / 2) + self.pivot_tjk.asymptotic * (1 / 2)
             )).limit
             justification = self.ASYMPTOTIC_SIMPLIFIED
-        elif phi_i_ge_1:
+        elif psi_i_ge_1:
             # Pivot jk is difficult, pivot ij is easy
             threshold_utility = 0
             justification = self.EASY_VS_DIFFICULT
-        elif phi_k_ge_1:
+        elif psi_k_ge_1:
             # Pivot ij is difficult, pivot jk is easy
             threshold_utility = 1
             justification = self.DIFFICULT_VS_EASY
         else:
             # Both pivots are difficult -> General case of the offset method
-            pij = (1 + self.phi_ik) / (1 - self.phi_k)
-            pjk = (1 + self.phi_j) * self.phi_i ** 2 / (1 - self.phi_i)
-            p1t = self.phi_i
-            p2t = self.phi_ij
+            pij = (1 + self.psi_ik) / (1 - self.psi_k)
+            pjk = (1 + self.psi_j) * self.psi_i ** 2 / (1 - self.psi_i)
+            p1t = self.psi_i
+            p2t = self.psi_ij
             threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
             justification = self.OFFSET_METHOD
         return threshold_utility, justification
