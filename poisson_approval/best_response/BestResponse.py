@@ -138,9 +138,6 @@ class BestResponse:
         pivot_ij_easy = score_ij_in_duo_ij > score_k_in_duo_ij
         pivot_ij_tight = isclose(score_ij_in_duo_ij, score_k_in_duo_ij)
         pivot_ij_easy_or_tight = pivot_ij_easy or pivot_ij_tight
-        # TODO: remove the following verification later
-        psi_k = self.trio.psi[self.k]
-        assert pivot_ij_easy_or_tight == (isclose(psi_k, 1) or psi_k >= 1)
         # Pivot jk
         # --------
         score_jk_in_duo_jk = (multiply(self.tau_j, self.duo_jk.phi[self.j])
@@ -152,9 +149,6 @@ class BestResponse:
         pivot_jk_easy = score_jk_in_duo_jk > score_i_in_duo_jk
         pivot_jk_tight = isclose(score_jk_in_duo_jk, score_i_in_duo_jk)
         pivot_jk_easy_or_tight = pivot_jk_easy or pivot_jk_tight
-        # TODO: remove the following verification later
-        psi_i = self.trio.psi[self.i]
-        assert pivot_jk_easy_or_tight == (isclose(psi_i, 1) or psi_i >= 1)
         # Case distinction of the theorem
         # -------------------------------
         if pivot_ij_easy_or_tight and pivot_jk_easy_or_tight:
