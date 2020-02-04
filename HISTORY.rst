@@ -3,6 +3,48 @@ History
 =======
 
 ------------------
+0.8.1 (2020-02-04)
+------------------
+
+* ``BestResponse``: the focus of this release is to correct rare bugs that used to happen when some offsets are very
+  close to 1.
+
+  * API change: ``BestResponse`` now takes as parameters the tau-vector and the ranking, instead of all the events
+    that are used for the computation.
+  * Exchanged the justifications ``'Easy vs difficult pivot'`` and ``'Difficult vs easy pivot'`` (their usages
+    were switched, even if the result itself was correct).
+  * Use the asymptotic method only when there are two consecutive zeros in the "compass diagram" of the tau-vector
+    (instead of: whenever it gives a result). The motivation is that the asymptotic method may rely on events that rely
+    more on numerical approximation than the limit pivot theorem approach.
+  * To determine whether pivots are easy or difficult, we rely on expected scores in the duo events, instead of the
+    pseudo-offsets of the trio. The motivation is that in some cases, the trio is computed with a numerical optimizer
+    that relies more on numerical approximation than the duo events, which use only basic operations like addition,
+    multiplication, etc. In the rare cases where the two methods differ, the latter is thus more reliable.
+  * Add a sub-algorithm of the "Offset method", called "Offset method with trio
+    approximation correction". This is used in some rare cases where both pivots are difficult, but the numeric
+    approximations of the trio event lead to an offset that is equal or even slightly greater than 1 (which is abnormal
+    and leads to infinite geometric sums). In those cases, we now consider that the offset is lower and infinitely close
+    to 1.
+  * Corrected a bug in the asymptotic method that could happen when the two personalized pivots had very close
+    magnitudes. This uses the correction of ``Asymptotic.limit`` mentioned below.
+
+* ``TauVector``: added the attribute ``has_two_consecutive_zeros``.
+
+* ``Event``: now computes the pseudo-offsets, e.g. ``psi_a``, ``psi_ab``, etc.
+
+* ``Asymptotic``: handles some edge cases more nicely.
+
+  * ``__str__`` displays a coefficient as 0, 1 or -1 only if it is equal to that value. Close is not enough.
+  * ``limit`` does not use closeness to 0. It is not its role to decide what coefficients are negligible in the context.
+    Only operations like multiplication are allowed to use closeness: for example, if ``mu_1`` and ``- mu_2`` are
+    relatively close, the multiplication operator is allowed to decide that ``mu_1 + mu_2`` is equal to 0.
+  * In multiplication, when the two magnitudes are close, the resulting magnitude is now always equal to the maximum.
+    The same applies for the resulting `nu` when the `nu`'s are also equal.
+
+* ``cached_property``: corrected a bug. In the case of nested cached properties, the inner one was sometimes not
+  recorded in cache. It did not lead to incorrect results but slowed down the program.
+
+------------------
 0.8.0 (2020-01-30)
 ------------------
 
