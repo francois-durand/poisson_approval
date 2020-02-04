@@ -176,16 +176,16 @@ class BestResponse:
             if self.trio.psi[self.k] >= 1:
                 if isclose(self.trio.psi[self.k], 1, rel_tol=1e-1):
                     psi_k_greater_but_close_to_one = True
-                else:
-                    raise ValueError('self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
+                else:  # pragma : no cover
+                    raise AssertionError('Unexpected: self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
             psi_i_greater_but_close_to_one = False
             if self.trio.psi[self.i] >= 1:
                 if isclose(self.trio.psi[self.i], 1, rel_tol=1e-1):
                     psi_i_greater_but_close_to_one = True
-                else:
-                    raise ValueError('self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
-            if psi_i_greater_but_close_to_one and psi_k_greater_but_close_to_one:
-                raise ValueError('Both psi_i and psi_k are greater and close to 1.')
+                else:  # pragma : no cover
+                    raise AssertionError('Unexpected: self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
+            if psi_i_greater_but_close_to_one and psi_k_greater_but_close_to_one:  # pragma : no cover
+                raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
             elif psi_k_greater_but_close_to_one:
                 # pij ~= inf, pjk < inf ==> u = 1
                 threshold_utility = 1
