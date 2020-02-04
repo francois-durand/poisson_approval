@@ -27,15 +27,14 @@ def _cache(f):
     def _f(*args):
         try:
             return args[0]._cached_properties[name]
-        except KeyError:
-            # Not stored in cache
+        except (KeyError, AttributeError):
             value = f(*args)
-            args[0]._cached_properties[name] = value
-            return value
-        except AttributeError:
-            # cache does not even exist
-            value = f(*args)
-            args[0]._cached_properties = {name: value}
+            try:
+                # Not stored in cache
+                args[0]._cached_properties[name] = value
+            except AttributeError:
+                # Cache does not even exist
+                args[0]._cached_properties = {name: value}
             return value
     _f.__doc__ = f.__doc__
     return _f
