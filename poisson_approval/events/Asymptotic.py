@@ -95,7 +95,7 @@ class Asymptotic:
                 return ' + ' + suffix
             if isclose(x, -1) and suffix:
                 return ' - ' + suffix
-            if isclose(x, 0, abs_tol=1E-9):
+            if x == 0:
                 return ''
             result = ' + ' if x > 0 else ' - '
             result += "{:.6g}".format(float(abs(x)))
@@ -134,13 +134,13 @@ class Asymptotic:
             >>> Asymptotic(mu=0, nu=0, xi=np.nan).limit
             nan
         """
-        if isnan(float(self.mu)):
+        if isnan(self.mu):
             return np.nan
-        if isclose(self.mu, 0, abs_tol=1E-9):
-            if isnan(float(self.nu)):
+        if self.mu == 0:
+            if isnan(self.nu):
                 return np.nan
-            if isclose(self.nu, 0, abs_tol=1E-9):
-                if isnan(float(self.xi)):
+            if self.nu == 0:
+                if isnan(self.xi):
                     return np.nan
                 return exp(self.xi)
             elif self.nu > 0:
