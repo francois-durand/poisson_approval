@@ -5,6 +5,7 @@ from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import sort_ballot
 from poisson_approval.containers.Scores import Scores
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.utils.UtilCache import cached_property
@@ -461,18 +462,7 @@ phi_ab = 0.707107>
 pivot_tjk = exp(- inf), trio_1t = exp(- inf), trio_2t = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), \
 trio = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1))>
         """
-        _d_ranking_best_response = dict()
-        for ranking in RANKINGS:
-            _d_ranking_best_response[ranking] = BestResponse(
-                ranking,
-                pivot_tij=getattr(self, 'pivot_tij_' + ranking),
-                pivot_tjk=getattr(self, 'pivot_tjk_' + ranking),
-                trio_1t=getattr(self, 'trio_1t_' + ranking[0]),
-                trio_2t=getattr(self, 'trio_2t_' + ranking[0] + ranking[1]),
-                trio=self.trio,
-                tau_has_two_consecutive_zeros=self.has_two_consecutive_zeros
-            )
-        return _d_ranking_best_response
+        return DictPrintingInOrder({ranking: BestResponse(tau=self, ranking=ranking) for ranking in RANKINGS})
 
 
 def _f_ballot_share(self, ballot):
