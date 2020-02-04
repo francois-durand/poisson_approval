@@ -29,6 +29,15 @@ class Event:
     phi_ab : Number or ``np.nan``
         The offset for this kind of ballot. An offset is ``np.nan`` if it is not defined.
         Other offsets are denoted ``phi_a``, etc.
+    phi : dict
+        The dictionary of the offsets. For example, ``self.phi[`a`]`` is just an alternate notation for ``self.phi_a``.
+    psi_ab : Number of ``np.nan``
+        The pseudo-offset for this kind of ballot. It is equal to ``phi_ab`` if it exists, and ``phi_a * phi_b``
+        otherwise. Similarly, the pseudo-offset ``psi_a`` is equal to ``phi_a`` if it exists, and ``phi_ab * phi_ac``
+        otherwise. Other pseudo-offsets are denoted ``psi_b``, etc.
+    psi : dict
+        The dictionary of pseudo-offsets. For example, ``self.psi[`a`]`` is just an alternate notation for
+        ``self.psi_a``.
 
     Notes
     -----
@@ -92,14 +101,41 @@ class Event:
         self.mu = self.asymptotic.mu
         self.nu = self.asymptotic.nu
         self.xi = self.asymptotic.xi
-        # -----------------------------------------------------
-        # Create the variables like self.phi_ab, self.phi['ab']
-        # -----------------------------------------------------
+        # ---------------------------------------------------------------
+        # Create the variables like self.phi_ab, self.phi['ab'] (offsets)
+        # ---------------------------------------------------------------
         self.phi = dict()
         for label, label_std in self._labels_std.items():
             # Ex: label = 'ab', label_std = 'xy'
             setattr(self, 'phi_' + label, getattr(self, '_phi_' + label_std))
             self.phi[label] = getattr(self, '_phi_' + label_std)
+        # ----------------------------------------------------------------------
+        # Create the variables like self.psi_ab, self.psi['ab'] (pseudo-offsets)
+        # ----------------------------------------------------------------------
+
+        def pseudo_offset(phi, phi_left, phi_right):
+            if isnan(phi):
+                return phi_left * phi_right
+            else:
+                return phi
+        self.psi = dict()
+        self.psi[self._label_x] = pseudo_offset(self.phi[self._label_x],
+                                                self.phi[self._label_xy], self.phi[self._label_xz])
+        self.psi[self._label_y] = pseudo_offset(self.phi[self._label_y],
+                                                self.phi[self._label_xy], self.phi[self._label_yz])
+        self.psi[self._label_z] = pseudo_offset(self.phi[self._label_z],
+                                                self.phi[self._label_xz], self.phi[self._label_yz])
+        self.psi[self._label_xy] = pseudo_offset(self.phi[self._label_xy],
+                                                 self.phi[self._label_x], self.phi[self._label_y])
+        self.psi[self._label_xz] = pseudo_offset(self.phi[self._label_xz],
+                                                 self.phi[self._label_x], self.phi[self._label_z])
+        self.psi[self._label_yz] = pseudo_offset(self.phi[self._label_yz],
+                                                 self.phi[self._label_y], self.phi[self._label_z])
+        self.psi[self._label_xyd] = self.psi[self._label_xy]
+        self.psi[self._label_xzd] = self.psi[self._label_xz]
+        self.psi[self._label_yzd] = self.psi[self._label_yz]
+        for label in self._labels_std.keys():
+            setattr(self, 'psi_' + label, self.psi[label])
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
         """

@@ -458,9 +458,7 @@ phi_ab = 0.707107>
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.d_ranking_best_response['abc']
-            <ballot = a, threshold_utility = 1, justification = Asymptotic method, pivot_tij = exp(- 0.1 n + o(1)), \
-pivot_tjk = exp(- inf), trio_1t = exp(- inf), trio_2t = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), \
-trio = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1))>
+            <ballot = a, threshold_utility = 1, justification = Asymptotic method>
         """
         return DictPrintingInOrder({ranking: BestResponse(tau=self, ranking=ranking) for ranking in RANKINGS})
 
