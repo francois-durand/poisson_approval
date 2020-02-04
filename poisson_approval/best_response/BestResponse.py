@@ -79,7 +79,7 @@ class BestResponse:
         """Number or NaN
 
         "Pseudo-offset" for ballot `i`. Is equal to ``phi_i`` if it exists, and ``phi_ij * phi_ik``
-        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive zeros in the "compass
         diagram".
         """
         phi_i = getattr(self.trio, 'phi_' + self.i)
@@ -93,7 +93,7 @@ class BestResponse:
         """Number or NaN
 
         "Pseudo-offset" for ballot `j`. Is equal to ``phi_j`` if it exists, and ``phi_ij * phi_jk``
-        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive zeros in the "compass
         diagram".
         """
         phi_j = getattr(self.trio, 'phi_' + self.j)
@@ -107,7 +107,7 @@ class BestResponse:
         """Number or NaN
 
         "Pseudo-offset" for ballot `k`. Is equal to ``phi_k`` if it exists, and ``phi_ik * phi_jk``
-        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive zeros in the "compass
         diagram".
         """
         phi_k = getattr(self.trio, 'phi_' + self.k)
@@ -121,7 +121,7 @@ class BestResponse:
         """Number or NaN
 
         "Pseudo-offset" for ballot `ij`. Is equal to ``phi_ij`` if it exists, and ``phi_i * phi_j``
-        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive zeros in the "compass
         diagram".
         """
         phi_ij = getattr(self.trio, 'phi_' + self.i + self.j)
@@ -134,7 +134,7 @@ class BestResponse:
         """Number or NaN
 
         "Pseudo-offset" for ballot `ik`. Is equal to ``phi_ik`` if it exists, and ``phi_i * phi_k``
-        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive zeros in the "compass
         diagram".
         """
         phi_ik = getattr(self.trio, 'phi_' + self.i + self.k)
@@ -147,7 +147,7 @@ class BestResponse:
         """Number or NaN
 
         "Pseudo-offset" for ballot `jk`. Is equal to ``phi_jk`` if it exists, and ``phi_j * phi_k``
-        otherwise. In particular, it is guaranteed to exist when there are not two consecutive holes in the "compass
+        otherwise. In particular, it is guaranteed to exist when there are not two consecutive zeros in the "compass
         diagram".
         """
         phi_jk = getattr(self.trio, 'phi_' + self.j + self.k)
@@ -173,21 +173,21 @@ class BestResponse:
 
         # Pivot ij
         # --------
-        score_ij_in_duo_ij = (multiply(self.tau_i, getattr(self.duo_ij, 'phi_' + self.i))
-                              + multiply(self.tau_ij, getattr(self.duo_ij, 'phi_' + self.i + self.j))
-                              + multiply(self.tau_ik, getattr(self.duo_ij, 'phi_' + self.i + self.k)))
+        score_ij_in_duo_ij = (multiply(self.tau_i, self.duo_ij.phi[self.i])
+                              + multiply(self.tau_ij, self.duo_ij.phi[self.i + self.j])
+                              + multiply(self.tau_ik, self.duo_ij.phi[self.i + self.k]))
         # BEGIN TODO: Remove the check with *_alt
-        score_ij_in_duo_ij_alt = (multiply(self.tau_j, getattr(self.duo_ij, 'phi_' + self.j))
-                                  + multiply(self.tau_ij, getattr(self.duo_ij, 'phi_' + self.i + self.j))
-                                  + multiply(self.tau_jk, getattr(self.duo_ij, 'phi_' + self.j + self.k)))
+        score_ij_in_duo_ij_alt = (multiply(self.tau_j, self.duo_ij.phi[self.j])
+                                  + multiply(self.tau_ij, self.duo_ij.phi[self.i + self.j])
+                                  + multiply(self.tau_jk, self.duo_ij.phi[self.j + self.k]))
         # print('score_ij_in_duo_ij')
         # print(score_ij_in_duo_ij)
         # print(score_ij_in_duo_ij_alt)
         assert isclose(score_ij_in_duo_ij, score_ij_in_duo_ij_alt)
         # END TODO
-        score_k_in_duo_ij = (multiply(self.tau_k, getattr(self.duo_ij, 'phi_' + self.k))
-                             + multiply(self.tau_ik, getattr(self.duo_ij, 'phi_' + self.i + self.k))
-                             + multiply(self.tau_jk, getattr(self.duo_ij, 'phi_' + self.j + self.k)))
+        score_k_in_duo_ij = (multiply(self.tau_k, self.duo_ij.phi[self.k])
+                             + multiply(self.tau_ik, self.duo_ij.phi[self.i + self.k])
+                             + multiply(self.tau_jk, self.duo_ij.phi[self.j + self.k]))
         # print('score_k_in_duo_ij')
         # print(score_k_in_duo_ij)
         pivot_ij_easy = score_ij_in_duo_ij > score_k_in_duo_ij
@@ -195,21 +195,21 @@ class BestResponse:
         pivot_ij_easy_or_tight = pivot_ij_easy or pivot_ij_tight
         # Pivot jk
         # --------
-        score_jk_in_duo_jk = (multiply(self.tau_j, getattr(self.duo_jk, 'phi_' + self.j))
-                              + multiply(self.tau_ij, getattr(self.duo_jk, 'phi_' + self.i + self.j))
-                              + multiply(self.tau_jk, getattr(self.duo_jk, 'phi_' + self.j + self.k)))
+        score_jk_in_duo_jk = (multiply(self.tau_j, self.duo_jk.phi[self.j])
+                              + multiply(self.tau_ij, self.duo_jk.phi[self.i + self.j])
+                              + multiply(self.tau_jk, self.duo_jk.phi[self.j + self.k]))
         # BEGIN TODO: Remove the check with *_alt
-        score_jk_in_duo_jk_alt = (multiply(self.tau_k, getattr(self.duo_jk, 'phi_' + self.k))
-                                  + multiply(self.tau_ik, getattr(self.duo_jk, 'phi_' + self.i + self.k))
-                                  + multiply(self.tau_jk, getattr(self.duo_jk, 'phi_' + self.j + self.k)))
+        score_jk_in_duo_jk_alt = (multiply(self.tau_k, self.duo_jk.phi[self.k])
+                                  + multiply(self.tau_ik, self.duo_jk.phi[self.i + self.k])
+                                  + multiply(self.tau_jk, self.duo_jk.phi[self.j + self.k]))
         # print('score_jk_in_duo_jk')
         # print(score_jk_in_duo_jk)
         # print(score_jk_in_duo_jk_alt)
         assert isclose(score_jk_in_duo_jk, score_jk_in_duo_jk_alt)
         # END TODO
-        score_i_in_duo_jk = (multiply(self.tau_i, getattr(self.duo_jk, 'phi_' + self.i))
-                             + multiply(self.tau_ij, getattr(self.duo_jk, 'phi_' + self.i + self.j))
-                             + multiply(self.tau_ik, getattr(self.duo_jk, 'phi_' + self.i + self.k)))
+        score_i_in_duo_jk = (multiply(self.tau_i, self.duo_jk.phi[self.i])
+                             + multiply(self.tau_ij, self.duo_jk.phi[self.i + self.j])
+                             + multiply(self.tau_ik, self.duo_jk.phi[self.i + self.k]))
         # print('score_i_in_duo_jk')
         # print(score_i_in_duo_jk)
         pivot_jk_easy = score_jk_in_duo_jk > score_i_in_duo_jk
@@ -247,15 +247,14 @@ class BestResponse:
     def results(self):
         """tuple (threshold_utility, justification)
 
-        Cf. :attr:`threshold_utility` and :attr:`justification`. Results that use the asymptotic method if possible
-        (better numerical approximation, but does not always provide the threshold utility), and the limit pivot
-        theorem otherwise. The limit pivot theorem may not give a result when there are two consecutive holes in the
-        "compass diagram", but this kind of case is covered by the asymptotic method.
+        Cf. :attr:`threshold_utility` and :attr:`justification`. Results that use the asymptotic method if there are
+        two consecutive zeros in the "compass diagram" of the tau-vector, and the the limit pivot theorem in the
+        otherwise.
         """
-        threshold_utility, justification = self.results_asymptotic_method
-        if isnan(threshold_utility):
-            threshold_utility, justification = self.results_limit_pivot_theorem
-        return threshold_utility, justification
+        if self.tau_has_two_consecutive_zeros:
+            return self.results_asymptotic_method
+        else:
+            return self.results_limit_pivot_theorem
 
     @cached_property
     def threshold_utility(self):

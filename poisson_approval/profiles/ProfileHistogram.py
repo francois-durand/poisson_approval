@@ -88,10 +88,10 @@ class ProfileHistogram(ProfileCardinal):
         >>> len(cycle)
         1
         >>> print(cycle[0])
-        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
+        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
         >>> limit_strategy = profile.fictitious_play(strategy_ini, 100, perception_update_ratio=1)['strategy']
         >>> print(limit_strategy)
-        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.2800683857953819)> ==> b
+        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
     """
 
     def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True,
