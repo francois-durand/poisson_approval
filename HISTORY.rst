@@ -2,9 +2,9 @@
 History
 =======
 
-------------------
-0.8.1 (2020-02-04)
-------------------
+-----------------------------------------------------------------
+0.8.1 (2020-02-04): Better Handling of Edge Cases in BestResponse
+-----------------------------------------------------------------
 
 * ``BestResponse``: the focus of this release is to correct rare bugs that used to happen when some offsets are very
   close to 1.
@@ -44,9 +44,9 @@ History
 * ``cached_property``: corrected a bug. In the case of nested cached properties, the inner one was sometimes not
   recorded in cache. It did not lead to incorrect results but slowed down the program.
 
-------------------
-0.8.0 (2020-01-30)
-------------------
+----------------------------------
+0.8.0 (2020-01-30): Fanatic voters
+----------------------------------
 
 * Implement the notion of fanatic voting, a variant of sincere voting: a given ratio of voters vote for their top
   candidate only. This is implemented for all subclasses of ``Profile``.
@@ -54,18 +54,18 @@ History
 * Corrected bug: ``Profile.standardized_version`` now takes into account the auxiliary parameters like
   ``ratio_sincere``, ``well_informed_voters``, etc.
 
-------------------
-0.7.0 (2020-01-30)
-------------------
+-----------------------------------
+0.7.0 (2020-01-30): ProfileDiscrete
+-----------------------------------
 
 * Add ``ProfileDiscrete``: a profile with a discrete distribution of voters.
 * Subclasses of ``Profile``: better handling of the additional parameters like ``well_informed_voters`` or
   ``ratio_sincere``. In the conversions to string (``str`` or ``repr``), they are now mentioned. They are also used in
   the equality tests between two profiles.
 
-------------------
-0.6.0 (2020-01-29)
-------------------
+-----------------------------------
+0.6.0 (2020-01-29): Fictitious Play
+-----------------------------------
 
 * Implement ``ProfileCardinal.fictitious_play``, where the update ratios of the perceived tau-vector and the actual
   tau-vector can be functions of the time. It is also faster that ``ProfileCardinal.iterated_voting``, but can
@@ -81,16 +81,16 @@ History
 * Add the utility ``to_callable``: convert an object to a callable (making it a constant function if it is not
   callable already).
 
-------------------
-0.5.1 (2020-01-18)
-------------------
+----------------------------------------------------------
+0.5.1 (2020-01-18): Configure Codecov and Improve Coverage
+----------------------------------------------------------
 
 * Configure Codecov.
 * Reach 100% coverage for this version.
 
-------------------
-0.5.0 (2020-01-11)
-------------------
+----------------------------------------------------------------------------
+0.5.0 (2020-01-11): Sincere Voting and Progressive Update in Iterated Voting
+----------------------------------------------------------------------------
 
 * In iterated voting, implement the possibility to move only *progressively* towards the best response:
 
@@ -125,16 +125,16 @@ History
 
 * Update the tutorials with these new features.
 
-------------------
-0.4.0 (2020-01-08)
-------------------
+----------------------------------------------
+0.4.0 (2020-01-08): Add ``image_distribution``
+----------------------------------------------
 
 * Add ``image_distribution``: estimate the distribution of ``f(something)`` for a random ``something``.
 * Update the tutorial on mass simulations with this new feature.
 
-------------------
-0.3.0 (2020-01-08)
-------------------
+-----------------------------------------
+0.3.0 (2020-01-08): New Random Generators
+-----------------------------------------
 
 * Add new random generators:
 
@@ -154,15 +154,15 @@ History
   * Add a tutorial on asymptotic developments.
   * Update the tutorial on mass simulations with the new features.
 
-------------------
-0.2.1 (2020-01-05)
-------------------
+------------------------------------------
+0.2.1 (2020-01-05): Fix Deployment on PyPI
+------------------------------------------
 
 * Relaunch deployment.
 
-------------------
-0.2.0 (2020-01-05)
-------------------
+--------------------------------------------------------------
+0.2.0 (2020-01-05): Add Tutorials + Various Minor Improvements
+--------------------------------------------------------------
 
 * Add ``GeneratorProfileStrategyThreshold``.
 * Add ``ProfileHistogram.plot_cdf``.
@@ -172,15 +172,15 @@ History
 * Replace all notations ``r`` with ``profile`` and ``sigma`` with ``strategy``.
 * Add tutorials.
 
-------------------
-0.1.1 (2019-12-24)
-------------------
+-----------------------------------------------------------------
+0.1.1 (2019-12-24): Convert all the Documentation to NumPy Format
+-----------------------------------------------------------------
 
 * Convert all the documentation to NumPy format, making it more readable in plain text.
 
-------------------
-0.1.0 (2019-12-20)
-------------------
+-----------------------------------------
+0.1.0 (2019-12-20): First release on PyPI
+-----------------------------------------
 
 * First release on PyPI.
 * Implement only the case of 3 candidates.
