@@ -31,6 +31,7 @@ class BestResponse:
     EASY_VS_DIFFICULT = 'Easy vs difficult pivot'
     DIFFICULT_VS_EASY = 'Difficult vs easy pivot'
     OFFSET_METHOD = 'Offset method'
+    OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION = 'Offset method with trio approximation correction'
 
     def __init__(self, tau, ranking):
         self.tau = tau
@@ -168,13 +169,40 @@ class BestResponse:
             threshold_utility = 0
             justification = self.DIFFICULT_VS_EASY
         else:
-            # Both pivots are difficult => General case of the offset method.
-            pij = (1 + self.trio.psi[self.ik]) / (1 - self.trio.psi[self.k])
-            pjk = (1 + self.trio.psi[self.j]) * self.trio.psi[self.i] ** 2 / (1 - self.trio.psi[self.i])
-            p1t = self.trio.psi[self.i]
-            p2t = self.trio.psi[self.ij]
-            threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
-            justification = self.OFFSET_METHOD
+            # Both pivots are difficult => offset method.
+            # Due to approximations in trio event, psi_k and psi_i may exceptionally be greater than 1 (whereas
+            # in difficult pivots, we know that they must be strictly lower than 1). In that case, the formulas
+            # for the offset method will fail, so we must be cautious.
+            psi_k_greater_but_close_to_one = False
+            if self.trio.psi[self.k] >= 1:
+                if isclose(self.trio.psi[self.k], 1, rel_tol=1e-1):
+                    psi_k_greater_but_close_to_one = True
+                else:
+                    raise ValueError('self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
+            psi_i_greater_but_close_to_one = False
+            if self.trio.psi[self.i] >= 1:
+                if isclose(self.trio.psi[self.i], 1, rel_tol=1e-1):
+                    psi_i_greater_but_close_to_one = True
+                else:
+                    raise ValueError('self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
+            if psi_i_greater_but_close_to_one and psi_k_greater_but_close_to_one:
+                raise ValueError('Both psi_i and psi_k are greater and close to 1.')
+            elif psi_k_greater_but_close_to_one:
+                # pij ~= inf, pjk < inf ==> u = 1
+                threshold_utility = 1
+                justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
+            elif psi_i_greater_but_close_to_one:
+                # pij < inf, pjk ~= inf ==> u = 0
+                threshold_utility = 0
+                justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
+            else:
+                # General case of the offset method (at last!)
+                pij = (1 + self.trio.psi[self.ik]) / (1 - self.trio.psi[self.k])
+                pjk = (1 + self.trio.psi[self.j]) * self.trio.psi[self.i] ** 2 / (1 - self.trio.psi[self.i])
+                p1t = self.trio.psi[self.i]
+                p2t = self.trio.psi[self.ij]
+                threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
+                justification = self.OFFSET_METHOD
         return threshold_utility, justification
 
     @cached_property
@@ -206,7 +234,7 @@ class BestResponse:
 
         How the program computed the utility threshold. Nowadays, possible values are ``'Asymptotic method'``,
         ``'Simplified asymptotic method'``, ``'Easy vs difficult pivot'``, ``'Difficult vs easy pivot'``,
-        ``'Offset method'``.
+        ``'Offset method'``, ``'Offset method with trio approximation correction'``.
         """
         return self.results[1]
 
