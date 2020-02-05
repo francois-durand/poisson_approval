@@ -1,4 +1,4 @@
-from poisson_approval import *
+from poisson_approval import TauVector, BestResponse, isnan, RANKINGS
 
 
 def test_best_response():
@@ -27,7 +27,7 @@ def test_results_limit_pivot_theorem_when_two_consecutive_zeros():
     tau = TauVector({'a': 3 / 5, 'b': 2 / 5})
     best_response = BestResponse(tau, 'abc')
     threshold_utility, justification = best_response.results_limit_pivot_theorem
-    assert np.isnan(threshold_utility)
+    assert isnan(threshold_utility)
     assert justification == ''
 
 

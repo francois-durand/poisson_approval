@@ -1,24 +1,24 @@
 import numpy as np
 import pytest
-from poisson_approval import Asymptotic
+from poisson_approval import Asymptotic, isnan, isposinf
 
 
 def test_limit():
-    assert np.isnan(Asymptotic(mu=np.nan, nu=51, xi=69).limit)
-    assert np.isnan(Asymptotic(mu=0, nu=np.nan, xi=69).limit)
-    assert np.isposinf(Asymptotic(mu=0, nu=51, xi=69).limit)
+    assert isnan(Asymptotic(mu=np.nan, nu=51, xi=69).limit)
+    assert isnan(Asymptotic(mu=0, nu=np.nan, xi=69).limit)
+    assert isposinf(Asymptotic(mu=0, nu=51, xi=69).limit)
 
 
 def test_add():
     asymptotic = Asymptotic(mu=np.nan, nu=51, xi=69) + Asymptotic(mu=42, nu=51, xi=69)
-    assert np.isnan(asymptotic.mu)
-    assert np.isnan(asymptotic.nu)
-    assert np.isnan(asymptotic.xi)
+    assert isnan(asymptotic.mu)
+    assert isnan(asymptotic.nu)
+    assert isnan(asymptotic.xi)
 
     asymptotic = Asymptotic(mu=42, nu=51, xi=69) + Asymptotic(mu=42, nu=np.nan, xi=69)
     assert asymptotic.mu == 42
-    assert np.isnan(asymptotic.nu)
-    assert np.isnan(asymptotic.xi)
+    assert isnan(asymptotic.nu)
+    assert isnan(asymptotic.xi)
 
 
 def test_isclose():

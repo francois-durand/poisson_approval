@@ -1,4 +1,5 @@
 import numpy as np
+from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
@@ -55,7 +56,7 @@ class EventTrio1t(Event):
         else:
             _phi_x_tilde = self._phi_x if tau_x != 0 else self._phi_xy * self._phi_xz
             self.asymptotic = event_trio.asymptotic * _phi_x_tilde
-        if np.isinf(float(self.asymptotic.mu)):
+        if isneginf(self.asymptotic.mu):
             self._phi_x = np.nan
             self._phi_y = np.nan
             self._phi_z = np.nan

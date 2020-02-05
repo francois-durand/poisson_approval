@@ -88,7 +88,6 @@ class Asymptotic:
             return "exp(- inf)"
 
         def nice(x, suffix):
-            x = float(x)
             if isnan(x):
                 return ' + ? ' + suffix if suffix else ' + ?'
             if x == 1 and suffix:

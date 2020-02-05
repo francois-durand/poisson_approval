@@ -1,4 +1,5 @@
 import numpy as np
+from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventPivotWeak import EventPivotWeak
@@ -58,7 +59,7 @@ class EventPivotTjk(Event):
             _phi_z_tilde = self._phi_z if tau_z != 0 else self._phi_xz * self._phi_yz
             _phi_y_tilde = self._phi_y if tau_y != 0 else self._phi_xy * self._phi_yz
             self.asymptotic = pivot_weak.asymptotic * (_phi_z_tilde**2 * (1 + _phi_y_tilde))
-        if np.isinf(float(self.asymptotic.mu)):
+        if isneginf(self.asymptotic.mu):
             self._phi_x = np.nan
             self._phi_y = np.nan
             self._phi_z = np.nan
