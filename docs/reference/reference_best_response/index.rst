@@ -1,5 +1,7 @@
-Best Response
-=============
+Best Responses
+==============
 
-.. autoclass:: poisson_approval.BestResponse
-    :members:
+.. toctree::
+
+   reference_best_response
+   reference_best_response_approval

@@ -7,7 +7,7 @@ from poisson_approval.utils.Util import sort_ballot
 from poisson_approval.containers.Scores import Scores
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.best_response.BestResponse import BestResponse
+from poisson_approval.best_response.BestResponseApproval import BestResponseApproval
 from poisson_approval.utils.UtilCache import cached_property
 from poisson_approval.events.EventDuo import EventDuo
 from poisson_approval.events.EventPivotStrict import EventPivotStrict
@@ -451,7 +451,7 @@ phi_ab = 0.707107>
         """dict : Best response profile.
 
         * Key: a ranking (e.g. ``'abc'``).
-        * Value: a :class:`BestResponse`.
+        * Value: a :class:`BestResponseApproval`.
 
         Examples
         --------
@@ -460,7 +460,7 @@ phi_ab = 0.707107>
             >>> tau.d_ranking_best_response['abc']
             <ballot = a, threshold_utility = 1, justification = Asymptotic method>
         """
-        return DictPrintingInOrder({ranking: BestResponse(tau=self, ranking=ranking) for ranking in RANKINGS})
+        return DictPrintingInOrder({ranking: BestResponseApproval(tau=self, ranking=ranking) for ranking in RANKINGS})
 
 
 def _f_ballot_share(self, ballot):

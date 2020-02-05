@@ -7,9 +7,10 @@ from poisson_approval.utils.UtilCache import cached_property
 
 
 class BestResponse:
-    """Best response for a given ordinal type of voter.
+    """Best response for a given ordinal type of voter (abstract class).
 
-    The main objective of this class is to compute :attr:`threshold_utility`.
+    The main objective of this class is to compute :attr:`threshold_utility`. The subclasses implement the
+    best response in a specific voting rule.
 
     Parameters
     ----------
@@ -28,13 +29,6 @@ class BestResponse:
         The values of the tau-vector.
     """
 
-    ASYMPTOTIC = 'Asymptotic method'
-    ASYMPTOTIC_SIMPLIFIED = 'Simplified asymptotic method'
-    EASY_VS_DIFFICULT = 'Easy vs difficult pivot'
-    DIFFICULT_VS_EASY = 'Difficult vs easy pivot'
-    OFFSET_METHOD = 'Offset method'
-    OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION = 'Offset method with trio approximation correction'
-
     def __init__(self, tau, ranking):
         self.tau = tau
         self.ranking = ranking
@@ -43,17 +37,26 @@ class BestResponse:
         self.k = ranking[2]
         self.ij = self.i + self.j
         self.ik = self.i + self.k
+        self.ji = self.j + self.i
         self.jk = self.j + self.k
+        self.ki = self.k + self.i
+        self.kj = self.k + self.j
         self.tau_i = getattr(tau, self.i)
         self.tau_j = getattr(tau, self.j)
         self.tau_k = getattr(tau, self.k)
         self.tau_ij = getattr(tau, self.ij)
         self.tau_ik = getattr(tau, self.ik)
+        self.tau_ji = getattr(tau, self.ji)
         self.tau_jk = getattr(tau, self.jk)
+        self.tau_ki = getattr(tau, self.ki)
+        self.tau_kj = getattr(tau, self.kj)
 
-    # ================================
-    # Shortcuts for some events of tau
-    # ================================
+    # ===============================
+    # Shortcuts for the events of tau
+    # ===============================
+
+    # Duos
+    # ----
 
     @cached_property
     def duo_ij(self):
@@ -66,171 +69,263 @@ class BestResponse:
         return getattr(self.tau, 'duo_' + self.ik)
 
     @cached_property
+    def duo_ji(self):
+        """EventDuo : The duo ji."""
+        return getattr(self.tau, 'duo_' + self.ji)
+
+    @cached_property
     def duo_jk(self):
         """EventDuo : The duo jk."""
         return getattr(self.tau, 'duo_' + self.jk)
 
     @cached_property
+    def duo_ki(self):
+        """EventDuo : The duo ki."""
+        return getattr(self.tau, 'duo_' + self.ki)
+
+    @cached_property
+    def duo_kj(self):
+        """EventDuo : The duo kj."""
+        return getattr(self.tau, 'duo_' + self.kj)
+
+    # Weak pivots
+    # -----------
+
+    @cached_property
+    def pivot_weak_ij(self):
+        """EventPivotWeak : The weak pivot ij."""
+        return getattr(self.tau, 'pivot_weak_' + self.ij)
+
+    @cached_property
+    def pivot_weak_ik(self):
+        """EventPivotWeak : The weak pivot ik."""
+        return getattr(self.tau, 'pivot_weak_' + self.ik)
+
+    @cached_property
+    def pivot_weak_ji(self):
+        """EventPivotWeak : The weak pivot ji."""
+        return getattr(self.tau, 'pivot_weak_' + self.ji)
+
+    @cached_property
+    def pivot_weak_jk(self):
+        """EventPivotWeak : The weak pivot jk."""
+        return getattr(self.tau, 'pivot_weak_' + self.jk)
+
+    @cached_property
+    def pivot_weak_ki(self):
+        """EventPivotWeak : The weak pivot ki."""
+        return getattr(self.tau, 'pivot_weak_' + self.ki)
+
+    @cached_property
+    def pivot_weak_kj(self):
+        """EventPivotWeak : The weak pivot kj."""
+        return getattr(self.tau, 'pivot_weak_' + self.kj)
+
+    # Strict pivots
+    # -------------
+
+    @cached_property
+    def pivot_strict_ij(self):
+        """EventPivotStrict: The strict pivot ij."""
+        return getattr(self.tau, 'pivot_strict_' + self.ij)
+
+    @cached_property
+    def pivot_strict_ik(self):
+        """EventPivotStrict: The strict pivot ik."""
+        return getattr(self.tau, 'pivot_strict_' + self.ik)
+
+    @cached_property
+    def pivot_strict_ji(self):
+        """EventPivotStrict: The strict pivot ji."""
+        return getattr(self.tau, 'pivot_strict_' + self.ji)
+
+    @cached_property
+    def pivot_strict_jk(self):
+        """EventPivotStrict: The strict pivot jk."""
+        return getattr(self.tau, 'pivot_strict_' + self.jk)
+
+    @cached_property
+    def pivot_strict_ki(self):
+        """EventPivotStrict: The strict pivot ki."""
+        return getattr(self.tau, 'pivot_strict_' + self.ki)
+
+    @cached_property
+    def pivot_strict_kj(self):
+        """EventPivotStrict: The strict pivot kj."""
+        return getattr(self.tau, 'pivot_strict_' + self.kj)
+
+    # Personalized pivots tij
+    # -----------------------
+
+    @cached_property
+    def pivot_tij_ijk(self):
+        """EventPivotTij: The first personalized pivot for voters ijk."""
+        return getattr(self.tau, 'pivot_tij_' + self.i + self.j + self.k)
+
+    @cached_property
+    def pivot_tij_ikj(self):
+        """EventPivotTij: The first personalized pivot for voters ikj."""
+        return getattr(self.tau, 'pivot_tij_' + self.i + self.k + self.j)
+
+    @cached_property
+    def pivot_tij_jik(self):
+        """EventPivotTij: The first personalized pivot for voters jik."""
+        return getattr(self.tau, 'pivot_tij_' + self.j + self.i + self.k)
+
+    @cached_property
+    def pivot_tij_jki(self):
+        """EventPivotTij: The first personalized pivot for voters jki."""
+        return getattr(self.tau, 'pivot_tij_' + self.j + self.k + self.i)
+
+    @cached_property
+    def pivot_tij_kij(self):
+        """EventPivotTij: The first personalized pivot for voters kij."""
+        return getattr(self.tau, 'pivot_tij_' + self.k + self.i + self.j)
+
+    @cached_property
+    def pivot_tij_kji(self):
+        """EventPivotTij: The first personalized pivot for voters kji."""
+        return getattr(self.tau, 'pivot_tij_' + self.k + self.j + self.i)
+
+    # Personalized pivots tjk
+    # -----------------------
+
+    @cached_property
+    def pivot_tjk_ijk(self):
+        """EventPivotTjk: The second personalized pivot for voters ijk."""
+        return getattr(self.tau, 'pivot_tjk_' + self.i + self.j + self.k)
+
+    @cached_property
+    def pivot_tjk_ikj(self):
+        """EventPivotTjk: The second personalized pivot for voters ikj."""
+        return getattr(self.tau, 'pivot_tjk_' + self.i + self.k + self.j)
+
+    @cached_property
+    def pivot_tjk_jik(self):
+        """EventPivotTjk: The second personalized pivot for voters jik."""
+        return getattr(self.tau, 'pivot_tjk_' + self.j + self.i + self.k)
+
+    @cached_property
+    def pivot_tjk_jki(self):
+        """EventPivotTjk: The second personalized pivot for voters jki."""
+        return getattr(self.tau, 'pivot_tjk_' + self.j + self.k + self.i)
+
+    @cached_property
+    def pivot_tjk_kij(self):
+        """EventPivotTjk: The second personalized pivot for voters kij."""
+        return getattr(self.tau, 'pivot_tjk_' + self.k + self.i + self.j)
+
+    @cached_property
+    def pivot_tjk_kji(self):
+        """EventPivotTjk: The second personalized pivot for voters kji."""
+        return getattr(self.tau, 'pivot_tjk_' + self.k + self.j + self.i)
+
+    # Shortcuts for the personalized pivots for voters ijk
+    # ----------------------------------------------------
+
+    @cached_property
     def pivot_tij(self):
-        """EventPivotTij : The `personalized pivot` between candidates i and j."""
+        """EventPivotTij : The `personalized pivot` between candidates i and j. This is just another notation for
+        :attr:`pivot_tij_ijk`.
+        """
         return getattr(self.tau, 'pivot_tij_' + self.ranking)
 
     @cached_property
     def pivot_tjk(self):
-        """EventPivotTjk : The `personalized pivot` between candidates j and k."""
+        """EventPivotTjk : The `personalized pivot` between candidates j and k. This is just another notation for
+        :attr:`pivot_tjk_ijk`.
+        """
         return getattr(self.tau, 'pivot_tjk_' + self.ranking)
 
-    @cached_property
-    def trio_1t(self):
-        """EventTrio1t : The first `personalized trio`."""
-        return getattr(self.tau, 'trio_1t_' + self.i)
-
-    @cached_property
-    def trio_2t(self):
-        """EventTrio1t : The second `personalized trio`."""
-        return getattr(self.tau, 'trio_2t_' + self.ij)
+    # Trio
+    # ----
 
     @cached_property
     def trio(self):
         """EventTrio : The 3-candidate tie."""
         return getattr(self.tau, 'trio')
 
+    # Trio1t
+    # ------
+
+    @cached_property
+    def trio_1t_i(self):
+        """EventTrio1t : The first `personalized trio` (where candidate `i` has one vote less)."""
+        return getattr(self.tau, 'trio_1t_' + self.i)
+
+    @cached_property
+    def trio_1t_j(self):
+        """EventTrio1t : The first `personalized trio` (where candidate `j` has one vote less)."""
+        return getattr(self.tau, 'trio_1t_' + self.j)
+
+    @cached_property
+    def trio_1t_k(self):
+        """EventTrio1t : The first `personalized trio` (where candidate `k` has one vote less)."""
+        return getattr(self.tau, 'trio_1t_' + self.k)
+
+    # Trio2t
+    # ------
+
+    @cached_property
+    def trio_2t_ij(self):
+        """EventTrio2t: The second `personalized trio` (where candidates i and j have one vote less)."""
+        return getattr(self.tau, 'trio_2t_' + self.ij)
+
+    @cached_property
+    def trio_2t_ik(self):
+        """EventTrio2t: The second `personalized trio` (where candidates i and k have one vote less)."""
+        return getattr(self.tau, 'trio_2t_' + self.ik)
+
+    @cached_property
+    def trio_2t_ji(self):
+        """EventTrio2t: The second `personalized trio` (where candidates j and i have one vote less)."""
+        return getattr(self.tau, 'trio_2t_' + self.ji)
+
+    @cached_property
+    def trio_2t_jk(self):
+        """EventTrio2t: The second `personalized trio` (where candidates j and k have one vote less)."""
+        return getattr(self.tau, 'trio_2t_' + self.jk)
+
+    @cached_property
+    def trio_2t_ki(self):
+        """EventTrio2t: The second `personalized trio` (where candidates k and i have one vote less)."""
+        return getattr(self.tau, 'trio_2t_' + self.ki)
+
+    @cached_property
+    def trio_2t_kj(self):
+        """EventTrio2t: The second `personalized trio` (where candidates k and j have one vote less)."""
+        return getattr(self.tau, 'trio_2t_' + self.kj)
+
+    # Shortcuts for the personalized trios for voters ijk
+    # ---------------------------------------------------
+
+    @cached_property
+    def trio_1t(self):
+        """EventTrio1t : The first `personalized trio`. This is just another notation for :attr:`trio_1t_i`."""
+        return getattr(self.tau, 'trio_1t_' + self.i)
+
+    @cached_property
+    def trio_2t(self):
+        """EventTrio1t : The second `personalized trio`. This is just another notation for :attr:`trio_2t_ij`."""
+        return getattr(self.tau, 'trio_2t_' + self.ij)
+
     # =======
     # Results
     # =======
 
     @cached_property
-    def results_asymptotic_method(self):
-        """tuple (threshold_utility, justification) : Results according to the asymptotic method. Cf.
-        :attr:`threshold_utility` and :attr:`justification`. The threshold utility may be NaN, because this method is
-        not always sufficient.
-        """
-        threshold_utility = ((
-            self.pivot_tij.asymptotic * Fraction(1, 2)
-            + self.trio_1t.asymptotic * Fraction(1, 3) + self.trio_2t.asymptotic * Fraction(1, 6)
-        ) / (
-            self.pivot_tij.asymptotic * Fraction(1, 2) + self.pivot_tjk.asymptotic * Fraction(1, 2)
-            + self.trio_1t.asymptotic * Fraction(2, 3) + self.trio_2t.asymptotic * Fraction(1, 3)
-        )).limit
-        justification = self.ASYMPTOTIC
-        return threshold_utility, justification
-
-    @cached_property
-    def results_limit_pivot_theorem(self):
-        """tuple (threshold_utility, justification) : Results according to the limit pivot theorem.
-        Cf. :attr:`threshold_utility` and :attr:`justification`. If the tau-vector has two consecutive zeros, the
-        theorem does not apply and this method returns ``nan, ''``.
-        """
-        if self.tau.has_two_consecutive_zeros:
-            return np.nan, ''
-
-        def multiply(tau_something, phi_something):
-            return 0 if tau_something == 0 else tau_something * phi_something
-
-        # Pivot ij
-        # --------
-        score_ij_in_duo_ij = (multiply(self.tau_i, self.duo_ij.phi[self.i])
-                              + multiply(self.tau_ij, self.duo_ij.phi[self.ij])
-                              + multiply(self.tau_ik, self.duo_ij.phi[self.ik]))
-        score_k_in_duo_ij = (multiply(self.tau_k, self.duo_ij.phi[self.k])
-                             + multiply(self.tau_ik, self.duo_ij.phi[self.ik])
-                             + multiply(self.tau_jk, self.duo_ij.phi[self.jk]))
-        pivot_ij_easy = score_ij_in_duo_ij > score_k_in_duo_ij
-        pivot_ij_tight = isclose(score_ij_in_duo_ij, score_k_in_duo_ij)
-        pivot_ij_easy_or_tight = pivot_ij_easy or pivot_ij_tight
-        # Pivot jk
-        # --------
-        score_jk_in_duo_jk = (multiply(self.tau_j, self.duo_jk.phi[self.j])
-                              + multiply(self.tau_ij, self.duo_jk.phi[self.ij])
-                              + multiply(self.tau_jk, self.duo_jk.phi[self.jk]))
-        score_i_in_duo_jk = (multiply(self.tau_i, self.duo_jk.phi[self.i])
-                             + multiply(self.tau_ij, self.duo_jk.phi[self.ij])
-                             + multiply(self.tau_ik, self.duo_jk.phi[self.ik]))
-        pivot_jk_easy = score_jk_in_duo_jk > score_i_in_duo_jk
-        pivot_jk_tight = isclose(score_jk_in_duo_jk, score_i_in_duo_jk)
-        pivot_jk_easy_or_tight = pivot_jk_easy or pivot_jk_tight
-        # Case distinction of the theorem
-        # -------------------------------
-        if pivot_ij_easy_or_tight and pivot_jk_easy_or_tight:
-            # Both pivots are easy => We can forget the trios.
-            threshold_utility = ((
-                self.pivot_tij.asymptotic * Fraction(1, 2)
-            ) / (
-                self.pivot_tij.asymptotic * Fraction(1, 2) + self.pivot_tjk.asymptotic * Fraction(1, 2)
-            )).limit
-            justification = self.ASYMPTOTIC_SIMPLIFIED
-        elif pivot_ij_easy_or_tight:
-            # ... but pivot jk is difficult.
-            threshold_utility = 1
-            justification = self.EASY_VS_DIFFICULT
-        elif pivot_jk_easy_or_tight:
-            # ... but pivot ij is difficult.
-            threshold_utility = 0
-            justification = self.DIFFICULT_VS_EASY
-        else:
-            # Both pivots are difficult => offset method.
-            # Due to approximations in trio event, psi_k and psi_i may exceptionally be greater than 1 (whereas
-            # in difficult pivots, we know that they must be strictly lower than 1). In that case, the formulas
-            # for the offset method will fail, so we must be cautious.
-            psi_k_greater_but_close_to_one = False
-            if self.trio.psi[self.k] >= 1:
-                if isclose(self.trio.psi[self.k], 1, rel_tol=1e-1):
-                    psi_k_greater_but_close_to_one = True
-                else:  # pragma: no cover
-                    raise AssertionError('Unexpected: self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
-            psi_i_greater_but_close_to_one = False
-            if self.trio.psi[self.i] >= 1:
-                if isclose(self.trio.psi[self.i], 1, rel_tol=1e-1):
-                    psi_i_greater_but_close_to_one = True
-                else:  # pragma: no cover
-                    raise AssertionError('Unexpected: self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
-            if psi_i_greater_but_close_to_one and psi_k_greater_but_close_to_one:  # pragma: no cover
-                raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
-            elif psi_k_greater_but_close_to_one:
-                # pij ~= inf, pjk < inf ==> u = 1
-                threshold_utility = 1
-                justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
-            elif psi_i_greater_but_close_to_one:
-                # pij < inf, pjk ~= inf ==> u = 0
-                threshold_utility = 0
-                justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
-            else:
-                # General case of the offset method (at last!)
-                pij = (1 + self.trio.psi[self.ik]) / (1 - self.trio.psi[self.k])
-                pjk = (1 + self.trio.psi[self.j]) * self.trio.psi[self.i] ** 2 / (1 - self.trio.psi[self.i])
-                p1t = self.trio.psi[self.i]
-                p2t = self.trio.psi[self.ij]
-                threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
-                justification = self.OFFSET_METHOD
-        return threshold_utility, justification
-
-    @cached_property
     def results(self):
-        """tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`.
-        These results use:
-
-        * :meth:`results_asymptotic_method` if there are two consecutive zeros in the "compass diagram" of the
-          tau-vector,
-        * :meth:`results_limit_pivot_theorem` otherwise.
-        """
-        if self.tau.has_two_consecutive_zeros:
-            return self.results_asymptotic_method
-        else:
-            return self.results_limit_pivot_theorem
+        """tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`."""
+        raise NotImplementedError
 
     @cached_property
     def threshold_utility(self):
-        """Number : The threshold value of the utility for the second candidate (where the optimal ballot changes).
-        If 1, then always vote for the first candidate. If 0, then always vote for the two most-liked candidates.
-        """
+        """Number : The threshold value of the utility for the second candidate (where the optimal ballot changes)."""
         return self.results[0]
 
     @cached_property
     def justification(self):
-        """str : How the program computed the utility threshold. Nowadays, possible values are ``'Asymptotic method'``,
-        ``'Simplified asymptotic method'``, ``'Easy vs difficult pivot'``, ``'Difficult vs easy pivot'``,
-        ``'Offset method'``, ``'Offset method with trio approximation correction'``.
-        """
+        """str : How the program computed the utility threshold."""
         return self.results[1]
 
     @cached_property
@@ -238,14 +333,7 @@ class BestResponse:
         """str : This can be a valid ballot (e.g. ``'a'`` or ``'ab'`` if `ranking` is ``'abc'``) or
         ``'utility-dependent'``.
         """
-        if isnan(self.threshold_utility):
-            raise ValueError('Unable to compute threshold utility')  # pragma: no cover
-        elif isclose(self.threshold_utility, 1):
-            return ballot_one(self.ranking)
-        elif isclose(self.threshold_utility, 0, abs_tol=1E-9):
-            return ballot_one_two(self.ranking)
-        else:
-            return UTILITY_DEPENDENT
+        raise NotImplementedError
 
     def __repr__(self):
         return '<' + ', '.join([

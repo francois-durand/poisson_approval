@@ -1,10 +1,10 @@
-from poisson_approval import TauVector, BestResponse, isnan, RANKINGS
+from poisson_approval import TauVector, BestResponseApproval, isnan, RANKINGS
 
 
 def test_best_response():
     """
         >>> tau = TauVector({'a': 9/15, 'b': 4/15, 'ac': 1/15, 'bc': 1/15})
-        >>> best_response = BestResponse(tau, 'abc')
+        >>> best_response = BestResponseApproval(tau, 'abc')
         >>> best_response.ballot
         'a'
         >>> best_response.threshold_utility
@@ -16,7 +16,7 @@ def test_best_response():
 def test_duo_ik():
     """
     >>> tau = TauVector({'a': 9 / 15, 'b': 4 / 15, 'ac': 1 / 15, 'bc': 1 / 15})
-    >>> best_response = BestResponse(tau, 'abc')
+    >>> best_response = BestResponseApproval(tau, 'abc')
     >>> best_response.duo_ik
     <asymptotic = exp(- 0.266667 n - 0.5 log n - 0.460793 + o(1)), phi_a = 0.333333, phi_b = 1, phi_ac = 1, phi_bc = 3>
     """
@@ -25,7 +25,7 @@ def test_duo_ik():
 
 def test_results_limit_pivot_theorem_when_two_consecutive_zeros():
     tau = TauVector({'a': 3 / 5, 'b': 2 / 5})
-    best_response = BestResponse(tau, 'abc')
+    best_response = BestResponseApproval(tau, 'abc')
     threshold_utility, justification = best_response.results_limit_pivot_theorem
     assert isnan(threshold_utility)
     assert justification == ''

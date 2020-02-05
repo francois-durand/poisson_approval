@@ -151,7 +151,7 @@ class Profile():
         Parameters
         ----------
         d_ranking_best_response : dict
-            Key: ranking. Value: :class:`BestResponse`.
+            Key: ranking. Value: :class:`BestResponseApproval`.
 
         Returns
         -------
