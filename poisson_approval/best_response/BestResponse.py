@@ -309,6 +309,39 @@ class BestResponse:
         """EventTrio1t : The second `personalized trio`. This is just another notation for :attr:`trio_2t_ij`."""
         return getattr(self.tau, 'trio_2t_' + self.ij)
 
+    # Easy and difficult pivots
+    # -------------------------
+
+    @cached_property
+    def pivot_ij_easy_or_tight(self):
+        """bool : True if the pivot `ij` is easy or tight, False if it is difficult."""
+        return getattr(self.tau, 'pivot_%s_easy_or_tight' % (self.i + self.j))
+
+    @cached_property
+    def pivot_ik_easy_or_tight(self):
+        """bool : True if the pivot `ik` is easy or tight, False if it is difficult."""
+        return getattr(self.tau, 'pivot_%s_easy_or_tight' % (self.i + self.k))
+
+    @cached_property
+    def pivot_ji_easy_or_tight(self):
+        """bool : True if the pivot `ji` is easy or tight, False if it is difficult."""
+        return getattr(self.tau, 'pivot_%s_easy_or_tight' % (self.j + self.i))
+
+    @cached_property
+    def pivot_jk_easy_or_tight(self):
+        """bool : True if the pivot `jk` is easy or tight, False if it is difficult."""
+        return getattr(self.tau, 'pivot_%s_easy_or_tight' % (self.j + self.k))
+
+    @cached_property
+    def pivot_ki_easy_or_tight(self):
+        """bool : True if the pivot `ki` is easy or tight, False if it is difficult."""
+        return getattr(self.tau, 'pivot_%s_easy_or_tight' % (self.k + self.i))
+
+    @cached_property
+    def pivot_kj_easy_or_tight(self):
+        """bool : True if the pivot `kj` is easy or tight, False if it is difficult."""
+        return getattr(self.tau, 'pivot_%s_easy_or_tight' % (self.k + self.j))
+
     # =======
     # Results
     # =======

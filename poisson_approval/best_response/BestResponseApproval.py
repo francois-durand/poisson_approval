@@ -60,35 +60,7 @@ class BestResponseApproval(BestResponse):
         """
         if self.tau.has_two_consecutive_zeros:
             return np.nan, ''
-
-        def multiply(tau_something, phi_something):
-            return 0 if tau_something == 0 else tau_something * phi_something
-
-        # Pivot ij
-        # --------
-        score_ij_in_duo_ij = (multiply(self.tau_i, self.duo_ij.phi[self.i])
-                              + multiply(self.tau_ij, self.duo_ij.phi[self.ij])
-                              + multiply(self.tau_ik, self.duo_ij.phi[self.ik]))
-        score_k_in_duo_ij = (multiply(self.tau_k, self.duo_ij.phi[self.k])
-                             + multiply(self.tau_ik, self.duo_ij.phi[self.ik])
-                             + multiply(self.tau_jk, self.duo_ij.phi[self.jk]))
-        pivot_ij_easy = score_ij_in_duo_ij > score_k_in_duo_ij
-        pivot_ij_tight = isclose(score_ij_in_duo_ij, score_k_in_duo_ij)
-        pivot_ij_easy_or_tight = pivot_ij_easy or pivot_ij_tight
-        # Pivot jk
-        # --------
-        score_jk_in_duo_jk = (multiply(self.tau_j, self.duo_jk.phi[self.j])
-                              + multiply(self.tau_ij, self.duo_jk.phi[self.ij])
-                              + multiply(self.tau_jk, self.duo_jk.phi[self.jk]))
-        score_i_in_duo_jk = (multiply(self.tau_i, self.duo_jk.phi[self.i])
-                             + multiply(self.tau_ij, self.duo_jk.phi[self.ij])
-                             + multiply(self.tau_ik, self.duo_jk.phi[self.ik]))
-        pivot_jk_easy = score_jk_in_duo_jk > score_i_in_duo_jk
-        pivot_jk_tight = isclose(score_jk_in_duo_jk, score_i_in_duo_jk)
-        pivot_jk_easy_or_tight = pivot_jk_easy or pivot_jk_tight
-        # Case distinction of the theorem
-        # -------------------------------
-        if pivot_ij_easy_or_tight and pivot_jk_easy_or_tight:
+        if self.pivot_ij_easy_or_tight and self.pivot_jk_easy_or_tight:
             # Both pivots are easy => We can forget the trios.
             threshold_utility = ((
                 self.pivot_tij.asymptotic * Fraction(1, 2)
@@ -96,11 +68,11 @@ class BestResponseApproval(BestResponse):
                 self.pivot_tij.asymptotic * Fraction(1, 2) + self.pivot_tjk.asymptotic * Fraction(1, 2)
             )).limit
             justification = self.ASYMPTOTIC_SIMPLIFIED
-        elif pivot_ij_easy_or_tight:
+        elif self.pivot_ij_easy_or_tight:
             # ... but pivot jk is difficult.
             threshold_utility = 1
             justification = self.EASY_VS_DIFFICULT
-        elif pivot_jk_easy_or_tight:
+        elif self.pivot_jk_easy_or_tight:
             # ... but pivot ij is difficult.
             threshold_utility = 0
             justification = self.DIFFICULT_VS_EASY
@@ -161,7 +133,7 @@ class BestResponseApproval(BestResponse):
         ``'utility-dependent'``.
         """
         if isnan(self.threshold_utility):
-            raise ValueError('Unable to compute threshold utility')  # pragma: no cover
+            raise AssertionError('Unable to compute threshold utility')  # pragma: no cover
         elif isclose(self.threshold_utility, 1):
             return ballot_one(self.ranking)
         elif isclose(self.threshold_utility, 0, abs_tol=1E-9):

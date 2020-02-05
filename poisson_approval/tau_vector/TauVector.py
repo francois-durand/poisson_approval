@@ -462,6 +462,114 @@ phi_ab = 0.707107>
         """
         return DictPrintingInOrder({ranking: BestResponseApproval(tau=self, ranking=ranking) for ranking in RANKINGS})
 
+    @cached_property
+    def score_ab_in_duo_ab(self):
+        """Number : Common score of `a` and `b` in duo `ab`."""
+        return (_multiply(self.a, self.duo_ab.phi_a)
+                + _multiply(self.ab, self.duo_ab.phi_ab)
+                + _multiply(self.ac, self.duo_ab.phi_ac))
+
+    @cached_property
+    def score_ac_in_duo_ac(self):
+        """Number : Common score of `a` and `c` in duo `ac`."""
+        return (_multiply(self.a, self.duo_ac.phi_a)
+                + _multiply(self.ab, self.duo_ac.phi_ab)
+                + _multiply(self.ac, self.duo_ac.phi_ac))
+
+    @cached_property
+    def score_bc_in_duo_bc(self):
+        """Number : Common score of `b` and `c` in duo `bc`."""
+        return (_multiply(self.b, self.duo_bc.phi_b)
+                + _multiply(self.ab, self.duo_bc.phi_ab)
+                + _multiply(self.bc, self.duo_bc.phi_bc))
+
+    @cached_property
+    def score_ba_in_duo_ba(self):
+        """Number : Alternate notation for :attr:`score_ab_in_duo_ab`."""
+        return self.score_ab_in_duo_ab
+
+    @cached_property
+    def score_ca_in_duo_ca(self):
+        """Number : Alternate notation for :attr:`score_ac_in_duo_ac`."""
+        return self.score_ac_in_duo_ac
+
+    @cached_property
+    def score_cb_in_duo_cb(self):
+        """Number : Alternate notation for :attr:`score_bc_in_duo_bc`."""
+        return self.score_bc_in_duo_bc
+
+    @cached_property
+    def score_c_in_duo_ab(self):
+        """Number : Score of `c` in duo `ab`."""
+        return (_multiply(self.c, self.duo_ab.phi_c)
+                + _multiply(self.ac, self.duo_ab.phi_ac)
+                + _multiply(self.bc, self.duo_ab.phi_bc))
+
+    @cached_property
+    def score_b_in_duo_ac(self):
+        """Number : Score of `b` in duo `ac`."""
+        return (_multiply(self.b, self.duo_ac.phi_b)
+                + _multiply(self.ab, self.duo_ac.phi_ab)
+                + _multiply(self.bc, self.duo_ac.phi_bc))
+
+    @cached_property
+    def score_a_in_duo_bc(self):
+        """Number : Score of `a` in duo `bc`."""
+        return (_multiply(self.a, self.duo_bc.phi_a)
+                + _multiply(self.ab, self.duo_bc.phi_ab)
+                + _multiply(self.ac, self.duo_bc.phi_ac))
+
+    @cached_property
+    def score_c_in_duo_ba(self):
+        """Number : Alternate notation for :attr:`score_c_in_duo_ab`."""
+        return self.score_c_in_duo_ab
+
+    @cached_property
+    def score_b_in_duo_ca(self):
+        """Number : Alternate notation for :attr:`score_b_in_duo_ac`."""
+        return self.score_b_in_duo_ac
+
+    @cached_property
+    def score_a_in_duo_cb(self):
+        """Number : Alternate notation for :attr:`score_a_in_duo_bc`."""
+        return self.score_a_in_duo_bc
+
+    @cached_property
+    def pivot_ab_easy_or_tight(self):
+        """bool : True if the pivot `ab` is easy or tight, False if it is difficult."""
+        pivot_easy = self.score_ab_in_duo_ab > self.score_c_in_duo_ab
+        pivot_tight = isclose(self.score_ab_in_duo_ab, self.score_c_in_duo_ab)
+        return pivot_easy or pivot_tight
+
+    @cached_property
+    def pivot_ac_easy_or_tight(self):
+        """bool : True if the pivot `ac` is easy or tight, False if it is difficult."""
+        pivot_easy = self.score_ac_in_duo_ac > self.score_b_in_duo_ac
+        pivot_tight = isclose(self.score_ac_in_duo_ac, self.score_b_in_duo_ac)
+        return pivot_easy or pivot_tight
+
+    @cached_property
+    def pivot_bc_easy_or_tight(self):
+        """bool : True if the pivot `bc` is easy or tight, False if it is difficult."""
+        pivot_easy = self.score_bc_in_duo_bc > self.score_a_in_duo_bc
+        pivot_tight = isclose(self.score_bc_in_duo_bc, self.score_a_in_duo_bc)
+        return pivot_easy or pivot_tight
+
+    @cached_property
+    def pivot_ba_easy_or_tight(self):
+        """bool : Alternate notation for :attr:`pivot_ab_easy_or_tight`"""
+        return self.pivot_ab_easy_or_tight
+
+    @cached_property
+    def pivot_ca_easy_or_tight(self):
+        """bool : Alternate notation for :attr:`pivot_ac_easy_or_tight`"""
+        return self.pivot_ac_easy_or_tight
+
+    @cached_property
+    def pivot_cb_easy_or_tight(self):
+        """bool : Alternate notation for :attr:`pivot_bc_easy_or_tight`"""
+        return self.pivot_bc_easy_or_tight
+
 
 def _f_ballot_share(self, ballot):
     """Share of this ballot"""
@@ -542,3 +650,10 @@ for event_class, event_stub, event_doc in [
         getattr(TauVector, name).__name__ = name
         setattr(TauVector, name, cached_property(getattr(TauVector, name)))
         getattr(TauVector, name).__doc__ = event_doc
+
+
+# Used to compute easy and difficult pivots
+
+def _multiply(tau_something, phi_something):
+    """Return 0 if tau_something is 0, even if phi_something is nan."""
+    return 0 if tau_something == 0 else tau_something * phi_something
