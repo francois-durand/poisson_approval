@@ -179,7 +179,7 @@ phi_ab = 0.707107>
                 self.d_ballot_share[ballot] = 0
         # Normalize if necessary
         total = sum(self.d_ballot_share.values())
-        if not isclose(total, 1.):
+        if not isclose(total, 1., rel_tol=10E-4):
             if normalization_warning:
                 warnings.warn("Warning: tau is not normalized, I will normalize it.")
             for ballot in self.d_ballot_share.keys():
