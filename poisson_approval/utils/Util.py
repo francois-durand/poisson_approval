@@ -378,6 +378,27 @@ def ballot_one(ranking):
     return ranking[0]
 
 
+def ballot_two(ranking):
+    """Ballot for the voter's second most-liked candidate.
+
+    Parameters
+    ----------
+    ranking : str
+        A ranking.
+
+    Returns
+    -------
+    str
+        The second candidate.
+
+    Examples
+    --------
+        >>> ballot_two('abc')
+        'b'
+    """
+    return ranking[1]
+
+
 def ballot_one_two(ranking):
     """Ballot for the voter's two preferred candidates.
 

@@ -139,4 +139,5 @@ class BestResponseApproval(BestResponse):
         elif isclose(self.threshold_utility, 0, abs_tol=1E-9):
             return ballot_one_two(self.ranking)
         else:
+            assert 0 <= self.threshold_utility <= 1
             return UTILITY_DEPENDENT
