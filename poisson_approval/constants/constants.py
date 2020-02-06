@@ -12,6 +12,10 @@ BALLOTS_WITH_INVERSIONS = BALLOTS_WITHOUT_INVERSIONS + PAIRS_INVERTED
 UTILITY_DEPENDENT = 'utility-dependent'
 INCONCLUSIVE = 'inconclusive'
 
+APPROVAL = 'Approval'
+PLURALITY = 'Plurality'
+ANTI_PLURALITY = 'Anti-plurality'
+
 
 def _f_abc_xyz(my_list):
     return [element.replace('a', 'x').replace('b', 'y').replace('c', 'z') for element in my_list]

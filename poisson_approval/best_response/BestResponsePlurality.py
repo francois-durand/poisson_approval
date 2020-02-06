@@ -27,7 +27,7 @@ class BestResponsePlurality(BestResponse):
 
     @cached_property
     def results(self):
-        assert self.tau_ij == self.tau_ik == self.tau_jk == 0
+        assert self.tau.voting_rule == PLURALITY
         if self.tau_i < self.tau_j and self.tau_i < self.tau_k:
             # The best response is `j`.
             threshold_utility = 0

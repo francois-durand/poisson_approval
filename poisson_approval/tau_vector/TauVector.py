@@ -160,7 +160,8 @@ phi_ab = 0.707107>
         <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
     """
 
-    def __init__(self, d_ballot_share: dict, normalization_warning: bool = True):
+    def __init__(self, d_ballot_share: dict, normalization_warning: bool = True,
+                 voting_rule=APPROVAL):
         """
             >>> tau = TauVector({'non_existing_ballot': 1})
             Traceback (most recent call last):
@@ -184,12 +185,24 @@ phi_ab = 0.707107>
                 warnings.warn("Warning: tau is not normalized, I will normalize it.")
             for ballot in self.d_ballot_share.keys():
                 self.d_ballot_share[ballot] = self.d_ballot_share[ballot] / total
+        # Voting rule
+        self.voting_rule = voting_rule
+        if self.voting_rule == PLURALITY:
+            assert self.ab == self.ac == self.bc == 0
+        elif self.voting_rule == ANTI_PLURALITY:
+            assert self.a == self.b == self.c == 0
 
     def __repr__(self):
-        return 'TauVector(%r)' % self.d_ballot_share
+        arguments = repr(self.d_ballot_share)
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%s' % self.voting_rule
+        return 'TauVector(%s)' % arguments
 
     def __str__(self):
-        return '<%s>' % str(self.d_ballot_share)[1:-1] + ' ==> ' + str(self.winners)
+        s = '<%s>' % str(self.d_ballot_share)[1:-1] + ' ==> ' + str(self.winners)
+        if self.voting_rule != APPROVAL:
+            s += ' (%s)' % self.voting_rule
+        return s
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
@@ -242,7 +255,9 @@ phi_ab = 0.707107>
             >>> tau == TauVector({'a': Fraction(10, 100), 'ab': Fraction(60, 100), 'c': Fraction(30, 100)})
             True
         """
-        return isinstance(other, TauVector) and self.d_ballot_share == other.d_ballot_share
+        return (isinstance(other, TauVector)
+                and self.d_ballot_share == other.d_ballot_share
+                and self.voting_rule == other.voting_rule)
 
     @cached_property
     def has_two_consecutive_zeros(self):
@@ -311,7 +326,8 @@ phi_ab = 0.707107>
                 best_signature = signature_test
                 best_d = d_test
         return TauVector({ballot: best_d[xyz_ballot]
-                          for ballot, xyz_ballot in zip(BALLOTS_WITHOUT_INVERSIONS, XYZ_BALLOTS_WITHOUT_INVERSION)})
+                          for ballot, xyz_ballot in zip(BALLOTS_WITHOUT_INVERSIONS, XYZ_BALLOTS_WITHOUT_INVERSION)},
+                         voting_rule=self.voting_rule)
 
     @cached_property
     def is_standardized(self):
@@ -451,7 +467,7 @@ phi_ab = 0.707107>
         """dict : Best response profile.
 
         * Key: a ranking (e.g. ``'abc'``).
-        * Value: a :class:`BestResponseApproval`.
+        * Value: a :class:`BestResponse` (whose subclass depends on :attr:`voting_rule`).
 
         Examples
         --------
@@ -460,7 +476,12 @@ phi_ab = 0.707107>
             >>> tau.d_ranking_best_response['abc']
             <ballot = a, threshold_utility = 1, justification = Asymptotic method>
         """
-        return DictPrintingInOrder({ranking: BestResponseApproval(tau=self, ranking=ranking) for ranking in RANKINGS})
+        if self.voting_rule == APPROVAL:
+            return DictPrintingInOrder({
+                ranking: BestResponseApproval(tau=self, ranking=ranking) for ranking in RANKINGS})
+        if self.voting_rule == PLURALITY:
+            return DictPrintingInOrder({
+                ranking: BestResponsePlurality(tau=self, ranking=ranking) for ranking in RANKINGS})
 
     @cached_property
     def score_ab_in_duo_ab(self):
