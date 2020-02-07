@@ -2,6 +2,7 @@ from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
 # noinspection PyUnresolvedReferences
@@ -16,6 +17,8 @@ class StrategyThreshold(StrategyTwelve):
         ``None``, meaning that the behavior of these voters is not specified in the strategy.
     profile : Profile, optional
         The "context" in which the strategy is used.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Examples
     --------
@@ -34,25 +37,33 @@ class StrategyThreshold(StrategyTwelve):
         0.4
     """
 
-    def __init__(self, d_ranking_threshold, profile=None):
+    def __init__(self, d_ranking_threshold, profile=None, voting_rule=APPROVAL):
         # Populate the dictionary of thresholds
-        self.d_ranking_threshold = DictPrintingInOrderIgnoringZeros(d_ranking_threshold)
-        for ranking in RANKINGS:
-            if ranking not in self.d_ranking_threshold:
-                self.d_ranking_threshold[ranking] = None
+        self.d_ranking_threshold = DictPrintingInOrderIgnoringZeros({ranking: None for ranking in RANKINGS})
+        self.d_ranking_threshold.update(d_ranking_threshold)
         # Prepare the dictionary of ballots
         d_ranking_ballot = DictPrintingInOrderIgnoringZeros()
         for ranking, threshold in self.d_ranking_threshold.items():
             if threshold is None:
                 d_ranking_ballot[ranking] = ''
             elif threshold == 1:
-                d_ranking_ballot[ranking] = ranking[0]
+                if voting_rule in {APPROVAL, PLURALITY}:
+                    d_ranking_ballot[ranking] = ballot_one(ranking)
+                elif voting_rule == ANTI_PLURALITY:
+                    d_ranking_ballot[ranking] = ballot_one_three(ranking)
+                else:
+                    raise NotImplementedError
             elif threshold == 0:
-                d_ranking_ballot[ranking] = ranking[:2]
+                if voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                    d_ranking_ballot[ranking] = ballot_one_two(ranking)
+                elif voting_rule == PLURALITY:
+                    d_ranking_ballot[ranking] = ballot_two(ranking)
+                else:
+                    raise NotImplementedError
             else:
                 d_ranking_ballot[ranking] = UTILITY_DEPENDENT
         # Call parent class
-        super().__init__(d_ranking_ballot=d_ranking_ballot, profile=profile)
+        super().__init__(d_ranking_ballot=d_ranking_ballot, profile=profile, voting_rule=voting_rule)
 
     def __eq__(self, other):
         """Equality test.
@@ -72,7 +83,9 @@ class StrategyThreshold(StrategyTwelve):
             >>> strategy == StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
             True
         """
-        return isinstance(other, StrategyThreshold) and self.d_ranking_threshold == other.d_ranking_threshold
+        return (isinstance(other, StrategyThreshold)
+                and self.d_ranking_threshold == other.d_ranking_threshold
+                and self.voting_rule == other.voting_rule)
 
     def isclose(self, other, *args, **kwargs):
         """Test near-equality.
@@ -103,7 +116,10 @@ class StrategyThreshold(StrategyTwelve):
         ])
 
     def __repr__(self):
-        return 'StrategyThreshold(%r)' % self.d_ranking_threshold
+        arguments = repr(self.d_ranking_threshold)
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
+        return 'StrategyThreshold(%s)' % arguments
 
     def __str__(self):
         result = '<' + ', '.join([
@@ -114,6 +130,8 @@ class StrategyThreshold(StrategyTwelve):
         ]) + '>'
         if self.profile is not None:
             result += ' ==> ' + str(self.winners)
+        if self.voting_rule != APPROVAL:
+            result += ' (%s)' % self.voting_rule
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover

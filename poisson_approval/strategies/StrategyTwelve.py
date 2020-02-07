@@ -1,4 +1,4 @@
-from poisson_approval.utils.Util import sort_ballot
+from poisson_approval.utils.Util import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -14,8 +14,13 @@ class StrategyTwelve(Strategy):
         Keys are rankings and values are strategies, e.g. ``'abc': 'ab'``. A strategy can be a valid ballot
         (e.g. ``'a'`` or ``'ab'`` when the ranking is ``'abc'``), ``UTILITY_DEPENDENT`` or ``''`` if the behavior
         of these voters is not specified in the strategy. Cf. :class:`ProfileTwelve`.
+
+        In the case of Plurality, the valid ballots for voters ``'abc'`` are ``'a'`` and ``'b'``. In the case of
+        Anti-plurality, their valid ballots are ``'ab'`` (vote against `c`) and ``'ac'`` (vote against `b`).
     profile : Profile, optional
         The "context" in which the strategy is used.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Examples
     --------
@@ -32,7 +37,7 @@ class StrategyTwelve(Strategy):
         'ab'
     """
 
-    def __init__(self, d_ranking_ballot, profile=None):
+    def __init__(self, d_ranking_ballot, profile=None, voting_rule=APPROVAL):
         """
             >>> strategy = StrategyTwelve({'non_existing_ranking': 'utility-dependent'})
             Traceback (most recent call last):
@@ -42,24 +47,28 @@ class StrategyTwelve(Strategy):
             ValueError: Unknown strategy: non_existing_ballot
         """
         # Populate the dictionary and check for typos in the input
-        self.d_ranking_ballot = DictPrintingInOrderIgnoringZeros()
+        self.d_ranking_ballot = DictPrintingInOrderIgnoringZeros({ranking: '' for ranking in RANKINGS})
         for ranking, ballot in d_ranking_ballot.items():
+            # Sanity checks
             if ranking not in RANKINGS:
                 raise ValueError('Unknown key: ' + ranking)
-            strategy_1 = ranking[0]
-            strategy_12 = ranking[:2]
-            strategy_21 = ranking[1::-1]
-            if ballot not in ['', strategy_1, strategy_12, strategy_21, UTILITY_DEPENDENT]:
-                raise ValueError('Unknown strategy: ' + ballot)
-            if ballot == UTILITY_DEPENDENT:
-                self.d_ranking_ballot[ranking] = ballot
+            if voting_rule == APPROVAL:
+                authorized_ballots = {ballot_one(ranking), ballot_one_two(ranking), ballot_one_two(ranking)[::-1],
+                                      '', UTILITY_DEPENDENT}
+            elif voting_rule == PLURALITY:
+                authorized_ballots = {ballot_one(ranking), ballot_two(ranking), '', UTILITY_DEPENDENT}
+            elif voting_rule == ANTI_PLURALITY:
+                authorized_ballots = {ballot_one_two(ranking), ballot_one_two(ranking)[::-1],
+                                      ballot_one_three(ranking), ballot_one_three(ranking)[::-1],
+                                      '', UTILITY_DEPENDENT}
             else:
-                self.d_ranking_ballot[ranking] = ''.join(sorted(ballot))
-        for ranking in RANKINGS:
-            if ranking not in self.d_ranking_ballot:
-                self.d_ranking_ballot[ranking] = ''
+                raise NotImplementedError
+            if ballot not in authorized_ballots:
+                raise ValueError('Unknown strategy: ' + ballot)
+            # Record the ballot
+            self.d_ranking_ballot[ranking] = ballot if ballot == UTILITY_DEPENDENT else sort_ballot(ballot)
         # Call parent class
-        super().__init__(profile=profile)
+        super().__init__(profile=profile, voting_rule=voting_rule)
 
     def __eq__(self, other):
         """Equality test.
@@ -79,17 +88,24 @@ class StrategyTwelve(Strategy):
             >>> strategy == StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'})
             True
         """
-        return isinstance(other, StrategyTwelve) and self.d_ranking_ballot == other.d_ranking_ballot
+        return (isinstance(other, StrategyTwelve)
+                and self.d_ranking_ballot == other.d_ranking_ballot
+                and self.voting_rule == other.voting_rule)
 
     # Representation
 
     def __repr__(self):
-        return 'StrategyTwelve(%r)' % self.d_ranking_ballot
+        arguments = repr(self.d_ranking_ballot)
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
+        return 'StrategyTwelve(%s)' % arguments
 
     def __str__(self):
         result = '<%s>' % str(self.d_ranking_ballot)[1:-1]
         if self.profile is not None:
             result += ' ==> ' + str(self.winners)
+        if self.voting_rule != APPROVAL:
+            result += ' (%s)' % self.voting_rule
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -111,7 +127,14 @@ for my_ranking in RANKINGS:
 
 def make_property_ranking_low_u_ballot(ranking, doc):
     def _f(self):
-        return ranking[0] if getattr(self, ranking) == UTILITY_DEPENDENT else getattr(self, ranking)
+        if getattr(self, ranking) == UTILITY_DEPENDENT:
+            if getattr(self, 'voting_rule') in {APPROVAL, PLURALITY}:
+                return ballot_one(ranking)
+            elif getattr(self, 'voting_rule') == ANTI_PLURALITY:
+                return ballot_one_three(ranking)
+            else:
+                raise NotImplementedError
+        return getattr(self, ranking)
     _f.__doc__ = doc
     return property(_f)
 
@@ -124,7 +147,14 @@ for my_ranking in RANKINGS:
 
 def make_property_ranking_high_u_ballot(ranking, doc):
     def _f(self):
-        return sort_ballot(ranking[:2]) if getattr(self, ranking) == UTILITY_DEPENDENT else getattr(self, ranking)
+        if getattr(self, ranking) == UTILITY_DEPENDENT:
+            if getattr(self, 'voting_rule') in {APPROVAL, ANTI_PLURALITY}:
+                return ballot_one_two(ranking)
+            elif getattr(self, 'voting_rule') == PLURALITY:
+                return ballot_two(ranking)
+            else:
+                raise NotImplementedError
+        return getattr(self, ranking)
     _f.__doc__ = doc
     return property(_f)
 

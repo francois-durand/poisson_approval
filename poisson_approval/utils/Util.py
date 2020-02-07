@@ -419,7 +419,30 @@ def ballot_one_two(ranking):
         >>> ballot_one_two('bac')
         'ab'
     """
-    return min(ranking[:2], ranking[1::-1])
+    return sort_ballot(ranking[:2])
+
+
+def ballot_one_three(ranking):
+    """Ballot for the voter's first and third candidates.
+
+    Parameters
+    ----------
+    ranking : str
+        A ranking.
+
+    Returns
+    -------
+    str
+        The ballot with the first and third candidates.
+
+    Examples
+    --------
+        >>> ballot_one_three('abc')
+        'ac'
+        >>> ballot_one_three('cba')
+        'ac'
+    """
+    return sort_ballot(ranking[0] + ranking[2])
 
 
 def give_figure(n, singular, plural=None):

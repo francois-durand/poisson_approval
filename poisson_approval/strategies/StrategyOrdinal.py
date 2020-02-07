@@ -1,5 +1,7 @@
+from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
 class StrategyOrdinal(StrategyThreshold):
@@ -12,6 +14,8 @@ class StrategyOrdinal(StrategyThreshold):
         ballot can be ``''`` if the behavior of these voters is not specified in the strategy.
     profile : Profile, optional
         The "context" in which the strategy is used.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Examples
     --------
@@ -30,7 +34,7 @@ class StrategyOrdinal(StrategyThreshold):
         1
     """
 
-    def __init__(self, d_ranking_ballot, profile=None):
+    def __init__(self, d_ranking_ballot, profile=None, voting_rule=APPROVAL):
         """
             >>> strategy = StrategyOrdinal({'abc': 'non_existing_ballot'})
             Traceback (most recent call last):
@@ -41,14 +45,20 @@ class StrategyOrdinal(StrategyThreshold):
         for ranking, ballot in d_ranking_ballot.items():
             if ballot == '':
                 d_ranking_threshold[ranking] = None
-            elif ballot == ranking[0]:
+            elif ballot == ballot_one(ranking) and voting_rule in {APPROVAL, PLURALITY}:
                 d_ranking_threshold[ranking] = 1
-            elif ballot in {ranking[:2], ranking[1::-1]}:
+            elif ballot == ballot_two(ranking) and voting_rule == ANTI_PLURALITY:
                 d_ranking_threshold[ranking] = 0
+            elif (ballot in {ballot_one_two(ranking), ballot_one_two(ranking)[::-1]}
+                  and voting_rule in {APPROVAL, ANTI_PLURALITY}):
+                d_ranking_threshold[ranking] = 0
+            elif (ballot in {ballot_one_three(ranking), ballot_one_three(ranking)[::-1]}
+                  and voting_rule == ANTI_PLURALITY):
+                d_ranking_threshold[ranking] = 1
             else:
                 raise ValueError('Unknown strategy: ' + ballot)
         # Call parent class
-        super().__init__(d_ranking_threshold=d_ranking_threshold, profile=profile)
+        super().__init__(d_ranking_threshold=d_ranking_threshold, profile=profile, voting_rule=voting_rule)
 
     def __eq__(self, other):
         """Equality test.
@@ -68,10 +78,15 @@ class StrategyOrdinal(StrategyThreshold):
             >>> strategy == StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'})
             True
         """
-        return isinstance(other, StrategyOrdinal) and self.d_ranking_ballot == other.d_ranking_ballot
+        return (isinstance(other, StrategyOrdinal)
+                and self.d_ranking_ballot == other.d_ranking_ballot
+                and self.voting_rule == other.voting_rule)
 
     def __repr__(self):
-        return 'StrategyOrdinal(%r)' % self.d_ranking_ballot
+        arguments = repr(self.d_ranking_ballot)
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
+        return 'StrategyOrdinal(%s)' % arguments
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
