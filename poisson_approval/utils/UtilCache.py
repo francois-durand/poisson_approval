@@ -82,3 +82,54 @@ class DeleteCacheMixin:
     # noinspection PyAttributeOutsideInit
     def delete_cache(self) -> None:
         self._cached_properties = dict()
+
+
+def property_deleting_cache(hidden_variable_name, doc=''):
+    """Define a property that deletes the cache when set or deleted.
+
+    Parameters
+    ----------
+    hidden_variable_name : str
+        The name of the hidden variable used to store the value of the property.
+    doc : str
+        The docstring of the property.
+
+    Notes
+    -----
+    The class must inherit from :class:`DeleteCacheMixin`.
+
+    Examples
+    --------
+
+    >>> class MyClass(DeleteCacheMixin):
+    ...     def __init__(self, some_parameter):
+    ...         self.some_parameter = some_parameter
+    ...     some_parameter = property_deleting_cache('_some_parameter')
+    ...     @cached_property
+    ...     def my_cached_property(self):
+    ...         print('Computing my_cached_property...')
+    ...         return 'Hello %s!' % self.some_parameter
+    >>> my_object = MyClass(some_parameter='World')
+    >>> my_object.my_cached_property
+    Computing my_cached_property...
+    'Hello World!'
+    >>> my_object.my_cached_property
+    'Hello World!'
+    >>> my_object.some_parameter = 'everybody'
+    >>> my_object.my_cached_property
+    Computing my_cached_property...
+    'Hello everybody!'
+    """
+
+    def getter(self):
+        return getattr(self, hidden_variable_name)
+
+    def setter(self, value):
+        self.delete_cache()
+        setattr(self, hidden_variable_name, value)
+
+    def deleter(self):
+        self.delete_cache()
+        delattr(self, hidden_variable_name)
+
+    return property(getter, setter, deleter, doc)
