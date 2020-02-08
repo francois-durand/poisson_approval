@@ -1,4 +1,5 @@
-from poisson_approval import TauVector, BestResponseAntiPlurality, ANTI_PLURALITY
+from fractions import Fraction
+from poisson_approval import TauVector, BestResponseAntiPlurality, ANTI_PLURALITY, UTILITY_DEPENDENT
 
 
 def test_best_response_anti_plurality():
@@ -57,3 +58,16 @@ def test_best_response_anti_plurality():
         ballot = ac
     """
     pass
+
+
+def test_best_response_is_ij():
+    tau = TauVector({'ab': 4 / 15, 'ac': 9 / 15, 'bc': 2 / 15}, voting_rule=ANTI_PLURALITY)
+    best_response = BestResponseAntiPlurality(tau, 'abc')
+    assert best_response.ballot == 'ab'
+
+
+def test_best_response_is_utility_dependent():
+    tau = TauVector({'ab': 7 / 15, 'ac': 1 / 15, 'bc': 7 / 15}, voting_rule=ANTI_PLURALITY)
+    best_response = BestResponseAntiPlurality(tau, 'abc')
+    assert best_response.threshold_utility == Fraction(1, 2)
+    assert best_response.ballot == UTILITY_DEPENDENT
