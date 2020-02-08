@@ -1,14 +1,19 @@
 import numpy as np
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.containers.Winners import Winners
-from poisson_approval.utils.UtilCache import cached_property
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
+from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
 # noinspection PyUnresolvedReferences
-class Profile():
+class Profile(DeleteCacheMixin):
     """A profile of preference (abstract class)."""
+
+    def __init__(self, voting_rule):
+        self.voting_rule = voting_rule
+
+    voting_rule = property_deleting_cache('_voting_rule')
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
@@ -163,7 +168,7 @@ class Profile():
             ranking: best_response.threshold_utility
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0
-        }, profile=self)
+        }, profile=self, voting_rule=self.voting_rule)
 
 
 def make_property_ranking_share(ranking, doc):

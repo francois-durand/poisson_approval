@@ -32,6 +32,8 @@ class ProfileHistogram(ProfileCardinal):
     ratio_fanatic : Number
         The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
         and `ratio_fanatic` must not exceed 1.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Notes
     -----
@@ -95,14 +97,14 @@ class ProfileHistogram(ProfileCardinal):
     """
 
     def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True,
-                 ratio_sincere=0, ratio_fanatic=0):
+                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
         """
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
             ...                            d_ranking_histogram={'non_existing_ranking': [1]})
             Traceback (most recent call last):
             KeyError: 'non_existing_ranking'
         """
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
         # Populate the dictionary (and check for typos in the input)
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
         self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros({ranking: np.array([]) for ranking in RANKINGS})
@@ -222,6 +224,8 @@ class ProfileHistogram(ProfileCardinal):
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         if self.ratio_fanatic > 0:
             arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
         return 'ProfileHistogram(%s)' % arguments
 
     def __str__(self):
@@ -246,6 +250,8 @@ class ProfileHistogram(ProfileCardinal):
             result += ' (ratio_sincere: %s)' % self.ratio_sincere
         if self.ratio_fanatic > 0:
             result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            result += ' (%s)' % self.voting_rule
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -279,7 +285,8 @@ class ProfileHistogram(ProfileCardinal):
                 and self.d_ranking_share == other.d_ranking_share
                 and self.d_ranking_histogram == self.d_ranking_histogram
                 and self.ratio_sincere == other.ratio_sincere
-                and self.ratio_fanatic == other.ratio_fanatic)
+                and self.ratio_fanatic == other.ratio_fanatic
+                and self.voting_rule == other.voting_rule)
 
     # Standardized version of the profile (makes it unique, up to permutations)
 
@@ -322,7 +329,7 @@ class ProfileHistogram(ProfileCardinal):
                              for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
             d_ranking_histogram={ranking: best_d_ranking_histogram[xyz_ranking]
                                  for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
-            ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic
+            ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic, voting_rule=self.voting_rule
         )
 
     def plot_cdf(self, ranking, x_label=None, y_label=None, **kwargs):

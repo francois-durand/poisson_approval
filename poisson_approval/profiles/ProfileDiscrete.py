@@ -23,6 +23,8 @@ class ProfileDiscrete(ProfileCardinal):
     ratio_fanatic : Number
         The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
         and `ratio_fanatic` must not exceed 1.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Attributes
     ----------
@@ -58,13 +60,13 @@ class ProfileDiscrete(ProfileCardinal):
         Fraction(13, 50)
     """
 
-    def __init__(self, d, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0):
+    def __init__(self, d, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
         """
             >>> profile = ProfileDiscrete({42: 51})
             Traceback (most recent call last):
             TypeError: Key should be tuple or str, got: <class 'int'> instead.
         """
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
         self.d_ranking_utility_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
         for key, value in d.items():
@@ -126,6 +128,8 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         if self.ratio_fanatic > 0:
             arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
         return 'ProfileDiscrete(%s)' % arguments
 
     def __str__(self):
@@ -150,6 +154,8 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             result += ' (ratio_sincere: %s)' % self.ratio_sincere
         if self.ratio_fanatic > 0:
             result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            result += ' (%s)' % self.voting_rule
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -185,7 +191,8 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
                 and all([self.d_ranking_utility_share[ranking] == other.d_ranking_utility_share[ranking]
                          for ranking in RANKINGS])
                 and self.ratio_sincere == other.ratio_sincere
-                and self.ratio_fanatic == other.ratio_fanatic)
+                and self.ratio_fanatic == other.ratio_fanatic
+                and self.voting_rule == other.voting_rule)
 
     @cached_property
     def standardized_version(self):
@@ -217,4 +224,5 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
                 best_signature = signature_test
                 best_d = d_test
         return ProfileDiscrete({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
-                               ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic)
+                               ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
+                               voting_rule=self.voting_rule)

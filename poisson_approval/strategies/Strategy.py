@@ -1,6 +1,6 @@
 from copy import deepcopy
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin
+from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
 class Strategy(DeleteCacheMixin):
@@ -18,23 +18,8 @@ class Strategy(DeleteCacheMixin):
         self.profile = profile  # Store the profile (if any)
         self.voting_rule = voting_rule
 
-    @property
-    def profile(self):
-        return self._profile
-
-    @profile.setter
-    def profile(self, value):
-        self.delete_cache()
-        self._profile = value
-
-    @property
-    def voting_rule(self):
-        return self._voting_rule
-
-    @voting_rule.setter
-    def voting_rule(self, value):
-        self.delete_cache()
-        self._voting_rule = value
+    profile = property_deleting_cache('_profile')
+    voting_rule = property_deleting_cache('_voting_rule')
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output

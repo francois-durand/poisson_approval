@@ -1,7 +1,6 @@
 from fractions import Fraction
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import ballot_one, ballot_two
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -24,6 +23,7 @@ class BestResponsePlurality(BestResponse):
     """
 
     PLURALITY_ANALYSIS = 'Plurality analysis'
+    voting_rule = PLURALITY
 
     @cached_property
     def results(self):
@@ -31,21 +31,9 @@ class BestResponsePlurality(BestResponse):
         if self.tau_i < self.tau_j and self.tau_i < self.tau_k:
             # The best response is `j`.
             threshold_utility = 0
-        elif self.tau_i == self.tau_k < self.tau_j:
+        elif 0 < self.tau_i == self.tau_k < self.tau_j:
             threshold_utility = Fraction(1, 2)
         else:
             # The best response is `i`.
             threshold_utility = 1
         return threshold_utility, self.PLURALITY_ANALYSIS
-
-    @cached_property
-    def ballot(self):
-        """str : This can be a valid ballot (e.g. ``'a'`` or ``'b'`` if `ranking` is ``'abc'``) or
-        ``'utility-dependent'``.
-        """
-        if self.threshold_utility == 1:
-            return ballot_one(self.ranking)
-        elif self.threshold_utility == 0:
-            return ballot_two(self.ranking)
-        else:
-            return UTILITY_DEPENDENT

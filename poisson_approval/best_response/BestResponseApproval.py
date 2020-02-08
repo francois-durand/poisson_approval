@@ -3,7 +3,6 @@ from fractions import Fraction
 from math import isclose
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import isnan, ballot_one, ballot_one_two
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -31,6 +30,8 @@ class BestResponseApproval(BestResponse):
     DIFFICULT_VS_EASY = 'Difficult vs easy pivot'
     OFFSET_METHOD = 'Offset method'
     OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION = 'Offset method with trio approximation correction'
+
+    voting_rule = APPROVAL
 
     # =======
     # Results
@@ -126,18 +127,3 @@ class BestResponseApproval(BestResponse):
             return self.results_asymptotic_method
         else:
             return self.results_limit_pivot_theorem
-
-    @cached_property
-    def ballot(self):
-        """str : This can be a valid ballot (e.g. ``'a'`` or ``'ab'`` if `ranking` is ``'abc'``) or
-        ``'utility-dependent'``.
-        """
-        if isnan(self.threshold_utility):
-            raise AssertionError('Unable to compute threshold utility')  # pragma: no cover
-        elif isclose(self.threshold_utility, 1):
-            return ballot_one(self.ranking)
-        elif isclose(self.threshold_utility, 0, abs_tol=1E-9):
-            return ballot_one_two(self.ranking)
-        else:
-            assert 0 <= self.threshold_utility <= 1
-            return UTILITY_DEPENDENT

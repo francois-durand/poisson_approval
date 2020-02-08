@@ -1,13 +1,13 @@
 from math import isclose
-from copy import deepcopy
 from fractions import Fraction
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import ballot_one, ballot_one_two, barycenter, to_callable
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
+    to_callable, ballot_low_u, ballot_high_u
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 
 
@@ -22,12 +22,17 @@ class ProfileCardinal(Profile):
     ratio_fanatic : Number
         The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
         and `ratio_fanatic` must not exceed 1.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
     """
 
-    def __init__(self, ratio_sincere=0, ratio_fanatic=0):
-        super().__init__()
+    def __init__(self, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
+        super().__init__(voting_rule=voting_rule)
         self.ratio_sincere = ratio_sincere
         self.ratio_fanatic = ratio_fanatic
+
+    well_informed_voters = property_deleting_cache('_well_informed_voters')
+    ratio_fanatic = property_deleting_cache('_ratio_fanatic')
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
@@ -121,7 +126,7 @@ class ProfileCardinal(Profile):
                                 b=[tau_sincere.d_ballot_share[ballot], tau_fanatic.d_ballot_share[ballot]],
                                 ratio_b=[self.ratio_sincere, self.ratio_fanatic])
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        return TauVector(t)
+        return TauVector(t, voting_rule=self.voting_rule)
 
     @cached_property
     def tau_sincere(self):
@@ -130,16 +135,29 @@ class ProfileCardinal(Profile):
         Returns
         -------
         TauVector
-            All voters approve of their top candidate. Voters approve of their middle candidate if and only if
-            their utility for her is strictly greater than 0.5.
+            * In Approval, all voters approve of their top candidate, and voters approve of their middle candidate if
+              and only if their utility for her is strictly greater than 0.5.
+            * In Plurality, all voters vote for their top candidate.
+            * In Anti-plurality, all voters vote against their bottom candidate (i.e. for the other two).
+
+        Notes
+        -----
+        In Plurality and Anti-plurality, sincere and fanatic voting are the same. They differ only in Approval.
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking in RANKINGS:
-            share_vote_one_two = self.have_ranking_with_utility_above_u(ranking, Fraction(1, 2))
-            share_vote_one = self.d_ranking_share[ranking] - share_vote_one_two
-            t[ballot_one(ranking)] += share_vote_one
-            t[ballot_one_two(ranking)] += share_vote_one_two
-        return TauVector(t)
+            if self.voting_rule == APPROVAL:
+                share_vote_one_two = self.have_ranking_with_utility_above_u(ranking, Fraction(1, 2))
+                share_vote_one = self.d_ranking_share[ranking] - share_vote_one_two
+                t[ballot_one(ranking)] += share_vote_one
+                t[ballot_one_two(ranking)] += share_vote_one_two
+            elif self.voting_rule == PLURALITY:
+                t[ballot_one(ranking)] += self.d_ranking_share[ranking]
+            elif self.voting_rule == ANTI_PLURALITY:
+                t[ballot_one_two(ranking)] += self.d_ranking_share[ranking]
+            else:
+                raise NotImplementedError
+        return TauVector(t, voting_rule=self.voting_rule)
 
     @cached_property
     def tau_fanatic(self):
@@ -148,12 +166,22 @@ class ProfileCardinal(Profile):
         Returns
         -------
         TauVector
-            All voters approve of their top candidate only.
+            * In Approval or Plurality, all voters approve of their top candidate only.,
+            * In Anti-plurality, all voters vote against their bottom candidate (i.e. for the other two).
+
+        Notes
+        -----
+        In Plurality and Anti-plurality, sincere and fanatic voting are the same. They differ only in Approval.
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking, share in self.d_ranking_share.items():
-            t[ballot_one(ranking)] += share
-        return TauVector(t)
+            if self.voting_rule in {APPROVAL, PLURALITY}:
+                t[ballot_one(ranking)] += share
+            elif self.voting_rule == ANTI_PLURALITY:
+                t[ballot_one_two(ranking)] += self.d_ranking_share[ranking]
+            else:
+                raise NotImplementedError
+        return TauVector(t, voting_rule=self.voting_rule)
 
     def tau_strategic(self, strategy):
         """Tau-vector associated to a strategy (fully strategic voting).
@@ -168,14 +196,16 @@ class ProfileCardinal(Profile):
         TauVector
             Tau-vector associated to this profile and strategy `strategy`.
         """
+        assert self.voting_rule == strategy.voting_rule
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking, threshold in strategy.d_ranking_threshold.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
-            t[ballot_one(ranking)] += (self.have_ranking_with_utility_u(ranking, u=threshold)
-                                       + self.have_ranking_with_utility_below_u(ranking, u=threshold))
-            t[ballot_one_two(ranking)] += self.have_ranking_with_utility_above_u(ranking, u=threshold)
-        return TauVector(t)
+            t[ballot_low_u(ranking, self.voting_rule)] += (
+                self.have_ranking_with_utility_u(ranking, u=threshold)
+                + self.have_ranking_with_utility_below_u(ranking, u=threshold))
+            t[ballot_high_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_above_u(ranking, u=threshold)
+        return TauVector(t, voting_rule=self.voting_rule)
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
@@ -277,7 +307,7 @@ class ProfileCardinal(Profile):
                                              b=tau_actual.d_ballot_share[ballot],
                                              ratio_b=perception_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            })
+            }, voting_rule=self.voting_rule)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau_actual = TauVector({
@@ -285,7 +315,7 @@ class ProfileCardinal(Profile):
                                              b=tau_full_response.d_ballot_share[ballot],
                                              ratio_b=ballot_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, normalization_warning=False)
+            }, normalization_warning=False, voting_rule=self.voting_rule)
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -386,7 +416,7 @@ class ProfileCardinal(Profile):
                                              b=tau_actual.d_ballot_share[ballot],
                                              ratio_b=perception_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            })
+            }, voting_rule=self.voting_rule)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau_actual = TauVector({
@@ -394,7 +424,7 @@ class ProfileCardinal(Profile):
                                              b=tau_full_response.d_ballot_share[ballot],
                                              ratio_b=ballot_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, normalization_warning=False)
+            }, normalization_warning=False, voting_rule=self.voting_rule)
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)

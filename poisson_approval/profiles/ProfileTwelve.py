@@ -1,7 +1,8 @@
 import warnings
 from math import isclose
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import ballot_one, ballot_one_two
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, sort_ballot, \
+    product_dict, ballot_low_u, ballot_high_u
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.tau_vector.TauVector import TauVector
@@ -30,6 +31,8 @@ class ProfileTwelve(ProfileCardinal):
     ratio_fanatic : Number
         The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`
         and `ratio_fanatic` must not exceed 1.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Notes
     -----
@@ -91,8 +94,9 @@ class ProfileTwelve(ProfileCardinal):
         <a: 1/15, ab: 1/30, ac: 1/10, b: 3/5, c: 1/5> ==> b
     """
 
-    def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0):
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic)
+    def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
+                 voting_rule=APPROVAL):
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
         # Populate the dictionary
         self.d_type_share = DictPrintingInOrderIgnoringZeros({t: 0 for t in TWELVE_TYPES})
         for t, share in d_type_share.items():
@@ -185,6 +189,8 @@ class ProfileTwelve(ProfileCardinal):
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         if self.ratio_fanatic > 0:
             arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
         return 'ProfileTwelve(%s)' % arguments
 
     def __str__(self):
@@ -203,6 +209,8 @@ class ProfileTwelve(ProfileCardinal):
             result += ' (ratio_sincere: %s)' % self.ratio_sincere
         if self.ratio_fanatic > 0:
             result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            result += ' (%s)' % self.voting_rule
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -233,7 +241,8 @@ class ProfileTwelve(ProfileCardinal):
         return (isinstance(other, ProfileTwelve)
                 and self.d_type_share == other.d_type_share
                 and self.ratio_sincere == other.ratio_sincere
-                and self.ratio_fanatic == other.ratio_fanatic)
+                and self.ratio_fanatic == other.ratio_fanatic
+                and self.voting_rule == other.voting_rule)
 
     # Standardized version of the profile (makes it unique, up to permutations)
 
@@ -263,7 +272,8 @@ class ProfileTwelve(ProfileCardinal):
                 best_signature = signature_test
                 best_d = d_test
         return ProfileTwelve({t: best_d[xyz_t] for t, xyz_t in zip(TWELVE_TYPES, XYZ_TWELVE_TYPES)},
-                             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic)
+                             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
+                             voting_rule=self.voting_rule)
 
     @cached_property
     def has_majority_type(self):
@@ -333,17 +343,18 @@ class ProfileTwelve(ProfileCardinal):
             >>> print(tau_strategic)
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         """
-        t = {'a': 0, 'b': 0, 'c': 0, 'ab': 0, 'ac': 0, 'bc': 0}
+        assert self.voting_rule == strategy.voting_rule
+        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
-            # For a ranking abc, ballot can be '', 'a', 'ab' or 'utility-dependent'.
+            # For a ranking abc, ballot can be real ballots (e.g. 'a', 'ab'), '' or 'utility-dependent'.
             if ballot == UTILITY_DEPENDENT:
-                t[ballot_one(ranking)] += self.have_ranking_with_utility_below_u(ranking, u=.5)
-                t[ballot_one_two(ranking)] += self.have_ranking_with_utility_above_u(ranking, u=.5)
+                t[ballot_low_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_below_u(ranking, u=.5)
+                t[ballot_high_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_above_u(ranking, u=.5)
             else:
                 t[ballot] += self.d_ranking_share[ranking]
-        return TauVector(t)
+        return TauVector(t, voting_rule=self.voting_rule)
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
@@ -379,8 +390,14 @@ class ProfileTwelve(ProfileCardinal):
                 type_1 = ranking[:1] + '_' + ranking[1:]  # E.g. a_bc
                 type_12 = ranking[:2] + '_' + ranking[2:]  # E.g. ab_c
                 if best_response.ballot == UTILITY_DEPENDENT:
-                    best_ballot_1 = ballot_one(ranking)
-                    best_ballot_12 = ballot_one_two(ranking)
+                    if self.voting_rule == APPROVAL:
+                        best_ballot_1, best_ballot_12 = ballot_one(ranking), ballot_one_two(ranking)
+                    elif self.voting_rule == PLURALITY:
+                        best_ballot_1, best_ballot_12 = ballot_one(ranking), ballot_two(ranking)
+                    elif self.voting_rule == ANTI_PLURALITY:
+                        best_ballot_1, best_ballot_12 = ballot_one_three(ranking), ballot_one_two(ranking)
+                    else:
+                        raise NotImplementedError
                 else:
                     best_ballot_1 = best_response.ballot
                     best_ballot_12 = best_response.ballot
@@ -429,27 +446,29 @@ class ProfileTwelve(ProfileCardinal):
             else:
                 return ['']
 
-        for s_abc in possible_strategies(self.a_bc, self.ab_c, 'a', 'ab'):
-            for s_acb in possible_strategies(self.a_cb, self.ac_b, 'a', 'ac'):
-                for s_bac in possible_strategies(self.b_ac, self.ba_c, 'b', 'ab'):
-                    for s_bca in possible_strategies(self.b_ca, self.bc_a, 'b', 'bc'):
-                        for s_cab in possible_strategies(self.c_ab, self.ca_b, 'c', 'ac'):
-                            for s_cba in possible_strategies(self.c_ba, self.cb_a, 'c', 'bc'):
-                                strategy = StrategyTwelve({'abc': s_abc, 'acb': s_acb, 'bac': s_bac,
-                                                        'bca': s_bca, 'cab': s_cab, 'cba': s_cba}, profile=self)
-                                status = strategy.is_equilibrium
-                                if status == EquilibriumStatus.EQUILIBRIUM:
-                                    equilibria.append(strategy)
-                                elif status == EquilibriumStatus.UTILITY_DEPENDENT:  # pragma: no cover
-                                    utility_dependent.append(strategy)
-                                    warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r'
-                                                  % (self, strategy))
-                                elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
-                                    inconclusive.append(strategy)
-                                    warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
-                                                  % (self, strategy))
-                                else:
-                                    non_equilibria.append(strategy)
+        d_ranking_possible_strategies = {
+            ranking: possible_strategies(share_ranking_1=self.d_type_share[ranking[0] + '_' + ranking[1:]],
+                                         share_ranking_12=self.d_type_share[ranking[0:2] + '_' + ranking[2]],
+                                         strategy_1=ballot_low_u(ranking, self.voting_rule),
+                                         strategy_12=ballot_high_u(ranking, self.voting_rule))
+            for ranking in RANKINGS
+        }
+
+        for d_ranking_strategy in product_dict(d_ranking_possible_strategies):
+            strategy = StrategyTwelve(d_ranking_strategy, profile=self, voting_rule=self.voting_rule)
+            status = strategy.is_equilibrium
+            if status == EquilibriumStatus.EQUILIBRIUM:
+                equilibria.append(strategy)
+            elif status == EquilibriumStatus.UTILITY_DEPENDENT:  # pragma: no cover
+                utility_dependent.append(strategy)
+                warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r'
+                              % (self, strategy))
+            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
+                inconclusive.append(strategy)
+                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
+                              % (self, strategy))
+            else:
+                non_equilibria.append(strategy)
         return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
 

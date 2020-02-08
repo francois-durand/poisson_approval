@@ -6,6 +6,11 @@ from poisson_approval.tau_vector.TauVector import TauVector
 class GeneratorTauVectorUniform:
     """A generator of tau-vectors (:class:`TauVector`) following the uniform distribution.
 
+    Parameters
+    ----------
+    kwargs : keyword arguments
+        These additional arguments will be passed directly to :class:`TauVector`.
+
     Notes
     -----
     The tau-vector is drawn uniformly on the simplex.
@@ -20,6 +25,9 @@ class GeneratorTauVectorUniform:
 bc: 0.2848106336275805, c: 0.0039303209304278885> ==> a
     """
 
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
     def __call__(self):
         """
         Returns
@@ -28,4 +36,4 @@ bc: 0.2848106336275805, c: 0.0039303209304278885> ==> a
             A tau-vector.
         """
         x = rand_simplex(d=6)
-        return TauVector({ballot: x[i] for i, ballot in enumerate(BALLOTS_WITHOUT_INVERSIONS)})
+        return TauVector({ballot: x[i] for i, ballot in enumerate(BALLOTS_WITHOUT_INVERSIONS)}, **self.kwargs)

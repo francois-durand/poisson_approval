@@ -8,6 +8,8 @@ from poisson_approval.containers.Scores import Scores
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.best_response.BestResponseApproval import BestResponseApproval
+from poisson_approval.best_response.BestResponsePlurality import BestResponsePlurality
+from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
 from poisson_approval.utils.UtilCache import cached_property
 from poisson_approval.events.EventDuo import EventDuo
 from poisson_approval.events.EventPivotStrict import EventPivotStrict
@@ -482,6 +484,10 @@ phi_ab = 0.707107>
         if self.voting_rule == PLURALITY:
             return DictPrintingInOrder({
                 ranking: BestResponsePlurality(tau=self, ranking=ranking) for ranking in RANKINGS})
+        if self.voting_rule == ANTI_PLURALITY:
+            return DictPrintingInOrder({
+                ranking: BestResponseAntiPlurality(tau=self, ranking=ranking) for ranking in RANKINGS})
+        raise NotImplementedError
 
     @cached_property
     def score_ab_in_duo_ab(self):

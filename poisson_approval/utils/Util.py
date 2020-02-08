@@ -1,6 +1,8 @@
 import numpy as np
 import random
+import itertools
 from fractions import Fraction
+from poisson_approval.constants.constants import *
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 
 
@@ -445,6 +447,72 @@ def ballot_one_three(ranking):
     return sort_ballot(ranking[0] + ranking[2])
 
 
+def ballot_low_u(ranking, voting_rule):
+    """Ballot chosen by the voters who have a low utility for their middle candidate.
+
+    Parameters
+    ----------
+    ranking : str
+        A ranking.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+
+    Returns
+    -------
+    str
+        The ballot chosen by the voters with this ranking and a low utility for their middle candidate, in case
+        the response is utility-dependent.
+
+    Examples
+    --------
+        >>> ballot_low_u('abc', APPROVAL)
+        'a'
+        >>> ballot_low_u('abc', PLURALITY)
+        'a'
+        >>> ballot_low_u('abc', ANTI_PLURALITY)
+        'ac'
+    """
+    if voting_rule in {APPROVAL, PLURALITY}:
+        return ballot_one(ranking)
+    elif voting_rule == ANTI_PLURALITY:
+        return ballot_one_three(ranking)
+    else:
+        raise NotImplementedError
+
+
+def ballot_high_u(ranking, voting_rule):
+    """Ballot chosen by the voters who have a high utility for their middle candidate.
+
+    Parameters
+    ----------
+    ranking : str
+        A ranking.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+
+    Returns
+    -------
+    str
+        The ballot chosen by the voters with this ranking and a high utility for their middle candidate, in case
+        the response is utility-dependent.
+
+    Examples
+    --------
+        >>> ballot_high_u('abc', APPROVAL)
+        'ab'
+        >>> ballot_high_u('abc', PLURALITY)
+        'b'
+        >>> ballot_high_u('abc', ANTI_PLURALITY)
+        'ab'
+    """
+    if voting_rule in {APPROVAL, ANTI_PLURALITY}:
+        return ballot_one_two(ranking)
+    elif voting_rule == PLURALITY:
+        return ballot_two(ranking)
+    else:
+        raise NotImplementedError
+
+
 def give_figure(n, singular, plural=None):
     """Combine a number with a unit, whose word can be singular or plural.
 
@@ -573,3 +641,37 @@ def to_callable(o):
         def my_function(*args, **kwargs):
             return o
         return my_function
+
+
+def product_dict(d_key_possible_values):
+    """Iterable: product of dictionaries.
+
+    Source: https://stackoverflow.com/questions/5228158/cartesian-product-of-a-dictionary-of-lists.
+
+    Parameters
+    ----------
+    d_key_possible_values
+        To each key, associate a list of possible values (cf. example below).
+
+    Yields
+    ------
+    dict
+        A dictionary that, to each key, associates one of its possible values. All elements of the Cartesian product
+        are returned this way.
+
+    Examples
+    --------
+        >>> d_key_possible_values = {'foo': [0, 1], 'bar': ['a', 'b', 'c']}
+        >>> for d_key_value in product_dict(d_key_possible_values):
+        ...     print(d_key_value)
+        {'foo': 0, 'bar': 'a'}
+        {'foo': 0, 'bar': 'b'}
+        {'foo': 0, 'bar': 'c'}
+        {'foo': 1, 'bar': 'a'}
+        {'foo': 1, 'bar': 'b'}
+        {'foo': 1, 'bar': 'c'}
+    """
+    keys = d_key_possible_values.keys()
+    vals = d_key_possible_values.values()
+    for instance in itertools.product(*vals):
+        yield dict(zip(keys, instance))

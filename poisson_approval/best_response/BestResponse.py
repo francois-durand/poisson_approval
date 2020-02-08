@@ -2,7 +2,7 @@ import numpy as np
 from math import isclose
 from fractions import Fraction
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import isnan, ballot_one, ballot_one_two
+from poisson_approval.utils.Util import isnan, ballot_high_u, ballot_low_u
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -50,6 +50,8 @@ class BestResponse:
         self.tau_jk = getattr(tau, self.jk)
         self.tau_ki = getattr(tau, self.ki)
         self.tau_kj = getattr(tau, self.kj)
+
+    voting_rule = None
 
     # ===============================
     # Shortcuts for the events of tau
@@ -363,10 +365,17 @@ class BestResponse:
 
     @cached_property
     def ballot(self):
-        """str : This can be a valid ballot (e.g. ``'a'`` or ``'ab'`` if `ranking` is ``'abc'``) or
-        ``'utility-dependent'``.
+        """str : This can be a valid ballot or ``'utility-dependent'``.
         """
-        raise NotImplementedError
+        if isnan(self.threshold_utility):
+            raise AssertionError('Unable to compute threshold utility')  # pragma: no cover
+        elif isclose(self.threshold_utility, 1):
+            return ballot_low_u(self.ranking, self.voting_rule)
+        elif isclose(self.threshold_utility, 0, abs_tol=1E-9):
+            return ballot_high_u(self.ranking, self.voting_rule)
+        else:
+            assert 0 <= self.threshold_utility <= 1
+            return UTILITY_DEPENDENT
 
     def __repr__(self):
         return '<' + ', '.join([

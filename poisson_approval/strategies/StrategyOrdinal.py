@@ -47,7 +47,7 @@ class StrategyOrdinal(StrategyThreshold):
                 d_ranking_threshold[ranking] = None
             elif ballot == ballot_one(ranking) and voting_rule in {APPROVAL, PLURALITY}:
                 d_ranking_threshold[ranking] = 1
-            elif ballot == ballot_two(ranking) and voting_rule == ANTI_PLURALITY:
+            elif ballot == ballot_two(ranking) and voting_rule == PLURALITY:
                 d_ranking_threshold[ranking] = 0
             elif (ballot in {ballot_one_two(ranking), ballot_one_two(ranking)[::-1]}
                   and voting_rule in {APPROVAL, ANTI_PLURALITY}):

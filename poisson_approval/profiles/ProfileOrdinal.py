@@ -8,8 +8,9 @@ from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import ballot_one, barycenter
-from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
+    product_dict, ballot_low_u, ballot_high_u
+from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 from poisson_approval.utils.UtilMasks import masks_area, masks_distribution, winners_distribution
 
 
@@ -26,9 +27,12 @@ class ProfileOrdinal(Profile):
         Whether a warning should be issued if the input distribution is not normalized.
     well_informed_voters : bool.
         If True (default), it is the usual model. If False, voters "see" only the candidates' expected scores and
-        believe that the scores follow independent Poisson distributions.
+        believe that the scores follow independent Poisson distributions. This option has an effect only for Approval
+        (neither for Plurality nor Anti-plurality).
     ratio_fanatic : Number
         The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
 
     Notes
     -----
@@ -67,8 +71,9 @@ class ProfileOrdinal(Profile):
         False
     """
 
-    def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True, ratio_fanatic=0):
-        super().__init__()
+    def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True, ratio_fanatic=0,
+                 voting_rule=APPROVAL):
+        super().__init__(voting_rule=voting_rule)
         # Populate the dictionary
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
         for ranking, share in d_ranking_share.items():
@@ -83,6 +88,9 @@ class ProfileOrdinal(Profile):
         # Other parameters
         self.well_informed_voters = well_informed_voters
         self.ratio_fanatic = ratio_fanatic
+
+    well_informed_voters = property_deleting_cache('_well_informed_voters')
+    ratio_fanatic = property_deleting_cache('_ratio_fanatic')
 
     @cached_property
     def d_ranking_share(self):
@@ -102,6 +110,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             arguments += ', well_informed_voters=False'
         if self.ratio_fanatic > 0:
             arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            arguments += ', voting_rule=%r' % self.voting_rule
         return 'ProfileOrdinal(%s)' % arguments
 
     def __str__(self):
@@ -119,6 +129,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             result += ' (badly informed voters)'
         if self.ratio_fanatic > 0:
             result += ' (ratio_fanatic: %s)' % self.ratio_fanatic
+        if self.voting_rule != APPROVAL:
+            result += ' (%s)' % self.voting_rule
         return result
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
@@ -147,7 +159,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         return (isinstance(other, ProfileOrdinal)
                 and self.d_ranking_share == other.d_ranking_share
                 and self.well_informed_voters == other.well_informed_voters
-                and self.ratio_fanatic==other.ratio_fanatic)
+                and self.ratio_fanatic == other.ratio_fanatic
+                and self.voting_rule == other.voting_rule)
 
     @cached_property
     def standardized_version(self):
@@ -174,7 +187,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                 best_signature = signature_test
                 best_d = d_test
         return ProfileOrdinal({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
-                              well_informed_voters=self.well_informed_voters, ratio_fanatic=self.ratio_fanatic)
+                              well_informed_voters=self.well_informed_voters, ratio_fanatic=self.ratio_fanatic,
+                              voting_rule=self.voting_rule)
 
     # Has full support
     @cached_property
@@ -238,7 +252,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                                 b=tau_fanatic.d_ballot_share[ballot],
                                 ratio_b=self.ratio_fanatic)
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        return TauVector(t)
+        return TauVector(t, voting_rule=self.voting_rule)
 
     @cached_property
     def tau_fanatic(self):
@@ -247,12 +261,19 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         Returns
         -------
         TauVector
-            All voters approve of their top candidate only.
+            In Approval or Plurality, all voters approve of their top candidate only. In Anti-Plurality, they all
+            disapprove of their bottom candidate, i.e. they approve their two first candidates.
         """
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        for ranking, share in self.d_ranking_share.items():
-            t[ballot_one(ranking)] += share
-        return TauVector(t)
+        if self.voting_rule in {APPROVAL, PLURALITY}:
+            for ranking, share in self.d_ranking_share.items():
+                t[ballot_one(ranking)] += share
+        elif self.voting_rule == ANTI_PLURALITY:
+            for ranking, share in self.d_ranking_share.items():
+                t[ballot_one_two(ranking)] += share
+        else:
+            raise NotImplementedError
+        return TauVector(t, voting_rule=self.voting_rule)
 
     def tau_strategic(self, strategy):
         """Tau-vector associated to a strategy.
@@ -276,8 +297,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> print(tau_strategic)
             <a: 1/10, ab: 3/5, c: 3/10> ==> a
 
-        In the case of badly informed voters, we do as if the tau-vector were the vector of scores (up to
-        a renormalization):
+        In the case of approval with badly informed voters, we do as if the tau-vector were the vector of scores (up
+        to a renormalization):
 
             >>> from fractions import Fraction
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
@@ -287,16 +308,17 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> print(tau_strategic)
             <a: 7/16, b: 3/8, c: 3/16> ==> a
         """
+        assert self.voting_rule == strategy.voting_rule
         t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] > 0:
                 t[ballot] += self.d_ranking_share[ranking]
-        if self.well_informed_voters:
-            return TauVector(t)
-        else:
+        if self.voting_rule == APPROVAL and not self.well_informed_voters:
             return TauVector(
                 {'a': t['a'] + t['ab'] + t['ac'], 'b': t['b'] + t['ab'] + t['bc'], 'c': t['c'] + t['ac'] + t['bc']},
-                normalization_warning=False)
+                normalization_warning=False, voting_rule=self.voting_rule)
+        else:
+            return TauVector(t, voting_rule=self.voting_rule)
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
@@ -362,31 +384,23 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         utility_dependent = []
         inconclusive = []
         non_equilibria = []
-        strat_abc = ['a', 'ab'] if self.abc > 0 else ['']
-        strat_acb = ['a', 'ac'] if self.acb > 0 else ['']
-        strat_bac = ['b', 'ab'] if self.bac > 0 else ['']
-        strat_bca = ['b', 'bc'] if self.bca > 0 else ['']
-        strat_cab = ['c', 'ac'] if self.cab > 0 else ['']
-        strat_cba = ['c', 'bc'] if self.cba > 0 else ['']
-        for s_abc in strat_abc:
-            for s_acb in strat_acb:
-                for s_bac in strat_bac:
-                    for s_bca in strat_bca:
-                        for s_cab in strat_cab:
-                            for s_cba in strat_cba:
-                                strategy = StrategyOrdinal({'abc': s_abc, 'acb': s_acb, 'bac': s_bac,
-                                                         'bca': s_bca, 'cab': s_cab, 'cba': s_cba}, profile=self)
-                                status = strategy.is_equilibrium
-                                if status == EquilibriumStatus.EQUILIBRIUM:
-                                    equilibria.append(strategy)
-                                elif status == EquilibriumStatus.UTILITY_DEPENDENT:
-                                    utility_dependent.append(strategy)
-                                elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
-                                    inconclusive.append(strategy)
-                                    warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
-                                                  % (self, strategy))
-                                else:
-                                    non_equilibria.append(strategy)
+        d_ranking_possible_ballots = {ranking: [ballot_low_u(ranking, self.voting_rule),
+                                                ballot_high_u(ranking, self.voting_rule)]
+                                      if self.d_ranking_share[ranking] > 0 else ['']
+                                      for ranking in RANKINGS}
+        for d_ranking_ballot in product_dict(d_ranking_possible_ballots):
+            strategy = StrategyOrdinal(d_ranking_ballot, profile=self, voting_rule=self.voting_rule)
+            status = strategy.is_equilibrium
+            if status == EquilibriumStatus.EQUILIBRIUM:
+                equilibria.append(strategy)
+            elif status == EquilibriumStatus.UTILITY_DEPENDENT:
+                utility_dependent.append(strategy)
+            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
+                inconclusive.append(strategy)
+                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
+                              % (self, strategy))
+            else:
+                non_equilibria.append(strategy)
         return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
     def proba_equilibrium(self, test=None):
