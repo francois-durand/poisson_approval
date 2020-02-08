@@ -47,6 +47,12 @@ def test_best_response_anti_plurality():
         trio_1t_i = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
         trio_1t_j = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
         trio_1t_k = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
+        trio_2t_ij = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
+        trio_2t_ji = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
+        trio_2t_ik = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
+        trio_2t_ki = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
+        trio_2t_jk = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
+        trio_2t_kj = <asymptotic = exp(- 0.167966 n + ? log n + ? + o(1)), phi_ab = 0.462241, phi_ac = 1.04004, phi_bc = 2.08008>
         pivot_ij_easy_or_tight = True
         pivot_ji_easy_or_tight = True
         pivot_ik_easy_or_tight = False

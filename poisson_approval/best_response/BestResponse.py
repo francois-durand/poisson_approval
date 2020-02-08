@@ -436,6 +436,12 @@ class BestResponse:
         s += 'trio_1t_i = %s\n' % self.trio_1t_i
         s += 'trio_1t_j = %s\n' % self.trio_1t_j
         s += 'trio_1t_k = %s\n' % self.trio_1t_k
+        s += 'trio_2t_ij = %s\n' % self.trio_2t_ij
+        s += 'trio_2t_ji = %s\n' % self.trio_2t_ji
+        s += 'trio_2t_ik = %s\n' % self.trio_2t_ik
+        s += 'trio_2t_ki = %s\n' % self.trio_2t_ki
+        s += 'trio_2t_jk = %s\n' % self.trio_2t_jk
+        s += 'trio_2t_kj = %s\n' % self.trio_2t_kj
         s += 'pivot_ij_easy_or_tight = %s\n' % self.pivot_ij_easy_or_tight
         s += 'pivot_ji_easy_or_tight = %s\n' % self.pivot_ji_easy_or_tight
         s += 'pivot_ik_easy_or_tight = %s\n' % self.pivot_ik_easy_or_tight

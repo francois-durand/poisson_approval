@@ -46,6 +46,12 @@ def test_best_response_approval():
         trio_1t_i = <asymptotic = exp(- 0.333333 n - log n - 1.81747 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
         trio_1t_j = <asymptotic = exp(- 0.333333 n - log n - 1.412 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
         trio_1t_k = <asymptotic = exp(- 0.333333 n - log n + 1.07291 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_2t_ij = <asymptotic = exp(- 0.333333 n - log n - 2.51061 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_2t_ji = <asymptotic = exp(- 0.333333 n - log n - 2.51061 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_2t_ik = <asymptotic = exp(- 0.333333 n - log n - 0.0257066 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_2t_ki = <asymptotic = exp(- 0.333333 n - log n - 0.0257066 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_2t_jk = <asymptotic = exp(- 0.333333 n - log n + 0.379759 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_2t_kj = <asymptotic = exp(- 0.333333 n - log n + 0.379759 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
         pivot_ij_easy_or_tight = True
         pivot_ji_easy_or_tight = True
         pivot_ik_easy_or_tight = False
