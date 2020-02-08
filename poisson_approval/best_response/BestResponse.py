@@ -383,3 +383,66 @@ class BestResponse:
             'threshold_utility = {:.6g}'.format(self.threshold_utility),
             'justification = %s' % self.justification,
         ]) + '>'
+
+    @cached_property
+    def _str_very_verbose(self):
+        """Very verbose report.
+
+        This is mostly used for testing purposes.
+
+        Returns
+        -------
+        str
+            A very verbose report.
+        """
+        s = ''
+        s += 'tau = %s\n' % self.tau
+        s += 'ranking = %s\n' % self.ranking
+        s += 'voting_rule  = %s\n' % self.voting_rule
+        s += 'duo_ij = %s\n' % self.duo_ij
+        s += 'duo_ij = %s\n' % self.duo_ij
+        s += 'duo_ji = %s\n' % self.duo_ji
+        s += 'duo_ik = %s\n' % self.duo_ik
+        s += 'duo_ki = %s\n' % self.duo_ki
+        s += 'duo_jk = %s\n' % self.duo_jk
+        s += 'duo_kj = %s\n' % self.duo_kj
+        s += 'pivot_weak_ij = %s\n' % self.pivot_weak_ij
+        s += 'pivot_weak_ji = %s\n' % self.pivot_weak_ji
+        s += 'pivot_weak_ik = %s\n' % self.pivot_weak_ik
+        s += 'pivot_weak_ki = %s\n' % self.pivot_weak_ki
+        s += 'pivot_weak_jk = %s\n' % self.pivot_weak_jk
+        s += 'pivot_weak_kj = %s\n' % self.pivot_weak_kj
+        s += 'pivot_strict_ij = %s\n' % self.pivot_strict_ij
+        s += 'pivot_strict_ji = %s\n' % self.pivot_strict_ji
+        s += 'pivot_strict_ik = %s\n' % self.pivot_strict_ik
+        s += 'pivot_strict_ki = %s\n' % self.pivot_strict_ki
+        s += 'pivot_strict_jk = %s\n' % self.pivot_strict_jk
+        s += 'pivot_strict_kj = %s\n' % self.pivot_strict_kj
+        s += 'pivot_tij_ijk = %s\n' % self.pivot_tij_ijk
+        s += 'pivot_tij_ikj = %s\n' % self.pivot_tij_ikj
+        s += 'pivot_tij_jik = %s\n' % self.pivot_tij_jik
+        s += 'pivot_tij_jki = %s\n' % self.pivot_tij_jki
+        s += 'pivot_tij_kij = %s\n' % self.pivot_tij_kij
+        s += 'pivot_tij_kji = %s\n' % self.pivot_tij_kji
+        s += 'pivot_tjk_ijk = %s\n' % self.pivot_tjk_ijk
+        s += 'pivot_tjk_ikj = %s\n' % self.pivot_tjk_ikj
+        s += 'pivot_tjk_jik = %s\n' % self.pivot_tjk_jik
+        s += 'pivot_tjk_jki = %s\n' % self.pivot_tjk_jki
+        s += 'pivot_tjk_kij = %s\n' % self.pivot_tjk_kij
+        s += 'pivot_tjk_kji = %s\n' % self.pivot_tjk_kji
+        s += 'pivot_tij = %s\n' % self.pivot_tij
+        s += 'pivot_tjk = %s\n' % self.pivot_tjk
+        s += 'trio = %s\n' % self.trio
+        s += 'trio_1t_i = %s\n' % self.trio_1t_i
+        s += 'trio_1t_j = %s\n' % self.trio_1t_j
+        s += 'trio_1t_k = %s\n' % self.trio_1t_k
+        s += 'pivot_ij_easy_or_tight = %s\n' % self.pivot_ij_easy_or_tight
+        s += 'pivot_ji_easy_or_tight = %s\n' % self.pivot_ji_easy_or_tight
+        s += 'pivot_ik_easy_or_tight = %s\n' % self.pivot_ik_easy_or_tight
+        s += 'pivot_ki_easy_or_tight = %s\n' % self.pivot_ki_easy_or_tight
+        s += 'pivot_jk_easy_or_tight = %s\n' % self.pivot_jk_easy_or_tight
+        s += 'pivot_kj_easy_or_tight = %s\n' % self.pivot_kj_easy_or_tight
+        s += 'threshold_utility = %s\n' % self.threshold_utility
+        s += 'justification = %s\n' % self.justification
+        s += 'ballot = %s' % self.ballot
+        return s

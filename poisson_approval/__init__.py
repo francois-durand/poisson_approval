@@ -37,7 +37,9 @@ from poisson_approval.events.EventTrio2t import EventTrio2t
 
 # Best response
 from poisson_approval.best_response.BestResponse import BestResponse
+from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
 from poisson_approval.best_response.BestResponseApproval import BestResponseApproval
+from poisson_approval.best_response.BestResponsePlurality import BestResponsePlurality
 
 # Tau-vector
 from poisson_approval.tau_vector.TauVector import TauVector

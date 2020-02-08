@@ -1,24 +1,60 @@
 from poisson_approval import TauVector, BestResponseApproval, isnan, RANKINGS
 
 
-def test_best_response():
+def test_best_response_approval():
     """
         >>> tau = TauVector({'a': 9/15, 'b': 4/15, 'ac': 1/15, 'bc': 1/15})
         >>> best_response = BestResponseApproval(tau, 'abc')
-        >>> best_response.ballot
-        'a'
-        >>> best_response.threshold_utility
-        1
-    """
-    pass
-
-
-def test_duo_ik():
-    """
-    >>> tau = TauVector({'a': 9 / 15, 'b': 4 / 15, 'ac': 1 / 15, 'bc': 1 / 15})
-    >>> best_response = BestResponseApproval(tau, 'abc')
-    >>> best_response.duo_ik
-    <asymptotic = exp(- 0.266667 n - 0.5 log n - 0.460793 + o(1)), phi_a = 0.333333, phi_b = 1, phi_ac = 1, phi_bc = 3>
+        >>> print(best_response._str_very_verbose)
+        tau = <a: 0.6, ac: 0.06666666666666667, b: 0.26666666666666666, bc: 0.06666666666666667> ==> a
+        ranking = abc
+        voting_rule  = Approval
+        duo_ij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        duo_ij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        duo_ji = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        duo_ik = <asymptotic = exp(- 0.266667 n - 0.5 log n - 0.460793 + o(1)), phi_a = 0.333333, phi_b = 1, phi_ac = 1, phi_bc = 3>
+        duo_ki = <asymptotic = exp(- 0.266667 n - 0.5 log n - 0.460793 + o(1)), phi_a = 0.333333, phi_b = 1, phi_ac = 1, phi_bc = 3>
+        duo_jk = <asymptotic = exp(- 0.0666667 n - 0.5 log n - 0.258061 + o(1)), phi_a = 1, phi_b = 0.5, phi_ac = 2, phi_bc = 1>
+        duo_kj = <asymptotic = exp(- 0.0666667 n - 0.5 log n - 0.258061 + o(1)), phi_a = 1, phi_b = 0.5, phi_ac = 2, phi_bc = 1>
+        pivot_weak_ij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_weak_ji = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_weak_ik = <asymptotic = exp(- 0.333333 n - log n - 0.0257066 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_weak_ki = <asymptotic = exp(- 0.333333 n - log n - 0.0257066 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_weak_jk = <asymptotic = exp(- 0.333333 n - log n - 0.313389 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_weak_kj = <asymptotic = exp(- 0.333333 n - log n - 0.313389 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_strict_ij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_strict_ji = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_strict_ik = <asymptotic = exp(- 0.333333 n - log n - 0.718854 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_strict_ki = <asymptotic = exp(- 0.333333 n - log n - 0.718854 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_strict_jk = <asymptotic = exp(- 0.333333 n - log n - 1.412 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_strict_kj = <asymptotic = exp(- 0.333333 n - log n - 1.412 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tij_ijk = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.354693 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_tij_ikj = <asymptotic = exp(- 0.333333 n - log n + 0.128444 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tij_jik = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.00811919 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_tij_jki = <asymptotic = exp(- 0.333333 n - log n - 0.159238 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tij_kij = <asymptotic = exp(- 0.333333 n - log n + 1.36059 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tij_kji = <asymptotic = exp(- 0.333333 n - log n + 0.785224 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tjk_ijk = <asymptotic = exp(- 0.333333 n - log n - 2.10515 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tjk_ikj = <asymptotic = exp(- 0.333333 n - log n - 0.564703 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tjk_jik = <asymptotic = exp(- 0.333333 n - log n - 1.12432 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tjk_jki = <asymptotic = exp(- 0.333333 n - log n + 0.533909 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_tjk_kij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.354693 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_tjk_kji = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.00811919 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_tij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.354693 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>
+        pivot_tjk = <asymptotic = exp(- 0.333333 n - log n - 2.10515 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio = <asymptotic = exp(- 0.333333 n - log n - 0.718854 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_1t_i = <asymptotic = exp(- 0.333333 n - log n - 1.81747 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_1t_j = <asymptotic = exp(- 0.333333 n - log n - 1.412 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        trio_1t_k = <asymptotic = exp(- 0.333333 n - log n + 1.07291 + o(1)), phi_a = 0.333333, phi_b = 0.5, phi_ac = 2, phi_bc = 3>
+        pivot_ij_easy_or_tight = True
+        pivot_ji_easy_or_tight = True
+        pivot_ik_easy_or_tight = False
+        pivot_ki_easy_or_tight = False
+        pivot_jk_easy_or_tight = False
+        pivot_kj_easy_or_tight = False
+        threshold_utility = 1
+        justification = Easy vs difficult pivot
+        ballot = a
     """
     pass
 
