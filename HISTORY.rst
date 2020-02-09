@@ -2,6 +2,16 @@
 History
 =======
 
+-----------------------------------------------------------------
+0.12.0 (2020-02-09): GeneratorProfileHistogramSinglePeakedUniform
+-----------------------------------------------------------------
+
+* Add ``GeneratorProfileHistogramSinglePeakedUniform``: a generator of single-peaked histogram-profiles following
+  the uniform distribution.
+* Add examples of functions to be used as update ratios for ``ProfileCardinal.fictitious_play``:
+  ``one_over_t_plus_one``, ``one_over_sqrt_t_plus_one``, ``one_over_log_t_plus_two``,
+  ``one_over_log_log_t_plus_fifteen``.
+
 -----------------------------------------------------------------------------
 0.11.0 (2020-02-09): Winning frequencies in iterated voting / fictitious play
 -----------------------------------------------------------------------------
