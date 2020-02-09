@@ -1,7 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyThreshold, EquilibriumStatus, PLURALITY, \
-    ANTI_PLURALITY
+    ANTI_PLURALITY, UTILITY_DEPENDENT
 
 
 def test_iterative_voting_verbose():
@@ -80,10 +80,17 @@ def test_fictitious_play_without_convergence(my_profile, my_strategy):
 def test_plurality():
     """
         >>> profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=PLURALITY)
+        >>> profile
+        ProfileTwelve({'a_bc': 0.5, 'ab_c': 0.5}, voting_rule='Plurality')
+        >>> print(profile)
+        <a_bc: 0.5, ab_c: 0.5> (Condorcet winner: a) (Plurality)
         >>> profile.tau_sincere
         TauVector({'a': 1.0}, voting_rule='Plurality')
         >>> profile.tau_fanatic
         TauVector({'a': 1.0}, voting_rule='Plurality')
+        >>> strategy = StrategyTwelve({'abc': 'a'}, profile=profile)
+        >>> strategy.is_equilibrium
+        EquilibriumStatus.EQUILIBRIUM
     """
     pass
 
@@ -91,9 +98,16 @@ def test_plurality():
 def test_anti_plurality():
     """
         >>> profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
+        >>> profile
+        ProfileTwelve({'a_bc': 0.5, 'ab_c': 0.5}, voting_rule='Anti-plurality')
+        >>> print(profile)
+        <a_bc: 0.5, ab_c: 0.5> (Condorcet winner: a) (Anti-plurality)
         >>> profile.tau_sincere
         TauVector({'ab': 1.0}, voting_rule='Anti-plurality')
         >>> profile.tau_fanatic
         TauVector({'ab': 1.0}, voting_rule='Anti-plurality')
+        >>> strategy = StrategyTwelve({'abc': 'ab'}, profile=profile)
+        >>> strategy.is_equilibrium
+        EquilibriumStatus.NOT_EQUILIBRIUM
     """
     pass

@@ -20,7 +20,8 @@ class StrategyTwelve(Strategy):
     profile : Profile, optional
         The "context" in which the strategy is used.
     voting_rule : str
-        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same
+        voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.
 
     Examples
     --------
@@ -37,7 +38,7 @@ class StrategyTwelve(Strategy):
         'ab'
     """
 
-    def __init__(self, d_ranking_ballot, profile=None, voting_rule=APPROVAL):
+    def __init__(self, d_ranking_ballot, profile=None, voting_rule=None):
         """
             >>> strategy = StrategyTwelve({'non_existing_ranking': 'utility-dependent'})
             Traceback (most recent call last):
@@ -46,6 +47,7 @@ class StrategyTwelve(Strategy):
             Traceback (most recent call last):
             ValueError: Unknown strategy: non_existing_ballot
         """
+        voting_rule = self._get_voting_rule_(profile, voting_rule)
         # Populate the dictionary and check for typos in the input
         self.d_ranking_ballot = DictPrintingInOrderIgnoringZeros({ranking: '' for ranking in RANKINGS})
         for ranking, ballot in d_ranking_ballot.items():

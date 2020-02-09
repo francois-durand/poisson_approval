@@ -19,7 +19,8 @@ class StrategyThreshold(StrategyTwelve):
     profile : Profile, optional
         The "context" in which the strategy is used.
     voting_rule : str
-        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same
+        voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.
 
     Examples
     --------
@@ -38,7 +39,8 @@ class StrategyThreshold(StrategyTwelve):
         0.4
     """
 
-    def __init__(self, d_ranking_threshold, profile=None, voting_rule=APPROVAL):
+    def __init__(self, d_ranking_threshold, profile=None, voting_rule=None):
+        voting_rule = self._get_voting_rule_(profile, voting_rule)
         # Populate the dictionary of thresholds
         self.d_ranking_threshold = DictPrintingInOrderIgnoringNone({ranking: None for ranking in RANKINGS})
         self.d_ranking_threshold.update(d_ranking_threshold)

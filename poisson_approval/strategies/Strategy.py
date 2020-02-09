@@ -11,15 +11,25 @@ class Strategy(DeleteCacheMixin):
     profile : Profile, optional
         The "context" in which the strategy is used.
     voting_rule : str
-        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same
+        voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.
     """
 
-    def __init__(self, profile=None, voting_rule=APPROVAL):
+    def __init__(self, profile=None, voting_rule=None):
         self.profile = profile  # Store the profile (if any)
-        self.voting_rule = voting_rule
+        self.voting_rule = self._get_voting_rule_(profile, voting_rule)
 
     profile = property_deleting_cache('_profile')
     voting_rule = property_deleting_cache('_voting_rule')
+
+    @staticmethod
+    def _get_voting_rule_(profile, voting_rule):
+        if voting_rule is None:
+            if profile is not None:
+                return profile.voting_rule
+            else:
+                return APPROVAL
+        return voting_rule
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
