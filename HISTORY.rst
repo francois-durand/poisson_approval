@@ -2,6 +2,24 @@
 History
 =======
 
+------------------------------------------------
+0.9.0 (2020-02-09): Plurality and Anti-plurality
+------------------------------------------------
+
+* Implement Plurality and Anti-plurality (cf. the corresponding tutorial).
+* Python 3.5 is not officially supported anymore. However, in practice, the package should still essentially work with
+  Python 3.5, the only notable difference being the order in which the dictionaries are printed.
+* New utilities:
+
+  * Add ``ballot_two``: ballot for the second candidate of a ranking (used for Plurality).
+  * Add ``ballot_one_three``: ballot against the second candidate of a ranking (used for Anti-plurality).
+  * Add ``ballot_low_u`` and ``ballot_high_u``: the ballot chosen by the voters who have a low (resp. high) utility
+    for their middle candidate, depending on the voting rule.
+  * Add ``product_dict``: Cartesian product for a dictionary of iterables.
+  * Add ``DictPrintingInOrderIgnoringNone``: dictionary that prints in the order of the keys, ignoring value None.
+  * In the ``UtilCache`` module, add ``property_deleting_cache``: define a property that deletes the cache when set or
+    deleted. This is used for parameters like ``ratio_sincere``, ``voting_rule``, etc.
+
 -----------------------------------------------------------------
 0.8.1 (2020-02-04): Better Handling of Edge Cases in BestResponse
 -----------------------------------------------------------------
