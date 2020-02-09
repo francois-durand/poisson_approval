@@ -2,6 +2,7 @@ from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
@@ -39,7 +40,7 @@ class StrategyThreshold(StrategyTwelve):
 
     def __init__(self, d_ranking_threshold, profile=None, voting_rule=APPROVAL):
         # Populate the dictionary of thresholds
-        self.d_ranking_threshold = DictPrintingInOrderIgnoringZeros({ranking: None for ranking in RANKINGS})
+        self.d_ranking_threshold = DictPrintingInOrderIgnoringNone({ranking: None for ranking in RANKINGS})
         self.d_ranking_threshold.update(d_ranking_threshold)
         # Prepare the dictionary of ballots
         d_ranking_ballot = DictPrintingInOrderIgnoringZeros()
