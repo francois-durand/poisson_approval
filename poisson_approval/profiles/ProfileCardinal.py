@@ -273,6 +273,9 @@ class ProfileCardinal(Profile):
               from ``strategies[t]``, parametrized by `ballot_update_ratio`.
             * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
               convention, this value is `n_max_episodes`.
+            * Key ``d_candidate_winning_frequency``: dict. Key: candidate. Value: winning frequency. If the process
+              reached a limit or a periodical orbit, the winning frequencies are computed in the limit only. If the
+              process did not converge, the frequency is computed on the whole history.
 
             `cycle_taus_perceived`, `cycle_strategies` and `cycle_taus_actual` have the same length. If it is 1, the
             process converges to this limit. If it is greater than 1, the process reaches a periodical orbit. If it
@@ -340,14 +343,17 @@ class ProfileCardinal(Profile):
             cycle_taus_actual = taus_actual[begin + 1:end + 1]
             cycle_taus_perceived = taus_perceived[begin + 1:end + 1]
             cycle_strategies = strategies[begin + 1:end + 1]
+            d_candidate_winning_frequency = _d_candidate_winning_frequency(cycle_taus_actual)
         except StopIteration:
             cycle_taus_actual = []
             cycle_taus_perceived = []
             cycle_strategies = []
+            d_candidate_winning_frequency = _d_candidate_winning_frequency(taus_actual)
         return {'cycle_taus_perceived': cycle_taus_perceived,
                 'cycle_strategies': cycle_strategies,
                 'cycle_taus_actual': cycle_taus_actual,
-                'n_episodes': n_episodes}
+                'n_episodes': n_episodes,
+                'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
     def fictitious_play(self, strategy_ini, n_max_episodes,
                         perception_update_ratio=None, ballot_update_ratio=1, verbose=False):
@@ -383,6 +389,9 @@ class ProfileCardinal(Profile):
               process did not converge.
             * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
               convention, this value is `n_max_episodes`.
+            * Key ``d_candidate_winning_frequency``: dict. Key: candidate. Value: winning frequency. If the process
+              reached a limit, the winning frequencies are computed in the limit only. If the process did not converge,
+              the frequency is computed on the whole history.
 
         Notes
         -----
@@ -403,6 +412,8 @@ class ProfileCardinal(Profile):
 
         strategy = strategy_ini.deepcopy_with_attached_profile(self)
         tau_actual = strategy.tau
+        d_candidate_winning_count = {'a': 0, 'b': 0, 'c': 0}
+        _update_winning_count(d_candidate_winning_count, tau_actual)
         tau_perceived = tau_actual
         if verbose:
             print('t = %s' % 0)
@@ -425,6 +436,7 @@ class ProfileCardinal(Profile):
                                              ratio_b=ballot_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, normalization_warning=False, voting_rule=self.voting_rule)
+            _update_winning_count(d_candidate_winning_count, tau_actual)
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -433,8 +445,14 @@ class ProfileCardinal(Profile):
                 print('tau_actual: %s' % tau_actual)
             if tau_full_response.isclose(tau_perceived, abs_tol=1E-9) and tau_actual.isclose(
                     tau_full_response, abs_tol=1E-9):
-                return {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t}
-        return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes}
+                return {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
+                        'd_candidate_winning_frequency': _d_candidate_winning_frequency([tau_actual])}
+        n_taus = n_max_episodes + 1
+        d_candidate_winning_frequency = DictPrintingInOrderIgnoringZeros({
+            candidate: winning_count / n_taus
+            for candidate, winning_count in d_candidate_winning_count.items()})
+        return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
+                'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
 
 def _my_round(x):
@@ -464,3 +482,60 @@ def _my_round(x):
     if isclose(x, 0, abs_tol=1E-9):
         return 0
     return x
+
+
+def _update_winning_count(d_candidate_winning_count, tau):
+    """Update the winning counts of the candidates
+
+    Parameters
+    ----------
+    d_candidate_winning_count : dict
+        Key: candidate. Value: number of victories.
+    tau : TauVector
+        A tau-vector.
+
+    Notes
+    -----
+    Update `d_candidate_winning_count` in place.
+
+    Examples
+    --------
+        >>> d_candidate_winning_count = {'a': 0, 'b': 0, 'c': 0}
+        >>> tau = TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)})
+        >>> _update_winning_count(d_candidate_winning_count, tau)
+        >>> d_candidate_winning_count
+        {'a': Fraction(1, 2), 'b': Fraction(1, 2), 'c': 0}
+    """
+    n_winners = len(tau.winners)
+    for winner in tau.winners:
+        d_candidate_winning_count[winner] += Fraction(1, n_winners)
+
+
+def _d_candidate_winning_frequency(taus):
+    """Winning frequencies of the candidates.
+
+    Parameters
+    ----------
+    taus : list of :class:`TauVector`
+
+    Returns
+    -------
+    DictPrintingInOrderIgnoringZeros
+        Key: candidate. Value: its winning frequency. We count 1 victory each time the candidate is the only winner,
+        and `1 / k` victory when there is a tie between `k` candidates. The number of victories is then divided
+        by the number of tau-vector to get the winning frequency.
+
+    Examples
+    --------
+        >>> tau_1 = TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)})
+        >>> tau_2 = TauVector({'a': 0, 'b': 0, 'c': 1})
+        >>> _d_candidate_winning_frequency([tau_1, tau_2])
+        {'a': Fraction(1, 4), 'b': Fraction(1, 4), 'c': Fraction(1, 2)}
+    """
+    d_candidate_winning_count = {'a': 0, 'b': 0, 'c': 0}
+    for tau in taus:
+        _update_winning_count(d_candidate_winning_count, tau)
+    n_taus = len(taus)
+    return DictPrintingInOrderIgnoringZeros({
+        candidate: winning_count / n_taus
+        for candidate, winning_count in d_candidate_winning_count.items()})
