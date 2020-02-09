@@ -508,5 +508,11 @@ def _d_candidate_winning_frequency(taus):
     counts = np.zeros(3, dtype=int)
     for tau in taus:
         counts = counts + candidates_to_probabilities(tau.winners)
-    frequencies = counts / len(taus)
+    n_taus = len(taus)
+    frequencies = np.array([_my_division(count, n_taus) for count in counts])
     return array_to_d_candidate_value(frequencies)
+
+
+def _my_division(x, y):
+    result = Fraction(x, y)
+    return result.numerator if result.denominator == 1 else result
