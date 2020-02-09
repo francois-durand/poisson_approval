@@ -1,8 +1,10 @@
+import numpy as np
 from math import isclose
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
-    to_callable, ballot_low_u, ballot_high_u
+    to_callable, ballot_low_u, ballot_high_u, candidates_to_probabilities, candidates_to_d_candidate_probability, \
+    array_to_d_candidate_value
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -412,8 +414,7 @@ class ProfileCardinal(Profile):
 
         strategy = strategy_ini.deepcopy_with_attached_profile(self)
         tau_actual = strategy.tau
-        d_candidate_winning_count = {'a': 0, 'b': 0, 'c': 0}
-        _update_winning_count(d_candidate_winning_count, tau_actual)
+        array_candidate_winning_count = candidates_to_probabilities(tau_actual.winners)
         tau_perceived = tau_actual
         if verbose:
             print('t = %s' % 0)
@@ -436,7 +437,7 @@ class ProfileCardinal(Profile):
                                              ratio_b=ballot_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, normalization_warning=False, voting_rule=self.voting_rule)
-            _update_winning_count(d_candidate_winning_count, tau_actual)
+            array_candidate_winning_count += candidates_to_probabilities(tau_actual.winners)
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -446,11 +447,10 @@ class ProfileCardinal(Profile):
             if tau_full_response.isclose(tau_perceived, abs_tol=1E-9) and tau_actual.isclose(
                     tau_full_response, abs_tol=1E-9):
                 return {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
-                        'd_candidate_winning_frequency': _d_candidate_winning_frequency([tau_actual])}
+                        'd_candidate_winning_frequency': candidates_to_d_candidate_probability(tau_actual.winners)}
         n_taus = n_max_episodes + 1
-        d_candidate_winning_frequency = DictPrintingInOrderIgnoringZeros({
-            candidate: winning_count / n_taus
-            for candidate, winning_count in d_candidate_winning_count.items()})
+        array_candidate_winning_frequency = array_candidate_winning_count / n_taus
+        d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
         return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
                 'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
@@ -484,33 +484,6 @@ def _my_round(x):
     return x
 
 
-def _update_winning_count(d_candidate_winning_count, tau):
-    """Update the winning counts of the candidates
-
-    Parameters
-    ----------
-    d_candidate_winning_count : dict
-        Key: candidate. Value: number of victories.
-    tau : TauVector
-        A tau-vector.
-
-    Notes
-    -----
-    Update `d_candidate_winning_count` in place.
-
-    Examples
-    --------
-        >>> d_candidate_winning_count = {'a': 0, 'b': 0, 'c': 0}
-        >>> tau = TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)})
-        >>> _update_winning_count(d_candidate_winning_count, tau)
-        >>> d_candidate_winning_count
-        {'a': Fraction(1, 2), 'b': Fraction(1, 2), 'c': 0}
-    """
-    n_winners = len(tau.winners)
-    for winner in tau.winners:
-        d_candidate_winning_count[winner] += Fraction(1, n_winners)
-
-
 def _d_candidate_winning_frequency(taus):
     """Winning frequencies of the candidates.
 
@@ -532,10 +505,8 @@ def _d_candidate_winning_frequency(taus):
         >>> _d_candidate_winning_frequency([tau_1, tau_2])
         {'a': Fraction(1, 4), 'b': Fraction(1, 4), 'c': Fraction(1, 2)}
     """
-    d_candidate_winning_count = {'a': 0, 'b': 0, 'c': 0}
+    counts = np.zeros(3, dtype=int)
     for tau in taus:
-        _update_winning_count(d_candidate_winning_count, tau)
-    n_taus = len(taus)
-    return DictPrintingInOrderIgnoringZeros({
-        candidate: winning_count / n_taus
-        for candidate, winning_count in d_candidate_winning_count.items()})
+        counts = counts + candidates_to_probabilities(tau.winners)
+    frequencies = counts / len(taus)
+    return array_to_d_candidate_value(frequencies)

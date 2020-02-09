@@ -4,6 +4,7 @@ import itertools
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
+from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 
 
 def initialize_random_seeds(n=0):
@@ -675,3 +676,96 @@ def product_dict(d_key_possible_values):
     vals = d_key_possible_values.values()
     for instance in itertools.product(*vals):
         yield dict(zip(keys, instance))
+
+
+def candidates_to_d_candidate_probability(candidates):
+    """Convert a set of candidates to a dictionary of probabilities (random tie-break).
+
+    Parameters
+    ----------
+    candidates : set
+        A subset of ``{'a', 'b', 'c'}``. Typically: a set of winners.
+
+    Returns
+    -------
+    DictPrintingInOrderIgnoringZeros
+        Key: ``'a'``, ``'b'`` or ``'c'``. Value: the probability of this candidate winning with a uniformly random
+        tie-break.
+
+    Examples
+    --------
+        >>> winners = {'a', 'b'}
+        >>> candidates_to_d_candidate_probability(winners)
+        {'a': Fraction(1, 2), 'b': Fraction(1, 2)}
+    """
+    n_candidates = len(candidates)
+    return DictPrintingInOrderIgnoringZeros({
+        candidate: Fraction(1, n_candidates) if candidate in candidates else 0 for candidate in CANDIDATES})
+
+
+def candidates_to_probabilities(candidates):
+    """Convert a set of candidates to an array of probabilities (random tie-break).
+
+    Parameters
+    ----------
+    candidates : set
+        A subset of ``{'a', 'b', 'c'}``. Typically: a set of winners.
+
+    Returns
+    -------
+    ndarray
+        Array of size 3. For example, the first coefficient is the probability that candidate `a` win by a random
+        tie-break.
+
+    Examples
+    --------
+        >>> winners = {'a', 'b'}
+        >>> candidates_to_probabilities(winners)
+        array([Fraction(1, 2), Fraction(1, 2), 0], dtype=object)
+    """
+    n_candidates = len(candidates)
+    return np.array([Fraction(1, n_candidates) if candidate in candidates else 0 for candidate in CANDIDATES])
+
+
+def array_to_d_candidate_value(values):
+    """Convert an array to a dictionary of candidates and values
+
+    Parameters
+    ----------
+    values : ndarray
+        An array of size 3.
+
+    Returns
+    -------
+    DictPrintingInOrderIgnoringZeros
+        The corresponding dictionary.
+
+    Examples
+    --------
+        >>> values = [42, 51, 69]
+        >>> array_to_d_candidate_value(values)
+        {'a': 42, 'b': 51, 'c': 69}
+    """
+    return DictPrintingInOrderIgnoringZeros({candidate: value for candidate, value in zip(CANDIDATES, values)})
+
+
+def d_candidate_value_to_array(d_candidate_value):
+    """Convert a dictionary of candidates and values to an array
+
+    Parameters
+    ----------
+    d_candidate_value : dict
+        Key: ``'a'``, ``'b'`` or ``'c'``.
+
+    Returns
+    -------
+    ndarray
+        The corresponding array.
+
+    Examples
+    --------
+        >>> d_candidate_value = {'a': 42, 'b': 51, 'c': 69}
+        >>> d_candidate_value_to_array(d_candidate_value)
+        array([42, 51, 69])
+    """
+    return np.array([d_candidate_value[candidate] for candidate in CANDIDATES])
