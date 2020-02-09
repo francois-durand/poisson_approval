@@ -6,7 +6,7 @@ History
 0.10.0 (2020-02-09): ProfileDiscrete.analyzed_strategies
 --------------------------------------------------------
 
-* Implement ``ProfileDiscrete.analyzed_strategies``.
+* Implement ``ProfileDiscrete.analyzed_strategies``: exhaustive analysis of all pure strategies of the profile.
 
 ------------------------------------------------
 0.9.0 (2020-02-09): Plurality and Anti-plurality
