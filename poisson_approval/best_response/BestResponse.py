@@ -380,7 +380,7 @@ class BestResponse:
     def __repr__(self):
         return '<' + ', '.join([
             'ballot = %s' % self.ballot,
-            'threshold_utility = {:.6g}'.format(self.threshold_utility),
+            'threshold_utility = {:.6g}'.format(float(self.threshold_utility)),
             'justification = %s' % self.justification,
         ]) + '>'
 
