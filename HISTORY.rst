@@ -2,6 +2,20 @@
 History
 =======
 
+-----------------------------------------------------------------------------
+0.11.0 (2020-02-09): Winning frequencies in iterated voting / fictitious play
+-----------------------------------------------------------------------------
+
+* ``ProfileCardinal.iterated_voting`` and ``ProfileCardinal.fictitious_play`` now also output the winning frequency of
+  each candidate (limit frequency in case of convergence, frequency over the history otherwise).
+* New utilities:
+
+  * Add ``candidates_to_d_candidate_probability``: convert a set of candidates to a dictionary of probabilities (random
+    tie-break)
+  * Add ``candidates_to_probabilities``: convert a set of candidates to an array of probabilities (random tie-break).
+  * Add ``array_to_d_candidate_value``: convert an array to a dictionary of candidates and values.
+  * Add ``d_candidate_value_to_array``: convert a dictionary of candidates and values to an array.
+
 --------------------------------------------------------
 0.10.0 (2020-02-09): ProfileDiscrete.analyzed_strategies
 --------------------------------------------------------
