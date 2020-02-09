@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import itertools
+from math import sqrt, log
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
@@ -769,3 +770,91 @@ def d_candidate_value_to_array(d_candidate_value):
         array([42, 51, 69])
     """
     return np.array([d_candidate_value[candidate] for candidate in CANDIDATES])
+
+
+def one_over_t_plus_one(t):
+    """Function `1 / (t + 1)`.
+
+    When used as an update ratio (cf. :meth:`ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic
+    mean.
+
+    Parameters
+    ----------
+    t : Number
+
+    Returns
+    -------
+    Number
+
+    Examples
+    --------
+        >>> one_over_t_plus_one(1)
+        0.5
+    """
+    return 1 / (t + 1)
+
+
+def one_over_sqrt_t_plus_one(t):
+    """Function `1 / sqrt(t + 1)`.
+
+    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
+    1 in the denominator is the smallest integer such that `f(t = 1) < 1`.
+
+    Parameters
+    ----------
+    t : Number
+
+    Returns
+    -------
+    Number
+
+    Examples
+    --------
+        >>> one_over_sqrt_t_plus_one(1)
+        0.7071067811865475
+    """
+    return 1 / sqrt(t + 1)
+
+
+def one_over_log_t_plus_two(t):
+    """Function `1 / log(t + 2)`.
+
+    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
+    2 in the denominator is the smallest integer such that `f(t = 1) < 1`.
+
+    Parameters
+    ----------
+    t : Number
+
+    Returns
+    -------
+    Number
+
+    Examples
+    --------
+        >>> one_over_log_t_plus_two(1)
+        0.9102392266268373
+    """
+    return 1 / log(t + 2)
+
+
+def one_over_log_log_t_plus_fifteen(t):
+    """Function `1 / log(log(t + 15))`.
+
+    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
+    15 in the denominator is the smallest integer such that `f(t = 1) < 1`.
+
+    Parameters
+    ----------
+    t : Number
+
+    Returns
+    -------
+    Number
+
+    Examples
+    --------
+        >>> one_over_log_log_t_plus_fifteen(1)
+        0.9806022744169713
+    """
+    return 1 / log(log(t + 15))

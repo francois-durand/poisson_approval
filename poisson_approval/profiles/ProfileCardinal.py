@@ -4,7 +4,7 @@ from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
     to_callable, ballot_low_u, ballot_high_u, candidates_to_probabilities, candidates_to_d_candidate_probability, \
-    array_to_d_candidate_value
+    array_to_d_candidate_value, one_over_t_plus_one
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -358,7 +358,7 @@ class ProfileCardinal(Profile):
                 'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
     def fictitious_play(self, strategy_ini, n_max_episodes,
-                        perception_update_ratio=None, ballot_update_ratio=1, verbose=False):
+                        perception_update_ratio=one_over_t_plus_one, ballot_update_ratio=1, verbose=False):
         """Seek for convergence by fictitious play.
 
         Parameters
@@ -371,8 +371,9 @@ class ProfileCardinal(Profile):
             The coefficient when updating the perceived tau:
             ``tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) *
             tau_actual``. For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The
-            default function is ``1 / (t + 1)``, which leads to an arithmetic average. If `perception_update_ratio` is
-            a Number, it is considered as a constant function.
+            default function is :func:`~utils.Util.one_over_t_plus_one`, which leads to an arithmetic average. However,
+            the `recommended` function is :func:`~utils.Util.one_over_log_t_plus_two`, which accelerates the
+            convergence. If `perception_update_ratio` is a Number, it is considered as a constant function.
         ballot_update_ratio : callable or Number
             The ratio of voters who update their ballot:
             ``tau_actual = (1 - ballot_update_ratio(t)) * tau_actual + ballot_update_ratio(t) * tau_response``.
@@ -407,8 +408,6 @@ class ProfileCardinal(Profile):
         In general, you should use :meth:`iterated_voting` only if you care about cycles, with the constraint
         that it implies having constant update ratios.
         """
-        if perception_update_ratio is None:
-            def perception_update_ratio(_t): return Fraction(1, _t + 1)
         perception_update_ratio = to_callable(perception_update_ratio)
         ballot_update_ratio = to_callable(ballot_update_ratio)
 
