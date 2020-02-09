@@ -79,16 +79,18 @@ def test_fictitious_play_without_convergence(my_profile, my_strategy):
 
 def test_plurality():
     """
-        >>> profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=PLURALITY)
+        >>> profile = ProfileTwelve(
+        ...     d_type_share={'a_bc': Fraction(1, 5), 'ba_c': Fraction(3, 5), 'c_ab': Fraction(1, 5)},
+        ...     voting_rule=PLURALITY)
         >>> profile
-        ProfileTwelve({'a_bc': 0.5, 'ab_c': 0.5}, voting_rule='Plurality')
+        ProfileTwelve({'a_bc': Fraction(1, 5), 'ba_c': Fraction(3, 5), 'c_ab': Fraction(1, 5)}, voting_rule='Plurality')
         >>> print(profile)
-        <a_bc: 0.5, ab_c: 0.5> (Condorcet winner: a) (Plurality)
+        <a_bc: 1/5, ba_c: 3/5, c_ab: 1/5> (Condorcet winner: b) (Plurality)
         >>> profile.tau_sincere
-        TauVector({'a': 1.0}, voting_rule='Plurality')
+        TauVector({'a': Fraction(1, 5), 'b': Fraction(3, 5), 'c': Fraction(1, 5)}, voting_rule='Plurality')
         >>> profile.tau_fanatic
-        TauVector({'a': 1.0}, voting_rule='Plurality')
-        >>> strategy = StrategyTwelve({'abc': 'a'}, profile=profile)
+        TauVector({'a': Fraction(1, 5), 'b': Fraction(3, 5), 'c': Fraction(1, 5)}, voting_rule='Plurality')
+        >>> strategy = StrategyTwelve({'abc': 'a', 'bac': 'b', 'cab': 'c'}, profile=profile)
         >>> strategy.is_equilibrium
         EquilibriumStatus.EQUILIBRIUM
     """
@@ -97,17 +99,20 @@ def test_plurality():
 
 def test_anti_plurality():
     """
-        >>> profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
+        >>> profile = ProfileTwelve(
+        ...     d_type_share={'ab_c': Fraction(2, 5), 'b_ca': Fraction(2, 5), 'ca_b': Fraction(1, 5)},
+        ...     voting_rule=ANTI_PLURALITY)
         >>> profile
-        ProfileTwelve({'a_bc': 0.5, 'ab_c': 0.5}, voting_rule='Anti-plurality')
+        ProfileTwelve({'ab_c': Fraction(2, 5), 'b_ca': Fraction(2, 5), 'ca_b': Fraction(1, 5)}, \
+voting_rule='Anti-plurality')
         >>> print(profile)
-        <a_bc: 0.5, ab_c: 0.5> (Condorcet winner: a) (Anti-plurality)
+        <ab_c: 2/5, b_ca: 2/5, ca_b: 1/5> (Anti-plurality)
         >>> profile.tau_sincere
-        TauVector({'ab': 1.0}, voting_rule='Anti-plurality')
+        TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}, voting_rule='Anti-plurality')
         >>> profile.tau_fanatic
-        TauVector({'ab': 1.0}, voting_rule='Anti-plurality')
-        >>> strategy = StrategyTwelve({'abc': 'ab'}, profile=profile)
+        TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}, voting_rule='Anti-plurality')
+        >>> strategy = StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}, profile=profile)
         >>> strategy.is_equilibrium
-        EquilibriumStatus.NOT_EQUILIBRIUM
+        EquilibriumStatus.EQUILIBRIUM
     """
     pass
