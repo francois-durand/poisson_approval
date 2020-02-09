@@ -455,18 +455,16 @@ class ProfileTwelve(ProfileCardinal):
         }
 
         for d_ranking_strategy in product_dict(d_ranking_possible_strategies):
-            strategy = StrategyTwelve(d_ranking_strategy, profile=self, voting_rule=self.voting_rule)
+            strategy = StrategyTwelve(d_ranking_strategy, profile=self)
             status = strategy.is_equilibrium
             if status == EquilibriumStatus.EQUILIBRIUM:
                 equilibria.append(strategy)
             elif status == EquilibriumStatus.UTILITY_DEPENDENT:  # pragma: no cover
                 utility_dependent.append(strategy)
-                warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r'
-                              % (self, strategy))
+                warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r' % (self, strategy))
             elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
                 inconclusive.append(strategy)
-                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
-                              % (self, strategy))
+                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r' % (self, strategy))
             else:
                 non_equilibria.append(strategy)
         return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
