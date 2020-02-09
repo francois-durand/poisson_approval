@@ -1,6 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
-from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyThreshold, EquilibriumStatus
+from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyThreshold, EquilibriumStatus, PLURALITY, \
+    ANTI_PLURALITY
 
 
 def test_iterative_voting_verbose():
@@ -74,3 +75,25 @@ def test_iterated_voting_without_convergence(my_profile, my_strategy):
 def test_fictitious_play_without_convergence(my_profile, my_strategy):
     result = my_profile.fictitious_play(strategy_ini=my_strategy, n_max_episodes=1)
     assert result['tau'] is None
+
+
+def test_plurality():
+    """
+        >>> profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=PLURALITY)
+        >>> profile.tau_sincere
+        TauVector({'a': 1.0}, voting_rule='Plurality')
+        >>> profile.tau_fanatic
+        TauVector({'a': 1.0}, voting_rule='Plurality')
+    """
+    pass
+
+
+def test_anti_plurality():
+    """
+        >>> profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
+        >>> profile.tau_sincere
+        TauVector({'ab': 1.0}, voting_rule='Anti-plurality')
+        >>> profile.tau_fanatic
+        TauVector({'ab': 1.0}, voting_rule='Anti-plurality')
+    """
+    pass

@@ -197,7 +197,7 @@ phi_ab = 0.707107>
     def __repr__(self):
         arguments = repr(self.d_ballot_share)
         if self.voting_rule != APPROVAL:
-            arguments += ', voting_rule=%s' % self.voting_rule
+            arguments += ', voting_rule=%r' % self.voting_rule
         return 'TauVector(%s)' % arguments
 
     def __str__(self):

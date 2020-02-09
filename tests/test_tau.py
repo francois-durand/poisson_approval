@@ -37,7 +37,7 @@ def test_tau_plurality():
     """
         >>> tau = TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}, voting_rule=PLURALITY)
         >>> tau
-        TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}, voting_rule=Plurality)
+        TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}, voting_rule='Plurality')
         >>> tau.d_ranking_best_response
         {'abc': <ballot = a, threshold_utility = 1, justification = Plurality analysis>, \
 'acb': <ballot = a, threshold_utility = 1, justification = Plurality analysis>, \
@@ -54,7 +54,7 @@ def test_tau_anti_plurality():
         >>> tau = TauVector({'ab': Fraction(2, 5), 'ac': Fraction(2, 5), 'bc': Fraction(1, 5)},
         ...                 voting_rule=ANTI_PLURALITY)
         >>> tau
-        TauVector({'ab': Fraction(2, 5), 'ac': Fraction(2, 5), 'bc': Fraction(1, 5)}, voting_rule=Anti-plurality)
+        TauVector({'ab': Fraction(2, 5), 'ac': Fraction(2, 5), 'bc': Fraction(1, 5)}, voting_rule='Anti-plurality')
         >>> tau.d_ranking_best_response
         {'abc': <ballot = ab, threshold_utility = 0, justification = Anti-plurality analysis>, \
 'acb': <ballot = ac, threshold_utility = 0, justification = Anti-plurality analysis>, \
