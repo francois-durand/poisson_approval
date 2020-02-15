@@ -432,6 +432,8 @@ class ProfileTwelve(ProfileCardinal):
             <abc: ab, bac: ab, cab: c> ==> a, b (FF)
             <abc: ab, bac: ab, cab: ac> ==> a (D)
             <abc: ab, bac: ab, cab: utility-dependent> ==> a (D)
+            >>> print(profile.winners_at_equilibrium)
+            a, b
         """
         equilibria = []
         utility_dependent = []

@@ -4,6 +4,7 @@ from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
+from poisson_approval.containers.Winners import Winners
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
@@ -379,6 +380,8 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             <abc: ab, bac: ab, cab: ac> ==> a (D)
             >>> print(profile.analyzed_strategies.equilibria[0])
             <abc: a, bac: b, cab: ac> ==> b
+            >>> print(profile.winners_at_equilibrium)
+            a, b
         """
         equilibria = []
         utility_dependent = []

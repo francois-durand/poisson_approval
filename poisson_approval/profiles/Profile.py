@@ -170,6 +170,28 @@ class Profile(DeleteCacheMixin):
             if self.d_ranking_share[ranking] > 0
         }, profile=self, voting_rule=self.voting_rule)
 
+    @cached_property
+    def analyzed_strategies(self):
+        """AnalyzedStrategies : Analyzed strategies of the profile.
+
+        Not implemented for this class.
+        """
+        raise NotImplementedError
+
+    @cached_property
+    def winners_at_equilibrium(self):
+        """Winners : The possible winners at equilibrium.
+
+        This gives the winners in all `equilibria` of :meth:`analyzed_strategies` (without the utility-dependent
+        equilibria, even in the classes of profile that may have some).
+
+        For an example, cf. :meth:`ProfileOrdinal.analyzed_strategies`.
+        """
+        if not self.analyzed_strategies.equilibria:
+            return Winners(set())
+        else:
+            return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies.equilibria]))
+
 
 def make_property_ranking_share(ranking, doc):
     def _f(self):

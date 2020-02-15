@@ -253,6 +253,8 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             <abc: utility-dependent (0.55), bac: ab> ==> a (FF)
             <abc: utility-dependent (0.55), bac: b> ==> a (FF)
             <abc: a, bac: ab> ==> a (FF)
+            >>> print(profile.winners_at_equilibrium)
+            a
         """
         equilibria = []
         utility_dependent = []
