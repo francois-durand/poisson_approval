@@ -78,3 +78,4 @@ from poisson_approval.generators.GeneratorTauVectorUniform import GeneratorTauVe
 
 # Meta-analysis
 from poisson_approval.meta_analysis.NiceStatsProfileOrdinal import NiceStatsProfileOrdinal
+from poisson_approval.meta_analysis.ternary_plots import TernaryAxesSubplotPoisson, ternary_figure

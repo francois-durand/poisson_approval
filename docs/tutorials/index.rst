@@ -11,4 +11,5 @@ Tutorials
    tutorial_plurality_anti_plurality
    tutorial_tau_vector
    tutorial_mass_simulations
+   tutorial_ternary_plots
    tutorial_asymptotic_developments
