@@ -2,6 +2,19 @@
 History
 =======
 
+----------------------------------
+0.13.0 (2020-02-16): Ternary Plots
+----------------------------------
+
+* Draw plots on the simplex where points have 3 coordinates summing to 1. Cf. the corresponding tutorial.
+
+  * Intensity heat maps.
+  * Candidate heat maps.
+  * Annotate the Condorcet regions.
+
+* Add ``Profile.winners_at_equilibrium``: for the classes of profile that have a method ``analyzed_strategies``,
+  give the set of winners at equilibrium.
+
 -----------------------------------------------------------------
 0.12.0 (2020-02-09): GeneratorProfileHistogramSinglePeakedUniform
 -----------------------------------------------------------------
