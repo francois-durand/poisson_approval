@@ -1,16 +1,12 @@
-import numpy as np
 from math import isclose
-from fractions import Fraction
-from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
-    to_callable, ballot_low_u, ballot_high_u, candidates_to_probabilities, candidates_to_d_candidate_probability, \
-    array_to_d_candidate_value, one_over_t_plus_one
+from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.profiles.Profile import Profile
+from poisson_approval.strategies.Strategy import Strategy
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
+from poisson_approval.utils.Util import *
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 
 
 # noinspection PyUnresolvedReferences
@@ -243,14 +239,48 @@ class ProfileCardinal(Profile):
         else:
             return EquilibriumStatus.NOT_EQUILIBRIUM
 
-    def iterated_voting(self, strategy_ini, n_max_episodes,
+    def _initializer(self, init):
+        """Initial condition for iterated voting or fictitious play.
+
+        Parameters
+        ----------
+        init : Strategy or TauVector or str
+            If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`.
+            If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or ``'fanatic'``,
+            then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+
+        Returns
+        -------
+        strategy : Strategy, optional
+            The initial strategy (or None).
+        tau : TauVector
+            The initial tau-vector.
+        """
+        if isinstance(init, Strategy):
+            strategy = init.deepcopy_with_attached_profile(self)
+            tau = strategy.tau
+        else:
+            strategy = None
+            if isinstance(init, TauVector):
+                tau = init
+            elif init == 'sincere':
+                tau = self.tau_sincere
+            elif init == 'fanatic':
+                tau = self.tau_fanatic
+            else:
+                raise ValueError
+        return strategy, tau
+
+    def iterated_voting(self, init, n_max_episodes,
                         perception_update_ratio=1, ballot_update_ratio=1, verbose=False):
         """Seek for convergence by iterated voting.
 
         Parameters
         ----------
-        strategy_ini : an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`
-            The initial strategy.
+        init : Strategy or TauVector or str
+            The initialization. If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by
+            :meth:`tau_strategic`. If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or
+            ``'fanatic'``, then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
         n_max_episodes : int
             Maximal number of iterations.
         perception_update_ratio : Number in [0, 1]
@@ -295,8 +325,7 @@ class ProfileCardinal(Profile):
         In general, you should use :meth:`iterated_voting` only if you care about cycles, with the constraint
         that it implies having constant update ratios.
         """
-        strategy = strategy_ini.deepcopy_with_attached_profile(self)
-        tau_actual = strategy.tau
+        strategy, tau_actual = self._initializer(init)
         tau_perceived = tau_actual
         strategies = [strategy]
         taus_actual = [tau_actual]
@@ -357,14 +386,16 @@ class ProfileCardinal(Profile):
                 'n_episodes': n_episodes,
                 'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
-    def fictitious_play(self, strategy_ini, n_max_episodes,
+    def fictitious_play(self, init, n_max_episodes,
                         perception_update_ratio=one_over_t_plus_one, ballot_update_ratio=1, verbose=False):
         """Seek for convergence by fictitious play.
 
         Parameters
         ----------
-        strategy_ini : an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`
-            The initial strategy.
+        init : Strategy or TauVector or str
+            The initialization. If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by
+            :meth:`tau_strategic`. If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or
+            ``'fanatic'``, then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
         n_max_episodes : int
             Maximal number of iterations.
         perception_update_ratio : callable or Number
@@ -411,8 +442,7 @@ class ProfileCardinal(Profile):
         perception_update_ratio = to_callable(perception_update_ratio)
         ballot_update_ratio = to_callable(ballot_update_ratio)
 
-        strategy = strategy_ini.deepcopy_with_attached_profile(self)
-        tau_actual = strategy.tau
+        strategy, tau_actual = self._initializer(init)
         array_candidate_winning_count = candidates_to_probabilities(tau_actual.winners)
         tau_perceived = tau_actual
         if verbose:

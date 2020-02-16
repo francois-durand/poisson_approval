@@ -1,7 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyThreshold, EquilibriumStatus, PLURALITY, \
-    ANTI_PLURALITY, UTILITY_DEPENDENT
+    ANTI_PLURALITY, UTILITY_DEPENDENT, TauVector
 
 
 def test_iterative_voting_verbose():
@@ -9,7 +9,7 @@ def test_iterative_voting_verbose():
     >>> from fractions import Fraction
     >>> profile = ProfileTwelve(d_type_share={'a_bc': Fraction(1, 2), 'ab_c': Fraction(1, 2)})
     >>> strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-    >>> result = profile.iterated_voting(strategy_ini=strategy, n_max_episodes=100,
+    >>> result = profile.iterated_voting(init=strategy, n_max_episodes=100,
     ...                                  ballot_update_ratio=1, verbose=True)
     t = 0
     strategy: <abc: ab> ==> a, b
@@ -29,7 +29,7 @@ def test_iterative_voting_verbose():
     strategy: <abc: a> ==> a
     tau_full_response: <a: 1> ==> a
     tau_actual: <a: 1> ==> a
-    >>> result = profile.fictitious_play(strategy_ini=strategy, n_max_episodes=100,
+    >>> result = profile.fictitious_play(init=strategy, n_max_episodes=100,
     ...                                  perception_update_ratio=1, ballot_update_ratio=1, verbose=True)
     t = 0
     strategy: <abc: ab> ==> a, b
@@ -71,7 +71,7 @@ def test_iterated_voting_without_convergence():
     """
         >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-        >>> result = my_profile.iterated_voting(strategy_ini=my_strategy, n_max_episodes=1, ballot_update_ratio=1)
+        >>> result = my_profile.iterated_voting(init=my_strategy, n_max_episodes=1, ballot_update_ratio=1)
         >>> result['cycle_taus_actual']
         []
         >>> result['d_candidate_winning_frequency']
@@ -84,7 +84,7 @@ def test_fictitious_play_without_convergence(my_profile, my_strategy):
     """
         >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-        >>> result = my_profile.fictitious_play(strategy_ini=my_strategy, n_max_episodes=1)
+        >>> result = my_profile.fictitious_play(init=my_strategy, n_max_episodes=1)
         >>> print(result['tau'])
         None
         >>> result['d_candidate_winning_frequency']
@@ -130,5 +130,22 @@ voting_rule='Anti-plurality')
         >>> strategy = StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}, profile=profile)
         >>> strategy.is_equilibrium
         EquilibriumStatus.EQUILIBRIUM
+    """
+    pass
+
+
+def test_initializer():
+    """
+        >>> profile = ProfileTwelve(
+        ...     d_type_share={'ab_c': Fraction(2, 5), 'b_ca': Fraction(2, 5), 'ca_b': Fraction(1, 5)})
+        >>> profile._initializer(init=StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}))
+        (StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}), \
+TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
+        >>> profile._initializer(TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
+        (None, TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
+        >>> profile._initializer('sincere')
+        (None, TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'b': Fraction(2, 5)}))
+        >>> profile._initializer('fanatic')
+        (None, TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}))
     """
     pass
