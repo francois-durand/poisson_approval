@@ -2,6 +2,14 @@
 History
 =======
 
+---------------------------------------------------------------------------------
+0.14.0 (2020-02-16): Flexible Initialization of Iterated Voting / Fictitious Play
+---------------------------------------------------------------------------------
+
+* Instead of a parameter ``strategy_ini``, the methods ``ProfileCardinal.iterated_voting`` and
+  ``ProfileCardinal.fictitious_play`` now have a parameter ``init`` that can be either a strategy (like before), or a
+  tau-vector, or a string ``'sincere'`` or ``'fanatic'``.
+
 ----------------------------------
 0.13.0 (2020-02-16): Ternary Plots
 ----------------------------------
