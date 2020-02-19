@@ -4,6 +4,7 @@ from collections import Counter
 from ternary.helpers import simplex_iterator
 from matplotlib import pyplot as plt
 from matplotlib.patches import Patch
+from poisson_approval.meta_analysis.ternary_condorcet import draw_condorcet_zones
 
 
 def _generate_heatmap_data(f, scale, color_a, color_b, color_c):
@@ -272,6 +273,12 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
         left_ranking : str
             The ranking whose share is maximal at the left corner.
         """
+        try:
+            draw_condorcet_zones(self, right_ranking, top_ranking, left_ranking)
+        except NameError:
+            self._annotate_condorcet_old(right_ranking, top_ranking, left_ranking)
+
+    def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking):
         count_candidate_tops = dict(Counter([
             ranking[0] for ranking in [right_ranking, top_ranking, left_ranking]]))
         if len(count_candidate_tops) == 1:
