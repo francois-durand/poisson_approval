@@ -858,3 +858,120 @@ def one_over_log_log_t_plus_fifteen(t):
         0.9806022744169713
     """
     return 1 / log(log(t + 15))
+
+
+def is_lover(weak_order):
+    """Whether a weak order represents a "lover".
+
+    Parameters
+    ----------
+    weak_order : str
+        A weak order, e.g. ``'a>b~c'``, ``'a~b>c'``, etc.
+
+    Returns
+    -------
+    bool
+        True iff the weak order is of the form ``'a>b~c'``.
+
+    Examples
+    --------
+        >>> is_lover('a>b~c')
+        True
+    """
+    return weak_order[1] == '>'
+
+
+def is_hater(weak_order):
+    """Whether a weak order represents a "hater".
+
+    Parameters
+    ----------
+    weak_order : str
+        A weak order, e.g. ``'a>b~c'``, ``'a~b>c'``, etc.
+
+    Returns
+    -------
+    bool
+        True iff the weak order is of the form ``'a~b>c'``.
+
+    Examples
+    --------
+        >>> is_hater('a~b>c')
+        True
+    """
+    return weak_order[3] == '>'
+
+
+def sort_weak_order(weak_order):
+    """Put a weak order in normalized format (with the indifferent candidates sorted alphabetically).
+
+    Parameters
+    ----------
+    weak_order : str
+        A weak order, e.g. ``'a>b~c'``, ``'a~b>c'``, etc.
+
+    Returns
+    -------
+    str
+        The same weak order in normalized format.
+
+    Examples
+    --------
+        >>> sort_weak_order('a>c~b')
+        'a>b~c'
+        >>> sort_weak_order('b~a>c')
+        'a~b>c'
+    """
+    if is_lover(weak_order):
+        return weak_order[0] + '>' + '~'.join(sorted([weak_order[2], weak_order[4]]))
+    else:
+        return '~'.join(sorted([weak_order[0], weak_order[2]])) + '>' + weak_order[4]
+
+
+def my_division(x, y):
+    """
+    Division of two numbers, trying to be exact if it is reasonable.
+
+    Parameters
+    ----------
+    x : Number
+    y : Number
+
+    Returns
+    -------
+    Number
+        The division of `x` by `y`.
+
+    Examples
+    --------
+    Typical usages:
+
+        >>> my_division(5, 2)
+        Fraction(5, 2)
+        >>> my_division(6, 2)
+        3
+
+    If `x` or `y` is a float, then the result is a float:
+
+        >>> my_division(Fraction(5, 2), 0.1)
+        25.0
+        >>> my_division(0.1, Fraction(5, 2))
+        0.04
+
+    If `x` and `y` are integers, decimals or fractions, then the result is a fraction:
+
+        >>> my_division(2, Fraction(5, 2))
+        Fraction(4, 5)
+        >>> from decimal import Decimal
+        >>> my_division(Decimal('0.1'), Fraction(5, 2))
+        Fraction(1, 25)
+    """
+    if y == 0:
+        raise ZeroDivisionError
+    if isinstance(x, float) or isinstance(y, float):
+        return x / y
+    try:
+        result = Fraction(x) / Fraction(y)
+    except TypeError:
+        raise NotImplementedError
+    return result.numerator if result.denominator == 1 else result

@@ -6,6 +6,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.Util import sort_weak_order
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -25,6 +26,9 @@ class ProfileHistogram(ProfileCardinal):
         For example, if the list is ``[0.4, 0.3, 0.2, 0.1]``, it means that a fraction 0.4 of voters ``'abc'`` have a
         utility for ``b`` that is in the first quarter, i.e. between 0 and 0.25. These voters are uniformly distributed
         in this segment.
+    d_weak_order_share : dict
+        E.g. ``{'a~b>c': 0.2, 'a>b~c': 0.1}``. ``d_weak_order_share['a~b>c']`` is the probability that a voter likes
+        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
     ratio_sincere : Number
@@ -96,8 +100,8 @@ class ProfileHistogram(ProfileCardinal):
         <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
     """
 
-    def __init__(self, d_ranking_share, d_ranking_histogram, normalization_warning=True,
-                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
+    def __init__(self, d_ranking_share, d_ranking_histogram, d_weak_order_share=None,
+                 normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
         """
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
             ...                            d_ranking_histogram={'non_existing_ranking': [1]})
@@ -105,6 +109,8 @@ class ProfileHistogram(ProfileCardinal):
             KeyError: 'non_existing_ranking'
         """
         super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+        if d_weak_order_share is None:
+            d_weak_order_share = dict()
         # Populate the dictionary (and check for typos in the input)
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
         self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros({ranking: np.array([]) for ranking in RANKINGS})
@@ -115,13 +121,20 @@ class ProfileHistogram(ProfileCardinal):
                 self.d_ranking_histogram[ranking] = np.array(histogram)
             else:
                 raise KeyError('%s' % ranking)
+        # Dictionary of weak orders
+        self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
+            weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
+        for weak_order, share in d_weak_order_share.items():
+            self._d_weak_order_share[sort_weak_order(weak_order)] += share
         # Normalize if necessary
-        total = sum(self._d_ranking_share.values())
+        total = sum(self._d_ranking_share.values()) + sum(self._d_weak_order_share.values())
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for ranking in self._d_ranking_share.keys():
                 self._d_ranking_share[ranking] /= total
+            for weak_order in self._d_weak_order_share.keys():
+                self._d_weak_order_share[weak_order] /= total
         for ranking, histogram in self.d_ranking_histogram.items():
             if len(histogram) == 0:
                 continue
@@ -134,6 +147,10 @@ class ProfileHistogram(ProfileCardinal):
     @cached_property
     def d_ranking_share(self):
         return self._d_ranking_share
+
+    @cached_property
+    def d_weak_order_share(self):
+        return self._d_weak_order_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
@@ -220,6 +237,8 @@ class ProfileHistogram(ProfileCardinal):
                   dtype=object)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = '%r, %r' % (self.d_ranking_share, self.d_ranking_histogram)
+        if self.contains_weak_orders:
+            arguments += ', d_weak_order_share=%r' % self.d_weak_order_share
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         if self.ratio_fanatic > 0:
@@ -239,11 +258,15 @@ class ProfileHistogram(ProfileCardinal):
             <abc: 1/10 [1], bac: 3/5 [1 0], cab: 3/10 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)]> \
 (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
-        result = '<' + ', '.join([
+        result = '<'
+        result += ', '.join([
             '%s: %s %s' % (ranking, self.d_ranking_share[ranking], self.d_ranking_histogram[ranking])
             for ranking in sorted(self.d_ranking_share)
             if self.d_ranking_share[ranking] > 0 or len(self.d_ranking_histogram[ranking]) > 0
-        ]) + '>'
+        ])
+        if self.contains_weak_orders:
+            result += ', ' + str(self.d_weak_order_share)[1:-1]
+        result += '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
@@ -284,6 +307,7 @@ class ProfileHistogram(ProfileCardinal):
         return (isinstance(other, ProfileHistogram)
                 and self.d_ranking_share == other.d_ranking_share
                 and self.d_ranking_histogram == self.d_ranking_histogram
+                and self.d_weak_order_share == other.d_weak_order_share
                 and self.ratio_sincere == other.ratio_sincere
                 and self.ratio_fanatic == other.ratio_fanatic
                 and self.voting_rule == other.voting_rule)
@@ -311,24 +335,32 @@ class ProfileHistogram(ProfileCardinal):
 
         best_d_ranking_share = {}
         best_d_ranking_histogram = {}
+        best_d_weak_order_test = {}
         best_signature = []
         for perm in XYZ_PERMUTATIONS:
             d_ranking_share_test = {translate(ranking, perm): share
                                     for ranking, share in self.d_ranking_share.items()}
             d_ranking_histogram_test = {translate(ranking, perm): histogram
                                         for ranking, histogram in self.d_ranking_histogram.items()}
+            d_weak_order_test = {sort_weak_order(translate(weak_order, perm)): share
+                                 for weak_order, share in self.d_weak_order_share.items()}
             signature_test = [d_ranking_share_test[ranking] for ranking in XYZ_RANKINGS]
             for ranking in XYZ_RANKINGS:
                 signature_test.extend(d_ranking_histogram_test[ranking])
+            signature_test += [d_weak_order_test[weak_order] for weak_order in XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS]
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d_ranking_share = d_ranking_share_test
                 best_d_ranking_histogram = d_ranking_histogram_test
+                best_d_weak_order_test = d_weak_order_test
         return ProfileHistogram(
             d_ranking_share={ranking: best_d_ranking_share[xyz_ranking]
                              for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
             d_ranking_histogram={ranking: best_d_ranking_histogram[xyz_ranking]
                                  for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
+            d_weak_order_share={weak_order: best_d_weak_order_test[xyz_weak_order]
+                                for weak_order, xyz_weak_order in zip(
+                                    WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic, voting_rule=self.voting_rule
         )
 

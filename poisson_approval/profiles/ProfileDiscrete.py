@@ -6,7 +6,7 @@ from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict
+from poisson_approval.utils.Util import product_dict, sort_weak_order
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -20,6 +20,9 @@ class ProfileDiscrete(ProfileCardinal):
         associates the share of voters who have this ranking and this utility for their second candidate. The second
         possible format is a dict that, to a tuple (ranking, utility), associates the corresponding share of voters.
         The two formats can be mixed in the same profile declaration (cf. example below).
+    d_weak_order_share : dict
+        E.g. ``{'a~b>c': 0.2, 'a>b~c': 0.1}``. ``d_weak_order_share['a~b>c']`` is the probability that a voter likes
+        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
     ratio_sincere : Number
@@ -33,7 +36,7 @@ class ProfileDiscrete(ProfileCardinal):
     Attributes
     ----------
     d_ranking_utility_share : dict of dict
-        To a ranking (first key) and a utility (second key), itassociates the share of voters who have this ranking and
+        To a ranking (first key) and a utility (second key), it associates the share of voters who have this ranking and
         this utility for their second candidate.
 
     Notes
@@ -64,7 +67,8 @@ class ProfileDiscrete(ProfileCardinal):
         Fraction(13, 50)
     """
 
-    def __init__(self, d, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
+    def __init__(self, d, d_weak_order_share=None, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
+                 voting_rule=APPROVAL):
         """
             >>> profile = ProfileDiscrete({42: 51})
             Traceback (most recent call last):
@@ -73,36 +77,61 @@ class ProfileDiscrete(ProfileCardinal):
         super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
         self.d_ranking_utility_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
+        if d_weak_order_share is None:
+            d_weak_order_share = dict()
+        self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
+            weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
+        # Input d
+
+        def add_voters(r, u, s):
+            # Ranking r, utility u, share s.
+            if s == 0:
+                return
+            if u == 0:
+                weak_order = sort_weak_order('%s>%s~%s' % tuple(r))
+                self._d_weak_order_share[weak_order] += s
+            elif u == 1:
+                weak_order = sort_weak_order('%s~%s>%s' % tuple(r))
+                self._d_weak_order_share[weak_order] += s
+            else:
+                self.d_ranking_utility_share[r][u] = (self.d_ranking_utility_share[r].get(u, 0) + s)
+
         for key, value in d.items():
             if isinstance(key, tuple):
                 ranking, utility = key
                 share = value
-                if share > 0:
-                    self.d_ranking_utility_share[ranking][utility] = (
-                        self.d_ranking_utility_share[ranking].get(utility, 0) + share)
+                add_voters(ranking, utility, share)
             elif isinstance(key, str):
                 ranking = key
                 d_utility_share = value
                 for utility, share in d_utility_share.items():
-                    if share > 0:
-                        self.d_ranking_utility_share[ranking][utility] = (
-                            self.d_ranking_utility_share[ranking].get(utility, 0) + share)
+                    add_voters(ranking, utility, share)
             else:
                 raise TypeError('Key should be tuple or str, got: %s instead.' % type(key))
+        # Input d_weak_order_share
+        for weak_order, share in d_weak_order_share.items():
+            self._d_weak_order_share[sort_weak_order(weak_order)] += share
         # Normalize if necessary
-        total = sum([sum(d_utility_share.values()) for d_utility_share in self.d_ranking_utility_share.values()])
+        total = (sum([sum(d_utility_share.values()) for d_utility_share in self.d_ranking_utility_share.values()])
+                 + sum(self._d_weak_order_share.values()))
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for d_utility_share in self.d_ranking_utility_share.values():
                 for utility, share in d_utility_share.items():
                     d_utility_share[utility] = share / total
+            for weak_order in self._d_weak_order_share.keys():
+                self._d_weak_order_share[weak_order] /= total
 
     @cached_property
     def d_ranking_share(self):
         return DictPrintingInOrderIgnoringZeros({
             ranking: sum(d_utility_share.values()) for ranking, d_utility_share in self.d_ranking_utility_share.items()
         })
+
+    @cached_property
+    def d_weak_order_share(self):
+        return self._d_weak_order_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         d_utility_share = self.d_ranking_utility_share[ranking]
@@ -128,6 +157,8 @@ class ProfileDiscrete(ProfileCardinal):
 ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_ranking_utility_share)
+        if self.contains_weak_orders:
+            arguments += ', d_weak_order_share=%r' % self.d_weak_order_share
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         if self.ratio_fanatic > 0:
@@ -147,11 +178,15 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a) (ratio_sincere: 1/10) \
 (ratio_fanatic: 1/5)
         """
-        result = '<' + ', '.join([
+        result = '<'
+        result += ', '.join([
             '%s %s: %s' % (ranking, utility, self.d_ranking_utility_share[ranking][utility])
             for ranking in sorted(self.d_ranking_utility_share.keys()) if self.d_ranking_utility_share[ranking]
             for utility in sorted(self.d_ranking_utility_share[ranking].keys())
-        ]) + '>'
+        ])
+        if self.contains_weak_orders:
+            result += ', ' + str(self.d_weak_order_share)[1:-1]
+        result += '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
@@ -194,6 +229,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         return (isinstance(other, ProfileDiscrete)
                 and all([self.d_ranking_utility_share[ranking] == other.d_ranking_utility_share[ranking]
                          for ranking in RANKINGS])
+                and self.d_weak_order_share == other.d_weak_order_share
                 and self.ratio_sincere == other.ratio_sincere
                 and self.ratio_fanatic == other.ratio_fanatic
                 and self.voting_rule == other.voting_rule)
@@ -222,12 +258,17 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         for perm in XYZ_PERMUTATIONS:
             d_test = {translate(ranking, perm): d_utility_share
                       for ranking, d_utility_share in self.d_ranking_utility_share.items()}
+            d_test.update({sort_weak_order(translate(weak_order, perm)): share
+                           for weak_order, share in self.d_weak_order_share.items()})
             signature_test = [[(utility, d_test[ranking][utility]) for utility in sorted(d_test[ranking].keys())]
                               for ranking in XYZ_RANKINGS]
+            signature_test += [d_test[weak_order] for weak_order in XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS]
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d = d_test
         return ProfileDiscrete({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
+                               {weak_order: best_d[xyz_weak_order] for weak_order, xyz_weak_order in zip(
+                                   WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
                                ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
                                voting_rule=self.voting_rule)
 

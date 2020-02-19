@@ -1,4 +1,5 @@
 import warnings
+import itertools
 import numpy as np
 from math import isclose
 from poisson_approval.constants.constants import *
@@ -10,7 +11,7 @@ from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
-    product_dict, ballot_low_u, ballot_high_u
+    product_dict, ballot_low_u, ballot_high_u, sort_weak_order
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 from poisson_approval.utils.UtilMasks import masks_area, masks_distribution, winners_distribution
 
@@ -22,8 +23,11 @@ class ProfileOrdinal(Profile):
     Parameters
     ----------
     d_ranking_share : dict
-        E.g. ``{'abc': 0.4, 'cab': 0.6}``. ``d_ranking_share['abc']`` is the probability that a voter prefers
+        E.g. ``{'abc': 0.4, 'cab': 0.3}``. ``d_ranking_share['abc']`` is the probability that a voter prefers
         candidate ``a``, then candidate ``b``, then candidate ``c``.
+    d_weak_order_share : dict
+        E.g. ``{'a~b>c': 0.2, 'a>b~c': 0.1}``. ``d_weak_order_share['a~b>c']`` is the probability that a voter likes
+        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
     well_informed_voters : bool.
@@ -72,20 +76,30 @@ class ProfileOrdinal(Profile):
         False
     """
 
-    def __init__(self, d_ranking_share, normalization_warning=True, well_informed_voters=True, ratio_fanatic=0,
-                 voting_rule=APPROVAL):
+    def __init__(self, d_ranking_share, d_weak_order_share=None, normalization_warning=True, well_informed_voters=True,
+                 ratio_fanatic=0, voting_rule=APPROVAL):
         super().__init__(voting_rule=voting_rule)
-        # Populate the dictionary
-        self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
-        for ranking, share in d_ranking_share.items():
-            self._d_ranking_share[ranking] += share
+        if d_weak_order_share is None:
+            d_weak_order_share = dict()
+        # Populate the dictionaries of rankings and weak orders
+        self._d_ranking_share = DictPrintingInOrderIgnoringZeros(
+            {ranking: 0 for ranking in RANKINGS})
+        self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
+            weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
+        for order, share in itertools.chain(d_ranking_share.items(), d_weak_order_share.items()):
+            try:
+                self._d_ranking_share[order] += share
+            except KeyError:
+                self._d_weak_order_share[sort_weak_order(order)] += share
         # Normalize if necessary
-        total = sum(self._d_ranking_share.values())
+        total = sum(self._d_ranking_share.values()) + sum(self._d_weak_order_share.values())
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for ranking in self._d_ranking_share.keys():
                 self._d_ranking_share[ranking] /= total
+            for weak_order in self._d_weak_order_share.keys():
+                self._d_weak_order_share[weak_order] /= total
         # Other parameters
         self.well_informed_voters = well_informed_voters
         self.ratio_fanatic = ratio_fanatic
@@ -97,6 +111,10 @@ class ProfileOrdinal(Profile):
     def d_ranking_share(self):
         return self._d_ranking_share
 
+    @cached_property
+    def d_weak_order_share(self):
+        return self._d_weak_order_share
+
     def __repr__(self):
         """
             >>> from fractions import Fraction
@@ -106,7 +124,9 @@ class ProfileOrdinal(Profile):
             ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(3, 5), 'cab': Fraction(3, 10)}, \
 well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         """
-        arguments = repr(self._d_ranking_share)
+        arguments = repr(self.d_ranking_share)
+        if self.contains_weak_orders:
+            arguments += ', d_weak_order_share=%r' % self.d_weak_order_share
         if not self.well_informed_voters:
             arguments += ', well_informed_voters=False'
         if self.ratio_fanatic > 0:
@@ -123,7 +143,11 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> print(profile)
             <abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b) (badly informed voters) (ratio_fanatic: 1/10)
         """
-        result = '<%s>' % str(self._d_ranking_share)[1:-1]
+        result = '<'
+        result += str(self.d_ranking_share)[1:-1]
+        if self.contains_weak_orders:
+            result += ', ' + str(self.d_weak_order_share)[1:-1]
+        result += '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if not self.well_informed_voters:
@@ -159,6 +183,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         """
         return (isinstance(other, ProfileOrdinal)
                 and self.d_ranking_share == other.d_ranking_share
+                and self.d_weak_order_share == other.d_weak_order_share
                 and self.well_informed_voters == other.well_informed_voters
                 and self.ratio_fanatic == other.ratio_fanatic
                 and self.voting_rule == other.voting_rule)
@@ -183,40 +208,18 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         best_signature = []
         for perm in XYZ_PERMUTATIONS:
             d_test = {translate(ranking, perm): share for ranking, share in self.d_ranking_share.items()}
+            d_test.update({sort_weak_order(translate(weak_order, perm)): share
+                           for weak_order, share in self.d_weak_order_share.items()})
             signature_test = [d_test[ranking] for ranking in XYZ_RANKINGS]
+            signature_test += [d_test[weak_order] for weak_order in XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS]
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d = d_test
         return ProfileOrdinal({ranking: best_d[xyz_ranking] for ranking, xyz_ranking in zip(RANKINGS, XYZ_RANKINGS)},
+                              {weak_order: best_d[xyz_weak_order] for weak_order, xyz_weak_order in zip(
+                                  WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
                               well_informed_voters=self.well_informed_voters, ratio_fanatic=self.ratio_fanatic,
                               voting_rule=self.voting_rule)
-
-    # Has full support
-    @cached_property
-    def support(self):
-        """:class:`SetPrintingInOrder` of str : Alternate notation for :meth:`support_in_rankings`.
-
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> profile.support
-            {'abc', 'bac', 'cab'}
-        """
-        return self.support_in_rankings
-
-    @cached_property
-    def is_generic(self):
-        """bool : Alternate notation for :meth:`is_generic_in_rankings`
-
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> profile.is_generic
-            False
-        """
-        return self.is_generic_in_rankings
 
     # Tau and strategy-related stuff
 
@@ -265,7 +268,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             In Approval or Plurality, all voters approve of their top candidate only. In Anti-Plurality, they all
             disapprove of their bottom candidate, i.e. they approve their two first candidates.
         """
-        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        t = self.d_ballot_share_weak_voters_fanatic.copy()
         if self.voting_rule in {APPROVAL, PLURALITY}:
             for ranking, share in self.d_ranking_share.items():
                 t[ballot_one(ranking)] += share
@@ -310,7 +313,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             <a: 7/16, b: 3/8, c: 3/16> ==> a
         """
         assert self.voting_rule == strategy.voting_rule
-        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] > 0:
                 t[ballot] += self.d_ranking_share[ranking]
@@ -436,7 +439,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                 return True
         if any([test(strategy) for strategy in self.analyzed_strategies.equilibria]):
             return 1
-        support = sorted(self.support)
+        support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
             [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
@@ -474,7 +477,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             def test(strategy):
                 return True
         cover_alls = np.sum([test(strategy) for strategy in self.analyzed_strategies.equilibria], dtype=int)
-        support = sorted(self.support)
+        support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
             [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
@@ -516,7 +519,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             strategy.winners for strategy in self.analyzed_strategies.equilibria
             if test(strategy)
         ]))
-        support = sorted(self.support)
+        support = sorted(self.support_in_rankings)
         dim = len(support)
         masks_winners = [
             (

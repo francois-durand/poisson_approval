@@ -46,7 +46,7 @@ class ProfileCardinal(Profile):
         -------
         Number
             The share of voters who have ranking `ranking` and a utility for their middle candidate strictly greater
-            than `u`.
+            than `u`. This does NOT include the voters who have a weak order of preference.
         """
         raise NotImplementedError
 
@@ -64,6 +64,8 @@ class ProfileCardinal(Profile):
         -------
         Number
             The share of voters who have ranking `ranking` and a utility for their middle candidate equal to `u`.
+            This does NOT include the voters who have a weak order of preference. I.e. if `u`=0 or `u=1`, then the
+            share is 0.
         """
         raise NotImplementedError
 
@@ -81,7 +83,7 @@ class ProfileCardinal(Profile):
         -------
         Number
             The share of voters who have ranking `ranking` and a utility for their middle candidate strictly lower
-            than `u`.
+            than `u`. This does NOT include the voters who have a weak order of preference.
         """
         raise NotImplementedError
 
@@ -142,7 +144,7 @@ class ProfileCardinal(Profile):
         -----
         In Plurality and Anti-plurality, sincere and fanatic voting are the same. They differ only in Approval.
         """
-        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        t = self.d_ballot_share_weak_voters_sincere.copy()
         for ranking in RANKINGS:
             if self.voting_rule == APPROVAL:
                 share_vote_one_two = self.have_ranking_with_utility_above_u(ranking, Fraction(1, 2))
@@ -171,7 +173,7 @@ class ProfileCardinal(Profile):
         -----
         In Plurality and Anti-plurality, sincere and fanatic voting are the same. They differ only in Approval.
         """
-        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        t = self.d_ballot_share_weak_voters_fanatic.copy()
         for ranking, share in self.d_ranking_share.items():
             if self.voting_rule in {APPROVAL, PLURALITY}:
                 t[ballot_one(ranking)] += share
@@ -195,7 +197,7 @@ class ProfileCardinal(Profile):
             Tau-vector associated to this profile and strategy `strategy`.
         """
         assert self.voting_rule == strategy.voting_rule
-        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
         for ranking, threshold in strategy.d_ranking_threshold.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
@@ -538,10 +540,5 @@ def _d_candidate_winning_frequency(taus):
     for tau in taus:
         counts = counts + candidates_to_probabilities(tau.winners)
     n_taus = len(taus)
-    frequencies = np.array([_my_division(count, n_taus) for count in counts])
+    frequencies = np.array([my_division(count, n_taus) for count in counts])
     return array_to_d_candidate_value(frequencies)
-
-
-def _my_division(x, y):
-    result = Fraction(x, y)
-    return result.numerator if result.denominator == 1 else result

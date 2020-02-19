@@ -1,8 +1,9 @@
 import warnings
+import itertools
 from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, sort_ballot, \
-    product_dict, ballot_low_u, ballot_high_u
+    product_dict, ballot_low_u, ballot_high_u, sort_weak_order
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.tau_vector.TauVector import TauVector
@@ -24,6 +25,9 @@ class ProfileTwelve(ProfileCardinal):
         that a voter prefers candidate ``a``, then candidate ``b``, then candidate ``c``, with a utility for ``b``
         that is infinitely close to 1. In contrast, ``d_type_share['a_bc']`` is the probability that a voter prefers
         ``a`` then ``b`` then ``c``, with a utility for ``b`` that is infinitely close to 0.
+    d_weak_order_share : dict
+        E.g. ``{'a~b>c': 0.2, 'a>b~c': 0.1}``. ``d_weak_order_share['a~b>c']`` is the probability that a voter likes
+        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
     ratio_sincere : Number
@@ -94,20 +98,33 @@ class ProfileTwelve(ProfileCardinal):
         <a: 1/15, ab: 1/30, ac: 1/10, b: 3/5, c: 1/5> ==> b
     """
 
-    def __init__(self, d_type_share, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
-                 voting_rule=APPROVAL):
+    def __init__(self, d_type_share, d_weak_order_share=None, normalization_warning=True,
+                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
         super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
-        # Populate the dictionary
+        if d_weak_order_share is None:
+            d_weak_order_share = dict()
+        # Populate the dictionaries of types and weak orders
         self.d_type_share = DictPrintingInOrderIgnoringZeros({t: 0 for t in TWELVE_TYPES})
-        for t, share in d_type_share.items():
-            self.d_type_share[t] += share
+        self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
+            weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
+        for t, share in itertools.chain(d_type_share.items(), d_weak_order_share.items()):
+            try:
+                self.d_type_share[t] += share
+            except KeyError:
+                self._d_weak_order_share[sort_weak_order(t)] += share
         # Normalize if necessary
-        total = sum(self.d_type_share.values())
+        total = sum(self.d_type_share.values()) + sum(self._d_weak_order_share.values())
         if not isclose(total, 1.):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for t in self.d_type_share.keys():
                 self.d_type_share[t] /= total
+            for weak_order in self._d_weak_order_share.keys():
+                self._d_weak_order_share[weak_order] /= total
+
+    @cached_property
+    def d_weak_order_share(self):
+        return self._d_weak_order_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
@@ -185,6 +202,8 @@ class ProfileTwelve(ProfileCardinal):
 'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_type_share)
+        if self.contains_weak_orders:
+            arguments += ', d_weak_order_share=%r' % self.d_weak_order_share
         if self.ratio_sincere > 0:
             arguments += ', ratio_sincere=%r' % self.ratio_sincere
         if self.ratio_fanatic > 0:
@@ -202,7 +221,11 @@ class ProfileTwelve(ProfileCardinal):
         >>> print(profile)
         <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
-        result = '<%s>' % str(self.d_type_share)[1:-1]
+        result = '<'
+        result += str(self.d_type_share)[1:-1]
+        if self.contains_weak_orders:
+            result += ', ' + str(self.d_weak_order_share)[1:-1]
+        result += '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
@@ -240,6 +263,7 @@ class ProfileTwelve(ProfileCardinal):
         """
         return (isinstance(other, ProfileTwelve)
                 and self.d_type_share == other.d_type_share
+                and self.d_weak_order_share == other.d_weak_order_share
                 and self.ratio_sincere == other.ratio_sincere
                 and self.ratio_fanatic == other.ratio_fanatic
                 and self.voting_rule == other.voting_rule)
@@ -267,11 +291,16 @@ class ProfileTwelve(ProfileCardinal):
         best_signature = []
         for perm in XYZ_PERMUTATIONS:
             d_test = {translate(t, perm): share for t, share in self.d_type_share.items()}
+            d_test.update({sort_weak_order(translate(weak_order, perm)): share
+                           for weak_order, share in self.d_weak_order_share.items()})
             signature_test = [d_test[t] for t in XYZ_TWELVE_TYPES]
+            signature_test += [d_test[weak_order] for weak_order in XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS]
             if signature_test > best_signature:
                 best_signature = signature_test
                 best_d = d_test
         return ProfileTwelve({t: best_d[xyz_t] for t, xyz_t in zip(TWELVE_TYPES, XYZ_TWELVE_TYPES)},
+                             {weak_order: best_d[xyz_weak_order] for weak_order, xyz_weak_order in zip(
+                                 WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
                              ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
                              voting_rule=self.voting_rule)
 
@@ -286,6 +315,12 @@ class ProfileTwelve(ProfileCardinal):
             ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
             >>> profile.has_majority_type
             True
+
+        This does NOT include weak orders:
+
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10)}, d_weak_order_share={'b>a~c': Fraction(9, 10)})
+            >>> profile.has_majority_type
+            False
         """
         return max(self.d_type_share.values()) > 0.5
 
@@ -344,7 +379,7 @@ class ProfileTwelve(ProfileCardinal):
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         """
         assert self.voting_rule == strategy.voting_rule
-        t = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] == 0:
                 continue

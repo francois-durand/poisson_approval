@@ -3,6 +3,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.containers.Winners import Winners
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
+from poisson_approval.utils.Util import is_lover, my_division, sort_ballot
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
@@ -26,6 +27,13 @@ class Profile(DeleteCacheMixin):
         """
         raise NotImplementedError
 
+    @cached_property
+    def d_weak_order_share(self):
+        """dict : Shares of weak orders.
+            E.g. ``'a~b>c': 0.3`` means that a ratio 0.3 of the voters have weak order ``'a~b>c'``.
+        """
+        raise NotImplementedError
+
     def __eq__(self, other):
         raise NotImplementedError
 
@@ -44,9 +52,15 @@ class Profile(DeleteCacheMixin):
     @cached_property
     def weighted_maj_graph(self):
         """np.ndarray : Weighted majority graph."""
-        ab = self.abc + self.acb + self.cab - self.bac - self.bca - self.cba
-        ac = self.abc + self.acb + self.bac - self.bca - self.cab - self.cba
-        bc = self.abc + self.bac + self.bca - self.acb - self.cab - self.cba
+        ab = (self.abc + self.acb + self.cab - self.bac - self.bca - self.cba
+              + self.d_weak_order_share['a>b~c'] - self.d_weak_order_share['b~c>a']
+              + self.d_weak_order_share['a~c>b'] - self.d_weak_order_share['b>a~c'])
+        ac = (self.abc + self.acb + self.bac - self.bca - self.cab - self.cba
+              + self.d_weak_order_share['a>b~c'] - self.d_weak_order_share['b~c>a']
+              + self.d_weak_order_share['a~b>c'] - self.d_weak_order_share['c>a~b'])
+        bc = (self.abc + self.bac + self.bca - self.acb - self.cab - self.cba
+              + self.d_weak_order_share['b>a~c'] - self.d_weak_order_share['a~c>b']
+              + self.d_weak_order_share['a~b>c'] - self.d_weak_order_share['c>a~b'])
         return np.array([[0, ab, ac], [-ab, 0, bc], [-ac, -bc, 0]])
 
     @cached_property
@@ -76,7 +90,9 @@ class Profile(DeleteCacheMixin):
         """bool : Whether there is a `majority favorite` (a candidate ranked first by strictly more than half of the
         voters).
         """
-        return self.abc + self.acb > 0.5 or self.bac + self.bca > 0.5 or self.cab + self.cba > 0.5
+        return (self.abc + self.acb + self.d_weak_order_share['a>b~c'] > 0.5
+                or self.bac + self.bca + self.d_weak_order_share['b>a~c'] > 0.5
+                or self.cab + self.cba + self.d_weak_order_share['c>a~b'] > 0.5)
 
     @cached_property
     def has_majority_ranking(self):
@@ -87,9 +103,12 @@ class Profile(DeleteCacheMixin):
     @cached_property
     def is_single_peaked(self):
         """bool : Whether the profile is single-peaked."""
-        return ((self.abc == 0 and self.bac == 0)
-                or (self.acb == 0 and self.cab == 0)
-                or (self.bca == 0 and self.cba == 0))
+        return ((self.abc == 0 and self.bac == 0 and self.d_weak_order_share['a~b>c'] == 0
+                 and self.d_weak_order_share['a>b~c'] == 0 and self.d_weak_order_share['b>a~c'] == 0)
+                or (self.acb == 0 and self.cab == 0 and self.d_weak_order_share['a~c>b'] == 0
+                    and self.d_weak_order_share['a>b~c'] == 0  and self.d_weak_order_share['c>a~b'] == 0)
+                or (self.bca == 0 and self.cba == 0 and self.d_weak_order_share['b~c>a'] == 0
+                    and self.d_weak_order_share['c>a~b'] == 0  and self.d_weak_order_share['b>a~c'] == 0))
 
     # Has full support
     @cached_property
@@ -101,6 +120,16 @@ class Profile(DeleteCacheMixin):
     def is_generic_in_rankings(self):
         """bool : Whether the profile is generic in rankings (contains all rankings)."""
         return 0 not in self.d_ranking_share.values()
+
+    @cached_property
+    def support_in_weak_orders(self):
+        """:class:`SetPrintingInOrder` of str : Support of the profile (in terms of weak orders)."""
+        return SetPrintingInOrder({key for key, val in self.d_weak_order_share.items() if val > 0})
+
+    @cached_property
+    def contains_weak_orders(self):
+        """bool : Whether the profile contains some weak orders."""
+        return len(self.support_in_weak_orders) > 0
 
     # Tau and strategy-related stuff
 
@@ -134,6 +163,76 @@ class Profile(DeleteCacheMixin):
             Tau-vector associated to this profile and strategy `strategy`.
         """
         return self.tau(strategy)
+
+    @cached_property
+    def d_ballot_share_weak_voters_fanatic(self):
+        """dict : Ballot shares due to the weak orders if they vote fanatically
+
+        Voters of the type ``'a>b~c'``:
+
+        * In Approval or Plurality, they vote for `a`.
+        * In Anti-plurality, half of them vote for `ab` (i.e. against `c`) and half of them vote for `ac` (i.e.
+          against `b`).
+
+        Voters of the type ``'a~b>c'``:
+
+        * In Approval or Plurality, half of them vote for `a` and half of them vote for `b`.
+        * In Anti-plurality, they vote for `ab` (i.e. against `c`).
+        """
+        d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for weak_order, share in self.d_weak_order_share.items():
+            if is_lover(weak_order):
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    d[weak_order[0]] += share
+                elif self.voting_rule == ANTI_PLURALITY:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
+                    d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
+                else:
+                    raise NotImplementedError
+            else:  # is_hater(weak_order)
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    d[weak_order[0]] += my_division(share, 2)
+                    d[weak_order[2]] += my_division(share, 2)
+                elif self.voting_rule == ANTI_PLURALITY:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                else:
+                    raise NotImplementedError
+        return d
+
+    @cached_property
+    def d_ballot_share_weak_voters_sincere(self):
+        """dict : Ballot shares due to the weak orders if they vote sincerely
+
+        Voters of the type ``'a>b~c'``:
+
+        * In Approval or Plurality, they vote for `a`.
+        * In Anti-plurality, half of them vote for `ab` (i.e. against `c`) and half of them vote for `ac` (i.e.
+          against `b`).
+
+        Voters of the type ``'a~b>c'``:
+
+        * In Approval or Anti-plurality, they vote for `ab` (i.e. against `c`).
+        * In Plurality, half of them vote for `a` and half of them vote for `b`.
+        """
+        d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for weak_order, share in self.d_weak_order_share.items():
+            if is_lover(weak_order):
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    d[weak_order[0]] += share
+                elif self.voting_rule == ANTI_PLURALITY:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
+                    d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
+                else:
+                    raise NotImplementedError
+            else:  # is_hater(weak_order)
+                if self.voting_rule == PLURALITY:
+                    d[weak_order[0]] += my_division(share, 2)
+                    d[weak_order[2]] += my_division(share, 2)
+                elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                else:
+                    raise NotImplementedError
+        return d
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium in this profile.
