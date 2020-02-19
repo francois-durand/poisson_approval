@@ -1,5 +1,5 @@
 from fractions import Fraction
-from poisson_approval import ProfileOrdinal, PLURALITY, ANTI_PLURALITY
+from poisson_approval import ProfileOrdinal, StrategyOrdinal, PLURALITY, ANTI_PLURALITY
 
 
 def test_normalization():
@@ -59,5 +59,24 @@ def test_d_ballot_share_weak_voters_sincere():
         >>> profile.voting_rule = ANTI_PLURALITY
         >>> profile.d_ballot_share_weak_voters_sincere
         {'a': 0, 'b': 0, 'c': 0, 'ab': Fraction(7, 10), 'ac': Fraction(3, 20), 'bc': Fraction(3, 20)}
+    """
+    pass
+
+
+def test_no_equilibrium():
+    """
+        >>> profile = ProfileOrdinal({'abc': Fraction(2, 5), 'bca': Fraction(2, 5), 'cab': Fraction(1, 5)})
+        >>> profile.winners_at_equilibrium
+        Winners()
+    """
+    pass
+
+
+def test_strategy_weak_order():
+    """
+        >>> profile = ProfileOrdinal({'abc': Fraction(1, 7), 'a~b>c': Fraction(2, 7), 'c>a~b': Fraction(4, 7)})
+        >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
+        >>> print(strategy.tau)
+        <a: 1/7, ab: 2/7, c: 4/7> ==> c
     """
     pass

@@ -860,6 +860,30 @@ def one_over_log_log_t_plus_fifteen(t):
     return 1 / log(log(t + 15))
 
 
+def is_weak_order(o):
+    """Whether an object is a weak order.
+
+    Parameters
+    ----------
+    o : object
+
+    Returns
+    -------
+    bool
+        True iff `o` is a string that represent a weak order, i.e. of the form 'a>b~c' (lover) or 'a~b>c' (hater).
+
+    Examples
+    --------
+        >>> is_weak_order('a>b~c')
+        True
+        >>> is_weak_order('a>b~')
+        False
+        >>> is_weak_order(42)
+        False
+    """
+    return isinstance(o, str) and len(o) == 5 and {o[1], o[3]} == {'>', '~'}
+
+
 def is_lover(weak_order):
     """Whether a weak order represents a "lover".
 
@@ -965,9 +989,18 @@ def my_division(x, y):
         >>> from decimal import Decimal
         >>> my_division(Decimal('0.1'), Fraction(5, 2))
         Fraction(1, 25)
+
+    Possible errors:
+
+        >>> my_division(1, 0)
+        Traceback (most recent call last):
+        ZeroDivisionError: division by zero
+        >>> my_division(1, 'foo')
+        Traceback (most recent call last):
+        ValueError: Invalid literal for Fraction: 'foo'
     """
     if y == 0:
-        raise ZeroDivisionError
+        raise ZeroDivisionError('division by zero')
     if isinstance(x, float) or isinstance(y, float):
         return x / y
     try:

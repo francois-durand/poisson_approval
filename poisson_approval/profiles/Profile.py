@@ -122,6 +122,11 @@ class Profile(DeleteCacheMixin):
         return 0 not in self.d_ranking_share.values()
 
     @cached_property
+    def contains_rankings(self):
+        """bool : Whether the profile contains some rankings."""
+        return len(self.support_in_rankings) > 0
+
+    @cached_property
     def support_in_weak_orders(self):
         """:class:`SetPrintingInOrder` of str : Support of the profile (in terms of weak orders)."""
         return SetPrintingInOrder({key for key, val in self.d_weak_order_share.items() if val > 0})

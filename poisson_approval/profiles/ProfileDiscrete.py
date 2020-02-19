@@ -6,7 +6,7 @@ from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict, sort_weak_order
+from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -65,6 +65,16 @@ class ProfileDiscrete(ProfileCardinal):
         Fraction(13, 50)
         >>> profile.have_ranking_with_utility_u('abc', 0.3)
         Fraction(13, 50)
+
+    The profile can include weak orders:
+
+        >>> profile = ProfileDiscrete({('abc', 0.3): Fraction(26, 100), ('bac', 0.1): Fraction(21, 100)},
+        ...                           d_weak_order_share={'a~b>c': Fraction(53, 100)})
+        >>> profile
+        ProfileDiscrete({'abc': {0.3: Fraction(13, 50)}, 'bac': {0.1: Fraction(21, 100)}}, \
+d_weak_order_share={'a~b>c': Fraction(53, 100)})
+        >>> print(profile)
+        <abc 0.3: 13/50, bac 0.1: 21/100, a~b>c: 53/100> (Condorcet winner: a)
     """
 
     def __init__(self, d, d_weak_order_share=None, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
@@ -97,7 +107,9 @@ class ProfileDiscrete(ProfileCardinal):
                 self.d_ranking_utility_share[r][u] = (self.d_ranking_utility_share[r].get(u, 0) + s)
 
         for key, value in d.items():
-            if isinstance(key, tuple):
+            if is_weak_order(key):
+                self._d_weak_order_share[sort_weak_order(key)] += value
+            elif isinstance(key, tuple):
                 ranking, utility = key
                 share = value
                 add_voters(ranking, utility, share)
@@ -178,15 +190,16 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a) (ratio_sincere: 1/10) \
 (ratio_fanatic: 1/5)
         """
-        result = '<'
-        result += ', '.join([
-            '%s %s: %s' % (ranking, utility, self.d_ranking_utility_share[ranking][utility])
-            for ranking in sorted(self.d_ranking_utility_share.keys()) if self.d_ranking_utility_share[ranking]
-            for utility in sorted(self.d_ranking_utility_share[ranking].keys())
-        ])
+        contents = []
+        if self.contains_rankings:
+            contents.append(', '.join([
+                '%s %s: %s' % (ranking, utility, self.d_ranking_utility_share[ranking][utility])
+                for ranking in sorted(self.d_ranking_utility_share.keys()) if self.d_ranking_utility_share[ranking]
+                for utility in sorted(self.d_ranking_utility_share[ranking].keys())
+            ]))
         if self.contains_weak_orders:
-            result += ', ' + str(self.d_weak_order_share)[1:-1]
-        result += '>'
+            contents.append(str(self.d_weak_order_share)[1:-1])
+        result = '<' + ', '.join(contents) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:

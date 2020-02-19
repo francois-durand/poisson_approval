@@ -269,7 +269,7 @@ class ProfileCardinal(Profile):
                 tau = self.tau_sincere
             elif init == 'fanatic':
                 tau = self.tau_fanatic
-            else:
+            else:  # pragma: no cover
                 raise ValueError
         return strategy, tau
 

@@ -98,6 +98,18 @@ class ProfileHistogram(ProfileCardinal):
         >>> limit_strategy = profile.fictitious_play(strategy_ini, 100, perception_update_ratio=1)['strategy']
         >>> print(limit_strategy)
         <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
+
+    The profile can include weak orders:
+
+        >>> profile = ProfileHistogram(
+        ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10)},
+        ...     {'abc': [1], 'bac': [1, 0]},
+        ...     d_weak_order_share={'c~a>b': Fraction(3, 10)})
+        >>> profile
+        ProfileHistogram({'abc': Fraction(1, 10), 'bac': Fraction(3, 5)}, {'abc': array([1]), 'bac': array([1, 0])}, \
+d_weak_order_share={'a~c>b': Fraction(3, 10)})
+        >>> print(profile)
+        <abc: 1/10 [1], bac: 3/5 [1 0], a~c>b: 3/10> (Condorcet winner: b)
     """
 
     def __init__(self, d_ranking_share, d_ranking_histogram, d_weak_order_share=None,
@@ -258,15 +270,16 @@ class ProfileHistogram(ProfileCardinal):
             <abc: 1/10 [1], bac: 3/5 [1 0], cab: 3/10 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)]> \
 (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
-        result = '<'
-        result += ', '.join([
-            '%s: %s %s' % (ranking, self.d_ranking_share[ranking], self.d_ranking_histogram[ranking])
-            for ranking in sorted(self.d_ranking_share)
-            if self.d_ranking_share[ranking] > 0 or len(self.d_ranking_histogram[ranking]) > 0
-        ])
+        contents = []
+        if self.contains_rankings:
+            contents.append(', '.join([
+                '%s: %s %s' % (ranking, self.d_ranking_share[ranking], self.d_ranking_histogram[ranking])
+                for ranking in sorted(self.d_ranking_share)
+                if self.d_ranking_share[ranking] > 0 or len(self.d_ranking_histogram[ranking]) > 0
+            ]))
         if self.contains_weak_orders:
-            result += ', ' + str(self.d_weak_order_share)[1:-1]
-        result += '>'
+            contents.append(str(self.d_weak_order_share)[1:-1])
+        result = '<' + ', '.join(contents) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:

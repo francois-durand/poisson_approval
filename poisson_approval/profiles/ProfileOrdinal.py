@@ -74,6 +74,16 @@ class ProfileOrdinal(Profile):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
+
+    The profile can include weak orders:
+
+        >>> from fractions import Fraction
+        >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10)},
+        ...                          d_weak_order_share={'c>a~b': Fraction(3, 10)})
+        >>> profile
+        ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(3, 5)}, d_weak_order_share={'c>a~b': Fraction(3, 10)})
+        >>> print(profile)
+        <abc: 1/10, bac: 3/5, c>a~b: 3/10> (Condorcet winner: b)
     """
 
     def __init__(self, d_ranking_share, d_weak_order_share=None, normalization_warning=True, well_informed_voters=True,
@@ -143,11 +153,12 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> print(profile)
             <abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b) (badly informed voters) (ratio_fanatic: 1/10)
         """
-        result = '<'
-        result += str(self.d_ranking_share)[1:-1]
+        contents = []
+        if self.contains_rankings:
+            contents.append(str(self.d_ranking_share)[1:-1])
         if self.contains_weak_orders:
-            result += ', ' + str(self.d_weak_order_share)[1:-1]
-        result += '>'
+            contents.append(str(self.d_weak_order_share)[1:-1])
+        result = '<' + ', '.join(contents) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if not self.well_informed_voters:

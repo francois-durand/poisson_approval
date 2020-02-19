@@ -1,5 +1,7 @@
+from fractions import Fraction
 import numpy as np
-from poisson_approval import ProfileHistogram, StrategyThreshold, EquilibriumStatus, PLURALITY, ANTI_PLURALITY
+from poisson_approval import ProfileHistogram, StrategyThreshold, StrategyOrdinal, EquilibriumStatus, PLURALITY, \
+    ANTI_PLURALITY
 
 
 def test_normalization():
@@ -40,5 +42,16 @@ def test_anti_plurality():
 voting_rule='Anti-plurality')
         >>> print(profile)
         <abc: 0.5 [0.5 0.5], acb: 0.5 [1]> (Condorcet winner: a) (Anti-plurality)
+    """
+    pass
+
+
+def test_strategy_weak_order():
+    """
+        >>> profile = ProfileHistogram(d_ranking_share={'abc': Fraction(1, 7)}, d_ranking_histogram = {'abc': [1]},
+        ...                            d_weak_order_share={'a~b>c': Fraction(2, 7), 'c>a~b': Fraction(4, 7)})
+        >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
+        >>> print(strategy.tau)
+        <a: 1/7, ab: 2/7, c: 4/7> ==> c
     """
     pass

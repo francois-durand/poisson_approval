@@ -96,6 +96,15 @@ class ProfileTwelve(ProfileCardinal):
         >>> tau = profile.tau(strategy)
         >>> print(tau)
         <a: 1/15, ab: 1/30, ac: 1/10, b: 3/5, c: 1/5> ==> b
+
+    The profile can include weak orders:
+
+        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10)},
+        ...                         d_weak_order_share={'a~b>c': Fraction(3, 10)})
+        >>> profile
+        ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5)}, d_weak_order_share={'a~b>c': Fraction(3, 10)})
+        >>> print(profile)
+        <ab_c: 1/10, b_ac: 3/5, a~b>c: 3/10> (Condorcet winner: b)
     """
 
     def __init__(self, d_type_share, d_weak_order_share=None, normalization_warning=True,
@@ -221,11 +230,12 @@ class ProfileTwelve(ProfileCardinal):
         >>> print(profile)
         <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
-        result = '<'
-        result += str(self.d_type_share)[1:-1]
+        contents = []
+        if self.contains_rankings:
+            contents.append(str(self.d_type_share)[1:-1])
         if self.contains_weak_orders:
-            result += ', ' + str(self.d_weak_order_share)[1:-1]
-        result += '>'
+            contents.append(str(self.d_weak_order_share)[1:-1])
+        result = '<' + ', '.join(contents) + '>'
         if self.is_profile_condorcet:
             result += ' (Condorcet winner: %s)' % self.condorcet_winners
         if self.ratio_sincere > 0:
