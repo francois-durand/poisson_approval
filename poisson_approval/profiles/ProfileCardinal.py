@@ -274,7 +274,8 @@ class ProfileCardinal(Profile):
         return strategy, tau
 
     def iterated_voting(self, init, n_max_episodes,
-                        perception_update_ratio=1, ballot_update_ratio=1, verbose=False):
+                        perception_update_ratio=1, ballot_update_ratio=1,
+                        winning_frequency_update_ratio=one_over_t_plus_one, verbose=False):
         """Seek for convergence by iterated voting.
 
         Parameters
@@ -291,6 +292,13 @@ class ProfileCardinal(Profile):
         ballot_update_ratio : Number in [0, 1]
             The ratio of voters who update their ballot:
             ``tau_actual = (1 - ballot_update_ratio) * tau_actual + ballot_update_ratio * tau_response``.
+        winning_frequency_update_ratio : callable or Number
+            The coefficient when updating the winning frequency of each candidate:
+            ``d_candidate_winning_frequency[c] =
+            (1 - winning_frequency_update_ratio(t)) * d_candidate_winning_frequency[c]
+            + winning_frequency_update_ratio(t) * winning_probability[c]``.
+            The default function is :func:`~utils.Util.one_over_t_plus_one`, which leads to an arithmetic average.
+            Note that this parameters has an influence only in case of non-convergence.
         verbose : bool
             If True, print all intermediate steps.
 
@@ -327,11 +335,13 @@ class ProfileCardinal(Profile):
         In general, you should use :meth:`iterated_voting` only if you care about cycles, with the constraint
         that it implies having constant update ratios.
         """
+        winning_frequency_update_ratio = to_callable(winning_frequency_update_ratio)
         strategy, tau_actual = self._initializer(init)
         tau_perceived = tau_actual
         strategies = [strategy]
         taus_actual = [tau_actual]
         taus_perceived = [tau_perceived]
+        array_candidate_winning_frequency = candidates_to_probabilities(tau_actual.winners)
         if verbose:
             print('t = %s' % 0)
             print('strategy: %s' % strategy)
@@ -352,6 +362,9 @@ class ProfileCardinal(Profile):
                                              ratio_b=ballot_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, normalization_warning=False, voting_rule=self.voting_rule)
+            array_candidate_winning_frequency = (
+                (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
+                + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -381,7 +394,7 @@ class ProfileCardinal(Profile):
             cycle_taus_actual = []
             cycle_taus_perceived = []
             cycle_strategies = []
-            d_candidate_winning_frequency = _d_candidate_winning_frequency(taus_actual)
+            d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
         return {'cycle_taus_perceived': cycle_taus_perceived,
                 'cycle_strategies': cycle_strategies,
                 'cycle_taus_actual': cycle_taus_actual,
@@ -389,7 +402,8 @@ class ProfileCardinal(Profile):
                 'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
     def fictitious_play(self, init, n_max_episodes,
-                        perception_update_ratio=one_over_t_plus_one, ballot_update_ratio=1, verbose=False):
+                        perception_update_ratio=one_over_t_plus_one, ballot_update_ratio=1,
+                        winning_frequency_update_ratio=one_over_t_plus_one, verbose=False):
         """Seek for convergence by fictitious play.
 
         Parameters
@@ -413,6 +427,13 @@ class ProfileCardinal(Profile):
             For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
             is the constant 1, which corresponds to a full update. If `ballot_update_ratio` is a Number, it is
             considered as a constant function.
+        winning_frequency_update_ratio : callable or Number
+            The coefficient when updating the winning frequency of each candidate:
+            ``d_candidate_winning_frequency[c] =
+            (1 - winning_frequency_update_ratio(t)) * d_candidate_winning_frequency[c]
+            + winning_frequency_update_ratio(t) * winning_probability[c]``.
+            The default function is :func:`~utils.Util.one_over_t_plus_one`, which leads to an arithmetic average.
+            Note that this parameters has an influence only in case of non-convergence.
         verbose : bool
             If True, print all intermediate steps.
 
@@ -443,9 +464,10 @@ class ProfileCardinal(Profile):
         """
         perception_update_ratio = to_callable(perception_update_ratio)
         ballot_update_ratio = to_callable(ballot_update_ratio)
+        winning_frequency_update_ratio = to_callable(winning_frequency_update_ratio)
 
         strategy, tau_actual = self._initializer(init)
-        array_candidate_winning_count = candidates_to_probabilities(tau_actual.winners)
+        array_candidate_winning_frequency = candidates_to_probabilities(tau_actual.winners)
         tau_perceived = tau_actual
         if verbose:
             print('t = %s' % 0)
@@ -468,7 +490,9 @@ class ProfileCardinal(Profile):
                                              ratio_b=ballot_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, normalization_warning=False, voting_rule=self.voting_rule)
-            array_candidate_winning_count += candidates_to_probabilities(tau_actual.winners)
+            array_candidate_winning_frequency = (
+                (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
+                + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -480,7 +504,6 @@ class ProfileCardinal(Profile):
                 return {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
                         'd_candidate_winning_frequency': candidates_to_d_candidate_probability(tau_actual.winners)}
         n_taus = n_max_episodes + 1
-        array_candidate_winning_frequency = array_candidate_winning_count / n_taus
         d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
         return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
                 'd_candidate_winning_frequency': d_candidate_winning_frequency}

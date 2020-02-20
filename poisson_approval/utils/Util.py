@@ -789,9 +789,9 @@ def one_over_t_plus_one(t):
     Examples
     --------
         >>> one_over_t_plus_one(1)
-        0.5
+        Fraction(1, 2)
     """
-    return 1 / (t + 1)
+    return my_division(1, t + 1)
 
 
 def one_over_sqrt_t_plus_one(t):
@@ -813,7 +813,7 @@ def one_over_sqrt_t_plus_one(t):
         >>> one_over_sqrt_t_plus_one(1)
         0.7071067811865475
     """
-    return 1 / sqrt(t + 1)
+    return my_division(1, sqrt(t + 1))
 
 
 def one_over_log_t_plus_two(t):
@@ -835,7 +835,7 @@ def one_over_log_t_plus_two(t):
         >>> one_over_log_t_plus_two(1)
         0.9102392266268373
     """
-    return 1 / log(t + 2)
+    return my_division(1, log(t + 2))
 
 
 def one_over_log_log_t_plus_fifteen(t):
@@ -857,7 +857,7 @@ def one_over_log_log_t_plus_fifteen(t):
         >>> one_over_log_log_t_plus_fifteen(1)
         0.9806022744169713
     """
-    return 1 / log(log(t + 15))
+    return my_division(1, log(log(t + 15)))
 
 
 def is_weak_order(o):
