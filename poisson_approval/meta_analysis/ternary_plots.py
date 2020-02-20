@@ -258,28 +258,32 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
                            Patch(facecolor=color_c, edgecolor=color_c_edge, label='$c$')]
         self.legend(title=legend_title, handles=legend_elements)
 
-    def annotate_condorcet(self, right_ranking, top_ranking, left_ranking):
+    def annotate_condorcet(self, right_order, top_order, left_order):
         """Annotate who is the Condorcet winner depending on the region.
 
         This method can be used when each point of the simplex represents a profile with only three different types,
         each coordinate representing the share of one type. It annotates the regions according to which candidate
-        is the Condorcet winner, and indicates where no one is the Condorcet winner..
+        is the Condorcet winner, and indicates where no one is the Condorcet winner.
+
+        If there are weak orders, the method may not work on all distributions because it relies on an external
+        package called `shapely`. If there are rankings only, it is supposed to work on all distributions.
 
         Parameters
         ----------
-        right_ranking : str
-            The ranking whose share is maximal at the right corner.
-        top_ranking : str
-            The ranking whose share is maximal at the top corner.
-        left_ranking : str
-            The ranking whose share is maximal at the left corner.
+        right_order : str
+            The order whose share is maximal at the right corner.
+        top_order : str
+            The order whose share is maximal at the top corner.
+        left_order : str
+            The order whose share is maximal at the left corner.
         """
         try:
-            draw_condorcet_zones(self, right_ranking, top_ranking, left_ranking)
+            draw_condorcet_zones(self, right_order, top_order, left_order)
         except NameError:
-            self._annotate_condorcet_old(right_ranking, top_ranking, left_ranking)
+            self._annotate_condorcet_old(right_order, top_order, left_order)
 
     def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking):
+        """Old version, for rankings only"""
         count_candidate_tops = dict(Counter([
             ranking[0] for ranking in [right_ranking, top_ranking, left_ranking]]))
         if len(count_candidate_tops) == 1:
@@ -432,7 +436,7 @@ def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, 
                           right_label=label_r,
                           top_label=label_t,
                           left_label=label_l, **kwargs)
-    tax.annotate_condorcet(right_ranking=order_r, top_ranking=order_t, left_ranking=order_l)
+    tax.annotate_condorcet(right_order=order_r, top_order=order_t, left_order=order_l)
     tax.set_title_padded('Number of bloc equilibria')
 
 
@@ -465,7 +469,7 @@ def ternary_plot_winners_at_equilibrium(cls, right_type, top_type, left_type, sc
                            left_label=label_l,
                            legend_title='Winners',
                            **kwargs)
-    tax.annotate_condorcet(right_ranking=order_r, top_ranking=order_t, left_ranking=order_l)
+    tax.annotate_condorcet(right_order=order_r, top_order=order_t, left_order=order_l)
 
 
 def ternary_plot_winning_frequencies(cls, right_type, top_type, left_type, scale, n_max_episodes, **kwargs):
@@ -505,4 +509,4 @@ def ternary_plot_winning_frequencies(cls, right_type, top_type, left_type, scale
                            left_label=label_l,
                            legend_title='Winners',
                            **kwargs)
-    tax.annotate_condorcet(right_ranking=order_r, top_ranking=order_t, left_ranking=order_l)
+    tax.annotate_condorcet(right_order=order_r, top_order=order_t, left_order=order_l)
