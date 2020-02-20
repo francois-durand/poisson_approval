@@ -2,6 +2,35 @@
 History
 =======
 
+--------------------------------
+0.15.0 (2020-02-10): Weak Orders
+--------------------------------
+
+* Implement weak orders:
+
+  * ``Profile`` now has attributes ``d_weak_order_share``, ``support_in_weak_orders``, ``contains_weak_orders``,
+    ``contains_rankings``, ``d_ballot_weak_voters_sincere``, ``d_ballot_weak_voters_fanatic``.
+  * Subclasses of Profile have a parameter ``d_weak_order_share``.
+  * Remove methods ``ProfileOrdinal.support`` and ``ProfileOrdinal.is_generic``: with the presence of weak orders,
+    their names had become misleading, whereas ``support_in_rankings`` and ``is_generic_in_ranking`` is non-ambiguous.
+  * ``TernaryAxesSubplotPoisson.annotate_condorcet`` now also works with weak orders. However, it may not work on
+    all distributions because it relies on the external package `shapely`. If there are only rankings, it should still
+    work anyway.
+  * Add utilities ``is_weak_order``, ``is_lover``, ``is_hater``, ``sort_weak_order``.
+
+* Add shortcut functions for some common ternary plots:
+
+  * ``ternary_plot_n_bloc_equilibria``: number of bloc equilibria.
+  * ``ternary_plot_winners_at_equilibrium``: winners at equilibrium.
+  * ``ternary_plot_winning_frequencies``: winning frequencies in fictitious play.
+
+* Methods ``ProfileCardinal.iterated_voting`` and ``ProfileCardinal.fictitious_play`` have a new parameter
+  ``winning_frequency_update_ratio``, indicating how the winning frequencies are computed in case of non-convergence.
+  Note however that in case of convergence to a periodical orbit (for iterated voting), it remains the arithmetic
+  average anyway.
+
+* Add utility ``my_division``: division of two numbers, trying to be exact if it is reasonable.
+
 ---------------------------------------------------------------------------------
 0.14.0 (2020-02-16): Flexible Initialization of Iterated Voting / Fictitious Play
 ---------------------------------------------------------------------------------
