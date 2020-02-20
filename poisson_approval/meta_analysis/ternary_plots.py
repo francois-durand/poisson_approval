@@ -410,7 +410,7 @@ def _order_and_label(t):
         return t, ('$r(%s)$' % t).replace('~', '\\sim ')
 
 
-def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, **kwargs):
+def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the number of bloc equilibria.
 
     Parameters
@@ -440,7 +440,7 @@ def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, 
     tax.set_title_padded('Number of bloc equilibria')
 
 
-def ternary_plot_winners_at_equilibrium(cls, right_type, top_type, left_type, scale, **kwargs):
+def ternary_plot_winners_at_equilibrium(cls, right_type, top_type, left_type, scale, **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the winners at equilibrium.
 
     Parameters
@@ -472,7 +472,8 @@ def ternary_plot_winners_at_equilibrium(cls, right_type, top_type, left_type, sc
     tax.annotate_condorcet(right_order=order_r, top_order=order_t, left_order=order_l)
 
 
-def ternary_plot_winning_frequencies(cls, right_type, top_type, left_type, scale, n_max_episodes, **kwargs):
+def ternary_plot_winning_frequencies(cls, right_type, top_type, left_type, scale, n_max_episodes,
+                                     **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the winning frequencies in fictitious play.
 
     Parameters

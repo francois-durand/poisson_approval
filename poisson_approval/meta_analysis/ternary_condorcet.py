@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 try:
     from shapely.geometry import Polygon
-except OSError:
+except OSError:  # pragma: no cover
     pass
 from poisson_approval.constants.constants import CANDIDATES
 from poisson_approval.utils.Util import is_weak_order, is_lover
@@ -36,7 +36,7 @@ def _m_permutation(role_x, role_y, role_z):
     return result
 
 
-def _polygon_victory(x, y, z):
+def _polygon_victory(x, y, z):  # pragma: no cover
     """Polygon of victory.
 
     Polygon of victory of one candidate, say `a`, against another candidate, say `b`.
@@ -125,7 +125,7 @@ def _d_candidate_ordinal_utility(order):
         return {order[0]: 1, order[1]: .5, order[2]: 0}
 
 
-def _polygon_condorcet(candidate, order_x, order_y, order_z):
+def _polygon_condorcet(candidate, order_x, order_y, order_z):  # pragma: no cover
     """Polygon representing the zone where a candidate is a Condorcet winner.
 
     Parameters
@@ -163,7 +163,7 @@ def _polygon_condorcet(candidate, order_x, order_y, order_z):
     return polygon1.intersection(polygon2)
 
 
-def _draw_polygon(tax, polygon, name):
+def _draw_polygon(tax, polygon, name):  # pragma: no cover
     """Draw a polygon in a ternary plot.
 
     Parameters
@@ -180,7 +180,7 @@ def _draw_polygon(tax, polygon, name):
     tax.annotate_simplex(name, polygon.centroid.coords[0])
 
 
-def draw_condorcet_zones(tax, right_ranking, top_ranking, left_ranking):
+def draw_condorcet_zones(tax, right_ranking, top_ranking, left_ranking):  # pragma: no cover
     """Draw and annotate the Condorcet zones.
 
     Cf. :meth:`TernaryAxesSubplotPoisson.annotate_condorcet`.
