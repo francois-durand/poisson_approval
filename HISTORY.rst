@@ -2,8 +2,14 @@
 History
 =======
 
+-----------------------------------------
+0.16.0 (2020-02-22): ProfileNoisyDiscrete
+-----------------------------------------
+
+* Add ``ProfileNoisyDiscrete``: a profile with a discrete distribution of voters, with noise.
+
 --------------------------------
-0.15.0 (2020-02-10): Weak Orders
+0.15.0 (2020-02-20): Weak Orders
 --------------------------------
 
 * Implement weak orders:
