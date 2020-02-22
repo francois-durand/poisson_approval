@@ -399,6 +399,8 @@ def _order_and_label(t):
         ('a~b>c', '$r(a\\sim b>c)$')
         >>> _order_and_label(('abc', 0.5))
         ('abc', '$r(abc, u_b = 0.5)$')
+        >>> _order_and_label(('abc', 0.5, 0.01))
+        ('abc', '$r(abc, u_b = 0.5 ± 0.01)$')
     """
     if isinstance(t, tuple):
         if len(t) == 2:  # ProfileDiscrete

@@ -73,7 +73,7 @@ class ProfileNoisyDiscrete(ProfileCardinal):
     Some examples of operations on the profile:
 
         >>> profile
-        ProfileDiscrete({'abc': {(0.3, 0.01): Fraction(13, 50), (0.8, 0.01): Fraction(53, 100)}, \
+        ProfileNoisyDiscrete({'abc': {(0.3, 0.01): Fraction(13, 50), (0.8, 0.01): Fraction(53, 100)}, \
 'bac': {(0.1, 0.01): Fraction(21, 100)}})
         >>> profile.d_ranking_share
         {'abc': Fraction(79, 100), 'bac': Fraction(21, 100)}
@@ -92,7 +92,7 @@ class ProfileNoisyDiscrete(ProfileCardinal):
         ...     {('abc', 0.3, 0.01): Fraction(26, 100), ('bac', 0.1, 0.01): Fraction(21, 100)},
         ...     d_weak_order_share={'a~b>c': Fraction(53, 100)})
         >>> profile
-        ProfileDiscrete({'abc': {(0.3, 0.01): Fraction(13, 50)}, 'bac': {(0.1, 0.01): Fraction(21, 100)}}, \
+        ProfileNoisyDiscrete({'abc': {(0.3, 0.01): Fraction(13, 50)}, 'bac': {(0.1, 0.01): Fraction(21, 100)}}, \
 d_weak_order_share={'a~b>c': Fraction(53, 100)})
         >>> print(profile)
         <abc 0.3 ± 0.01: 13/50, bac 0.1 ± 0.01: 21/100, a~b>c: 53/100> (Condorcet winner: a)
@@ -113,7 +113,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             # Ranking r, utility u, share s, noise epsilon
             if s == 0:
                 return
-            elif epsilon == 0:
+            elif epsilon == 0:  # pragma: no cover
                 raise ValueError('Noise should be > 0')
             else:
                 self.d_ranking_utility_noise_share[r][(u, epsilon)] = (
@@ -194,7 +194,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             ...     ('bac', 0.1, 0.01): Fraction(21, 100)
             ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
             >>> profile
-            ProfileDiscrete({'abc': {(0.3, 0.01): Fraction(13, 50), (0.8, 0.01): Fraction(53, 100)}, \
+            ProfileNoisyDiscrete({'abc': {(0.3, 0.01): Fraction(13, 50), (0.8, 0.01): Fraction(53, 100)}, \
 'bac': {(0.1, 0.01): Fraction(21, 100)}}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_ranking_utility_noise_share)
@@ -206,7 +206,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             arguments += ', ratio_fanatic=%r' % self.ratio_fanatic
         if self.voting_rule != APPROVAL:
             arguments += ', voting_rule=%r' % self.voting_rule
-        return 'ProfileDiscrete(%s)' % arguments
+        return 'ProfileNoisyDiscrete(%s)' % arguments
 
     def __str__(self):
         """
