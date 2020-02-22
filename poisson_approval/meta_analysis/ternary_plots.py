@@ -401,7 +401,10 @@ def _order_and_label(t):
         ('abc', '$r(abc, u_b = 0.5)$')
     """
     if isinstance(t, tuple):
-        return t[0], '$r(%s, u_%s = %s)$' % (t[0], t[0][1], t[1])
+        if len(t) == 2:  # ProfileDiscrete
+            return t[0], '$r(%s, u_%s = %s)$' % (t[0], t[0][1], t[1])
+        else:  # ProfileNoisyDiscrete
+            return t[0], '$r(%s, u_%s = %s ± %s)$' % (t[0], t[0][1], t[1], t[2])
     if len(t) == 3:
         return t, '$r(%s)$' % t
     if len(t) == 4:
