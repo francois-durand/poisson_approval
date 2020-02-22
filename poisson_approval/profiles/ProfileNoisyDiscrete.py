@@ -100,6 +100,11 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
     def __init__(self, d, d_weak_order_share=None, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
                  voting_rule=APPROVAL):
+        """
+            >>> profile = ProfileNoisyDiscrete({42: 51})
+            Traceback (most recent call last):
+            TypeError: Key should be tuple or str, got: <class 'int'> instead.
+        """
         super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
         self.d_ranking_utility_noise_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
