@@ -16,10 +16,10 @@ class ProfileDiscrete(ProfileCardinal):
     Parameters
     ----------
     d : dict
-        The first possible format is a dict of dict that, to a ranking (first key) and a utility (second key),
-        associates the share of voters who have this ranking and this utility for their second candidate. The second
-        possible format is a dict that, to a tuple (ranking, utility), associates the corresponding share of voters.
-        The two formats can be mixed in the same profile declaration (cf. example below).
+        The first possible format is a dict that maps a tuple (ranking, utility) to the share of voters who have this
+        ranking, and this utility for their second candidate. The second possible format is a dict of dict that maps a
+        ranking (first key) and a utility (second key) to the corresponding share of voters; it corresponds more
+        closely to the attribute :attr:`d_ranking_utility_share` mentioned below. Cf. examples below.
     d_weak_order_share : dict
         E.g. ``{'a~b>c': 0.2, 'a>b~c': 0.1}``. ``d_weak_order_share['a~b>c']`` is the probability that a voter likes
         candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
@@ -46,15 +46,32 @@ class ProfileDiscrete(ProfileCardinal):
 
     Examples
     --------
+    The first possible input syntax is a dict that maps a tuple (ranking, utility) to a share of voters:
+
+        >>> from fractions import Fraction
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', 0.3): Fraction(26, 100),
+        ...     ('abc', 0.8): Fraction(53, 100),
+        ...     ('bac', 0.1): Fraction(21, 100)
+        ... })
+        >>> print(profile)
+        <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a)
+
+    The second possible input syntax is a dict that maps a ranking to a nested dict, itself mapping a utility to
+    a share of voters:
+
         >>> from fractions import Fraction
         >>> profile = ProfileDiscrete({
         ...     'abc': {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},
-        ...     ('bac', 0.1): Fraction(21, 100)
+        ...     'bac': {0.1: Fraction(21, 100)}
         ... })
-        >>> profile
-        ProfileDiscrete({'abc': {0.3: Fraction(13, 50), 0.8: Fraction(53, 100)}, 'bac': {0.1: Fraction(21, 100)}})
         >>> print(profile)
         <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a)
+
+    Some examples of operations on the profile:
+
+        >>> profile
+        ProfileDiscrete({'abc': {0.3: Fraction(13, 50), 0.8: Fraction(53, 100)}, 'bac': {0.1: Fraction(21, 100)}})
         >>> profile.d_ranking_share
         {'abc': Fraction(79, 100), 'bac': Fraction(21, 100)}
         >>> profile.abc
