@@ -184,7 +184,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
             >>> profile
             ProfileDiscrete({'abc': {0.3: Fraction(13, 50), 0.8: Fraction(53, 100)}, 'bac': {0.1: Fraction(21, 100)}}, \
-    ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
+ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_ranking_utility_share)
         if self.contains_weak_orders:
@@ -207,7 +207,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))
             >>> print(profile)
             <abc 0.3: 13/50, abc 0.8: 53/100, bac 0.1: 21/100> (Condorcet winner: a) (ratio_sincere: 1/10) \
-    (ratio_fanatic: 1/5)
+(ratio_fanatic: 1/5)
         """
         contents = []
         if self.contains_rankings:
