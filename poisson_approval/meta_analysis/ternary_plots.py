@@ -415,8 +415,8 @@ def _order_and_label(t):
         return t, ('$r(%s)$' % t).replace('~', '\\sim ')
 
 
-def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, **kwargs):  # pragma: no cover
-    """Shortcut: ternary plot for the number of bloc equilibria.
+def ternary_plot_n_equilibria_ordinal(cls, right_type, top_type, left_type, scale, **kwargs):  # pragma: no cover
+    """Shortcut: ternary plot for the number of ordinal equilibria.
 
     Parameters
     ----------
@@ -429,7 +429,7 @@ def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, 
     kwargs
         Other keyword arguments are passed to the function `heatmap_intensity`.
     """
-    def n_bloc_equilibria(right, top, left):
+    def n_equilibria_ordinal(right, top, left):
         profile = cls({right_type: right, top_type: top, left_type: left})
         return len(profile.analyzed_strategies_ordinal.equilibria)
 
@@ -437,12 +437,12 @@ def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, 
     order_r, label_r = _order_and_label(right_type)
     order_t, label_t = _order_and_label(top_type)
     order_l, label_l = _order_and_label(left_type)
-    tax.heatmap_intensity(n_bloc_equilibria,
+    tax.heatmap_intensity(n_equilibria_ordinal,
                           right_label=label_r,
                           top_label=label_t,
                           left_label=label_l, **kwargs)
     tax.annotate_condorcet(right_order=order_r, top_order=order_t, left_order=order_l)
-    tax.set_title_padded('Number of bloc equilibria')
+    tax.set_title_padded('Number of ordinal equilibria')
 
 
 def ternary_plot_winners_at_equilibrium_ordinal(cls, right_type, top_type, left_type, scale,
