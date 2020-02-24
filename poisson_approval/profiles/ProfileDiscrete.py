@@ -308,7 +308,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
                                voting_rule=self.voting_rule)
 
     @cached_property
-    def analyzed_strategies(self):
+    def analyzed_strategies_pure(self):
         """AnalyzedStrategies : Analyzed strategies of the profile.
 
         Examples
@@ -320,7 +320,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             ...     ('abc', 0.8): Fraction(53, 100),
             ...     ('bac', 0.1): Fraction(21, 100)
             ... })
-            >>> profile.analyzed_strategies
+            >>> profile.analyzed_strategies_pure
             Equilibrium:
             <abc: a, bac: b> ==> a (FF)
             <BLANKLINE>
@@ -330,7 +330,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             <abc: utility-dependent (0.55), bac: ab> ==> a (FF)
             <abc: utility-dependent (0.55), bac: b> ==> a (FF)
             <abc: a, bac: ab> ==> a (FF)
-            >>> print(profile.winners_at_equilibrium)
+            >>> print(profile.winners_at_equilibrium_pure)
             a
         """
         equilibria = []

@@ -431,7 +431,7 @@ def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, 
     """
     def n_bloc_equilibria(right, top, left):
         profile = cls({right_type: right, top_type: top, left_type: left})
-        return len(profile.analyzed_strategies.equilibria)
+        return len(profile.analyzed_strategies_ordinal.equilibria)
 
     figure, tax = ternary_figure(scale=scale)
     order_r, label_r = _order_and_label(right_type)

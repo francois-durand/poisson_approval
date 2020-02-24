@@ -360,10 +360,6 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
             voting_rule=self.voting_rule)
 
-    @cached_property
-    def analyzed_strategies(self):
-        raise NotImplementedError
-
 
 def _crop(x, low=0, high=1):
     """Crop a number to an interval.

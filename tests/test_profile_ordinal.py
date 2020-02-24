@@ -66,7 +66,7 @@ def test_d_ballot_share_weak_voters_sincere():
 def test_no_equilibrium():
     """
         >>> profile = ProfileOrdinal({'abc': Fraction(2, 5), 'bca': Fraction(2, 5), 'cab': Fraction(1, 5)})
-        >>> profile.winners_at_equilibrium
+        >>> profile.winners_at_equilibrium_ordinal
         Winners()
     """
     pass

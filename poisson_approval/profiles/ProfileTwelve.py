@@ -453,7 +453,7 @@ class ProfileTwelve(ProfileCardinal):
         return status
 
     @cached_property
-    def analyzed_strategies(self):
+    def analyzed_strategies_pure(self):
         """AnalyzedStrategies : Analyzed strategies of the profile.
 
         Examples
@@ -461,7 +461,7 @@ class ProfileTwelve(ProfileCardinal):
             >>> from fractions import Fraction
             >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
             ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> profile.analyzed_strategies
+            >>> profile.analyzed_strategies_pure
             Equilibria:
             <abc: a, bac: b, cab: ac> ==> b (FF)
             <abc: a, bac: ab, cab: c> ==> a (D)
@@ -477,7 +477,7 @@ class ProfileTwelve(ProfileCardinal):
             <abc: ab, bac: ab, cab: c> ==> a, b (FF)
             <abc: ab, bac: ab, cab: ac> ==> a (D)
             <abc: ab, bac: ab, cab: utility-dependent> ==> a (D)
-            >>> print(profile.winners_at_equilibrium)
+            >>> print(profile.winners_at_equilibrium_pure)
             a, b
         """
         equilibria = []

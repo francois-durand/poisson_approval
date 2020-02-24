@@ -275,14 +275,6 @@ class Profile(DeleteCacheMixin):
         }, profile=self, voting_rule=self.voting_rule)
 
     @cached_property
-    def analyzed_strategies(self):
-        """AnalyzedStrategies : Analyzed strategies of the profile.
-
-        Not implemented for this class.
-        """
-        raise NotImplementedError
-
-    @cached_property
     def winners_at_equilibrium(self):
         """Winners : The possible winners at equilibrium.
 
@@ -295,6 +287,34 @@ class Profile(DeleteCacheMixin):
             return Winners(set())
         else:
             return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies.equilibria]))
+
+    @cached_property
+    def winners_at_equilibrium_ordinal(self):
+        """Winners : The possible winners at an ordinal equilibrium.
+
+        This gives the winners in all `equilibria` of :meth:`analyzed_strategies_ordinal` (without the
+        utility-dependent equilibria, even in the classes of profile that may have some).
+
+        For an example, cf. :meth:`ProfileOrdinal.analyzed_strategies_ordinal`.
+        """
+        if not self.analyzed_strategies_ordinal.equilibria:
+            return Winners(set())
+        else:
+            return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies_ordinal.equilibria]))
+
+    @cached_property
+    def winners_at_equilibrium_pure(self):
+        """Winners : The possible winners at a pure equilibrium.
+
+        This gives the winners in all `equilibria` of :meth:`analyzed_strategies_pure` (without the
+        utility-dependent equilibria, even in the classes of profile that may have some).
+
+        For an example, cf. :meth:`ProfileDiscrete.analyzed_strategies_pure`.
+        """
+        if not self.analyzed_strategies_pure.equilibria:
+            return Winners(set())
+        else:
+            return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies_pure.equilibria]))
 
 
 def make_property_ranking_share(ranking, doc):

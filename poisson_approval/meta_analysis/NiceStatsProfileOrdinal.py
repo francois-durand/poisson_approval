@@ -44,7 +44,7 @@ class NiceStatsProfileOrdinal:
         >>> initialize_random_seeds()
         >>> nice_stats = NiceStatsProfileOrdinal(
         ...     tests_profile=[
-        ...         (lambda profile: any([strategy for strategy in profile.analyzed_strategies.equilibria
+        ...         (lambda profile: any([strategy for strategy in profile.analyzed_strategies_ordinal.equilibria
         ...                               if strategy.profile.condorcet_winners == strategy.winners]),
         ...          'There exists a true equilibrium electing the CW'),
         ...     ],
