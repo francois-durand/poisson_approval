@@ -258,15 +258,21 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
                            Patch(facecolor=color_c, edgecolor=color_c_edge, label='$c$')]
         self.legend(title=legend_title, handles=legend_elements)
 
-    def annotate_condorcet(self, right_order, top_order, left_order):
+    def annotate_condorcet(self, right_order, top_order, left_order, d_order_fixed_share=None):
         """Annotate who is the Condorcet winner depending on the region.
 
-        This method can be used when each point of the simplex represents a profile with only three different types,
-        each coordinate representing the share of one type. It annotates the regions according to which candidate
-        is the Condorcet winner, and indicates where no one is the Condorcet winner.
+        We consider a simplex where:
 
-        If there are weak orders, the method may not work on all distributions because it relies on an external
-        package called `shapely`. If there are rankings only, it is supposed to work on all distributions.
+        * Fixed shares of voters have preference orders given by `d_order_fixed_share`.
+        * The remaining voters are split between `right_order`, `top_order` and `left_order` in proportions that are
+          given by the point in the simplex.
+
+        This method annotates the regions according to which candidate is the Condorcet winner, and indicates where no
+        one is the Condorcet winner.
+
+        If there are weak orders and/or fixed shares of voters, the method may not work on all distributions because it
+        relies on an external package called `shapely`. If there are rankings only and no fixed shares of voters, it is
+        supposed to work on all distributions.
 
         Parameters
         ----------
@@ -276,14 +282,18 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
             The order whose share is maximal at the top corner.
         left_order : str
             The order whose share is maximal at the left corner.
+        d_order_fixed_share : dict, optional
+            Key: order. Value: a fixed share of voters in [0, 1].
         """
         try:
-            draw_condorcet_zones(self, right_order, top_order, left_order)
+            draw_condorcet_zones(self, right_order, top_order, left_order, d_order_fixed_share)
         except NameError:
-            self._annotate_condorcet_old(right_order, top_order, left_order)
+            self._annotate_condorcet_old(right_order, top_order, left_order, d_order_fixed_share)
 
-    def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking):
+    def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking, d_order_fixed_share):
         """Old version, for rankings only"""
+        if d_order_fixed_share is not None:
+            raise NotImplementedError
         count_candidate_tops = dict(Counter([
             ranking[0] for ranking in [right_ranking, top_ranking, left_ranking]]))
         if len(count_candidate_tops) == 1:
