@@ -2,6 +2,14 @@
 History
 =======
 
+-------------------------------------------------------------------------
+0.16.1 (2020-02-22): More Flexible Initialization of ProfileNoisyDiscrete
+-------------------------------------------------------------------------
+
+* ``ProfileNoisyDiscrete``: add a parameter ``noise`` that enables not to mention explicitly the value of the noise for
+  each group of voters. This is especially convenient in the quite common case where all groups of voters have the
+  same noise.
+
 -----------------------------------------
 0.16.0 (2020-02-22): ProfileNoisyDiscrete
 -----------------------------------------
