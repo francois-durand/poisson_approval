@@ -16,11 +16,9 @@ class ProfileNoisyDiscrete(ProfileCardinal):
     Parameters
     ----------
     d : dict
-        The first possible format is a dict that maps a tuple (ranking, utility, noise) to the share of voters who have
-        this ranking, and this utility for their second candidate (up to the noise). The second possible format is a
-        dict of dict that maps a ranking (first key) and a tuple (utility, noise) (second key) to the corresponding
-        share of voters; it corresponds more closely to the attribute :attr:`d_ranking_utility_noise_share` mentioned
-        below. Cf. examples below.
+        Cf. examples below for the different types of input syntax.
+    noise : Number, optional
+        Cf. examples below for the different types of input syntax.
     d_weak_order_share : dict
         E.g. ``{'a~b>c': 0.2, 'a>b~c': 0.1}``. ``d_weak_order_share['a~b>c']`` is the probability that a voter likes
         candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
@@ -48,7 +46,44 @@ class ProfileNoisyDiscrete(ProfileCardinal):
 
     Examples
     --------
-    The first possible input syntax is a dict that maps a tuple (ranking, utility, noise) to a share of voters:
+    The four following example illustrate different ways to define the same profile, where:
+
+    * 26/100 of the voters have ranking `abc` and a utility for `b` that is uniformly distributed between 0.3-0.01 and
+      0.3+0.01,
+    * 53/100 of the voters have ranking `abc` and a utility for `b` that is uniformly distributed between 0.8-0.01 and
+      0.8+0.01,
+    * 21/100 of the voters have ranking `bac` and a utility for `a` that is uniformly distributed between 0.3-0.01 and
+      0.1+0.01,
+
+    The first possible type of input syntax is a dict that maps a tuple (ranking, utility) to a share of voters. All
+    groups of voters have the same noise about their utility, given by the parameter `noise`:
+
+        >>> from fractions import Fraction
+        >>> profile = ProfileNoisyDiscrete({
+        ...     ('abc', 0.3): Fraction(26, 100),
+        ...     ('abc', 0.8): Fraction(53, 100),
+        ...     ('bac', 0.1): Fraction(21, 100)
+        ... }, noise=0.01)
+        >>> print(profile)
+        <abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100> (Condorcet winner: a)
+
+    The second type of input syntax has the advantage of not repeating a ranking if is it used for several groups of
+    voters. It is a dict that maps a ranking to a nested dictionary, itself mapping a utility to a share of voters.
+    Like above, all groups of voters have the same noise, given by the parameter `noise`:
+
+        >>> from fractions import Fraction
+        >>> profile = ProfileNoisyDiscrete({
+        ...     'abc': {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},
+        ...     'bac': {0.1: Fraction(21, 100)}
+        ... }, noise=0.01)
+        >>> print(profile)
+        <abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100> (Condorcet winner: a)
+
+    The two remaining types of input syntax are variants of the two types presented above. They are a bit more verbose
+    but they enable to specify a specific noise for each group of voters.
+
+    Here is the variant of the first type of syntax. It is a dict that maps tuple (ranking, utility, noise) to
+    a share of voters. It corresponds exactly to the attribute :attr:`d_ranking_utility_noise_share`:
 
         >>> from fractions import Fraction
         >>> profile = ProfileNoisyDiscrete({
@@ -59,8 +94,8 @@ class ProfileNoisyDiscrete(ProfileCardinal):
         >>> print(profile)
         <abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100> (Condorcet winner: a)
 
-    The second possible input syntax is a dict that maps a ranking to a nested dict, itself mapping a tuple
-    (utility, noise) to a share of voters:
+    And here is the variant of the second type of syntax. It is a dict that maps a ranking to a nested dict, itself
+    mapping a tuple (utility, noise) to a share of voters:
 
         >>> from fractions import Fraction
         >>> profile = ProfileNoisyDiscrete({
@@ -98,13 +133,8 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
         <abc 0.3 ± 0.01: 13/50, bac 0.1 ± 0.01: 21/100, a~b>c: 53/100> (Condorcet winner: a)
     """
 
-    def __init__(self, d, d_weak_order_share=None, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
-                 voting_rule=APPROVAL):
-        """
-            >>> profile = ProfileNoisyDiscrete({42: 51})
-            Traceback (most recent call last):
-            TypeError: Key should be tuple or str, got: <class 'int'> instead.
-        """
+    def __init__(self, d, noise=None, d_weak_order_share=None, normalization_warning=True,
+                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
         super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
         self.d_ranking_utility_noise_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
@@ -128,16 +158,17 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             if is_weak_order(key):
                 self._d_weak_order_share[sort_weak_order(key)] += value
             elif isinstance(key, tuple):
-                ranking, utility, noise = key
-                share = value
-                add_voters(ranking, utility, noise, share)
-            elif isinstance(key, str):
-                ranking = key
-                d_utility_noise_share = value
-                for (utility, noise), share in d_utility_noise_share.items():
-                    add_voters(ranking, utility, noise, share)
-            else:
-                raise TypeError('Key should be tuple or str, got: %s instead.' % type(key))
+                if len(key) == 2:
+                    add_voters(*key, noise, value)
+                else:  # len(tuple) == 3
+                    add_voters(*key, value)
+            else:  # isinstance(key, str)
+                d_key2_share = value
+                for key2, share in d_key2_share.items():
+                    if isinstance(key2, tuple):
+                        add_voters(key, *key2, share)
+                    else:  # key2 is a number
+                        add_voters(key, key2, noise, share)
         # Input d_weak_order_share
         for weak_order, share in d_weak_order_share.items():
             self._d_weak_order_share[sort_weak_order(weak_order)] += share
