@@ -131,6 +131,8 @@ class ProfileNoisyDiscrete(ProfileCardinal):
 d_weak_order_share={'a~b>c': Fraction(53, 100)})
         >>> print(profile)
         <abc 0.3 ± 0.01: 13/50, bac 0.1 ± 0.01: 21/100, a~b>c: 53/100> (Condorcet winner: a)
+
+    Please note that the voters with a weak order are not "noisy".
     """
 
     def __init__(self, d, noise=None, d_weak_order_share=None, normalization_warning=True,
