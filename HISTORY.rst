@@ -2,8 +2,39 @@
 History
 =======
 
+----------------------------------------
+0.17.0 (2020-02-24): Analyzed Strategies
+----------------------------------------
+
+* ``Profile`` and its subclasses:
+
+  * The method ``analyzed_strategies`` now inputs an iterator of strategies: it perform an analysis on all the
+    strategies given by this iterator.
+  * Add pre-defined iterators of strategies:
+
+    * ``strategies_ordinal`` is defined for any profile.
+    * ``strategies_pure`` is defined for any discrete profile, such as ``ProfileDiscrete`` or ``ProfileTwelve``.
+    * ``strategies_group`` is defined for any profile where a reasonable notion of "group" is defined, such as
+      ``ProfileNoisyDiscrete`` or ``ProfileHistogram``.
+
+  * Add the attributes ``analyzed_strategies_ordinal``, ``analyzed_strategies_pure``, ``analyzed_strategies_group``.
+    Not only do they provide shortcuts combining ``analyzed_strategies`` with the relevant iterator, but they also have
+    the added value of being cached properties: if the user accesses the same attribute several times, it is only
+    computed once.
+
+  * Remove the attribute ``winners_at_equilibrium``. Instead, the corresponding attribute is added to the class
+    ``AnalyzedStrategies``. This gives more flexibility because it is defined for any ``AnalyzedStrategies`` object.
+
+* The consequences on ternary plots are temporary and are likely to change in the near future, with a new release
+  focusing on improved ternary plots.
+
+  * ``ternary_plot_winners_at_equilibrium`` becomes ``ternary_plot_winners_at_equilibrium_ordinal``.
+  * ``ternary_plot_n_bloc_equilibria`` becomes ``ternary_plot_n_equilibria_ordinal``.
+
+* ``Strategy.deepcopy_with_attached_profile`` now also copies the voting rule of the given profile.
+
 -------------------------------------------------------------------------
-0.16.1 (2020-02-22): More Flexible Initialization of ProfileNoisyDiscrete
+0.16.1 (2020-02-24): More Flexible Initialization of ProfileNoisyDiscrete
 -------------------------------------------------------------------------
 
 * ``ProfileNoisyDiscrete``: add a parameter ``noise`` that enables not to mention explicitly the value of the noise for
