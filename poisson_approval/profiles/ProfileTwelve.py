@@ -79,6 +79,24 @@ class ProfileTwelve(ProfileCardinal):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
+        >>> profile.analyzed_strategies_pure
+        Equilibria:
+        <abc: a, bac: b, cab: ac> ==> b (FF)
+        <abc: a, bac: ab, cab: c> ==> a (D)
+        <abc: ab, bac: b, cab: utility-dependent> ==> b (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: a, bac: b, cab: c> ==> b (FF)
+        <abc: a, bac: b, cab: utility-dependent> ==> b (FF)
+        <abc: a, bac: ab, cab: ac> ==> a (D)
+        <abc: a, bac: ab, cab: utility-dependent> ==> a (D)
+        <abc: ab, bac: b, cab: c> ==> b (FF)
+        <abc: ab, bac: b, cab: ac> ==> b (FF)
+        <abc: ab, bac: ab, cab: c> ==> a, b (FF)
+        <abc: ab, bac: ab, cab: ac> ==> a (D)
+        <abc: ab, bac: ab, cab: utility-dependent> ==> a (D)
+        >>> print(profile.analyzed_strategies_pure.winners_at_equilibrium)
+        a, b
 
     In the following example, one third of the voters are sincere:
 
@@ -452,39 +470,15 @@ class ProfileTwelve(ProfileCardinal):
                     return EquilibriumStatus.NOT_EQUILIBRIUM
         return status
 
-    @cached_property
-    def analyzed_strategies(self):
-        """AnalyzedStrategies : Analyzed strategies of the profile.
+    @property
+    def strategies_pure(self):
+        """Iterator: pure strategies of the profile.
 
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
-            >>> profile.analyzed_strategies
-            Equilibria:
-            <abc: a, bac: b, cab: ac> ==> b (FF)
-            <abc: a, bac: ab, cab: c> ==> a (D)
-            <abc: ab, bac: b, cab: utility-dependent> ==> b (FF)
-            <BLANKLINE>
-            Non-equilibria:
-            <abc: a, bac: b, cab: c> ==> b (FF)
-            <abc: a, bac: b, cab: utility-dependent> ==> b (FF)
-            <abc: a, bac: ab, cab: ac> ==> a (D)
-            <abc: a, bac: ab, cab: utility-dependent> ==> a (D)
-            <abc: ab, bac: b, cab: c> ==> b (FF)
-            <abc: ab, bac: b, cab: ac> ==> b (FF)
-            <abc: ab, bac: ab, cab: c> ==> a, b (FF)
-            <abc: ab, bac: ab, cab: ac> ==> a (D)
-            <abc: ab, bac: ab, cab: utility-dependent> ==> a (D)
-            >>> print(profile.winners_at_equilibrium)
-            a, b
+        Yields
+        ------
+        StrategyTwelve
+            All possible pure strategies of the profile.
         """
-        equilibria = []
-        utility_dependent = []
-        inconclusive = []
-        non_equilibria = []
-
         def possible_strategies(share_ranking_1, share_ranking_12, strategy_1, strategy_12):
             if share_ranking_1 > 0 and share_ranking_12 > 0:
                 return [strategy_1, strategy_12, UTILITY_DEPENDENT]
@@ -502,19 +496,7 @@ class ProfileTwelve(ProfileCardinal):
         }
 
         for d_ranking_strategy in product_dict(d_ranking_possible_strategies):
-            strategy = StrategyTwelve(d_ranking_strategy, profile=self)
-            status = strategy.is_equilibrium
-            if status == EquilibriumStatus.EQUILIBRIUM:
-                equilibria.append(strategy)
-            elif status == EquilibriumStatus.UTILITY_DEPENDENT:  # pragma: no cover
-                utility_dependent.append(strategy)
-                warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r' % (self, strategy))
-            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
-                inconclusive.append(strategy)
-                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r' % (self, strategy))
-            else:
-                non_equilibria.append(strategy)
-        return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
+            yield StrategyTwelve(d_ranking_strategy, profile=self)
 
 
 def make_property_type_share(t, doc):

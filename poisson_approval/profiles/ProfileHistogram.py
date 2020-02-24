@@ -1,12 +1,13 @@
 import warnings
 from math import isclose
 from matplotlib import pyplot as plt
+from fractions import Fraction
 import numpy as np
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import sort_weak_order
+from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -89,6 +90,22 @@ class ProfileHistogram(ProfileCardinal):
         <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> profile.is_equilibrium(strategy)
         EquilibriumStatus.EQUILIBRIUM
+        >>> profile.analyzed_strategies_group
+        Equilibria:
+        <abc: ab, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
+        <abc: a, bac: ab, cab: c> ==> a (D)
+        <abc: a, bac: b, cab: ac> ==> b (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: ab, bac: ab, cab: ac> ==> a (D)
+        <abc: ab, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
+        <abc: ab, bac: ab, cab: c> ==> a, b (FF)
+        <abc: ab, bac: b, cab: ac> ==> b (FF)
+        <abc: ab, bac: b, cab: c> ==> b (FF)
+        <abc: a, bac: ab, cab: ac> ==> a (D)
+        <abc: a, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
+        <abc: a, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
+        <abc: a, bac: b, cab: c> ==> b (FF)
         >>> strategy_ini = StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5})
         >>> cycle = profile.iterated_voting(strategy_ini, 100)['cycle_strategies']
         >>> len(cycle)
@@ -444,3 +461,31 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         plt.step(x, y, **kwargs)
         plt.xlabel(x_label)
         plt.ylabel(y_label)
+
+    @property
+    def strategies_group(self):
+        """Iterator: group strategies of the profile.
+
+        Yields
+        ------
+        StrategyThreshold
+            All possible group strategies of the profile. Each bin of each histogram is considered as a "group" of
+            voters. In other words, the considered strategies are all the threshold strategies where for each ranking,
+            the corresponding threshold is at a limit between two bins of the histogram.
+        """
+        def possible_thresholds(ranking):
+            if self.d_ranking_share[ranking] == 0:
+                return [None]
+            histogram = self.d_ranking_histogram[ranking]
+            n_bins = len(histogram)
+            low_thresholds = [0] + [Fraction(i + 1, n_bins) for i, share in enumerate(histogram) if share > 0]
+            high_thresholds = [Fraction(i, n_bins) for i, share in enumerate(histogram) if share > 0] + [1]
+            thresholds = [my_division(low + high, 2) for low, high in zip(low_thresholds, high_thresholds)]
+            thresholds[0] = 0
+            thresholds[-1] = 1
+            return thresholds
+
+        d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
+
+        for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
+            yield StrategyThreshold(d_ranking_threshold, profile=self)

@@ -82,6 +82,18 @@ class ProfileDiscrete(ProfileCardinal):
         Fraction(13, 50)
         >>> profile.have_ranking_with_utility_u('abc', 0.3)
         Fraction(13, 50)
+        >>> profile.analyzed_strategies_pure
+        Equilibrium:
+        <abc: a, bac: b> ==> a (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: ab, bac: ab> ==> a, b (FF)
+        <abc: ab, bac: b> ==> b (FF)
+        <abc: utility-dependent (0.55), bac: ab> ==> a (FF)
+        <abc: utility-dependent (0.55), bac: b> ==> a (FF)
+        <abc: a, bac: ab> ==> a (FF)
+        >>> print(profile.analyzed_strategies_pure.winners_at_equilibrium)
+        a
 
     The profile can include weak orders:
 
@@ -307,37 +319,15 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
                                ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
                                voting_rule=self.voting_rule)
 
-    @cached_property
-    def analyzed_strategies(self):
-        """AnalyzedStrategies : Analyzed strategies of the profile.
+    @property
+    def strategies_pure(self):
+        """Iterator: pure strategies of the profile.
 
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> from fractions import Fraction
-            >>> profile = ProfileDiscrete({
-            ...     ('abc', 0.3): Fraction(26, 100),
-            ...     ('abc', 0.8): Fraction(53, 100),
-            ...     ('bac', 0.1): Fraction(21, 100)
-            ... })
-            >>> profile.analyzed_strategies
-            Equilibrium:
-            <abc: a, bac: b> ==> a (FF)
-            <BLANKLINE>
-            Non-equilibria:
-            <abc: ab, bac: ab> ==> a, b (FF)
-            <abc: ab, bac: b> ==> b (FF)
-            <abc: utility-dependent (0.55), bac: ab> ==> a (FF)
-            <abc: utility-dependent (0.55), bac: b> ==> a (FF)
-            <abc: a, bac: ab> ==> a (FF)
-            >>> print(profile.winners_at_equilibrium)
-            a
+        Yields
+        ------
+        StrategyThreshold
+            All possible pure strategies of the profile.
         """
-        equilibria = []
-        utility_dependent = []
-        inconclusive = []
-        non_equilibria = []
-
         def possible_thresholds(ranking):
             if self.d_ranking_share[ranking] == 0:
                 return [None]
@@ -348,16 +338,4 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
-            strategy = StrategyThreshold(d_ranking_threshold, profile=self)
-            status = strategy.is_equilibrium
-            if status == EquilibriumStatus.EQUILIBRIUM:
-                equilibria.append(strategy)
-            elif status == EquilibriumStatus.UTILITY_DEPENDENT:  # pragma: no cover
-                utility_dependent.append(strategy)
-                warnings.warn('Met a utility-dependent case: \nprofile = %r\nstrategy = %r' % (self, strategy))
-            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
-                inconclusive.append(strategy)
-                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r' % (self, strategy))
-            else:
-                non_equilibria.append(strategy)
-        return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
+            yield StrategyThreshold(d_ranking_threshold, profile=self)

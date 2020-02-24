@@ -74,6 +74,24 @@ class ProfileOrdinal(Profile):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
+        >>> profile.analyzed_strategies_ordinal
+        Equilibria:
+        <abc: a, bac: b, cab: ac> ==> b (FF)
+        <abc: a, bac: ab, cab: c> ==> a (D)
+        <BLANKLINE>
+        Utility-dependent equilibrium:
+        <abc: ab, bac: b, cab: c> ==> b (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: a, bac: b, cab: c> ==> b (FF)
+        <abc: a, bac: ab, cab: ac> ==> a (D)
+        <abc: ab, bac: b, cab: ac> ==> b (FF)
+        <abc: ab, bac: ab, cab: c> ==> a, b (FF)
+        <abc: ab, bac: ab, cab: ac> ==> a (D)
+        >>> print(profile.analyzed_strategies_ordinal.equilibria[0])
+        <abc: a, bac: b, cab: ac> ==> b
+        >>> print(profile.analyzed_strategies_ordinal.winners_at_equilibrium)
+        a, b
 
     The profile can include weak orders:
 
@@ -370,56 +388,6 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                 return EquilibriumStatus.NOT_EQUILIBRIUM
         return status
 
-    @cached_property
-    def analyzed_strategies(self):
-        """AnalyzedStrategies : Analyzed strategies of the profile.
-
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> profile.analyzed_strategies
-            Equilibria:
-            <abc: a, bac: b, cab: ac> ==> b (FF)
-            <abc: a, bac: ab, cab: c> ==> a (D)
-            <BLANKLINE>
-            Utility-dependent equilibrium:
-            <abc: ab, bac: b, cab: c> ==> b (FF)
-            <BLANKLINE>
-            Non-equilibria:
-            <abc: a, bac: b, cab: c> ==> b (FF)
-            <abc: a, bac: ab, cab: ac> ==> a (D)
-            <abc: ab, bac: b, cab: ac> ==> b (FF)
-            <abc: ab, bac: ab, cab: c> ==> a, b (FF)
-            <abc: ab, bac: ab, cab: ac> ==> a (D)
-            >>> print(profile.analyzed_strategies.equilibria[0])
-            <abc: a, bac: b, cab: ac> ==> b
-            >>> print(profile.winners_at_equilibrium)
-            a, b
-        """
-        equilibria = []
-        utility_dependent = []
-        inconclusive = []
-        non_equilibria = []
-        d_ranking_possible_ballots = {ranking: [ballot_low_u(ranking, self.voting_rule),
-                                                ballot_high_u(ranking, self.voting_rule)]
-                                      if self.d_ranking_share[ranking] > 0 else ['']
-                                      for ranking in RANKINGS}
-        for d_ranking_ballot in product_dict(d_ranking_possible_ballots):
-            strategy = StrategyOrdinal(d_ranking_ballot, profile=self, voting_rule=self.voting_rule)
-            status = strategy.is_equilibrium
-            if status == EquilibriumStatus.EQUILIBRIUM:
-                equilibria.append(strategy)
-            elif status == EquilibriumStatus.UTILITY_DEPENDENT:
-                utility_dependent.append(strategy)
-            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
-                inconclusive.append(strategy)
-                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
-                              % (self, strategy))
-            else:
-                non_equilibria.append(strategy)
-        return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
-
     def proba_equilibrium(self, test=None):
         """Probability that an equilibrium exists (depending on the utilities).
 
@@ -448,14 +416,14 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             # noinspection PyUnusedLocal
             def test(strategy):
                 return True
-        if any([test(strategy) for strategy in self.analyzed_strategies.equilibria]):
+        if any([test(strategy) for strategy in self.analyzed_strategies_ordinal.equilibria]):
             return 1
         support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
             [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
-            for strategy in self.analyzed_strategies.utility_dependent if test(strategy)
+            for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
         return masks_area(inf=[0] * dim, sup=[1] * dim, masks=masks)
 
@@ -487,13 +455,13 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             # noinspection PyUnusedLocal
             def test(strategy):
                 return True
-        cover_alls = np.sum([test(strategy) for strategy in self.analyzed_strategies.equilibria], dtype=int)
+        cover_alls = np.sum([test(strategy) for strategy in self.analyzed_strategies_ordinal.equilibria], dtype=int)
         support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
             [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
-            for strategy in self.analyzed_strategies.utility_dependent if test(strategy)
+            for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
         return masks_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks=masks, cover_alls=cover_alls)
 
@@ -527,7 +495,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             def test(strategy):
                 return True
         cover_alls = set.union(*([set()] + [
-            strategy.winners for strategy in self.analyzed_strategies.equilibria
+            strategy.winners for strategy in self.analyzed_strategies_ordinal.equilibria
             if test(strategy)
         ]))
         support = sorted(self.support_in_rankings)
@@ -539,7 +507,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                  for ranking in support],
                 strategy.winners
             )
-            for strategy in self.analyzed_strategies.utility_dependent if test(strategy)
+            for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
         return winners_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks_winners=masks_winners,
                                     cover_alls=cover_alls)

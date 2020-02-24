@@ -49,6 +49,7 @@ class Strategy(DeleteCacheMixin):
         """
         strategy = deepcopy(self)
         strategy.profile = profile
+        strategy.voting_rule = profile.voting_rule
         return strategy
 
     # Additional stuff when a profile is given

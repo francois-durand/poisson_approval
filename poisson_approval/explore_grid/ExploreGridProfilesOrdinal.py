@@ -27,7 +27,7 @@ class ExploreGridProfilesOrdinal:
         >>> def test(profile):
         ...     return(
         ...         profile.is_profile_condorcet
-        ...         and len(profile.analyzed_strategies.utility_dependent) > 0
+        ...         and len(profile.analyzed_strategies_ordinal.utility_dependent) > 0
         ...     )
         >>> exploration = ExploreGridProfilesOrdinal(denominator=3, test=test)
         >>> exploration
@@ -121,7 +121,7 @@ class ExploreGridProfilesOrdinal:
                                     continue
                                 if not test(profile):
                                     continue
-                                analyzed_strat = profile.analyzed_strategies
+                                analyzed_strat = profile.analyzed_strategies_ordinal
                                 eq, ud, non_eq = (
                                     analyzed_strat.equilibria,
                                     analyzed_strat.utility_dependent,

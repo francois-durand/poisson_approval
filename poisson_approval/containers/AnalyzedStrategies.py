@@ -1,3 +1,7 @@
+from poisson_approval.containers.Winners import Winners
+from poisson_approval.utils.UtilCache import cached_property
+
+
 class AnalyzedStrategies:
     """A container with all the strategies analyzed for a given profile.
 
@@ -11,6 +15,19 @@ class AnalyzedStrategies:
         List of the strategies where we are not able to decide whether it is an equilibrium or not.
     non_equilibria : list of :class:`Strategy`
         List of the strategies where the program certifies there is no equilibrium.
+
+    Examples
+    --------
+        >>> from poisson_approval import StrategyOrdinal, ProfileOrdinal
+        >>> profile = ProfileOrdinal({'abc': 0.2, 'acb': 0.3, 'bac': 0.5})
+        >>> analyzed_strategies = AnalyzedStrategies(
+        ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile)],
+        ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile)],
+        ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile)],
+        ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile)]
+        ... )
+        >>> print(analyzed_strategies.winners_at_equilibrium)
+        a, b
     """
 
     def __init__(self, equilibria: list, utility_dependent: list, inconclusive: list, non_equilibria: list):
@@ -124,3 +141,14 @@ class AnalyzedStrategies:
         for strategy in self.inconclusive:
             s += '\n' + str(strategy)
         return s
+
+    @cached_property
+    def winners_at_equilibrium(self):
+        """Winners : The possible winners at equilibrium.
+
+        This gives the winners in all `equilibria`, without the winners in `utility_dependent`.
+        """
+        if not self.equilibria:
+            return Winners(set())
+        else:
+            return Winners(set.union(*[strategy.winners for strategy in self.equilibria]))
