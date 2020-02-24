@@ -6,7 +6,7 @@ from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order
+from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -386,7 +386,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
                 return [None]
             d_utility_noise_share = self.d_ranking_utility_noise_share[ranking]
             utilities = sorted([utility for utility, noise in d_utility_noise_share.keys()])
-            return [0] + [(x +y) / 2 for x, y in zip(utilities[:-1], utilities[1:])] + [1]
+            return [0] + [my_division(x + y, 2) for x, y in zip(utilities[:-1], utilities[1:])] + [1]
 
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 
