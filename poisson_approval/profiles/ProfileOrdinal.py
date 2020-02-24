@@ -74,6 +74,24 @@ class ProfileOrdinal(Profile):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
+        >>> profile.analyzed_strategies_ordinal
+        Equilibria:
+        <abc: a, bac: b, cab: ac> ==> b (FF)
+        <abc: a, bac: ab, cab: c> ==> a (D)
+        <BLANKLINE>
+        Utility-dependent equilibrium:
+        <abc: ab, bac: b, cab: c> ==> b (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: a, bac: b, cab: c> ==> b (FF)
+        <abc: a, bac: ab, cab: ac> ==> a (D)
+        <abc: ab, bac: b, cab: ac> ==> b (FF)
+        <abc: ab, bac: ab, cab: c> ==> a, b (FF)
+        <abc: ab, bac: ab, cab: ac> ==> a (D)
+        >>> print(profile.analyzed_strategies_ordinal.equilibria[0])
+        <abc: a, bac: b, cab: ac> ==> b
+        >>> print(profile.analyzed_strategies_ordinal.winners_at_equilibrium)
+        a, b
 
     The profile can include weak orders:
 
@@ -369,56 +387,6 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             elif strategy.d_ranking_ballot[ranking] != best_response.ballot:
                 return EquilibriumStatus.NOT_EQUILIBRIUM
         return status
-
-    @cached_property
-    def analyzed_strategies_ordinal(self):
-        """AnalyzedStrategies : Analyzed strategies of the profile.
-
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
-            >>> profile.analyzed_strategies_ordinal
-            Equilibria:
-            <abc: a, bac: b, cab: ac> ==> b (FF)
-            <abc: a, bac: ab, cab: c> ==> a (D)
-            <BLANKLINE>
-            Utility-dependent equilibrium:
-            <abc: ab, bac: b, cab: c> ==> b (FF)
-            <BLANKLINE>
-            Non-equilibria:
-            <abc: a, bac: b, cab: c> ==> b (FF)
-            <abc: a, bac: ab, cab: ac> ==> a (D)
-            <abc: ab, bac: b, cab: ac> ==> b (FF)
-            <abc: ab, bac: ab, cab: c> ==> a, b (FF)
-            <abc: ab, bac: ab, cab: ac> ==> a (D)
-            >>> print(profile.analyzed_strategies_ordinal.equilibria[0])
-            <abc: a, bac: b, cab: ac> ==> b
-            >>> print(profile.winners_at_equilibrium_ordinal)
-            a, b
-        """
-        equilibria = []
-        utility_dependent = []
-        inconclusive = []
-        non_equilibria = []
-        d_ranking_possible_ballots = {ranking: [ballot_low_u(ranking, self.voting_rule),
-                                                ballot_high_u(ranking, self.voting_rule)]
-                                      if self.d_ranking_share[ranking] > 0 else ['']
-                                      for ranking in RANKINGS}
-        for d_ranking_ballot in product_dict(d_ranking_possible_ballots):
-            strategy = StrategyOrdinal(d_ranking_ballot, profile=self, voting_rule=self.voting_rule)
-            status = strategy.is_equilibrium
-            if status == EquilibriumStatus.EQUILIBRIUM:
-                equilibria.append(strategy)
-            elif status == EquilibriumStatus.UTILITY_DEPENDENT:
-                utility_dependent.append(strategy)
-            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
-                inconclusive.append(strategy)
-                warnings.warn('Met an inconclusive case: \nprofile = %r\nstrategy = %r'
-                              % (self, strategy))
-            else:
-                non_equilibria.append(strategy)
-        return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
     def proba_equilibrium(self, test=None):
         """Probability that an equilibrium exists (depending on the utilities).

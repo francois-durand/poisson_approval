@@ -445,7 +445,8 @@ def ternary_plot_n_bloc_equilibria(cls, right_type, top_type, left_type, scale, 
     tax.set_title_padded('Number of bloc equilibria')
 
 
-def ternary_plot_winners_at_equilibrium(cls, right_type, top_type, left_type, scale, **kwargs):  # pragma: no cover
+def ternary_plot_winners_at_equilibrium_ordinal(cls, right_type, top_type, left_type, scale,
+                                                **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the winners at equilibrium.
 
     Parameters
@@ -462,7 +463,7 @@ def ternary_plot_winners_at_equilibrium(cls, right_type, top_type, left_type, sc
 
     def winners_at_equilibrium(right, top, left):
         profile = cls({right_type: right, top_type: top, left_type: left})
-        return candidates_to_probabilities(profile.winners_at_equilibrium)
+        return candidates_to_probabilities(profile.analyzed_strategies_ordinal.winners_at_equilibrium)
 
     figure, tax = ternary_figure(scale=scale)
     order_r, label_r = _order_and_label(right_type)

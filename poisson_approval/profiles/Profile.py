@@ -1,9 +1,12 @@
 import numpy as np
 from poisson_approval.constants.constants import *
+from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
+from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.containers.Winners import Winners
+from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import is_lover, my_division, sort_ballot
+from poisson_approval.utils.Util import is_lover, my_division, sort_ballot, ballot_low_u, ballot_high_u, product_dict
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
@@ -274,47 +277,118 @@ class Profile(DeleteCacheMixin):
             if self.d_ranking_share[ranking] > 0
         }, profile=self, voting_rule=self.voting_rule)
 
-    @cached_property
-    def winners_at_equilibrium(self):
-        """Winners : The possible winners at equilibrium.
+    @property
+    def strategies_ordinal(self):
+        """Iterator: ordinal strategies of the profile.
 
-        This gives the winners in all `equilibria` of :meth:`analyzed_strategies` (without the utility-dependent
-        equilibria, even in the classes of profile that may have some).
+        Yields
+        ------
+        StrategyOrdinal
+            All possible ordinal strategies for this profile.
 
-        For an example, cf. :meth:`ProfileOrdinal.analyzed_strategies`.
+        Examples
+        --------
+        Cf. :class:`ProfileOrdinal`.
         """
-        if not self.analyzed_strategies.equilibria:
-            return Winners(set())
-        else:
-            return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies.equilibria]))
+        d_ranking_possible_ballots = {ranking: [ballot_low_u(ranking, self.voting_rule),
+                                                ballot_high_u(ranking, self.voting_rule)]
+                                      if self.d_ranking_share[ranking] > 0 else ['']
+                                      for ranking in RANKINGS}
+        for d_ranking_ballot in product_dict(d_ranking_possible_ballots):
+            yield StrategyOrdinal(d_ranking_ballot, profile=self, voting_rule=self.voting_rule)
+
+    @property
+    def strategies_pure(self):
+        """Iterator: pure strategies of the profile.
+
+        Yields
+        ------
+        Strategy
+            All possible pure strategies of the profile. This is implemented only for discrete profiles such
+            as :class:`ProfileTwelve` or :class:`ProfileDiscrete`.
+
+        Examples
+        --------
+        Cf. :class:`ProfileDiscrete`.
+        """
+        raise NotImplementedError
+
+    @property
+    def strategies_group(self):
+        """Iterator: group strategies of the profile.
+
+        Yields
+        ------
+        Strategy
+            All possible group strategies of the profile. This is implemented only for profiles where we consider
+            that there is a natural notion of group, such as :class:`ProfileNoisyDiscrete`.
+
+        Examples
+        --------
+        Cf. :class:`ProfileNoisyDiscrete`.
+        """
+        raise NotImplementedError
+
+    def analyzed_strategies(self, strategies):
+        """Analyze a list of strategies for the profile.
+
+        Parameters
+        ----------
+        strategies : iterable
+            An iterator of strategies, such as a list of strategies.
+
+        Returns
+        -------
+        AnalyzedStrategies
+            The analyzed strategies of the profile.
+
+        Examples
+        --------
+            Cf. :meth:`ProfileOrdinal.analyzed_strategies_ordinal`.
+        """
+        equilibria = []
+        utility_dependent = []
+        inconclusive = []
+        non_equilibria = []
+        for s in strategies:
+            strategy = s.deepcopy_with_attached_profile(profile=self)
+            status = strategy.is_equilibrium
+            if status == EquilibriumStatus.EQUILIBRIUM:
+                equilibria.append(strategy)
+            elif status == EquilibriumStatus.UTILITY_DEPENDENT:
+                utility_dependent.append(strategy)
+            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
+                inconclusive.append(strategy)
+                raise AssertionError('Met an inconclusive case: \nprofile = %r\nstrategy = %r' % (self, strategy))
+            else:
+                non_equilibria.append(strategy)
+        return AnalyzedStrategies(equilibria, utility_dependent, inconclusive, non_equilibria)
 
     @cached_property
-    def winners_at_equilibrium_ordinal(self):
-        """Winners : The possible winners at an ordinal equilibrium.
+    def analyzed_strategies_ordinal(self):
+        """AnalyzedStrategies: Analyzed ordinal strategies.
 
-        This gives the winners in all `equilibria` of :meth:`analyzed_strategies_ordinal` (without the
-        utility-dependent equilibria, even in the classes of profile that may have some).
-
-        For an example, cf. :meth:`ProfileOrdinal.analyzed_strategies_ordinal`.
+        Cf. :meth:`analyzed_strategies` and :attr:`strategies_ordinal`.
         """
-        if not self.analyzed_strategies_ordinal.equilibria:
-            return Winners(set())
-        else:
-            return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies_ordinal.equilibria]))
+        return self.analyzed_strategies(self.strategies_ordinal)
 
     @cached_property
-    def winners_at_equilibrium_pure(self):
-        """Winners : The possible winners at a pure equilibrium.
+    def analyzed_strategies_pure(self):
+        """AnalyzedStrategies: Analyzed pure strategies.
 
-        This gives the winners in all `equilibria` of :meth:`analyzed_strategies_pure` (without the
-        utility-dependent equilibria, even in the classes of profile that may have some).
-
-        For an example, cf. :meth:`ProfileDiscrete.analyzed_strategies_pure`.
+        Cf. :meth:`analyzed_strategies` and :attr:`strategies_pure`. This is implemented only for discrete profiles such
+        as :class:`ProfileTwelve` or :class:`ProfileDiscrete`.
         """
-        if not self.analyzed_strategies_pure.equilibria:
-            return Winners(set())
-        else:
-            return Winners(set.union(*[strategy.winners for strategy in self.analyzed_strategies_pure.equilibria]))
+        return self.analyzed_strategies(self.strategies_pure)
+
+    @cached_property
+    def analyzed_strategies_group(self):
+        """AnalyzedStrategies: Analyzed group strategies.
+
+        Cf. :meth:`analyzed_strategies` and :attr:`strategies_group`. This is implemented only for profiles where we
+        consider that there is a natural notion of group, such as :class:`ProfileNoisyDiscrete`.
+        """
+        return self.analyzed_strategies(self.strategies_group)
 
 
 def make_property_ranking_share(ranking, doc):
