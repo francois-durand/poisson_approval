@@ -503,7 +503,8 @@ def ternary_plot_winning_frequencies(cls, right_type, top_type, left_type, scale
         profile = cls({right_type: right, top_type: top, left_type: left})
         results = profile.fictitious_play(init='sincere', n_max_episodes=n_max_episodes,
                                           perception_update_ratio=one_over_log_t_plus_two,
-                                          ballot_update_ratio=one_over_log_t_plus_two)
+                                          ballot_update_ratio=one_over_log_t_plus_two,
+                                          winning_frequency_update_ratio=one_over_log_t_plus_two)
         return d_candidate_value_to_array(results['d_candidate_winning_frequency'])
 
     figure, tax = ternary_figure(scale=scale)

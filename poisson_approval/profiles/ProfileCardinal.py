@@ -98,6 +98,10 @@ class ProfileCardinal(Profile):
         raise NotImplementedError
 
     @cached_property
+    def d_weak_order_share(self):
+        raise NotImplementedError
+
+    @cached_property
     def standardized_version(self):
         raise NotImplementedError
 
@@ -240,6 +244,14 @@ class ProfileCardinal(Profile):
             return EquilibriumStatus.EQUILIBRIUM
         else:
             return EquilibriumStatus.NOT_EQUILIBRIUM
+
+    @property
+    def strategies_pure(self):
+        raise NotImplementedError
+
+    @property
+    def strategies_group(self):
+        raise NotImplementedError
 
     def _initializer(self, init):
         """Initial condition for iterated voting or fictitious play.
