@@ -498,6 +498,24 @@ class ProfileTwelve(ProfileCardinal):
         for d_ranking_strategy in product_dict(d_ranking_possible_strategies):
             yield StrategyTwelve(d_ranking_strategy, profile=self)
 
+    @classmethod
+    def order_and_label(cls, t):
+        r"""Order and label of a discrete type.
+
+        Cf. :meth:`Profile.order_and_label`.
+
+        Examples
+        --------
+            >>> ProfileTwelve.order_and_label('ab_c')
+            ('abc', '$r(ab\\_c)$')
+            >>> ProfileTwelve.order_and_label('a~b>c')
+            ('a~b>c', '$r(a\\sim b>c)$')
+        """
+        if len(t) == 4:
+            return t.replace('_', ''), ('$r(%s)$' % t).replace('_', '\\_')
+        else:
+            return cls.order_and_label_weak(t)
+
 
 def make_property_type_share(t, doc):
     def _f(self):

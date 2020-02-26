@@ -2,46 +2,6 @@ from poisson_approval.meta_analysis.ternary_plots import ternary_figure
 from poisson_approval.utils.Util import candidates_to_probabilities, one_over_log_t_plus_two, d_candidate_value_to_array
 
 
-def _order_and_label(t):
-    r"""Order and label of a discrete type.
-
-    Parameters
-    ----------
-    t : a type (cf. examples).
-
-    Returns
-    -------
-    order : str
-        The ranking or weak order.
-    label : str
-        The label to be used for the corner of the triangle.
-
-    Examples
-    --------
-        >>> _order_and_label('abc')
-        ('abc', '$r(abc)$')
-        >>> _order_and_label('ab_c')
-        ('abc', '$r(ab\\_c)$')
-        >>> _order_and_label('a~b>c')
-        ('a~b>c', '$r(a\\sim b>c)$')
-        >>> _order_and_label(('abc', 0.5))
-        ('abc', '$r(abc, u_b = 0.5)$')
-        >>> _order_and_label(('abc', 0.5, 0.01))
-        ('abc', '$r(abc, u_b = 0.5 ± 0.01)$')
-    """
-    if isinstance(t, tuple):
-        if len(t) == 2:  # ProfileDiscrete
-            return t[0], '$r(%s, u_%s = %s)$' % (t[0], t[0][1], t[1])
-        else:  # ProfileNoisyDiscrete
-            return t[0], '$r(%s, u_%s = %s ± %s)$' % (t[0], t[0][1], t[1], t[2])
-    if len(t) == 3:
-        return t, '$r(%s)$' % t
-    if len(t) == 4:
-        return t.replace('_', ''), ('$r(%s)$' % t).replace('_', '\\_')
-    else:  # len(type) == 5
-        return t, ('$r(%s)$' % t).replace('~', '\\sim ')
-
-
 def ternary_plot_n_equilibria_ordinal(cls, right_type, top_type, left_type, scale, **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the number of ordinal equilibria.
 
@@ -61,9 +21,9 @@ def ternary_plot_n_equilibria_ordinal(cls, right_type, top_type, left_type, scal
         return len(profile.analyzed_strategies_ordinal.equilibria)
 
     figure, tax = ternary_figure(scale=scale)
-    order_r, label_r = _order_and_label(right_type)
-    order_t, label_t = _order_and_label(top_type)
-    order_l, label_l = _order_and_label(left_type)
+    order_r, label_r = cls.order_and_label(right_type)
+    order_t, label_t = cls.order_and_label(top_type)
+    order_l, label_l = cls.order_and_label(left_type)
     tax.heatmap_intensity(n_equilibria_ordinal,
                           right_label=label_r,
                           top_label=label_t,
@@ -94,9 +54,9 @@ def ternary_plot_winners_at_equilibrium_ordinal(cls, right_type, top_type, left_
         return candidates_to_probabilities(profile.analyzed_strategies_ordinal.winners_at_equilibrium)
 
     figure, tax = ternary_figure(scale=scale)
-    order_r, label_r = _order_and_label(right_type)
-    order_t, label_t = _order_and_label(top_type)
-    order_l, label_l = _order_and_label(left_type)
+    order_r, label_r = cls.order_and_label(right_type)
+    order_t, label_t = cls.order_and_label(top_type)
+    order_l, label_l = cls.order_and_label(left_type)
     tax.heatmap_candidates(winners_at_equilibrium,
                            right_label=label_r,
                            top_label=label_t,
@@ -138,9 +98,9 @@ def ternary_plot_winning_frequencies(cls, right_type, top_type, left_type, scale
         return d_candidate_value_to_array(results['d_candidate_winning_frequency'])
 
     figure, tax = ternary_figure(scale=scale)
-    order_r, label_r = _order_and_label(right_type)
-    order_t, label_t = _order_and_label(top_type)
-    order_l, label_l = _order_and_label(left_type)
+    order_r, label_r = cls.order_and_label(right_type)
+    order_t, label_t = cls.order_and_label(top_type)
+    order_l, label_l = cls.order_and_label(left_type)
     tax.heatmap_candidates(winning_frequencies,
                            right_label=label_r,
                            top_label=label_t,

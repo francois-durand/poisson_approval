@@ -489,3 +489,11 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
             yield StrategyThreshold(d_ranking_threshold, profile=self)
+
+    @property
+    def strategies_pure(self):
+        raise NotImplementedError
+
+    @classmethod
+    def order_and_label(cls, t):
+        raise NotImplementedError

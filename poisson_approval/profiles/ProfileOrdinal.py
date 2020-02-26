@@ -511,3 +511,21 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         ]
         return winners_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks_winners=masks_winners,
                                     cover_alls=cover_alls)
+
+    @classmethod
+    def order_and_label(cls, t):
+        r"""Order and label of a discrete type.
+
+        Cf. :meth:`Profile.order_and_label`.
+
+        Examples
+        --------
+            >>> ProfileOrdinal.order_and_label('abc')
+            ('abc', '$r(abc)$')
+            >>> ProfileOrdinal.order_and_label('a~b>c')
+            ('a~b>c', '$r(a\\sim b>c)$')
+        """
+        if len(t) == 3:
+            return t, '$r(%s)$' % t
+        else:
+            return cls.order_and_label_weak(t)

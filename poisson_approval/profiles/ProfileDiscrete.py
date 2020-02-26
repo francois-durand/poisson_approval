@@ -339,3 +339,21 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
             yield StrategyThreshold(d_ranking_threshold, profile=self)
+
+    @classmethod
+    def order_and_label(cls, t):
+        r"""Order and label of a discrete type.
+
+        Cf. :meth:`Profile.order_and_label`.
+
+        Examples
+        --------
+            >>> ProfileDiscrete.order_and_label(('abc', 0.5))
+            ('abc', '$r(abc, u_b = 0.5)$')
+            >>> ProfileDiscrete.order_and_label('a~b>c')
+            ('a~b>c', '$r(a\\sim b>c)$')
+        """
+        if isinstance(t, tuple):
+            return t[0], '$r(%s, u_%s = %s)$' % (t[0], t[0][1], t[1])
+        else:
+            return cls.order_and_label_weak(t)

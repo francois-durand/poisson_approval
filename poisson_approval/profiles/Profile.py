@@ -390,6 +390,56 @@ class Profile(DeleteCacheMixin):
         """
         return self.analyzed_strategies(self.strategies_group)
 
+    @classmethod
+    def order_and_label(cls, t):
+        """Order and label of a discrete type.
+
+        Helper method for the ternary plots. Implemented only for subclasses of Profile where the initialization
+        is made with a dictionary that maps types to voter share, such as :class:`ProfileNoisyDiscrete` or
+        :class:`ProfileOrdinal`, but unlike :class:`ProfileHistogram` (where a second dictionary is needed for the
+        histograms).
+
+        Parameters
+        ----------
+        t : object
+            A type. Any type that is accepted at a key in the initialization dictionary.
+
+        Returns
+        -------
+        order : str
+            The ranking or weak order.
+        label : str
+            The label to be used for the corner of the triangle.
+
+        Examples
+        --------
+            Cf. :meth:`ProfileNoisyDiscrete.order_and_label`.
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def order_and_label_weak(cls, t):
+        r"""Auxiliary function for :meth:`order_and_label`, specialized for weak orders.
+
+        Parameters
+        ----------
+        t : str
+            A weak order of the form ``a>b~c`` or ``a~b>c``.
+
+        Returns
+        -------
+        order : str
+            The weak order itself.
+        label : str
+            The label to be used for the corner of the triangle.
+
+        Examples
+        --------
+            >>> Profile.order_and_label_weak('a~b>c')
+            ('a~b>c', '$r(a\\sim b>c)$')
+        """
+        return t, ('$r(%s)$' % t).replace('~', '\\sim ')
+
 
 def make_property_ranking_share(ranking, doc):
     def _f(self):

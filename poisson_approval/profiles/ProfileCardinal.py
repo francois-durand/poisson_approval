@@ -520,6 +520,10 @@ class ProfileCardinal(Profile):
         return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
                 'd_candidate_winning_frequency': d_candidate_winning_frequency}
 
+    @classmethod
+    def order_and_label(cls, t):
+        raise NotImplementedError
+
 
 def _my_round(x):
     """Round to 0 or 1 if the number is close enough.
