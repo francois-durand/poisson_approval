@@ -262,7 +262,8 @@ class ProfileCardinal(Profile):
         init : Strategy or TauVector or str
             If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`.
             If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or ``'fanatic'``,
-            then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+            then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used. If it is the string ``'random'``,
+            then :meth:`random_strategy` is used.
 
         Returns
         -------
@@ -282,6 +283,9 @@ class ProfileCardinal(Profile):
                 tau = self.tau_sincere
             elif init == 'fanatic':
                 tau = self.tau_fanatic
+            elif init == 'random':
+                strategy = self.random_strategy(profile=self)
+                tau = strategy.tau
             else:  # pragma: no cover
                 raise ValueError
         return strategy, tau
@@ -526,7 +530,7 @@ class ProfileCardinal(Profile):
         raise NotImplementedError
 
     @classmethod
-    def random_strategy(cls):
+    def random_strategy(cls, **kwargs):
         """Random strategy.
 
         This is a default generator of random strategies. It is used, for example, in
@@ -537,7 +541,7 @@ class ProfileCardinal(Profile):
         StrategyThreshold
             Uses :class:`GeneratorStrategyThresholdUniform`.
         """
-        return GeneratorStrategyThresholdUniform()()
+        return GeneratorStrategyThresholdUniform(**kwargs)()
 
 
 def _my_round(x):

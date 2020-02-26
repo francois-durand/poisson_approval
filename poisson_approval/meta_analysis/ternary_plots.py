@@ -11,7 +11,7 @@ _WHITE = np.array([1., 1., 1.])
 _BRIGHTNESS = 0.5
 
 
-def abc_to_rgb(abc):
+def _abc_to_rgb(abc):
     """Conversion from candidates to RGB color
 
     Parameters
@@ -28,11 +28,11 @@ def abc_to_rgb(abc):
 
     Examples
     --------
-        >>> abc_to_rgb([1, 0, 0])
+        >>> _abc_to_rgb([1, 0, 0])
         array([1. , 0.5, 0.5])
-        >>> abc_to_rgb([.5, .5, 0])
+        >>> _abc_to_rgb([.5, .5, 0])
         array([1. , 1. , 0.5])
-        >>> abc_to_rgb([0., 0., 0])
+        >>> _abc_to_rgb([0., 0., 0])
         array([0.5, 0.5, 0.5])
     """
     norm_inf = np.max(abc)
@@ -44,14 +44,14 @@ def abc_to_rgb(abc):
     return rgb * (1 - _BRIGHTNESS) + _WHITE * _BRIGHTNESS
 
 
-_COLOR_NO_ONE = abc_to_rgb([0, 0, 0])
-_COLOR_A = abc_to_rgb([1, 0, 0])
-_COLOR_B = abc_to_rgb([0, 1, 0])
-_COLOR_C = abc_to_rgb([0, 0, 1])
-_COLOR_AB = abc_to_rgb([1, 1, 0])
-_COLOR_AC = abc_to_rgb([1, 0, 1])
-_COLOR_BC = abc_to_rgb([0, 1, 1])
-_COLOR_ABC = abc_to_rgb([1, 1, 1])
+_COLOR_NO_ONE = _abc_to_rgb([0, 0, 0])
+_COLOR_A = _abc_to_rgb([1, 0, 0])
+_COLOR_B = _abc_to_rgb([0, 1, 0])
+_COLOR_C = _abc_to_rgb([0, 0, 1])
+_COLOR_AB = _abc_to_rgb([1, 1, 0])
+_COLOR_AC = _abc_to_rgb([1, 0, 1])
+_COLOR_BC = _abc_to_rgb([0, 1, 1])
+_COLOR_ABC = _abc_to_rgb([1, 1, 1])
 
 
 def _uni_mix(color_1, color_2, weight_1, weight_2):
@@ -159,7 +159,7 @@ def _generate_heatmap_data(f, scale):
     d = dict()
     for (right, top, left) in simplex_iterator(scale):
         values = f(right / scale, top / scale, left / scale)
-        color = abc_to_rgb(values)
+        color = _abc_to_rgb(values)
         d[(right, top, left)] = (float(color[0]), float(color[1]), float(color[2]), 1.)
     return d
 

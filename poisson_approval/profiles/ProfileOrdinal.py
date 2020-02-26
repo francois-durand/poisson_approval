@@ -538,7 +538,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             return cls.order_and_label_weak(t)
 
     @classmethod
-    def random_strategy(cls):
+    def random_strategy(cls, **kwargs):
         """Random strategy.
 
         This is a default generator of random strategies. It is used, for example, in
@@ -549,4 +549,4 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         StrategyThreshold
             Uses :class:`GeneratorStrategyOrdinalUniform`.
         """
-        return GeneratorStrategyOrdinalUniform()()
+        return GeneratorStrategyOrdinalUniform(**kwargs)()

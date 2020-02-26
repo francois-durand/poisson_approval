@@ -441,7 +441,7 @@ class Profile(DeleteCacheMixin):
         return t, ('$r(%s)$' % t).replace('~', '\\sim ')
 
     @classmethod
-    def random_strategy(cls):
+    def random_strategy(cls, **kwargs):
         """Random strategy.
 
         This is a default generator of random strategies. It is used, for example, in

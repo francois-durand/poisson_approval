@@ -79,6 +79,6 @@ from poisson_approval.generators.GeneratorTauVectorUniform import GeneratorTauVe
 
 # Meta-analysis
 from poisson_approval.meta_analysis.NiceStatsProfileOrdinal import NiceStatsProfileOrdinal
-from poisson_approval.meta_analysis.ternary_plots import TernaryAxesSubplotPoisson, ternary_figure, abc_to_rgb
-from poisson_approval.meta_analysis.ternary_shortcuts import ternary_plot_n_equilibria_ordinal, \
-    ternary_plot_winners_at_equilibrium_ordinal, ternary_plot_winning_frequencies
+from poisson_approval.meta_analysis.ternary_plots import TernaryAxesSubplotPoisson, ternary_figure
+from poisson_approval.meta_analysis.ternary_shortcuts import ternary_plot_n_equilibria, \
+    ternary_plot_winners_at_equilibrium, ternary_plot_winning_frequencies, SimplexToProfile
