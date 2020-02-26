@@ -4,8 +4,7 @@ import numpy as np
 from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
-from poisson_approval.containers.Winners import Winners
+from poisson_approval.generators.GeneratorStrategyOrdinalUniform import GeneratorStrategyOrdinalUniform
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
@@ -512,6 +511,14 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         return winners_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks_winners=masks_winners,
                                     cover_alls=cover_alls)
 
+    @property
+    def strategies_pure(self):
+        raise NotImplementedError
+
+    @property
+    def strategies_group(self):
+        raise NotImplementedError
+
     @classmethod
     def order_and_label(cls, t):
         r"""Order and label of a discrete type.
@@ -529,3 +536,17 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             return t, '$r(%s)$' % t
         else:
             return cls.order_and_label_weak(t)
+
+    @classmethod
+    def random_strategy(cls):
+        """Random strategy.
+
+        This is a default generator of random strategies. It is used, for example, in
+        :class:`ProfileCardinal.iterated_voting`.
+
+        Returns
+        -------
+        StrategyThreshold
+            Uses :class:`GeneratorStrategyOrdinalUniform`.
+        """
+        return GeneratorStrategyOrdinalUniform()()

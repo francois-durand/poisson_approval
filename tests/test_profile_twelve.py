@@ -1,7 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, StrategyThreshold, EquilibriumStatus, \
-    PLURALITY, ANTI_PLURALITY, UTILITY_DEPENDENT, TauVector
+    PLURALITY, ANTI_PLURALITY, UTILITY_DEPENDENT, TauVector, initialize_random_seeds
 
 
 def test_iterative_voting_verbose():
@@ -157,5 +157,14 @@ def test_strategy_weak_order():
         >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
         >>> print(strategy.tau)
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
+    """
+    pass
+
+
+def test_random_strategy():
+    """
+        >>> initialize_random_seeds()
+        >>> print(ProfileTwelve.random_strategy())
+         <abc: ab, acb: ac, bac: b, bca: bc, cab: utility-dependent, cba: bc>
     """
     pass

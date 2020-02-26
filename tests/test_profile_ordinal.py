@@ -1,5 +1,5 @@
 from fractions import Fraction
-from poisson_approval import ProfileOrdinal, StrategyOrdinal, PLURALITY, ANTI_PLURALITY
+from poisson_approval import ProfileOrdinal, StrategyOrdinal, PLURALITY, ANTI_PLURALITY, initialize_random_seeds
 
 
 def test_normalization():
@@ -78,5 +78,14 @@ def test_strategy_weak_order():
         >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
         >>> print(strategy.tau)
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
+    """
+    pass
+
+
+def test_random_strategy():
+    """
+        >>> initialize_random_seeds()
+        >>> print(ProfileOrdinal.random_strategy())
+        <abc: ab, acb: ac, bac: b, bca: bc, cab: ac, cba: bc>
     """
     pass

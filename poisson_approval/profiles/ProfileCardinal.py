@@ -1,5 +1,6 @@
 from math import isclose
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
+from poisson_approval.generators.GeneratorStrategyThresholdUniform import GeneratorStrategyThresholdUniform
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
@@ -523,6 +524,20 @@ class ProfileCardinal(Profile):
     @classmethod
     def order_and_label(cls, t):
         raise NotImplementedError
+
+    @classmethod
+    def random_strategy(cls):
+        """Random strategy.
+
+        This is a default generator of random strategies. It is used, for example, in
+        :class:`ProfileCardinal.iterated_voting`.
+
+        Returns
+        -------
+        StrategyThreshold
+            Uses :class:`GeneratorStrategyThresholdUniform`.
+        """
+        return GeneratorStrategyThresholdUniform()()
 
 
 def _my_round(x):

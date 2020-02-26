@@ -423,8 +423,8 @@ class Profile(DeleteCacheMixin):
 
         Parameters
         ----------
-        t : str
-            A weak order of the form ``a>b~c`` or ``a~b>c``.
+        t : object
+            A weak order of the form ``'a>b~c'`` or ``'a~b>c'``.
 
         Returns
         -------
@@ -439,6 +439,21 @@ class Profile(DeleteCacheMixin):
             ('a~b>c', '$r(a\\sim b>c)$')
         """
         return t, ('$r(%s)$' % t).replace('~', '\\sim ')
+
+    @classmethod
+    def random_strategy(cls):
+        """Random strategy.
+
+        This is a default generator of random strategies. It is used, for example, in
+        :class:`ProfileCardinal.iterated_voting`.
+
+        Returns
+        -------
+        Strategy
+            A random strategy, whose subclass is well suited for this class of Profile. This strategy has this profile
+            embedded.
+        """
+        raise NotImplementedError
 
 
 def make_property_ranking_share(ranking, doc):

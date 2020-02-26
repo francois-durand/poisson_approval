@@ -2,15 +2,15 @@ import warnings
 import itertools
 from math import isclose
 from poisson_approval.constants.constants import *
+from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
+from poisson_approval.generators.GeneratorStrategyTwelveUniform import GeneratorStrategyTwelveUniform
+from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
+from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
+from poisson_approval.tau_vector.TauVector import TauVector
+from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, sort_ballot, \
     product_dict, ballot_low_u, ballot_high_u, sort_weak_order
-from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
-from poisson_approval.tau_vector.TauVector import TauVector
-from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
-from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
-from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -498,6 +498,10 @@ class ProfileTwelve(ProfileCardinal):
         for d_ranking_strategy in product_dict(d_ranking_possible_strategies):
             yield StrategyTwelve(d_ranking_strategy, profile=self)
 
+    @property
+    def strategies_group(self):
+        raise NotImplementedError
+
     @classmethod
     def order_and_label(cls, t):
         r"""Order and label of a discrete type.
@@ -515,6 +519,20 @@ class ProfileTwelve(ProfileCardinal):
             return t.replace('_', ''), ('$r(%s)$' % t).replace('_', '\\_')
         else:
             return cls.order_and_label_weak(t)
+
+    @classmethod
+    def random_strategy(cls):
+        """Random strategy.
+
+        This is a default generator of random strategies. It is used, for example, in
+        :class:`ProfileCardinal.iterated_voting`.
+
+        Returns
+        -------
+        StrategyThreshold
+            Uses :class:`GeneratorStrategyTwelveUniform`.
+        """
+        return GeneratorStrategyTwelveUniform()()
 
 
 def make_property_type_share(t, doc):

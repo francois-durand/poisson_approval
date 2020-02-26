@@ -1,7 +1,7 @@
 from fractions import Fraction
 import numpy as np
 from poisson_approval import ProfileHistogram, StrategyThreshold, StrategyOrdinal, EquilibriumStatus, PLURALITY, \
-    ANTI_PLURALITY
+    ANTI_PLURALITY, initialize_random_seeds
 
 
 def test_normalization():
@@ -53,5 +53,16 @@ def test_strategy_weak_order():
         >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
         >>> print(strategy.tau)
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
+    """
+    pass
+
+
+def test_random_strategy():
+    """
+        >>> initialize_random_seeds()
+        >>> print(ProfileHistogram.random_strategy())
+        <abc: utility-dependent (0.5488135039273248), acb: utility-dependent (0.7151893663724195), \
+bac: utility-dependent (0.6027633760716439), bca: utility-dependent (0.5448831829968969), \
+cab: utility-dependent (0.4236547993389047), cba: utility-dependent (0.6458941130666561)>
     """
     pass
