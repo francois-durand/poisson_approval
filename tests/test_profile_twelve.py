@@ -165,6 +165,6 @@ def test_random_strategy():
     """
         >>> initialize_random_seeds()
         >>> print(ProfileTwelve.random_strategy())
-         <abc: ab, acb: ac, bac: b, bca: bc, cab: utility-dependent, cba: bc>
+        <abc: ab, acb: ac, bac: b, bca: bc, cab: utility-dependent, cba: bc>
     """
     pass
