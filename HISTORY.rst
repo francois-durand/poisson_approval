@@ -2,6 +2,40 @@
 History
 =======
 
+-------------------------------------------
+0.18.0 (2020-02-26): Improved Ternary Plots
+-------------------------------------------
+
+* Nicer colors than before. For example, an equal mix of candidate `a` (red) and `b` (green) was brownish, whereas it
+  is now yellow. Similarly, a mix of the three candidates (red, green, blue) was gray, and it is now white. Etc.
+* Improved ternary plot shortcuts ``ternary_plot_n_equilibria``, ``ternary_plot_winners_at_equilibrium`` and
+  ``ternary_plot_winning_frequencies``:
+
+  * New versions of these functions with more options. Cf. the tutorial on ternary plots.
+  * Add class ``SimplexToProfile`` to map a point of the simplex to a profile. This includes the possibility of
+    having fixed additional voters.
+
+* ``TernaryAxesSubplotPoisson``:
+
+  * Add methods ``legend_color_patches`` and ``legend_palette``: two different styles of legends for candidate
+    heat maps.
+  * The method ``heatmap_candidates`` has a new parameter ``legend_style``.
+  * The method ``annotate_condorcet`` has a new parameter ``d_order_fixed_share`` to account for fixed additional
+    voters.
+  * In several methods, the old parameters ``color_a``, ``color_b`` and ``color_c`` are suppressed, because
+    the colors for `a`, `b`, `c` are not modifiable anymore.
+
+* Random strategies:
+
+  * Add ``GeneratorStrategyTwelveUniform``.
+  * Add method ``Profile.random_strategy``: return a random strategy that is suitable for the profile (e.g. an ordinal
+    strategy for an ordinal profile, etc.).
+  * ``ProfileCardinal.iterated_voting`` and ``ProfileCardinal.fictitious_play`` now accept the parameter
+    ``init='random'`` for an initialization with a random strategy.
+
+* Add ``Profile.order_and_label``: order and label of a discrete type. This auxiliary function is used for the ternary
+  plots.
+
 ----------------------------------------
 0.17.0 (2020-02-24): Analyzed Strategies
 ----------------------------------------
