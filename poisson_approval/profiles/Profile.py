@@ -257,13 +257,15 @@ class Profile(DeleteCacheMixin):
         """
         raise NotImplementedError
 
-    def best_responses_to_strategy(self, d_ranking_best_response):
+    def best_responses_to_strategy(self, d_ranking_best_response, **kwargs):
         """Convert best responses to a :class:`StrategyThreshold`.
 
         Parameters
         ----------
         d_ranking_best_response : dict
             Key: ranking. Value: :class:`BestResponse`.
+        kwargs
+            Other keyword arguments are passed to :class:`StrategyThreshold`.
 
         Returns
         -------
@@ -275,7 +277,7 @@ class Profile(DeleteCacheMixin):
             ranking: best_response.threshold_utility
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0
-        }, profile=self, voting_rule=self.voting_rule)
+        }, profile=self, voting_rule=self.voting_rule, **kwargs)
 
     @property
     def strategies_ordinal(self):

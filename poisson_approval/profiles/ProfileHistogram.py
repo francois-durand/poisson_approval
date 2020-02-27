@@ -111,10 +111,12 @@ class ProfileHistogram(ProfileCardinal):
         >>> len(cycle)
         1
         >>> print(cycle[0])
-        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
+        <abc: ab, bac: utility-dependent (0.7199316142046179, 1/2), \
+cab: utility-dependent (0.28006838579538196, 1/2)> ==> b
         >>> limit_strategy = profile.fictitious_play(strategy_ini, 100, perception_update_ratio=1)['strategy']
         >>> print(limit_strategy)
-        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
+        <abc: ab, bac: utility-dependent (0.7199316142046179, 1/2), \
+cab: utility-dependent (0.28006838579538196, 1/2)> ==> b
 
     The profile can include weak orders:
 

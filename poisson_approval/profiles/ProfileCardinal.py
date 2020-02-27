@@ -377,7 +377,8 @@ class ProfileCardinal(Profile):
                                              ratio_b=perception_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, voting_rule=self.voting_rule)
-            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
+            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response,
+                                                       ratio_optimistic=Fraction(1, 2))
             tau_full_response = strategy.tau
             tau_actual = TauVector({
                 ballot: _my_round(barycenter(a=tau_actual.d_ballot_share[ballot],
@@ -505,7 +506,8 @@ class ProfileCardinal(Profile):
                                              ratio_b=perception_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, voting_rule=self.voting_rule)
-            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
+            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response,
+                                                       ratio_optimistic=Fraction(1, 2))
             tau_full_response = strategy.tau
             tau_actual = TauVector({
                 ballot: _my_round(barycenter(a=tau_actual.d_ballot_share[ballot],
