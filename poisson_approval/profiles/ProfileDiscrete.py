@@ -338,6 +338,10 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
             yield StrategyThresholdOptimistic(d_ranking_threshold, profile=self)
 
+    @property
+    def strategies_group(self):
+        raise NotImplementedError
+
     @classmethod
     def order_and_label(cls, t):
         r"""Order and label of a discrete type.

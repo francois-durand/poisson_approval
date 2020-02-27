@@ -1,14 +1,17 @@
 from math import isclose
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
+from poisson_approval.strategies.StrategyThresholdMixed import StrategyThresholdMixed
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
 # noinspection PyUnresolvedReferences
-class StrategyThresholdOptimistic(StrategyTwelve):
-    """A strategy profile for a cardinal profile.
+class StrategyThresholdOptimistic(StrategyThresholdMixed):
+    """An optimistic threshold strategy.
+
+    This is a particular case of :class:`StrategyThresholdMixed` where, for any ranking, the ratio of optimistic voters
+    is equal to 1.
 
     Parameters
     ----------
@@ -41,82 +44,7 @@ class StrategyThresholdOptimistic(StrategyTwelve):
 
     def __init__(self, d_ranking_threshold, profile=None, voting_rule=None):
         voting_rule = self._get_voting_rule_(profile, voting_rule)
-        # Populate the dictionary of thresholds
-        self.d_ranking_threshold = DictPrintingInOrderIgnoringNone({ranking: None for ranking in RANKINGS})
-        self.d_ranking_threshold.update(d_ranking_threshold)
-        # Prepare the dictionary of ballots
-        d_ranking_ballot = DictPrintingInOrderIgnoringZeros()
-        for ranking, threshold in self.d_ranking_threshold.items():
-            if threshold is None:
-                d_ranking_ballot[ranking] = ''
-            elif threshold == 1:
-                if voting_rule in {APPROVAL, PLURALITY}:
-                    d_ranking_ballot[ranking] = ballot_one(ranking)
-                elif voting_rule == ANTI_PLURALITY:
-                    d_ranking_ballot[ranking] = ballot_one_three(ranking)
-                else:
-                    raise NotImplementedError
-            elif threshold == 0:
-                if voting_rule in {APPROVAL, ANTI_PLURALITY}:
-                    d_ranking_ballot[ranking] = ballot_one_two(ranking)
-                elif voting_rule == PLURALITY:
-                    d_ranking_ballot[ranking] = ballot_two(ranking)
-                else:
-                    raise NotImplementedError
-            else:
-                d_ranking_ballot[ranking] = UTILITY_DEPENDENT
-        # Call parent class
-        super().__init__(d_ranking_ballot=d_ranking_ballot, profile=profile, voting_rule=voting_rule)
-
-    def __eq__(self, other):
-        """Equality test.
-
-        Parameters
-        ----------
-        other : object
-
-        Returns
-        -------
-        bool
-            True if this strategy is equal to `other`.
-
-        Examples
-        --------
-            >>> strategy = StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            >>> strategy == StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            True
-        """
-        return (isinstance(other, StrategyThresholdOptimistic)
-                and self.d_ranking_threshold == other.d_ranking_threshold
-                and self.voting_rule == other.voting_rule)
-
-    def isclose(self, other, *args, **kwargs):
-        """Test near-equality.
-
-        Parameters
-        ----------
-        other : Object
-        *args
-            Cf. :func:`math.isclose`.
-        **kwargs
-            Cf. :func:`math.isclose`.
-
-        Returns
-        -------
-        isclose : bool
-            True if this strategy is approximately equal to `other`.
-
-        Examples
-        --------
-            >>> strategy = StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            >>> strategy.isclose(StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 0.999999999999999999999999}))
-            True
-        """
-        return isinstance(other, StrategyThresholdOptimistic) and all([
-            (threshold is None and other.d_ranking_threshold[ranking] is None)
-            or isclose(threshold, other.d_ranking_threshold[ranking], *args, **kwargs)
-            for ranking, threshold in self.d_ranking_threshold.items()
-        ])
+        super().__init__(d_ranking_threshold, ratio_optimistic=1, profile=profile, voting_rule=voting_rule)
 
     def __repr__(self):
         arguments = repr(self.d_ranking_threshold)
