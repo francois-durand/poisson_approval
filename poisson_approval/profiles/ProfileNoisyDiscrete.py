@@ -3,14 +3,14 @@ from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
-from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
+from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
-class ProfileNoisyDiscrete(ProfileCardinal):
+class ProfileNoisyDiscrete(ProfileCardinalContinuous):
     """Profile with a discrete distribution of voters, with noise.
 
     Parameters
@@ -46,7 +46,7 @@ class ProfileNoisyDiscrete(ProfileCardinal):
 
     Examples
     --------
-    The four following example illustrate different ways to define the same profile, where:
+    The four following examples illustrate different ways to define the same profile, where:
 
     * 26/100 of the voters have ranking `abc` and a utility for `b` that is uniformly distributed between 0.3-0.01 and
       0.3+0.01,
@@ -225,9 +225,6 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             for (umin, umax), share in d_umin_umax_share.items()
         ])
 
-    def have_ranking_with_utility_u(self, ranking, u):
-        return 0
-
     def have_ranking_with_utility_below_u(self, ranking, u):
         d_umin_umax_share = self.d_ranking_umin_umax_share[ranking]
         return sum([
@@ -392,6 +389,10 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
             yield StrategyThreshold(d_ranking_threshold, profile=self)
+
+    @property
+    def strategies_pure(self):
+        raise NotImplementedError
 
     @classmethod
     def order_and_label(cls, t):

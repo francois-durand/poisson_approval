@@ -14,8 +14,20 @@ def test_normalization():
 def test_not_equilibrium():
     profile = ProfileHistogram(d_ranking_share={'abc': 0.5, 'acb': 0.5},
                                d_ranking_histogram = {'abc': [1], 'acb': [1]})
-    strategy = StrategyThreshold(d_ranking_threshold={'abc': 0, 'acb': 0})
+    strategy = StrategyThreshold({'abc': 0, 'acb': 0})
     assert profile.is_equilibrium(strategy) == EquilibriumStatus.NOT_EQUILIBRIUM
+
+
+def test_no_atom():
+    """
+        >>> from fractions import Fraction
+        >>> profile = ProfileHistogram(
+        ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+        ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
+        >>> profile.have_ranking_with_utility_u(ranking='cab', u=Fraction(1, 100))
+        0
+    """
+    pass
 
 
 def test_plurality():
@@ -61,8 +73,11 @@ def test_random_strategy():
     """
         >>> initialize_random_seeds()
         >>> print(ProfileHistogram.random_strategy())
-        <abc: utility-dependent (0.5488135039273248), acb: utility-dependent (0.7151893663724195), \
-bac: utility-dependent (0.6027633760716439), bca: utility-dependent (0.5448831829968969), \
-cab: utility-dependent (0.4236547993389047), cba: utility-dependent (0.6458941130666561)>
+        <abc: utility-dependent (0.5488135039273248, 0.7151893663724195), \
+acb: utility-dependent (0.6027633760716439, 0.5448831829968969), \
+bac: utility-dependent (0.4236547993389047, 0.6458941130666561), \
+bca: utility-dependent (0.4375872112626925, 0.8917730007820798), \
+cab: utility-dependent (0.9636627605010293, 0.3834415188257777), \
+cba: utility-dependent (0.7917250380826646, 0.5288949197529045)>
     """
     pass

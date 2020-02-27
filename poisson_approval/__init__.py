@@ -2,7 +2,7 @@
 
 __author__ = """François Durand"""
 __email__ = 'fradurand@gmail.com'
-__version__ = '0.18.0'
+__version__ = '0.19.0'
 
 
 # Utils
@@ -57,6 +57,7 @@ from poisson_approval.profiles.ProfileDiscrete import ProfileDiscrete
 from poisson_approval.profiles.ProfileNoisyDiscrete import ProfileNoisyDiscrete
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
+from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.profiles.ProfileTwelve import ProfileTwelve
 from poisson_approval.profiles.ProfileHistogram import ProfileHistogram
 

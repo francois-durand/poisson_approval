@@ -194,7 +194,9 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         strategy : StrategyThreshold
-            A strategy that specifies at least all the rankings that are present in the profile.
+            A strategy that specifies at least all the rankings that are present in the profile. If some voters
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            ratio of optimistic voters must be specified.
 
         Returns
         -------
@@ -206,10 +208,13 @@ class ProfileCardinal(Profile):
         for ranking, threshold in strategy.d_ranking_threshold.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
-            t[ballot_low_u(ranking, self.voting_rule)] += (
-                self.have_ranking_with_utility_u(ranking, u=threshold)
-                + self.have_ranking_with_utility_below_u(ranking, u=threshold))
+            t[ballot_low_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_below_u(ranking, u=threshold)
             t[ballot_high_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_above_u(ranking, u=threshold)
+            share_limit_voters = self.have_ranking_with_utility_u(ranking, u=threshold)
+            if share_limit_voters != 0:
+                ratio_optimistic = strategy.d_ranking_ratio_optimistic[ranking]
+                t[ballot_low_u(ranking, self.voting_rule)] += share_limit_voters * ratio_optimistic
+                t[ballot_high_u(ranking, self.voting_rule)] += share_limit_voters * (1 - ratio_optimistic)
         return TauVector(t, voting_rule=self.voting_rule)
 
     def is_equilibrium(self, strategy):
@@ -218,7 +223,9 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         strategy : StrategyThreshold
-            A strategy that specifies at least all the rankings that are present in the profile.
+            A strategy that specifies at least all the rankings that are present in the profile. If some voters
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            ratio of optimistic voters must be specified.
 
         Returns
         -------
@@ -232,19 +239,18 @@ class ProfileCardinal(Profile):
         """
         this_tau = self.tau(strategy)
         d_ranking_best_response = this_tau.d_ranking_best_response
-        d_ranking_threshold = dict()
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
-            best_response = d_ranking_best_response[ranking]
-            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover
-                return EquilibriumStatus.INCONCLUSIVE
-            d_ranking_threshold[ranking] = best_response.threshold_utility
-        tau_response = self.tau(StrategyThreshold(d_ranking_threshold))
-        if tau_response.isclose(this_tau):
-            return EquilibriumStatus.EQUILIBRIUM
-        else:
-            return EquilibriumStatus.NOT_EQUILIBRIUM
+            actual_threshold = strategy.d_ranking_threshold[ranking]
+            br_threshold = d_ranking_best_response[ranking].threshold_utility
+            test = (isclose(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
+                            self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
+                    and isclose(self.have_ranking_with_utility_above_u(ranking, actual_threshold),
+                                self.have_ranking_with_utility_above_u(ranking, br_threshold), abs_tol=1E-9))
+            if not test:
+                return EquilibriumStatus.NOT_EQUILIBRIUM
+        return EquilibriumStatus.EQUILIBRIUM
 
     @property
     def strategies_pure(self):

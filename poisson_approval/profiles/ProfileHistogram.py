@@ -5,13 +5,13 @@ from fractions import Fraction
 import numpy as np
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
-from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
+from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict
 from poisson_approval.utils.UtilCache import cached_property
 
 
-class ProfileHistogram(ProfileCardinal):
+class ProfileHistogram(ProfileCardinalContinuous):
     """A profile of preference with histogram distributions of utility.
 
     Parameters
@@ -202,22 +202,6 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             Fraction(0, 1)
         """
         return self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u)
-
-    def have_ranking_with_utility_u(self, ranking, u):
-        """Share of voters who have a given ranking and a given utility for their middle candidate.
-
-        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.
-
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileHistogram(
-            ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
-            ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> profile.have_ranking_with_utility_u(ranking='cab', u=Fraction(1, 100))
-            0
-        """
-        return 0
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.

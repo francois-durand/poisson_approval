@@ -2,6 +2,24 @@
 History
 =======
 
+-------------------------------------
+0.19.0 (2020-02-27): Mixed Strategies
+-------------------------------------
+
+* ``StrategyThreshold``: for each ranking, there is a ``threshold`` (like before) and an optional ``ratio_optimistic``.
+  Voters whose utility for their second candidate is equal to the threshold of the strategy are split: a share
+  ``ratio_optimistic`` behave as if the threshold was higher (in Approval, they vote only for their top candidate)
+  and the rest behave as if the threshold was lower (in Approval, they vote for their two first candidates). Hence the
+  strategy is mixed. Note that this only makes a difference when the profile has "atoms" (concentration of voters on a
+  single utility point); currently, this is only the case in ``ProfileDiscrete``.
+* For ``ProfileDiscrete``, fictitious play and iterated voting consider that the responses use a ratio of optimistic
+  voters equal to 1/2.
+* Add ``ProfileCardinalContinuous``: this abstract class is a child of ``ProfileCardinal`` and a parent class
+  of ``ProfileNoisyDiscrete`` and ``ProfileHistogram``. In these profiles, the ratios of optimistic voters are not
+  important because there is no "atom".
+* ``GeneratorStrategyThresholdUniform``: for each ranking, the ratio of optimistic voters is also chosen uniformly.
+* The utility ``DictPrintingInOrderIgnoringNone`` now also ignores values that are iterables containing only None.
+
 -------------------------------------------
 0.18.0 (2020-02-26): Improved Ternary Plots
 -------------------------------------------
@@ -251,7 +269,7 @@ History
   by implementing a notion of perceived tau-vector, like for ``ProfileCardinal.fictitious_play``. The syntax has been
   modified in consequence.
 * ``ProfileCardinal.iterated_voting_strategies`` is deprecated and suppressed.
-* Iterated voting and fictitious play do not need a ``StrategyThreshold`` as initial strategy, but any strategy that is
+* Iterated voting and fictitious play do not need a ``StrategyThresholdOptimistic`` as initial strategy, but any strategy that is
   consistent with the profile subclass. For example, with ``ProfileTwelve``, you can use a ``StrategyTwelve``.
 * ``Strategy.profile`` is now a property that can be reassigned after the creation of the object.
 * Add ``Strategy.deepcopy_with_attached_profile``: make a deep copy and attach a given profile.
@@ -292,7 +310,7 @@ History
 * Add ``TauVector.isclose``: whether the tau-vector is close to another tau-vector (in the sense of
   ``math.isclose``). This method is used by the new version of ``ProfileCardinal.is_equilibrium``.
 
-* Add ``Profile.best_responses_to_strategy``: convert a dictionary of best responses to a ``StrategyThreshold`` that
+* Add ``Profile.best_responses_to_strategy``: convert a dictionary of best responses to a ``StrategyThresholdOptimistic`` that
   mentions only the rankings that are present in the profile.
 
 * In random generators of profiles (``GeneratorProfileOrdinalUniform``, ``GeneratorProfileOrdinalGridUniform``,

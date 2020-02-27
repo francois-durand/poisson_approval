@@ -60,7 +60,7 @@ class StrategyOrdinal(StrategyThreshold):
             else:
                 raise ValueError('Unknown strategy: ' + ballot)
         # Call parent class
-        super().__init__(d_ranking_threshold=d_ranking_threshold, profile=profile, voting_rule=voting_rule)
+        super().__init__(d=d_ranking_threshold, profile=profile, voting_rule=voting_rule)
 
     def __eq__(self, other):
         """Equality test.
