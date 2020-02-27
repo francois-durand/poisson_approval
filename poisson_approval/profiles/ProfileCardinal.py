@@ -195,8 +195,8 @@ class ProfileCardinal(Profile):
         ----------
         strategy : StrategyThreshold
             A strategy that specifies at least all the rankings that are present in the profile. If some voters
-            have a utility for their second candidate that is equal to the threshold utility of the strategy, then it
-            must be a :class:`StrategyThreshold` to specify what they do.
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            ratio of optimistic voters must be specified.
 
         Returns
         -------
@@ -223,7 +223,9 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         strategy : StrategyThreshold
-            A strategy that specifies at least all the rankings that are present in the profile.
+            A strategy that specifies at least all the rankings that are present in the profile. If some voters
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            ratio of optimistic voters must be specified.
 
         Returns
         -------
@@ -237,19 +239,18 @@ class ProfileCardinal(Profile):
         """
         this_tau = self.tau(strategy)
         d_ranking_best_response = this_tau.d_ranking_best_response
-        d_ranking_threshold = dict()
         for ranking, share in self.d_ranking_share.items():
             if share == 0:
                 continue
-            best_response = d_ranking_best_response[ranking]
-            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover
-                return EquilibriumStatus.INCONCLUSIVE
-            d_ranking_threshold[ranking] = best_response.threshold_utility
-        tau_response = self.tau(StrategyThresholdOptimistic(d_ranking_threshold))
-        if tau_response.isclose(this_tau):
-            return EquilibriumStatus.EQUILIBRIUM
-        else:
-            return EquilibriumStatus.NOT_EQUILIBRIUM
+            actual_threshold = strategy.d_ranking_threshold[ranking]
+            br_threshold = d_ranking_best_response[ranking].threshold_utility
+            test = (isclose(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
+                            self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
+                    and isclose(self.have_ranking_with_utility_above_u(ranking, actual_threshold),
+                                self.have_ranking_with_utility_above_u(ranking, br_threshold), abs_tol=1E-9))
+            if not test:
+                return EquilibriumStatus.NOT_EQUILIBRIUM
+        return EquilibriumStatus.EQUILIBRIUM
 
     @property
     def strategies_pure(self):
