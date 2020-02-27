@@ -1,16 +1,16 @@
 from math import isclose
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyThresholdMixed import StrategyThresholdMixed
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
 # noinspection PyUnresolvedReferences
-class StrategyThresholdOptimistic(StrategyThresholdMixed):
+class StrategyThresholdOptimistic(StrategyThreshold):
     """An optimistic threshold strategy.
 
-    This is a particular case of :class:`StrategyThresholdMixed` where, for any ranking, the ratio of optimistic voters
+    This is a particular case of :class:`StrategyThreshold` where, for any ranking, the ratio of optimistic voters
     is equal to 1.
 
     Parameters

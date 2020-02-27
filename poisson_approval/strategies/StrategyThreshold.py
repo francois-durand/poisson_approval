@@ -8,7 +8,7 @@ from poisson_approval.utils.UtilCache import cached_property
 
 
 # noinspection PyUnresolvedReferences
-class StrategyThresholdMixed(StrategyTwelve):
+class StrategyThreshold(StrategyTwelve):
     """A threshold strategy (for a cardinal profile).
 
     For each ranking, there is a ``threshold`` and a ``ratio_optimistic``. E.g. assume that for ranking ``abc``,
@@ -41,21 +41,21 @@ class StrategyThresholdMixed(StrategyTwelve):
     syntax is a dict that maps a ranking to a tuple (``threshold``, ``ratio_optimistic``). It corresponds exactly to
     the attribute :attr:`d_ranking_t_threshold_ratio_optimistic`:
 
-        >>> strategy = StrategyThresholdMixed({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
+        >>> strategy = StrategyThreshold({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
         >>> print(strategy)
         <abc: utility-dependent (0.4, 0.2), bac: utility-dependent (0.51, 0.2), cab: c>
 
     The second  possible type of input syntax is a dict that maps a ranking to a threshold. All rankings have the same
     ratio, given by the parameter `ratio_optimistic`:
 
-        >>> strategy = StrategyThresholdMixed({'abc': 0.4, 'bac': 0.51, 'cab': 1}, ratio_optimistic=0.2)
+        >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1}, ratio_optimistic=0.2)
         >>> print(strategy)
         <abc: utility-dependent (0.4, 0.2), bac: utility-dependent (0.51, 0.2), cab: c>
 
     Some operations on the strategy:
 
         >>> strategy
-        StrategyThresholdMixed({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
+        StrategyThreshold({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
         >>> strategy.abc
         'utility-dependent'
         >>> strategy.a_bc
@@ -67,9 +67,9 @@ class StrategyThresholdMixed(StrategyTwelve):
 
     It is possible not to specify the ratios of optimistic voters:
 
-        >>> strategy = StrategyThresholdMixed({'abc': 0.4, 'bac': 0.51})
+        >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51})
         >>> strategy
-        StrategyThresholdMixed({'abc': (0.4, None), 'bac': (0.51, None)})
+        StrategyThreshold({'abc': (0.4, None), 'bac': (0.51, None)})
         >>> print(strategy)
         <abc: utility-dependent (0.4), bac: utility-dependent (0.51)>
 
@@ -138,11 +138,11 @@ class StrategyThresholdMixed(StrategyTwelve):
 
         Examples
         --------
-            >>> strategy = StrategyThresholdMixed({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
-            >>> strategy == StrategyThresholdMixed({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
+            >>> strategy = StrategyThreshold({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
+            >>> strategy == StrategyThreshold({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
             True
         """
-        return (isinstance(other, StrategyThresholdMixed)
+        return (isinstance(other, StrategyThreshold)
                 and self.d_ranking_threshold == other.d_ranking_threshold
                 and self.d_ranking_ratio_optimistic == other.d_ranking_ratio_optimistic
                 and self.voting_rule == other.voting_rule)
@@ -165,12 +165,12 @@ class StrategyThresholdMixed(StrategyTwelve):
 
         Examples
         --------
-            >>> strategy = StrategyThresholdMixed({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
-            >>> strategy.isclose(StrategyThresholdMixed({
+            >>> strategy = StrategyThreshold({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
+            >>> strategy.isclose(StrategyThreshold({
             ...     'abc': (0.4, 0.2), 'bac': (0.51, 0.1999999999999), 'cab': (0.999999999999, 0.2)}))
             True
         """
-        return isinstance(other, StrategyThresholdMixed) and all([
+        return isinstance(other, StrategyThreshold) and all([
             (threshold is None and other.d_ranking_threshold[ranking] is None)
             or isclose(threshold, other.d_ranking_threshold[ranking], *args, **kwargs)
             for ranking, threshold in self.d_ranking_threshold.items()
@@ -184,7 +184,7 @@ class StrategyThresholdMixed(StrategyTwelve):
         arguments = repr(self.d_ranking_t_threshold_ratio_optimistic)
         if self.voting_rule != APPROVAL:
             arguments += ', voting_rule=%r' % self.voting_rule
-        return 'StrategyThresholdMixed(%s)' % arguments
+        return 'StrategyThreshold(%s)' % arguments
 
     def __str__(self):
         def t_threshold_ratio_to_string(t):

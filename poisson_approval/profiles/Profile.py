@@ -4,7 +4,7 @@ from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.containers.Winners import Winners
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
-from poisson_approval.strategies.StrategyThresholdMixed import StrategyThresholdMixed
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.utils.Util import is_lover, my_division, sort_ballot, ballot_low_u, ballot_high_u, product_dict
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
@@ -258,7 +258,7 @@ class Profile(DeleteCacheMixin):
         raise NotImplementedError
 
     def best_responses_to_strategy(self, d_ranking_best_response):
-        """Convert best responses to a :class:`StrategyThresholdMixed`.
+        """Convert best responses to a :class:`StrategyThreshold`.
 
         Parameters
         ----------
@@ -267,11 +267,11 @@ class Profile(DeleteCacheMixin):
 
         Returns
         -------
-        StrategyThresholdMixed
+        StrategyThreshold
             The conversion of the best responses into a strategy. Only the rankings present in this profile are
             mentioned in the strategy.
         """
-        return StrategyThresholdMixed({
+        return StrategyThreshold({
             ranking: best_response.threshold_utility
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0

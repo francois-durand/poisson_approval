@@ -196,7 +196,7 @@ class ProfileCardinal(Profile):
         strategy : StrategyThreshold
             A strategy that specifies at least all the rankings that are present in the profile. If some voters
             have a utility for their second candidate that is equal to the threshold utility of the strategy, then it
-            must be a :class:`StrategyThresholdMixed` to specify what they do.
+            must be a :class:`StrategyThreshold` to specify what they do.
 
         Returns
         -------
