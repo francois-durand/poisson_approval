@@ -4,14 +4,14 @@ from matplotlib import pyplot as plt
 from fractions import Fraction
 import numpy as np
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
-from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict
 from poisson_approval.utils.UtilCache import cached_property
 
 
-class ProfileHistogram(ProfileCardinal):
+class ProfileHistogram(ProfileCardinalContinuous):
     """A profile of preference with histogram distributions of utility.
 
     Parameters
@@ -79,7 +79,7 @@ class ProfileHistogram(ProfileCardinal):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
-        >>> strategy = StrategyThresholdOptimistic({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
+        >>> strategy = StrategyThreshold({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
         >>> print(profile.tau_sincere)
         <a: 1/20, ab: 1/20, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> print(profile.tau_fanatic)
@@ -106,17 +106,15 @@ class ProfileHistogram(ProfileCardinal):
         <abc: a, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
         <abc: a, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
         <abc: a, bac: b, cab: c> ==> b (FF)
-        >>> strategy_ini = StrategyThresholdOptimistic({'abc': .5, 'bac': .5, 'cab': .5})
+        >>> strategy_ini = StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5})
         >>> cycle = profile.iterated_voting(strategy_ini, 100)['cycle_strategies']
         >>> len(cycle)
         1
         >>> print(cycle[0])
-        <abc: ab, bac: utility-dependent (0.7199316142046179, 1/2), \
-cab: utility-dependent (0.28006838579538196, 1/2)> ==> b
+        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
         >>> limit_strategy = profile.fictitious_play(strategy_ini, 100, perception_update_ratio=1)['strategy']
         >>> print(limit_strategy)
-        <abc: ab, bac: utility-dependent (0.7199316142046179, 1/2), \
-cab: utility-dependent (0.28006838579538196, 1/2)> ==> b
+        <abc: ab, bac: utility-dependent (0.7199316142046179), cab: utility-dependent (0.28006838579538196)> ==> b
 
     The profile can include weak orders:
 
@@ -204,22 +202,6 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             Fraction(0, 1)
         """
         return self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u)
-
-    def have_ranking_with_utility_u(self, ranking, u):
-        """Share of voters who have a given ranking and a given utility for their middle candidate.
-
-        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.
-
-        Examples
-        --------
-            >>> from fractions import Fraction
-            >>> profile = ProfileHistogram(
-            ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
-            ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
-            >>> profile.have_ranking_with_utility_u(ranking='cab', u=Fraction(1, 100))
-            0
-        """
-        return 0
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
@@ -470,7 +452,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
         Yields
         ------
-        StrategyThresholdOptimistic
+        StrategyThreshold
             All possible group strategies of the profile. Each bin of each histogram is considered as a "group" of
             voters. In other words, the considered strategies are all the threshold strategies where for each ranking,
             the corresponding threshold is at a limit between two bins of the histogram.
@@ -490,7 +472,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
-            yield StrategyThresholdOptimistic(d_ranking_threshold, profile=self)
+            yield StrategyThreshold(d_ranking_threshold, profile=self)
 
     @property
     def strategies_pure(self):

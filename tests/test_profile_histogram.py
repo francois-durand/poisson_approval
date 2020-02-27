@@ -18,6 +18,18 @@ def test_not_equilibrium():
     assert profile.is_equilibrium(strategy) == EquilibriumStatus.NOT_EQUILIBRIUM
 
 
+def test_no_atom():
+    """
+        >>> from fractions import Fraction
+        >>> profile = ProfileHistogram(
+        ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
+        ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
+        >>> profile.have_ranking_with_utility_u(ranking='cab', u=Fraction(1, 100))
+        0
+    """
+    pass
+
+
 def test_plurality():
     """
         >>> profile = ProfileHistogram(d_ranking_share={'abc': 1, 'acb': 1},

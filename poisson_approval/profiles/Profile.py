@@ -1,4 +1,5 @@
 import numpy as np
+from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
@@ -257,15 +258,13 @@ class Profile(DeleteCacheMixin):
         """
         raise NotImplementedError
 
-    def best_responses_to_strategy(self, d_ranking_best_response, **kwargs):
+    def best_responses_to_strategy(self, d_ranking_best_response):
         """Convert best responses to a :class:`StrategyThreshold`.
 
         Parameters
         ----------
         d_ranking_best_response : dict
             Key: ranking. Value: :class:`BestResponse`.
-        kwargs
-            Other keyword arguments are passed to :class:`StrategyThreshold`.
 
         Returns
         -------
@@ -277,7 +276,7 @@ class Profile(DeleteCacheMixin):
             ranking: best_response.threshold_utility
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0
-        }, profile=self, voting_rule=self.voting_rule, **kwargs)
+        }, ratio_optimistic=Fraction(1, 2), profile=self, voting_rule=self.voting_rule)
 
     @property
     def strategies_ordinal(self):
