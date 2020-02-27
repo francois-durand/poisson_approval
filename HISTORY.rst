@@ -2,6 +2,24 @@
 History
 =======
 
+-------------------------------------
+0.19.0 (2020-02-27): Mixed Strategies
+-------------------------------------
+
+* ``StrategyThreshold``: for each ranking, there is a ``threshold`` (like before) and an optional ``ratio_optimistic``.
+  Voters whose utility for their second candidate is equal to the threshold of the strategy are split: a share
+  ``ratio_optimistic`` behave as if the threshold was higher (in Approval, they vote only for their top candidate)
+  and the rest behave as if the threshold was lower (in Approval, they vote for their two first candidates). Hence the
+  strategy is mixed. Note that this only makes a difference when the profile has "atoms" (concentration of voters on a
+  single utility point); currently, this is only the case in ``ProfileDiscrete``.
+* For ``ProfileDiscrete``, fictitious play and iterated voting consider that the responses use a ratio of optimistic
+  voters equal to 1/2.
+* Add ``ProfileCardinalContinuous``: this abstract class is a child of ``ProfileCardinal`` and a parent class
+  of ``ProfileNoisyDiscrete`` and ``ProfileHistogram``. In these profiles, the ratios of optimistic voters are not
+  important because there is no "atom".
+* ``GeneratorStrategyThresholdUniform``: for each ranking, the ratio of optimistic voters is also chosen uniformly.
+* The utility ``DictPrintingInOrderIgnoringNone`` now also ignores values that are iterables containing only None.
+
 -------------------------------------------
 0.18.0 (2020-02-26): Improved Ternary Plots
 -------------------------------------------
