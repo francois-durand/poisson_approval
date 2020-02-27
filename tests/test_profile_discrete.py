@@ -1,5 +1,5 @@
 from fractions import Fraction
-from poisson_approval import ProfileDiscrete, StrategyOrdinal, PLURALITY, ANTI_PLURALITY
+from poisson_approval import ProfileDiscrete, StrategyOrdinal, PLURALITY, ANTI_PLURALITY, StrategyThreshold
 
 
 def test_normalization():
@@ -46,5 +46,15 @@ def test_strategy_weak_order():
         >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
         >>> print(strategy.tau)
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
+    """
+    pass
+
+
+def test_mixed_strategy():
+    """
+        >>> profile = ProfileDiscrete({('abc', 0.2): Fraction(1, 7), ('acb', 0.4): Fraction(6, 7)})
+        >>> strategy = StrategyThreshold({'abc': (0.2, Fraction(1, 3)), 'acb': 0}, profile=profile)
+        >>> print(strategy.tau)
+        <a: 1/21, ab: 2/21, ac: 6/7> ==> a
     """
     pass
