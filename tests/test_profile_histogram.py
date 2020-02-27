@@ -1,6 +1,6 @@
 from fractions import Fraction
 import numpy as np
-from poisson_approval import ProfileHistogram, StrategyThreshold, StrategyOrdinal, EquilibriumStatus, PLURALITY, \
+from poisson_approval import ProfileHistogram, StrategyThresholdOptimistic, StrategyOrdinal, EquilibriumStatus, PLURALITY, \
     ANTI_PLURALITY, initialize_random_seeds
 
 
@@ -14,7 +14,7 @@ def test_normalization():
 def test_not_equilibrium():
     profile = ProfileHistogram(d_ranking_share={'abc': 0.5, 'acb': 0.5},
                                d_ranking_histogram = {'abc': [1], 'acb': [1]})
-    strategy = StrategyThreshold(d_ranking_threshold={'abc': 0, 'acb': 0})
+    strategy = StrategyThresholdOptimistic(d_ranking_threshold={'abc': 0, 'acb': 0})
     assert profile.is_equilibrium(strategy) == EquilibriumStatus.NOT_EQUILIBRIUM
 
 

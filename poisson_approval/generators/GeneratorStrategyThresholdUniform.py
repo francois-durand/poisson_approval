@@ -1,16 +1,16 @@
 import numpy as np
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import initialize_random_seeds
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
 
 
 class GeneratorStrategyThresholdUniform:
-    """A generator of threshold strategies (:class:`StrategyThreshold`) following the uniform distribution.
+    """A generator of threshold strategies (:class:`StrategyThresholdOptimistic`) following the uniform distribution.
 
     Parameters
     ----------
     kwargs : keyword arguments
-        These additional arguments will be passed directly to :class:`StrategyThreshold`.
+        These additional arguments will be passed directly to :class:`StrategyThresholdOptimistic`.
 
     Notes
     -----
@@ -34,7 +34,7 @@ cab: utility-dependent (0.4236547993389047), cba: utility-dependent (0.645894113
         """
         Returns
         -------
-        StrategyThreshold
+        StrategyThresholdOptimistic
             A strategy.
         """
-        return StrategyThreshold({ranking: np.random.rand() for ranking in RANKINGS}, **self.kwargs)
+        return StrategyThresholdOptimistic({ranking: np.random.rand() for ranking in RANKINGS}, **self.kwargs)

@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from fractions import Fraction
 import numpy as np
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict
@@ -79,7 +79,7 @@ class ProfileHistogram(ProfileCardinal):
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
-        >>> strategy = StrategyThreshold({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
+        >>> strategy = StrategyThresholdOptimistic({'abc': 0, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
         >>> print(profile.tau_sincere)
         <a: 1/20, ab: 1/20, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> print(profile.tau_fanatic)
@@ -106,7 +106,7 @@ class ProfileHistogram(ProfileCardinal):
         <abc: a, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
         <abc: a, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
         <abc: a, bac: b, cab: c> ==> b (FF)
-        >>> strategy_ini = StrategyThreshold({'abc': .5, 'bac': .5, 'cab': .5})
+        >>> strategy_ini = StrategyThresholdOptimistic({'abc': .5, 'bac': .5, 'cab': .5})
         >>> cycle = profile.iterated_voting(strategy_ini, 100)['cycle_strategies']
         >>> len(cycle)
         1
@@ -468,7 +468,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
         Yields
         ------
-        StrategyThreshold
+        StrategyThresholdOptimistic
             All possible group strategies of the profile. Each bin of each histogram is considered as a "group" of
             voters. In other words, the considered strategies are all the threshold strategies where for each ranking,
             the corresponding threshold is at a limit between two bins of the histogram.
@@ -488,7 +488,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
-            yield StrategyThreshold(d_ranking_threshold, profile=self)
+            yield StrategyThresholdOptimistic(d_ranking_threshold, profile=self)
 
     @property
     def strategies_pure(self):

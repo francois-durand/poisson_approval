@@ -1,10 +1,10 @@
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
-class StrategyOrdinal(StrategyThreshold):
+class StrategyOrdinal(StrategyThresholdOptimistic):
     """A strategy profile for an ordinal preference profile.
 
     Parameters

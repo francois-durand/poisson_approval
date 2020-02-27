@@ -48,7 +48,7 @@ from poisson_approval.tau_vector.TauVector import TauVector
 # Strategies
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 
 # Profiles

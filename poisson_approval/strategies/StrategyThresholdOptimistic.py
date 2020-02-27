@@ -7,7 +7,7 @@ from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, 
 
 
 # noinspection PyUnresolvedReferences
-class StrategyThreshold(StrategyTwelve):
+class StrategyThresholdOptimistic(StrategyTwelve):
     """A strategy profile for a cardinal profile.
 
     Parameters
@@ -24,9 +24,9 @@ class StrategyThreshold(StrategyTwelve):
 
     Examples
     --------
-        >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+        >>> strategy = StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
         >>> strategy
-        StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+        StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
         >>> print(strategy)
         <abc: utility-dependent (0.4), bac: utility-dependent (0.51), cab: c>
         >>> strategy.abc
@@ -82,11 +82,11 @@ class StrategyThreshold(StrategyTwelve):
 
         Examples
         --------
-            >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            >>> strategy == StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+            >>> strategy = StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+            >>> strategy == StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
             True
         """
-        return (isinstance(other, StrategyThreshold)
+        return (isinstance(other, StrategyThresholdOptimistic)
                 and self.d_ranking_threshold == other.d_ranking_threshold
                 and self.voting_rule == other.voting_rule)
 
@@ -108,11 +108,11 @@ class StrategyThreshold(StrategyTwelve):
 
         Examples
         --------
-            >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 1})
-            >>> strategy.isclose(StrategyThreshold({'abc': 0.4, 'bac': 0.51, 'cab': 0.999999999999999999999999}))
+            >>> strategy = StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 1})
+            >>> strategy.isclose(StrategyThresholdOptimistic({'abc': 0.4, 'bac': 0.51, 'cab': 0.999999999999999999999999}))
             True
         """
-        return isinstance(other, StrategyThreshold) and all([
+        return isinstance(other, StrategyThresholdOptimistic) and all([
             (threshold is None and other.d_ranking_threshold[ranking] is None)
             or isclose(threshold, other.d_ranking_threshold[ranking], *args, **kwargs)
             for ranking, threshold in self.d_ranking_threshold.items()
@@ -122,7 +122,7 @@ class StrategyThreshold(StrategyTwelve):
         arguments = repr(self.d_ranking_threshold)
         if self.voting_rule != APPROVAL:
             arguments += ', voting_rule=%r' % self.voting_rule
-        return 'StrategyThreshold(%s)' % arguments
+        return 'StrategyThresholdOptimistic(%s)' % arguments
 
     def __str__(self):
         result = '<' + ', '.join([

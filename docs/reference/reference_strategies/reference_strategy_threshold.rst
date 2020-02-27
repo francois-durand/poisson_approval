@@ -1,5 +1,5 @@
-StrategyThreshold
+StrategyThresholdOptimistic
 -----------------
-.. autoclass:: poisson_approval.StrategyThreshold
+.. autoclass:: poisson_approval.StrategyThresholdOptimistic
     :members:
     :inherited-members:

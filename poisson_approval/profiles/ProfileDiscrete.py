@@ -2,7 +2,7 @@ import warnings
 from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order
 from poisson_approval.utils.UtilCache import cached_property
@@ -323,7 +323,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
         Yields
         ------
-        StrategyThreshold
+        StrategyThresholdOptimistic
             All possible pure strategies of the profile.
         """
         def possible_thresholds(ranking):
@@ -336,7 +336,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 
         for d_ranking_threshold in product_dict(d_ranking_possible_thresholds):
-            yield StrategyThreshold(d_ranking_threshold, profile=self)
+            yield StrategyThresholdOptimistic(d_ranking_threshold, profile=self)
 
     @classmethod
     def order_and_label(cls, t):

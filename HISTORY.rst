@@ -251,7 +251,7 @@ History
   by implementing a notion of perceived tau-vector, like for ``ProfileCardinal.fictitious_play``. The syntax has been
   modified in consequence.
 * ``ProfileCardinal.iterated_voting_strategies`` is deprecated and suppressed.
-* Iterated voting and fictitious play do not need a ``StrategyThreshold`` as initial strategy, but any strategy that is
+* Iterated voting and fictitious play do not need a ``StrategyThresholdOptimistic`` as initial strategy, but any strategy that is
   consistent with the profile subclass. For example, with ``ProfileTwelve``, you can use a ``StrategyTwelve``.
 * ``Strategy.profile`` is now a property that can be reassigned after the creation of the object.
 * Add ``Strategy.deepcopy_with_attached_profile``: make a deep copy and attach a given profile.
@@ -292,7 +292,7 @@ History
 * Add ``TauVector.isclose``: whether the tau-vector is close to another tau-vector (in the sense of
   ``math.isclose``). This method is used by the new version of ``ProfileCardinal.is_equilibrium``.
 
-* Add ``Profile.best_responses_to_strategy``: convert a dictionary of best responses to a ``StrategyThreshold`` that
+* Add ``Profile.best_responses_to_strategy``: convert a dictionary of best responses to a ``StrategyThresholdOptimistic`` that
   mentions only the rankings that are present in the profile.
 
 * In random generators of profiles (``GeneratorProfileOrdinalUniform``, ``GeneratorProfileOrdinalGridUniform``,
