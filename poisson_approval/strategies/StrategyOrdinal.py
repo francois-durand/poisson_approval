@@ -1,10 +1,10 @@
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 
 
-class StrategyOrdinal(StrategyThresholdOptimistic):
+class StrategyOrdinal(StrategyThreshold):
     """A strategy profile for an ordinal preference profile.
 
     Parameters
@@ -60,7 +60,7 @@ class StrategyOrdinal(StrategyThresholdOptimistic):
             else:
                 raise ValueError('Unknown strategy: ' + ballot)
         # Call parent class
-        super().__init__(d_ranking_threshold=d_ranking_threshold, profile=profile, voting_rule=voting_rule)
+        super().__init__(d=d_ranking_threshold, profile=profile, voting_rule=voting_rule)
 
     def __eq__(self, other):
         """Equality test.

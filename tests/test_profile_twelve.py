@@ -1,7 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
-from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, StrategyThresholdOptimistic, EquilibriumStatus, \
-    PLURALITY, ANTI_PLURALITY, UTILITY_DEPENDENT, TauVector, initialize_random_seeds
+from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, EquilibriumStatus, \
+    PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds
 
 
 def test_iterative_voting_verbose():

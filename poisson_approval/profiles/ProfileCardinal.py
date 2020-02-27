@@ -3,7 +3,7 @@ from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.generators.GeneratorStrategyThresholdUniform import GeneratorStrategyThresholdUniform
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.Strategy import Strategy
-from poisson_approval.strategies.StrategyThresholdOptimistic import StrategyThresholdOptimistic
+from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import *
@@ -331,7 +331,7 @@ class ProfileCardinal(Profile):
             * Key ``cycle_taus_perceived``: list of :class:`TauVector`. The limit cycle of perceived tau-vectors.
               ``cycle_taus_perceived[t]`` is a barycenter of ``cycle_taus_perceived[t - 1]`` with
               ``cycle_taus_actual[t - 1]``, parametrized by `perception_update_ratio`.
-            * Key ``cycle_strategies``: list of :class:`StrategyThresholdOptimistic`. The limit cycle of strategies.
+            * Key ``cycle_strategies``: list of :class:`StrategyThreshold`. The limit cycle of strategies.
               ``cycle_strategies[t]`` is the best response to ``cycle_taus_perceived[t]``.
             * Key ``cycle_taus_actual``: list of :class:`TauVector`. The limit cycle of actual tau-vectors.
               ``cycle_taus_actual[t]`` is a barycenter of ``cycle_taus_actual[t - 1]`` and the tau-vector resulting
@@ -465,7 +465,7 @@ class ProfileCardinal(Profile):
         dict
             * Key ``tau``: :class:`TauVector` or None. The limit tau-vector. If None, it means that the process did not
               converge.
-            * Key ``strategy``: :class:`StrategyThresholdOptimistic` or None. The limit strategy. If None, it means that the
+            * Key ``strategy``: :class:`StrategyThreshold` or None. The limit strategy. If None, it means that the
               process did not converge.
             * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
               convention, this value is `n_max_episodes`.
@@ -544,7 +544,7 @@ class ProfileCardinal(Profile):
 
         Returns
         -------
-        StrategyThresholdOptimistic
+        StrategyThreshold
             Uses :class:`GeneratorStrategyThresholdUniform`.
         """
         return GeneratorStrategyThresholdUniform(**kwargs)()

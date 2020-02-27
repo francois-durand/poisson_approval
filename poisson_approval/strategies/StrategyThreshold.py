@@ -69,7 +69,7 @@ class StrategyThreshold(StrategyTwelve):
 
         >>> strategy = StrategyThreshold({'abc': 0.4, 'bac': 0.51})
         >>> strategy
-        StrategyThreshold({'abc': (0.4, None), 'bac': (0.51, None)})
+        StrategyThreshold({'abc': 0.4, 'bac': 0.51})
         >>> print(strategy)
         <abc: utility-dependent (0.4), bac: utility-dependent (0.51)>
 
@@ -181,7 +181,10 @@ class StrategyThreshold(StrategyTwelve):
         ])
 
     def __repr__(self):
-        arguments = repr(self.d_ranking_t_threshold_ratio_optimistic)
+        d = DictPrintingInOrderIgnoringNone({
+            k: t[0] if t[1] is None else t
+            for k, t in self.d_ranking_t_threshold_ratio_optimistic.items()})
+        arguments = repr(d)
         if self.voting_rule != APPROVAL:
             arguments += ', voting_rule=%r' % self.voting_rule
         return 'StrategyThreshold(%s)' % arguments
