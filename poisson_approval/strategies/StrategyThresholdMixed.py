@@ -1,13 +1,15 @@
 from math import isclose
 from poisson_approval.constants.constants import *
-from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
+from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 from poisson_approval.utils.UtilCache import cached_property
 
 
 # noinspection PyUnresolvedReferences
-class StrategyThresholdMixed(StrategyThreshold):
-    """A mixed threshold strategy (for a profile that may have atoms).
+class StrategyThresholdMixed(StrategyTwelve):
+    """A threshold strategy (for a cardinal profile).
 
     For each ranking, there is a ``threshold`` and a ``ratio_optimistic``. E.g. assume that for ranking ``abc``,
     the threshold is 0.4 and the ratio is 0.2. It means that:
@@ -17,6 +19,9 @@ class StrategyThresholdMixed(StrategyThreshold):
     * Voters ``abc`` whose utility for `b` is equal to 0.4 are split: a ratio 0.2 are optimistic, they vote only for
       `a` (they behave as if the pivot `ab` was very likely); and a ratio 0.8 are pessimistic, they vote for `ab`
       (they behave as if the pivot `bc` was very likely).
+
+    For a given ranking, the threshold and / or the ratio may be None, which means that they are not specified for
+    this strategy.
 
     Parameters
     ----------
@@ -59,21 +64,54 @@ class StrategyThresholdMixed(StrategyThreshold):
         'ab'
         >>> strategy.d_ranking_threshold['abc']
         0.4
+
+    It is possible not to specify the ratios of optimistic voters:
+
+        >>> strategy = StrategyThresholdMixed({'abc': 0.4, 'bac': 0.51})
+        >>> strategy
+        StrategyThresholdMixed({'abc': (0.4, None), 'bac': (0.51, None)})
+        >>> print(strategy)
+        <abc: utility-dependent (0.4), bac: utility-dependent (0.51)>
+
+    If this strategy is applied to a profile where a positive share of voters have ranking `abc` and a utility 0.2
+    for their middle candidate `b`, it will raise an error because the ratio of optimistic voters is needed in that
+    case.
     """
 
     def __init__(self, d, ratio_optimistic=None, profile=None, voting_rule=None):
         voting_rule = self._get_voting_rule_(profile, voting_rule)
-        # Prepare the dictionary of thresholds
-        d_ranking_threshold = DictPrintingInOrderIgnoringNone({ranking: None for ranking in RANKINGS})
+        # Prepare the dictionaries of thresholds and ratios
+        self.d_ranking_threshold = DictPrintingInOrderIgnoringNone({ranking: None for ranking in RANKINGS})
         self.d_ranking_ratio_optimistic = DictPrintingInOrderIgnoringNone({ranking: None for ranking in RANKINGS})
         for ranking, value in d.items():
             if isinstance(value, tuple):
-                d_ranking_threshold[ranking], self.d_ranking_ratio_optimistic[ranking] = value
+                self.d_ranking_threshold[ranking], self.d_ranking_ratio_optimistic[ranking] = value
             else:
-                d_ranking_threshold[ranking] = value
+                self.d_ranking_threshold[ranking] = value
                 self.d_ranking_ratio_optimistic[ranking] = ratio_optimistic
+        # Prepare the dictionary of ballots
+        d_ranking_ballot = DictPrintingInOrderIgnoringZeros()
+        for ranking, threshold in self.d_ranking_threshold.items():
+            if threshold is None:
+                d_ranking_ballot[ranking] = ''
+            elif threshold == 1:
+                if voting_rule in {APPROVAL, PLURALITY}:
+                    d_ranking_ballot[ranking] = ballot_one(ranking)
+                elif voting_rule == ANTI_PLURALITY:
+                    d_ranking_ballot[ranking] = ballot_one_three(ranking)
+                else:
+                    raise NotImplementedError
+            elif threshold == 0:
+                if voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                    d_ranking_ballot[ranking] = ballot_one_two(ranking)
+                elif voting_rule == PLURALITY:
+                    d_ranking_ballot[ranking] = ballot_two(ranking)
+                else:
+                    raise NotImplementedError
+            else:
+                d_ranking_ballot[ranking] = UTILITY_DEPENDENT
         # Call parent class
-        super().__init__(d_ranking_threshold=d_ranking_threshold, profile=profile, voting_rule=voting_rule)
+        super().__init__(d_ranking_ballot=d_ranking_ballot, profile=profile, voting_rule=voting_rule)
 
     @cached_property
     def d_ranking_t_threshold_ratio_optimistic(self):
@@ -149,9 +187,12 @@ class StrategyThresholdMixed(StrategyThreshold):
         return 'StrategyThresholdMixed(%s)' % arguments
 
     def __str__(self):
+        def t_threshold_ratio_to_string(t):
+            return str(t[0]) if t[1] is None else '%s, %s' % t
+
         result = '<' + ', '.join([
             '%s: %s' % (ranking, self.d_ranking_ballot[ranking])
-            + (' (%s, %s)' % tuple(self.d_ranking_t_threshold_ratio_optimistic[ranking])
+            + (' (%s)' % t_threshold_ratio_to_string(self.d_ranking_t_threshold_ratio_optimistic[ranking])
                if self.d_ranking_ballot[ranking] == UTILITY_DEPENDENT else '')
             for ranking in sorted(self.d_ranking_ballot) if self.d_ranking_ballot[ranking]
         ]) + '>'

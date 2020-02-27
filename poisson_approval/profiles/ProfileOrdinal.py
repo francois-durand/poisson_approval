@@ -546,7 +546,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Returns
         -------
-        StrategyThresholdOptimistic
+        StrategyOrdinal
             Uses :class:`GeneratorStrategyOrdinalUniform`.
         """
         return GeneratorStrategyOrdinalUniform(**kwargs)()

@@ -193,8 +193,10 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy : StrategyThresholdOptimistic
-            A strategy that specifies at least all the rankings that are present in the profile.
+        strategy : StrategyThreshold
+            A strategy that specifies at least all the rankings that are present in the profile. If some voters
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then it
+            must be a :class:`StrategyThresholdMixed` to specify what they do.
 
         Returns
         -------
@@ -206,10 +208,13 @@ class ProfileCardinal(Profile):
         for ranking, threshold in strategy.d_ranking_threshold.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
-            t[ballot_low_u(ranking, self.voting_rule)] += (
-                self.have_ranking_with_utility_u(ranking, u=threshold)
-                + self.have_ranking_with_utility_below_u(ranking, u=threshold))
+            t[ballot_low_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_below_u(ranking, u=threshold)
             t[ballot_high_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_above_u(ranking, u=threshold)
+            share_limit_voters = self.have_ranking_with_utility_u(ranking, u=threshold)
+            if share_limit_voters != 0:
+                ratio_optimistic = strategy.d_ranking_ratio_optimistic[ranking]
+                t[ballot_low_u(ranking, self.voting_rule)] += share_limit_voters * ratio_optimistic
+                t[ballot_high_u(ranking, self.voting_rule)] += share_limit_voters * (1 - ratio_optimistic)
         return TauVector(t, voting_rule=self.voting_rule)
 
     def is_equilibrium(self, strategy):
@@ -217,7 +222,7 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy : StrategyThresholdOptimistic
+        strategy : StrategyThreshold
             A strategy that specifies at least all the rankings that are present in the profile.
 
         Returns
