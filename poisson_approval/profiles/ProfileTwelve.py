@@ -529,7 +529,7 @@ class ProfileTwelve(ProfileCardinal):
 
         Returns
         -------
-        StrategyThresholdOptimistic
+        StrategyThreshold
             Uses :class:`GeneratorStrategyTwelveUniform`.
         """
         return GeneratorStrategyTwelveUniform(**kwargs)()
