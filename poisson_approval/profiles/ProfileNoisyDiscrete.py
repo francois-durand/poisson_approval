@@ -46,7 +46,7 @@ class ProfileNoisyDiscrete(ProfileCardinal):
 
     Examples
     --------
-    The four following example illustrate different ways to define the same profile, where:
+    The four following examples illustrate different ways to define the same profile, where:
 
     * 26/100 of the voters have ranking `abc` and a utility for `b` that is uniformly distributed between 0.3-0.01 and
       0.3+0.01,
