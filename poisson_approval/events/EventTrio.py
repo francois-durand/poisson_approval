@@ -43,7 +43,7 @@ phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
             self._phi_xy = sp.sqrt(sp.S(tau_z) / tau_xy) if tau_xy > 0 else sp.nan
         elif tau_xy == 0 and tau_xz == 0 and tau_yz == 0:
             # Tripod. Note that the other coefficient are not 0, otherwise it would be a (degenerate) cross diagram.
-            self.asymptotic = Asymptotic(mu=3 * (tau_x * tau_y * tau_z) ** sp.Rational(1, 3) - 1,
+            self.asymptotic = Asymptotic(mu=3 * sp.S(tau_x * tau_y * tau_z) ** sp.Rational(1, 3) - 1,
                                          nu=sp.nan, xi=sp.nan)
             self._phi_x = (sp.S(tau_y * tau_z) / tau_x ** 2) ** sp.Rational(1, 3)
             self._phi_y = (sp.S(tau_x * tau_z) / tau_y ** 2) ** sp.Rational(1, 3)
@@ -54,7 +54,7 @@ phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         elif tau_x == 0 and tau_y == 0 and tau_z == 0:
             # Inverted tripod. Note that the other coefficient are not 0, otherwise it would be a (degenerate) cross
             # diagram.
-            self.asymptotic = Asymptotic(mu=3 * (tau_xy * tau_xz * tau_yz) ** sp.Rational(1, 3) - 1,
+            self.asymptotic = Asymptotic(mu=3 * sp.S(tau_xy * tau_xz * tau_yz) ** sp.Rational(1, 3) - 1,
                                          nu=sp.nan, xi=sp.nan)
             self._phi_x = sp.nan
             self._phi_y = sp.nan
