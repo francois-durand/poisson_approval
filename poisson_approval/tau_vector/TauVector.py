@@ -1,25 +1,25 @@
 import warnings
-from math import isclose
+import sympy as sp
 from functools import partial
 from fractions import Fraction
-from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import sort_ballot
-from poisson_approval.containers.Scores import Scores
-from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
-from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
 from poisson_approval.best_response.BestResponseApproval import BestResponseApproval
 from poisson_approval.best_response.BestResponsePlurality import BestResponsePlurality
-from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
-from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.constants.constants import *
+from poisson_approval.constants.Focus import Focus
+from poisson_approval.containers.Scores import Scores
 from poisson_approval.events.EventDuo import EventDuo
 from poisson_approval.events.EventPivotStrict import EventPivotStrict
 from poisson_approval.events.EventPivotTij import EventPivotTij
 from poisson_approval.events.EventPivotTjk import EventPivotTjk
-from poisson_approval.events.EventPivotWeak import EventPivotWeak
 from poisson_approval.events.EventTrio import EventTrio
 from poisson_approval.events.EventTrio1t import EventTrio1t
 from poisson_approval.events.EventTrio2t import EventTrio2t
-from poisson_approval.constants.Focus import Focus
+from poisson_approval.events.EventPivotWeak import EventPivotWeak
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
+from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.Util import sort_ballot, isclose
+from poisson_approval.utils.UtilCache import cached_property
 
 
 # noinspection PyUnresolvedReferences
@@ -683,4 +683,4 @@ for event_class, event_stub, event_doc in [
 
 def _multiply(tau_something, phi_something):
     """Return 0 if tau_something is 0, even if phi_something is nan."""
-    return 0 if tau_something == 0 else tau_something * phi_something
+    return sp.S(0) if tau_something == 0 else tau_something * phi_something

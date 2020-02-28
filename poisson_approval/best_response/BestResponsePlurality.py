@@ -1,4 +1,4 @@
-from fractions import Fraction
+import sympy as sp
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.UtilCache import cached_property
@@ -30,10 +30,10 @@ class BestResponsePlurality(BestResponse):
         assert self.tau.voting_rule == PLURALITY
         if self.tau_i < self.tau_j and self.tau_i < self.tau_k:
             # The best response is `j`.
-            threshold_utility = 0
+            threshold_utility = sp.S(0)
         elif 0 < self.tau_i == self.tau_k < self.tau_j:
-            threshold_utility = Fraction(1, 2)
+            threshold_utility = sp.Rational(1, 2)
         else:
             # The best response is `i`.
-            threshold_utility = 1
+            threshold_utility = sp.S(1)
         return threshold_utility, self.PLURALITY_ANALYSIS

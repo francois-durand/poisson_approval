@@ -1,8 +1,7 @@
-import numpy as np
-from fractions import Fraction
-from math import isclose
+import sympy as sp
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
+from poisson_approval.utils.Util import isclose
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -44,11 +43,11 @@ class BestResponseApproval(BestResponse):
         not always sufficient.
         """
         threshold_utility = ((
-            self.pivot_tij.asymptotic * Fraction(1, 2)
-            + self.trio_1t.asymptotic * Fraction(1, 3) + self.trio_2t.asymptotic * Fraction(1, 6)
+            self.pivot_tij.asymptotic * sp.Rational(1, 2)
+            + self.trio_1t.asymptotic * sp.Rational(1, 3) + self.trio_2t.asymptotic * sp.Rational(1, 6)
         ) / (
-            self.pivot_tij.asymptotic * Fraction(1, 2) + self.pivot_tjk.asymptotic * Fraction(1, 2)
-            + self.trio_1t.asymptotic * Fraction(2, 3) + self.trio_2t.asymptotic * Fraction(1, 3)
+            self.pivot_tij.asymptotic * sp.Rational(1, 2) + self.pivot_tjk.asymptotic * sp.Rational(1, 2)
+            + self.trio_1t.asymptotic * sp.Rational(2, 3) + self.trio_2t.asymptotic * sp.Rational(1, 3)
         )).limit
         justification = self.ASYMPTOTIC
         return threshold_utility, justification
@@ -60,22 +59,22 @@ class BestResponseApproval(BestResponse):
         theorem does not apply and this method returns ``nan, ''``.
         """
         if self.tau.has_two_consecutive_zeros:
-            return np.nan, ''
+            return sp.nan, ''
         if self.pivot_ij_easy_or_tight and self.pivot_jk_easy_or_tight:
             # Both pivots are easy => We can forget the trios.
             threshold_utility = ((
-                self.pivot_tij.asymptotic * Fraction(1, 2)
+                self.pivot_tij.asymptotic * sp.Rational(1, 2)
             ) / (
-                self.pivot_tij.asymptotic * Fraction(1, 2) + self.pivot_tjk.asymptotic * Fraction(1, 2)
+                self.pivot_tij.asymptotic * sp.Rational(1, 2) + self.pivot_tjk.asymptotic * sp.Rational(1, 2)
             )).limit
             justification = self.ASYMPTOTIC_SIMPLIFIED
         elif self.pivot_ij_easy_or_tight:
             # ... but pivot jk is difficult.
-            threshold_utility = 1
+            threshold_utility = sp.S(1)
             justification = self.EASY_VS_DIFFICULT
         elif self.pivot_jk_easy_or_tight:
             # ... but pivot ij is difficult.
-            threshold_utility = 0
+            threshold_utility = sp.S(0)
             justification = self.DIFFICULT_VS_EASY
         else:
             # Both pivots are difficult => offset method.
@@ -98,11 +97,11 @@ class BestResponseApproval(BestResponse):
                 raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
             elif psi_k_greater_but_close_to_one:
                 # pij ~= inf, pjk < inf ==> u = 1
-                threshold_utility = 1
+                threshold_utility = sp.S(1)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
             elif psi_i_greater_but_close_to_one:
                 # pij < inf, pjk ~= inf ==> u = 0
-                threshold_utility = 0
+                threshold_utility = sp.S(0)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
             else:
                 # General case of the offset method (at last!)

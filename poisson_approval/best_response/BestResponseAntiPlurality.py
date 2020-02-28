@@ -1,4 +1,4 @@
-from fractions import Fraction
+import sympy as sp
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.UtilCache import cached_property
@@ -33,10 +33,10 @@ class BestResponseAntiPlurality(BestResponse):
         tau_minus_k = self.tau_ij
         if tau_minus_k > tau_minus_i and tau_minus_k > tau_minus_j:
             # The best response is `- j`, i.e. `ik`
-            threshold_utility = 1
+            threshold_utility = sp.S(1)
         elif tau_minus_i == tau_minus_k > tau_minus_j:
-            threshold_utility = Fraction(1, 2)
+            threshold_utility = sp.Rational(1, 2)
         else:
             # The best response is `- k`, i.e. `ij`
-            threshold_utility = 0
+            threshold_utility = sp.S(0)
         return threshold_utility, self.ANTI_PLURALITY_ANALYSIS
