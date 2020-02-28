@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import sympy
 import itertools
 from math import sqrt, log
 from fractions import Fraction
@@ -261,19 +262,23 @@ def isnan(x):
 
     Notes
     -----
-    This extends the usual numpy function ``isnan`` to fractions.
+    This extends the usual numpy function ``isnan`` to fractions and sympy expressions.
 
     Examples
     --------
+        >>> import sympy
         >>> from fractions import Fraction
-        >>> isnan(Fraction(1, 10))
-        False
-        >>> isnan(1)
-        False
-        >>> isnan(np.nan)
-        True
+        >>> values = [sympy.sqrt(3) - sympy.sqrt(2), sympy.nan,
+        ...           sympy.oo, - sympy.oo,
+        ...           sympy.Rational(3, 5), Fraction(3, 5),
+        ...           1, 0.42, np.inf, -np.inf, np.nan]
+        >>> print([x for x in values if isnan(x)])
+        [nan, nan]
     """
-    return np.isnan(x)
+    if isinstance(x, sympy.Expr):
+        return x == sympy.nan
+    else:
+        return np.isnan(x)
 
 
 @_false_for_fraction
@@ -291,19 +296,23 @@ def isposinf(x):
 
     Notes
     -----
-    This extends the usual numpy function ``isposinf`` to fractions.
+    This extends the usual numpy function ``isposinf`` to fractions and sympy expressions.
 
     Examples
     --------
+        >>> import sympy
         >>> from fractions import Fraction
-        >>> isposinf(Fraction(1, 10))
-        False
-        >>> isposinf(1)
-        False
-        >>> isposinf(np.inf)
-        True
+        >>> values = [sympy.sqrt(3) - sympy.sqrt(2), sympy.nan,
+        ...           sympy.oo, - sympy.oo,
+        ...           sympy.Rational(3, 5), Fraction(3, 5),
+        ...           1, 0.42, np.inf, -np.inf, np.nan]
+        >>> print([x for x in values if isposinf(x)])
+        [oo, inf]
     """
-    return np.isposinf(x)
+    if isinstance(x, sympy.Expr):
+        return x == sympy.oo
+    else:
+        return np.isposinf(x)
 
 
 @_false_for_fraction
@@ -321,19 +330,23 @@ def isneginf(x):
 
     Notes
     -----
-    This extends the usual numpy function ``isneginf`` to fractions.
+    This extends the usual numpy function ``isneginf`` to fractions and sympy expressions.
 
     Examples
     --------
+        >>> import sympy
         >>> from fractions import Fraction
-        >>> isposinf(Fraction(1, 10))
-        False
-        >>> isneginf(1)
-        False
-        >>> isneginf(- np.inf)
-        True
+        >>> values = [sympy.sqrt(3) - sympy.sqrt(2), sympy.nan,
+        ...           sympy.oo, - sympy.oo,
+        ...           sympy.Rational(3, 5), Fraction(3, 5),
+        ...           1, 0.42, np.inf, -np.inf, np.nan]
+        >>> print([x for x in values if isneginf(x)])
+        [-oo, -inf]
     """
-    return np.isneginf(x)
+    if isinstance(x, sympy.Expr):
+        return x == - sympy.oo
+    else:
+        return np.isneginf(x)
 
 
 def sort_ballot(ballot):
