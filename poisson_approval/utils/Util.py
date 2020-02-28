@@ -1,8 +1,8 @@
-import numpy as np
+import math
 import random
-import sympy
 import itertools
-from math import sqrt, log
+import numpy as np
+import sympy as sp
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
@@ -128,7 +128,6 @@ def probability(generator, n_samples, test, conditional_on=None):
     In this basic example with one generator, we estimate the probability that a random float between 0 and 1 is greater
     than .5, conditionally on being greater than .25:
 
-        >>> import random
         >>> initialize_random_seeds()
         >>> def generator():
         ...     return random.random()
@@ -139,7 +138,6 @@ def probability(generator, n_samples, test, conditional_on=None):
     of size 2, both with integer coefficients between -10 included and 11 excluded, have a dot product that is null,
     conditionally on not being null themselves:
 
-        >>> import numpy as np
         >>> initialize_random_seeds()
         >>> def generator_matrix():
         ...     return np.random.randint(-10, 11, (2, 2))
@@ -196,7 +194,6 @@ def image_distribution(generator, n_samples, f, conditional_on=None):
     In this basic example with one generator, we compute the distribution of `n` modulo 10, when `n` is drawn uniformly
     at random between 0 included and 100 excluded, conditionally on the fact that `n` is even:
 
-        >>> import numpy as np
         >>> initialize_random_seeds()
         >>> def generator_integer():
         ...     return np.random.randint(0, 100)
@@ -211,7 +208,6 @@ def image_distribution(generator, n_samples, f, conditional_on=None):
     at random between 0 included and 100 excluded, and `b` is drawn uniformly at random between 1 included and 11
     excluded:
 
-        >>> import numpy as np
         >>> initialize_random_seeds()
         >>> def generator_integer():
         ...     return np.random.randint(0, 100)
@@ -266,17 +262,15 @@ def isnan(x):
 
     Examples
     --------
-        >>> import sympy
-        >>> from fractions import Fraction
-        >>> values = [sympy.sqrt(3) - sympy.sqrt(2), sympy.nan,
-        ...           sympy.oo, - sympy.oo,
-        ...           sympy.Rational(3, 5), Fraction(3, 5),
+        >>> values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,
+        ...           sp.oo, - sp.oo,
+        ...           sp.Rational(3, 5), Fraction(3, 5),
         ...           1, 0.42, np.inf, -np.inf, np.nan]
         >>> print([x for x in values if isnan(x)])
         [nan, nan]
     """
-    if isinstance(x, sympy.Expr):
-        return x == sympy.nan
+    if isinstance(x, sp.Expr):
+        return x == sp.nan
     else:
         return np.isnan(x)
 
@@ -300,17 +294,15 @@ def isposinf(x):
 
     Examples
     --------
-        >>> import sympy
-        >>> from fractions import Fraction
-        >>> values = [sympy.sqrt(3) - sympy.sqrt(2), sympy.nan,
-        ...           sympy.oo, - sympy.oo,
-        ...           sympy.Rational(3, 5), Fraction(3, 5),
+        >>> values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,
+        ...           sp.oo, - sp.oo,
+        ...           sp.Rational(3, 5), Fraction(3, 5),
         ...           1, 0.42, np.inf, -np.inf, np.nan]
         >>> print([x for x in values if isposinf(x)])
         [oo, inf]
     """
-    if isinstance(x, sympy.Expr):
-        return x == sympy.oo
+    if isinstance(x, sp.Expr):
+        return x == sp.oo
     else:
         return np.isposinf(x)
 
@@ -334,17 +326,15 @@ def isneginf(x):
 
     Examples
     --------
-        >>> import sympy
-        >>> from fractions import Fraction
-        >>> values = [sympy.sqrt(3) - sympy.sqrt(2), sympy.nan,
-        ...           sympy.oo, - sympy.oo,
-        ...           sympy.Rational(3, 5), Fraction(3, 5),
+        >>> values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,
+        ...           sp.oo, - sp.oo,
+        ...           sp.Rational(3, 5), Fraction(3, 5),
         ...           1, 0.42, np.inf, -np.inf, np.nan]
         >>> print([x for x in values if isneginf(x)])
         [-oo, -inf]
     """
-    if isinstance(x, sympy.Expr):
-        return x == - sympy.oo
+    if isinstance(x, sp.Expr):
+        return x == - sp.oo
     else:
         return np.isneginf(x)
 
@@ -826,7 +816,7 @@ def one_over_sqrt_t_plus_one(t):
         >>> one_over_sqrt_t_plus_one(1)
         0.7071067811865475
     """
-    return my_division(1, sqrt(t + 1))
+    return my_division(1, math.sqrt(t + 1))
 
 
 def one_over_log_t_plus_two(t):
@@ -848,7 +838,7 @@ def one_over_log_t_plus_two(t):
         >>> one_over_log_t_plus_two(1)
         0.9102392266268373
     """
-    return my_division(1, log(t + 2))
+    return my_division(1, math.log(t + 2))
 
 
 def one_over_log_log_t_plus_fifteen(t):
@@ -870,7 +860,7 @@ def one_over_log_log_t_plus_fifteen(t):
         >>> one_over_log_log_t_plus_fifteen(1)
         0.9806022744169713
     """
-    return my_division(1, log(log(t + 15)))
+    return my_division(1, math.log(math.log(t + 15)))
 
 
 def is_weak_order(o):
@@ -1021,3 +1011,37 @@ def my_division(x, y):
     except TypeError:
         raise NotImplementedError
     return result.numerator if result.denominator == 1 else result
+
+
+def isclose(x, y, *args, **kwargs):
+    """Test if two numbers can reasonably be considered as equal.
+
+    Parameters
+    ----------
+    x : Number
+    y : Number
+    *args
+        Cf. :func:`math.isclose`.
+    **kwargs
+        Cf. :func:`math.isclose`.
+
+    Returns
+    -------
+        If `x` or `y` is a float or numpy float (but not a sympy float), then return
+        ``math.isclose(x, y, *args, **kwargs)``. In all other cases, return True iff `x` is equal to `y`.
+
+    Examples
+    --------
+        >>> isclose(1, 0.999999999999)
+        True
+        >>> isclose(1, np.float(0.999999999999))
+        True
+        >>> isclose(1, sp.Float(0.999999999999))
+        False
+        >>> isclose(1, Fraction(999999999999, 1000000000000))
+        False
+    """
+    if isinstance(x, float) or isinstance(y, float):
+        return math.isclose(x, y, *args, **kwargs)
+    else:
+        return sp.simplify(x - y) == 0
