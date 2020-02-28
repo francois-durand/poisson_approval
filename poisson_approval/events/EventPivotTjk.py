@@ -1,4 +1,4 @@
-import numpy as np
+import sympy as sp
 from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
@@ -21,7 +21,7 @@ class EventPivotTjk(Event):
         >>> from fractions import Fraction
         >>> EventPivotTjk(candidate_x='a', candidate_y='b', candidate_z='c',
         ...               tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
-        <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + log(n) - log(10) + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
@@ -35,7 +35,7 @@ class EventPivotTjk(Event):
         self._phi_yz = pivot_weak.phi['yz']
         if tau_xy == 0 and (tau_x == 0 or tau_y == 0):
             # Flower diagram: holes `at the bottom`, i.e. around ``xy``
-            self.asymptotic = Asymptotic(mu=-np.inf, nu=-np.inf, xi=-np.inf)
+            self.asymptotic = Asymptotic(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
         elif tau_x == 0 and tau_xz == 0:
             # Flower diagram: consecutive holes on the ``x`` side
             self.asymptotic = (Asymptotic.poisson_value(tau_yz, 0) * Asymptotic.poisson_value(tau_y, 0)
@@ -60,9 +60,9 @@ class EventPivotTjk(Event):
             _phi_y_tilde = self._phi_y if tau_y != 0 else self._phi_xy * self._phi_yz
             self.asymptotic = pivot_weak.asymptotic * (_phi_z_tilde**2 * (1 + _phi_y_tilde))
         if isneginf(self.asymptotic.mu):
-            self._phi_x = np.nan
-            self._phi_y = np.nan
-            self._phi_z = np.nan
-            self._phi_xy = np.nan
-            self._phi_xz = np.nan
-            self._phi_yz = np.nan
+            self._phi_x = sp.nan
+            self._phi_y = sp.nan
+            self._phi_z = sp.nan
+            self._phi_xy = sp.nan
+            self._phi_xz = sp.nan
+            self._phi_yz = sp.nan

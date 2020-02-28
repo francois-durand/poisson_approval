@@ -1,3 +1,4 @@
+import sympy as sp
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventPivotWeak import EventPivotWeak
@@ -19,7 +20,7 @@ class EventPivotTij(Event):
         >>> from fractions import Fraction
         >>> EventPivotTij(candidate_x='a', candidate_y='b', candidate_z='c',
         ...               tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):

@@ -1,4 +1,4 @@
-import numpy as np
+import sympy as sp
 from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
@@ -19,7 +19,8 @@ class EventTrio2t(Event):
         >>> from fractions import Fraction
         >>> EventTrio2t(candidate_x='a', candidate_y='b', candidate_z='c',
         ...             tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(12*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
@@ -40,7 +41,7 @@ class EventTrio2t(Event):
                                * Asymptotic.poisson_one_more(tau_z, tau_xy))
         elif (tau_z == 0 and tau_xz == 0) or (tau_z == 0 and tau_yz == 0):
             # Flower diagram 1
-            self.asymptotic = Asymptotic(mu=-np.inf, nu=-np.inf, xi=-np.inf)
+            self.asymptotic = Asymptotic(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
         elif (tau_x == 0 and tau_xz == 0) or (tau_y == 0 and tau_yz == 0):
             # Flower diagram 2
             self.asymptotic = (Asymptotic.poisson_eq(tau_x, tau_yz) * Asymptotic.poisson_eq(tau_y, tau_xz)
@@ -57,9 +58,9 @@ class EventTrio2t(Event):
             _phi_xy_tilde = self._phi_xy if tau_xy != 0 else self._phi_x * self._phi_y
             self.asymptotic = event_trio.asymptotic * _phi_xy_tilde
         if isneginf(self.asymptotic.mu):
-            self._phi_x = np.nan
-            self._phi_y = np.nan
-            self._phi_z = np.nan
-            self._phi_xy = np.nan
-            self._phi_xz = np.nan
-            self._phi_yz = np.nan
+            self._phi_x = sp.nan
+            self._phi_y = sp.nan
+            self._phi_z = sp.nan
+            self._phi_xy = sp.nan
+            self._phi_xz = sp.nan
+            self._phi_yz = sp.nan

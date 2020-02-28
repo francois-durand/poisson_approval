@@ -20,11 +20,11 @@ class Event:
     ----------
     asymptotic : Asymptotic
         The asymptotic development of the probability of the event when `n` tends to infinity.
-    mu : Number, ``np.nan`` or ``np.inf``
+    mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Shortcut for ``asymptotic.mu``.
-    nu : Number, ``np.nan`` or ``np.inf``
+    nu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Shortcut for ``asymptotic.nu``.
-    xi : Number, ``np.nan`` or ``np.inf``
+    xi : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Shortcut for ``asymptotic.xi``.
     phi_ab : Number or ``np.nan``
         The offset for this kind of ballot. An offset is ``np.nan`` if it is not defined.
@@ -155,7 +155,7 @@ class Event:
         for label in lab_sorted:
             val = getattr(self, 'phi_' + label)
             if not isnan(val):
-                s += ', phi_' + label + ' = {:.6g}'.format(float(val))
+                s += ', phi_' + label + ' = %s' % val
         return '<%s>' % s
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover

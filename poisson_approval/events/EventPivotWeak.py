@@ -1,8 +1,8 @@
-from math import sqrt, isclose
-import numpy as np
+import sympy as sp
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
+from poisson_approval.utils.Util import isclose
 
 
 class EventPivotWeak(Event):
@@ -20,17 +20,18 @@ class EventPivotWeak(Event):
         >>> event = EventPivotWeak(candidate_x='c', candidate_y='b', candidate_z='a',
         ...                        tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
         >>> event
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> print(event.asymptotic)
-        exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1))
+        exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1))
         >>> event.mu
-        -0.151471862576143
+        -1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2
         >>> event.nu
-        -0.5
+        -1/2
         >>> event.xi
-        -0.8368125164616638
+        -log(6*sqrt(2)*pi/5)/2
         >>> event.phi_a
-        0.0
+        0
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
@@ -40,42 +41,42 @@ class EventPivotWeak(Event):
             self.asymptotic = (Asymptotic.poisson_eq(tau_x, 0) * Asymptotic.poisson_eq(tau_y, 0)
                                * Asymptotic.poisson_eq(tau_xz, 0) * Asymptotic.poisson_eq(tau_yz, 0)
                                * Asymptotic.poisson_ge(tau_xy, tau_z))
-            self._phi_x = 0 if tau_x > 0 else np.nan
-            self._phi_y = 0 if tau_y > 0 else np.nan
-            self._phi_xz = 0 if tau_xz > 0 else np.nan
-            self._phi_yz = 0 if tau_yz > 0 else np.nan
+            self._phi_x = sp.S(0) if tau_x > 0 else sp.nan
+            self._phi_y = sp.S(0) if tau_y > 0 else sp.nan
+            self._phi_xz = sp.S(0) if tau_xz > 0 else sp.nan
+            self._phi_yz = sp.S(0) if tau_yz > 0 else sp.nan
             if tau_xy >= tau_z:
-                self._phi_xy = 1 if tau_xy > 0 else np.nan
-                self._phi_z = 1 if tau_z > 0 else np.nan
+                self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
+                self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
             else:
-                self._phi_xy = sqrt(tau_z / tau_xy) if tau_xy > 0 else np.nan
-                self._phi_z = sqrt(tau_xy / tau_z) if tau_z > 0 else np.nan
+                self._phi_xy = sp.sqrt(sp.S(tau_z) / tau_xy) if tau_xy > 0 else sp.nan
+                self._phi_z = sp.sqrt(sp.S(tau_xy) / tau_z) if tau_z > 0 else sp.nan
         else:
-            w_x = tau_x + tau_xz  # > 0
-            w_y = tau_y + tau_yz  # > 0
-            s_x = tau_xy + tau_x * sqrt(w_y / w_x)
-            s_z = tau_z + tau_yz * sqrt(w_x / w_y)
+            w_x = sp.S(tau_x + tau_xz)  # > 0
+            w_y = sp.S(tau_y + tau_yz)  # > 0
+            s_x = tau_xy + tau_x * sp.sqrt(sp.S(w_y) / w_x)
+            s_z = tau_z + tau_yz * sp.sqrt(sp.S(w_x) / w_y)
             if isclose(s_x, s_z):
                 if tau_z != 0 or tau_xy != 0 or (tau_x != 0 and tau_y != 0 and tau_xz != 0 and tau_yz != 0):
-                    self.asymptotic = Asymptotic.poisson_eq(w_x, w_y) * (1 / 2)
+                    self.asymptotic = Asymptotic.poisson_eq(w_x, w_y) * sp.Rational(1, 2)
                 else:
                     self.asymptotic = Asymptotic.poisson_eq(w_x, w_y)
-                self._phi_x = sqrt(w_y / w_x) if tau_x > 0 else np.nan
-                self._phi_xz = sqrt(w_y / w_x) if tau_xz > 0 else np.nan
-                self._phi_y = sqrt(w_x / w_y) if tau_y > 0 else np.nan
-                self._phi_yz = sqrt(w_x / w_y) if tau_yz > 0 else np.nan
-                self._phi_z = 1 if tau_z > 0 else np.nan
-                self._phi_xy = 1 if tau_xy > 0 else np.nan
+                self._phi_x = sp.sqrt(sp.S(w_y) / w_x) if tau_x > 0 else sp.nan
+                self._phi_xz = sp.sqrt(sp.S(w_y) / w_x) if tau_xz > 0 else sp.nan
+                self._phi_y = sp.sqrt(sp.S(w_x) / w_y) if tau_y > 0 else sp.nan
+                self._phi_yz = sp.sqrt(sp.S(w_x) / w_y) if tau_yz > 0 else sp.nan
+                self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
+                self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
             elif s_x > s_z:
                 # "Easy" pivot
                 # P(piv_ab) ~ P(S_a = S_b)
                 self.asymptotic = Asymptotic.poisson_eq(w_x, w_y)
-                self._phi_x = sqrt(w_y / w_x) if tau_x > 0 else np.nan
-                self._phi_xz = sqrt(w_y / w_x) if tau_xz > 0 else np.nan
-                self._phi_y = sqrt(w_x / w_y) if tau_y > 0 else np.nan
-                self._phi_yz = sqrt(w_x / w_y) if tau_yz > 0 else np.nan
-                self._phi_z = 1 if tau_z > 0 else np.nan
-                self._phi_xy = 1 if tau_xy > 0 else np.nan
+                self._phi_x = sp.sqrt(sp.S(w_y) / w_x) if tau_x > 0 else sp.nan
+                self._phi_xz = sp.sqrt(sp.S(w_y) / w_x) if tau_xz > 0 else sp.nan
+                self._phi_y = sp.sqrt(sp.S(w_x) / w_y) if tau_y > 0 else sp.nan
+                self._phi_yz = sp.sqrt(sp.S(w_x) / w_y) if tau_yz > 0 else sp.nan
+                self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
+                self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
             else:
                 # "Difficult" pivot
                 # mu_ab = mu_abc
@@ -91,6 +92,4 @@ class EventPivotWeak(Event):
                     _phi_z_tilde = self._phi_z
                 else:
                     _phi_z_tilde = self._phi_xz * self._phi_yz
-                # print(_phi_z_tilde)
-                # print(1 / (1 - _phi_z_tilde))
-                self.asymptotic = pivot_trio.asymptotic * (1 / (1 - _phi_z_tilde))
+                self.asymptotic = pivot_trio.asymptotic / (1 - _phi_z_tilde)

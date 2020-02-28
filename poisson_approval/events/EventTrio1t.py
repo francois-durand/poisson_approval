@@ -1,4 +1,4 @@
-import numpy as np
+import sympy as sp
 from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
@@ -52,14 +52,14 @@ class EventTrio1t(Event):
                                * Asymptotic.poisson_eq(tau_y, tau_xz) * Asymptotic.poisson_eq(tau_z, tau_xy))
         elif (tau_y == 0 and tau_yz == 0) or (tau_z == 0 and tau_yz == 0):
             # Flower diagram 3
-            self.asymptotic = Asymptotic(mu=-np.inf, nu=-np.inf, xi=-np.inf)
+            self.asymptotic = Asymptotic(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
         else:
             _phi_x_tilde = self._phi_x if tau_x != 0 else self._phi_xy * self._phi_xz
             self.asymptotic = event_trio.asymptotic * _phi_x_tilde
         if isneginf(self.asymptotic.mu):
-            self._phi_x = np.nan
-            self._phi_y = np.nan
-            self._phi_z = np.nan
-            self._phi_xy = np.nan
-            self._phi_xz = np.nan
-            self._phi_yz = np.nan
+            self._phi_x = sp.nan
+            self._phi_y = sp.nan
+            self._phi_z = sp.nan
+            self._phi_xy = sp.nan
+            self._phi_xz = sp.nan
+            self._phi_yz = sp.nan
