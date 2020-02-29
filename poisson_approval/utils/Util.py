@@ -4,6 +4,7 @@ import itertools
 import numpy as np
 import sympy as sp
 from fractions import Fraction
+from decimal import Decimal
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -973,10 +974,10 @@ def my_division(x, y):
     --------
     Typical usages:
 
-        >>> my_division(5, 2)
-        Fraction(5, 2)
         >>> my_division(6, 2)
         3
+        >>> my_division(5, 2)
+        Fraction(5, 2)
 
     If `x` or `y` is a float, then the result is a float:
 
@@ -985,13 +986,14 @@ def my_division(x, y):
         >>> my_division(0.1, Fraction(5, 2))
         0.04
 
-    If `x` and `y` are integers, decimals or fractions, then the result is a fraction:
+    If `x` and `y` are integers, decimals, fractions or sympy expressions, then the result is exact:
 
         >>> my_division(2, Fraction(5, 2))
         Fraction(4, 5)
-        >>> from decimal import Decimal
         >>> my_division(Decimal('0.1'), Fraction(5, 2))
         Fraction(1, 25)
+        >>> my_division(sp.sqrt(3), 2)
+        sqrt(3)/2
 
     Possible errors:
 
@@ -1000,17 +1002,26 @@ def my_division(x, y):
         ZeroDivisionError: division by zero
         >>> my_division(1, 'foo')
         Traceback (most recent call last):
-        ValueError: Invalid literal for Fraction: 'foo'
+        TypeError: unsupported operand type(s) for /: 'Fraction' and 'str'
+
     """
     if y == 0:
         raise ZeroDivisionError('division by zero')
     if isinstance(x, float) or isinstance(y, float):
         return x / y
     try:
-        result = Fraction(x) / Fraction(y)
-    except TypeError:
-        raise NotImplementedError
-    return result.numerator if result.denominator == 1 else result
+        x = Fraction(x)
+    except (TypeError, ValueError):
+        pass
+    try:
+        y = Fraction(y)
+    except (TypeError, ValueError):
+        pass
+    result = x / y
+    if isinstance(result, Fraction) and result.denominator == 1:
+        return result.numerator
+    else:
+        return result
 
 
 def look_equal(x, y, *args, **kwargs):
@@ -1045,4 +1056,37 @@ def look_equal(x, y, *args, **kwargs):
     if isinstance(x, float) or isinstance(y, float):
         return math.isclose(x, y, *args, **kwargs)
     else:
-        return sp.simplify(x - y) == 0
+        return my_simplify(x - y) == 0
+
+
+def my_simplify(x):
+    """Simplify a sympy expression representing a number.
+
+    Parameters
+    ----------
+    x : the expression.
+
+    Returns
+    -------
+    sympy expression
+        The simplified expression.
+
+    Examples
+    --------
+    Exact expressions are simplified if possible:
+
+        >>> my_simplify(- sp.Rational(1, 10) - (- sp.sqrt(15) / 5 + sp.sqrt(30) / 10)**2)
+        -1 + 3*sqrt(2)/5
+        >>> my_simplify(- sp.log(6 * sp.sqrt(2) * sp.pi / 5) / 2)
+        -log(6*sqrt(2)*pi/5)/2
+        >>> my_simplify(Fraction(1, 1000000000000))
+        1/1000000000000
+
+    Floats are not modified:
+
+        >>> my_simplify(0.333333)
+        0.333333
+    """
+    if isinstance(x, float):
+        return x
+    return sp.simplify(x, ratio=1)

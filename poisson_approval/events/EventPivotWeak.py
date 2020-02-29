@@ -2,7 +2,7 @@ import sympy as sp
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
-from poisson_approval.utils.Util import look_equal
+from poisson_approval.utils.Util import look_equal, my_simplify
 
 
 class EventPivotWeak(Event):
@@ -20,12 +20,12 @@ class EventPivotWeak(Event):
         >>> event = EventPivotWeak(candidate_x='c', candidate_y='b', candidate_z='a',
         ...                        tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
         >>> event
-        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+        <asymptotic = exp(n*(-1 + 3*sqrt(2)/5) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
 phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> print(event.asymptotic)
-        exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1))
+        exp(n*(-1 + 3*sqrt(2)/5) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1))
         >>> event.mu
-        -1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2
+        -1 + 3*sqrt(2)/5
         >>> event.nu
         -1/2
         >>> event.xi
@@ -49,32 +49,32 @@ phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
                 self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
                 self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
             else:
-                self._phi_xy = sp.sqrt(sp.S(tau_z) / tau_xy) if tau_xy > 0 else sp.nan
-                self._phi_z = sp.sqrt(sp.S(tau_xy) / tau_z) if tau_z > 0 else sp.nan
+                self._phi_xy = my_simplify(sp.sqrt(sp.S(tau_z) / tau_xy)) if tau_xy > 0 else sp.nan
+                self._phi_z = my_simplify(sp.sqrt(sp.S(tau_xy) / tau_z)) if tau_z > 0 else sp.nan
         else:
             w_x = sp.S(tau_x + tau_xz)  # > 0
             w_y = sp.S(tau_y + tau_yz)  # > 0
-            s_x = tau_xy + tau_x * sp.sqrt(sp.S(w_y) / w_x)
-            s_z = tau_z + tau_yz * sp.sqrt(sp.S(w_x) / w_y)
+            s_x = my_simplify(tau_xy + tau_x * sp.sqrt(sp.S(w_y) / w_x))
+            s_z = my_simplify(tau_z + tau_yz * sp.sqrt(sp.S(w_x) / w_y))
             if look_equal(s_x, s_z):
                 if tau_z != 0 or tau_xy != 0 or (tau_x != 0 and tau_y != 0 and tau_xz != 0 and tau_yz != 0):
                     self.asymptotic = Asymptotic.poisson_eq(w_x, w_y) * sp.Rational(1, 2)
                 else:
                     self.asymptotic = Asymptotic.poisson_eq(w_x, w_y)
-                self._phi_x = sp.sqrt(sp.S(w_y) / w_x) if tau_x > 0 else sp.nan
-                self._phi_xz = sp.sqrt(sp.S(w_y) / w_x) if tau_xz > 0 else sp.nan
-                self._phi_y = sp.sqrt(sp.S(w_x) / w_y) if tau_y > 0 else sp.nan
-                self._phi_yz = sp.sqrt(sp.S(w_x) / w_y) if tau_yz > 0 else sp.nan
+                self._phi_x = my_simplify(sp.sqrt(sp.S(w_y) / w_x)) if tau_x > 0 else sp.nan
+                self._phi_xz = my_simplify(sp.sqrt(sp.S(w_y) / w_x)) if tau_xz > 0 else sp.nan
+                self._phi_y = my_simplify(sp.sqrt(sp.S(w_x) / w_y)) if tau_y > 0 else sp.nan
+                self._phi_yz = my_simplify(sp.sqrt(sp.S(w_x) / w_y)) if tau_yz > 0 else sp.nan
                 self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
                 self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
             elif s_x > s_z:
                 # "Easy" pivot
                 # P(piv_ab) ~ P(S_a = S_b)
                 self.asymptotic = Asymptotic.poisson_eq(w_x, w_y)
-                self._phi_x = sp.sqrt(sp.S(w_y) / w_x) if tau_x > 0 else sp.nan
-                self._phi_xz = sp.sqrt(sp.S(w_y) / w_x) if tau_xz > 0 else sp.nan
-                self._phi_y = sp.sqrt(sp.S(w_x) / w_y) if tau_y > 0 else sp.nan
-                self._phi_yz = sp.sqrt(sp.S(w_x) / w_y) if tau_yz > 0 else sp.nan
+                self._phi_x = my_simplify(sp.sqrt(sp.S(w_y) / w_x)) if tau_x > 0 else sp.nan
+                self._phi_xz = my_simplify(sp.sqrt(sp.S(w_y) / w_x)) if tau_xz > 0 else sp.nan
+                self._phi_y = my_simplify(sp.sqrt(sp.S(w_x) / w_y)) if tau_y > 0 else sp.nan
+                self._phi_yz = my_simplify(sp.sqrt(sp.S(w_x) / w_y)) if tau_yz > 0 else sp.nan
                 self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
                 self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
             else:
@@ -91,5 +91,5 @@ phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
                 if tau_z > 0:
                     _phi_z_tilde = self._phi_z
                 else:
-                    _phi_z_tilde = self._phi_xz * self._phi_yz
+                    _phi_z_tilde = my_simplify(self._phi_xz * self._phi_yz)
                 self.asymptotic = pivot_trio.asymptotic / (1 - _phi_z_tilde)

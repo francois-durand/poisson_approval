@@ -3,6 +3,7 @@ from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
+from poisson_approval.utils.Util import my_simplify
 
 
 class EventTrio1t(Event):
@@ -54,7 +55,7 @@ class EventTrio1t(Event):
             # Flower diagram 3
             self.asymptotic = Asymptotic(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
         else:
-            _phi_x_tilde = self._phi_x if tau_x != 0 else self._phi_xy * self._phi_xz
+            _phi_x_tilde = self._phi_x if tau_x != 0 else my_simplify(self._phi_xy * self._phi_xz)
             self.asymptotic = event_trio.asymptotic * _phi_x_tilde
         if isneginf(self.asymptotic.mu):
             self._phi_x = sp.nan

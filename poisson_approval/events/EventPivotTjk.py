@@ -3,6 +3,7 @@ from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventPivotWeak import EventPivotWeak
+from poisson_approval.utils.Util import my_simplify
 
 
 class EventPivotTjk(Event):
@@ -56,8 +57,8 @@ class EventPivotTjk(Event):
             self.asymptotic = (Asymptotic.poisson_eq(tau_x + tau_xz, tau_y + tau_yz)
                                + Asymptotic.poisson_one_more(tau_x + tau_xz, tau_y + tau_yz))
         else:
-            _phi_z_tilde = self._phi_z if tau_z != 0 else self._phi_xz * self._phi_yz
-            _phi_y_tilde = self._phi_y if tau_y != 0 else self._phi_xy * self._phi_yz
+            _phi_z_tilde = self._phi_z if tau_z != 0 else my_simplify(self._phi_xz * self._phi_yz)
+            _phi_y_tilde = self._phi_y if tau_y != 0 else my_simplify(self._phi_xy * self._phi_yz)
             self.asymptotic = pivot_weak.asymptotic * (_phi_z_tilde**2 * (1 + _phi_y_tilde))
         if isneginf(self.asymptotic.mu):
             self._phi_x = sp.nan

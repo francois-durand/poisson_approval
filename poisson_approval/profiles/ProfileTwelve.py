@@ -10,7 +10,7 @@ from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, sort_ballot, \
-    product_dict, ballot_low_u, ballot_high_u, sort_weak_order
+    product_dict, ballot_low_u, ballot_high_u, sort_weak_order, look_equal, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -141,13 +141,13 @@ class ProfileTwelve(ProfileCardinal):
                 self._d_weak_order_share[sort_weak_order(t)] += share
         # Normalize if necessary
         total = sum(self.d_type_share.values()) + sum(self._d_weak_order_share.values())
-        if not isclose(total, 1.):
+        if not look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for t in self.d_type_share.keys():
-                self.d_type_share[t] /= total
+                self.d_type_share[t] = my_division(self.d_type_share[t], total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
 
     @cached_property
     def d_weak_order_share(self):

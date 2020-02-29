@@ -1,7 +1,7 @@
 import sympy as sp
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import look_equal
+from poisson_approval.utils.Util import look_equal, my_simplify
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -42,13 +42,13 @@ class BestResponseApproval(BestResponse):
         :attr:`threshold_utility` and :attr:`justification`. The threshold utility may be NaN, because this method is
         not always sufficient.
         """
-        threshold_utility = ((
+        threshold_utility = my_simplify(((
             self.pivot_tij.asymptotic * sp.Rational(1, 2)
             + self.trio_1t.asymptotic * sp.Rational(1, 3) + self.trio_2t.asymptotic * sp.Rational(1, 6)
         ) / (
             self.pivot_tij.asymptotic * sp.Rational(1, 2) + self.pivot_tjk.asymptotic * sp.Rational(1, 2)
             + self.trio_1t.asymptotic * sp.Rational(2, 3) + self.trio_2t.asymptotic * sp.Rational(1, 3)
-        )).limit
+        )).limit)
         justification = self.ASYMPTOTIC
         return threshold_utility, justification
 
@@ -62,11 +62,11 @@ class BestResponseApproval(BestResponse):
             return sp.nan, ''
         if self.pivot_ij_easy_or_tight and self.pivot_jk_easy_or_tight:
             # Both pivots are easy => We can forget the trios.
-            threshold_utility = ((
+            threshold_utility = my_simplify(((
                 self.pivot_tij.asymptotic * sp.Rational(1, 2)
             ) / (
                 self.pivot_tij.asymptotic * sp.Rational(1, 2) + self.pivot_tjk.asymptotic * sp.Rational(1, 2)
-            )).limit
+            )).limit)
             justification = self.ASYMPTOTIC_SIMPLIFIED
         elif self.pivot_ij_easy_or_tight:
             # ... but pivot jk is difficult.
@@ -109,7 +109,8 @@ class BestResponseApproval(BestResponse):
                 pjk = (1 + self.trio.psi[self.j]) * self.trio.psi[self.i] ** 2 / (1 - self.trio.psi[self.i])
                 p1t = self.trio.psi[self.i]
                 p2t = self.trio.psi[self.ij]
-                threshold_utility = (pij / 2 + p1t / 3 + p2t / 6) / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3)
+                threshold_utility = my_simplify((pij / 2 + p1t / 3 + p2t / 6)
+                                                / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3))
                 justification = self.OFFSET_METHOD
         return threshold_utility, justification
 

@@ -1,6 +1,7 @@
 import sympy as sp
 from poisson_approval.events.Event import Event
 from poisson_approval.events.Asymptotic import Asymptotic
+from poisson_approval.utils.Util import my_simplify
 
 
 class EventDuo(Event):
@@ -25,9 +26,9 @@ class EventDuo(Event):
         w_x = sp.S(tau_x + tau_xz)
         w_y = sp.S(tau_y + tau_yz)
         self.asymptotic = Asymptotic.poisson_eq(w_x, w_y)
-        self._phi_x = sp.sqrt(w_y / w_x) if tau_x > 0 else sp.nan
-        self._phi_xz = sp.sqrt(w_y / w_x) if tau_xz > 0 else sp.nan
-        self._phi_y = sp.sqrt(w_x / w_y) if tau_y > 0 else sp.nan
-        self._phi_yz = sp.sqrt(w_x / w_y) if tau_yz > 0 else sp.nan
-        self._phi_z = sp.S(1) if tau_z > 0 else sp.nan
-        self._phi_xy = sp.S(1) if tau_xy > 0 else sp.nan
+        self._phi_x = my_simplify(sp.sqrt(w_y / w_x)) if tau_x > 0 else sp.nan
+        self._phi_xz = my_simplify(sp.sqrt(w_y / w_x)) if tau_xz > 0 else sp.nan
+        self._phi_y = my_simplify(sp.sqrt(w_x / w_y)) if tau_y > 0 else sp.nan
+        self._phi_yz = my_simplify(sp.sqrt(w_x / w_y)) if tau_yz > 0 else sp.nan
+        self._phi_z = my_simplify(sp.S(1)) if tau_z > 0 else sp.nan
+        self._phi_xy = my_simplify(sp.S(1)) if tau_xy > 0 else sp.nan

@@ -1,7 +1,6 @@
 import warnings
 import itertools
 import numpy as np
-from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.generators.GeneratorStrategyOrdinalUniform import GeneratorStrategyOrdinalUniform
@@ -10,7 +9,7 @@ from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
-    product_dict, ballot_low_u, ballot_high_u, sort_weak_order
+    product_dict, ballot_low_u, ballot_high_u, sort_weak_order, look_equal, my_division
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 from poisson_approval.utils.UtilMasks import masks_area, masks_distribution, winners_distribution
 
@@ -87,6 +86,8 @@ class ProfileOrdinal(Profile):
         <abc: ab, bac: b, cab: ac> ==> b (FF)
         <abc: ab, bac: ab, cab: c> ==> a, b (FF)
         <abc: ab, bac: ab, cab: ac> ==> a (D)
+        >>> profile.analyzed_strategies_ordinal.equilibria[0].d_ranking_best_response['acb'].threshold_utility
+
         >>> print(profile.analyzed_strategies_ordinal.equilibria[0])
         <abc: a, bac: b, cab: ac> ==> b
         >>> print(profile.analyzed_strategies_ordinal.winners_at_equilibrium)
@@ -109,8 +110,8 @@ class ProfileOrdinal(Profile):
         if d_weak_order_share is None:
             d_weak_order_share = dict()
         # Populate the dictionaries of rankings and weak orders
-        self._d_ranking_share = DictPrintingInOrderIgnoringZeros(
-            {ranking: 0 for ranking in RANKINGS})
+        self._d_ranking_share = DictPrintingInOrderIgnoringZeros({
+            ranking: 0 for ranking in RANKINGS})
         self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
             weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
         for order, share in itertools.chain(d_ranking_share.items(), d_weak_order_share.items()):
@@ -120,13 +121,13 @@ class ProfileOrdinal(Profile):
                 self._d_weak_order_share[sort_weak_order(order)] += share
         # Normalize if necessary
         total = sum(self._d_ranking_share.values()) + sum(self._d_weak_order_share.values())
-        if not isclose(total, 1.):
+        if not look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for ranking in self._d_ranking_share.keys():
-                self._d_ranking_share[ranking] /= total
+                self._d_ranking_share[ranking] = my_division(self._d_ranking_share[ranking], total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
         # Other parameters
         self.well_informed_voters = well_informed_voters
         self.ratio_fanatic = ratio_fanatic

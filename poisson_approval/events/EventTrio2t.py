@@ -3,6 +3,7 @@ from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
+from poisson_approval.utils.Util import my_simplify
 
 
 class EventTrio2t(Event):
@@ -19,7 +20,7 @@ class EventTrio2t(Event):
         >>> from fractions import Fraction
         >>> EventTrio2t(candidate_x='a', candidate_y='b', candidate_z='c',
         ...             tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
-        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(12*sqrt(2)*pi/5)/2 + o(1)), \
+        <asymptotic = exp(n*(-1 + 3*sqrt(2)/5) - log(n)/2 - log(12*sqrt(2)*pi/5)/2 + o(1)), \
 phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
     """
 
@@ -55,7 +56,7 @@ phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
                    * Asymptotic.poisson_eq(tau_x, tau_yz) * Asymptotic.poisson_eq(tau_y, tau_xz))
             )
         else:
-            _phi_xy_tilde = self._phi_xy if tau_xy != 0 else self._phi_x * self._phi_y
+            _phi_xy_tilde = self._phi_xy if tau_xy != 0 else my_simplify(self._phi_x * self._phi_y)
             self.asymptotic = event_trio.asymptotic * _phi_xy_tilde
         if isneginf(self.asymptotic.mu):
             self._phi_x = sp.nan

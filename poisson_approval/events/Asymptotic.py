@@ -1,6 +1,6 @@
 import sympy as sp
 from fractions import Fraction
-from poisson_approval.utils.Util import isnan, isneginf, look_equal
+from poisson_approval.utils.Util import isnan, isneginf, look_equal, my_simplify
 
 
 # noinspection NonAsciiCharacters
@@ -155,7 +155,7 @@ class Asymptotic:
                 if isnan(self.xi):
                     return sp.nan
                 else:
-                    return sp.exp(self.xi)
+                    return my_simplify(sp.exp(self.xi))
 
     def __mul__(self, other):
         """Multiplication of two asymptotic developments.
@@ -180,7 +180,7 @@ class Asymptotic:
             other = Asymptotic(0, 0, sp.log(other))
 
         def my_addition(x, y):
-            return 0 if look_equal(x, -y) else x + y
+            return 0 if look_equal(x, -y) else my_simplify(x + y)
 
         return Asymptotic(my_addition(self.mu, other.mu),
                           my_addition(self.nu, other.nu),
@@ -247,7 +247,7 @@ class Asymptotic:
             >>> print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=42, nu=51, xi=3))
             exp(42*n + 51*log(n) + 3 + o(1))
             >>> print(Asymptotic(mu=42, nu=2, xi=4) + Asymptotic(mu=42, nu=2, xi=3))
-            exp(42*n + 2*log(n) + log(exp(3) + exp(4)) + o(1))
+            exp(42*n + 2*log(n) + log(1 + E) + 3 + o(1))
             >>> print(Asymptotic(mu=42, nu=2, xi=4) + 1)
             exp(42*n + 2*log(n) + 4 + o(1))
             >>> print(1 + Asymptotic(mu=42, nu=2, xi=4))
@@ -265,7 +265,7 @@ class Asymptotic:
                 return Asymptotic(mu, sp.nan, sp.nan)
             elif look_equal(self.nu, other.nu):
                 nu = max(self.nu, other.nu)
-                xi = sp.log(sp.exp(self.xi) + sp.exp(other.xi))
+                xi = my_simplify(sp.log(sp.exp(self.xi) + sp.exp(other.xi)))
                 return Asymptotic(mu, nu, xi)
             elif self.nu > other.nu:
                 return Asymptotic(mu, self.nu, self.xi)
@@ -339,14 +339,14 @@ class Asymptotic:
             >>> print(Asymptotic.poisson_value(tau=1, k=1))
             exp(- n + log(n) + o(1))
             >>> Asymptotic.poisson_value(tau=2, k=3)
-            Asymptotic(mu=-2, nu=3, xi=-log(6) + 3*log(2))
+            Asymptotic(mu=-2, nu=3, xi=log(4/3))
         """
         if tau == 0:
             if k == 0:
                 return cls(mu=0, nu=0, xi=0)
             else:
                 return cls(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
-        return cls(mu=- tau, nu=k, xi=k * sp.log(tau) - sp.log(sp.factorial(k)))
+        return cls(mu=- tau, nu=k, xi=my_simplify(k * sp.log(tau) - sp.log(sp.factorial(k))))
 
     @classmethod
     def poisson_x1_eq_x2_plus_k(cls, tau_1, tau_2, k):
@@ -373,11 +373,11 @@ class Asymptotic:
             >>> print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=0, k=1))
             exp(- n + log(n) + o(1))
             >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=2, tau_2=0, k=3)
-            Asymptotic(mu=-2, nu=3, xi=-log(6) + 3*log(2))
+            Asymptotic(mu=-2, nu=3, xi=log(4/3))
             >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=1, k=0)
             Asymptotic(mu=0, nu=-1/2, xi=-log(4*pi)/2)
             >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=2, k=3)
-            Asymptotic(mu=-(1 - sqrt(2))**2, nu=-1/2, xi=-log(32*sqrt(2)*pi)/2)
+            Asymptotic(mu=-3 + 2*sqrt(2), nu=-1/2, xi=-11*log(2)/4 - log(pi)/2)
         """
         if tau_1 == 0:
             if k == 0:
@@ -385,12 +385,13 @@ class Asymptotic:
             else:
                 return cls(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
         elif tau_2 == 0:
-            return cls(mu=- tau_1, nu=k, xi=k * sp.log(tau_1) - sp.log(sp.factorial(k)))
+            return cls(mu=- tau_1, nu=k, xi=my_simplify(k * sp.log(tau_1) - sp.log(sp.factorial(k))))
         else:
             return cls(
-                mu=- (sp.sqrt(tau_1) - sp.sqrt(tau_2)) ** 2,
+                mu=my_simplify(- (sp.sqrt(tau_1) - sp.sqrt(tau_2)) ** 2),
                 nu=- sp.Rational(1, 2),
-                xi=- sp.Rational(1, 2) * sp.log(4 * sp.pi * sp.sqrt(tau_1 * tau_2) * sp.S(tau_2**k) / tau_1**k)
+                xi=my_simplify(- sp.Rational(1, 2)
+                                * sp.log(4 * sp.pi * sp.sqrt(tau_1 * tau_2) * sp.S(tau_2**k) / tau_1**k))
             )
 
     @classmethod
@@ -468,7 +469,7 @@ class Asymptotic:
             >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=1, k=0)
             Asymptotic(mu=0, nu=0, xi=-log(2))
             >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=2, k=3)
-            Asymptotic(mu=-(1 - sqrt(2))**2, nu=-1/2, xi=-log(32*sqrt(2)*pi)/2 - log(1 - sqrt(2)/2))
+            Asymptotic(mu=-3 + 2*sqrt(2), nu=-1/2, xi=-11*log(2)/4 - log(pi)/2 - log(1 - sqrt(2)/2))
         """
         if tau_1 == 0:
             if k == 0:
@@ -484,10 +485,12 @@ class Asymptotic:
         else:
             # Use the offset theorem with event X_1 = X_2, then infinite sum.
             return cls(
-                mu=- (sp.sqrt(tau_1) - sp.sqrt(tau_2)) ** 2,
+                mu=my_simplify(- (sp.sqrt(tau_1) - sp.sqrt(tau_2)) ** 2),
                 nu=- sp.Rational(1, 2),
-                xi=(- sp.Rational(1, 2) * sp.log(4 * sp.pi * sp.sqrt(tau_1 * tau_2) * sp.S(tau_2**k) / tau_1**k)
-                    - sp.log(1 - sp.sqrt(sp.S(tau_1) / tau_2)))
+                xi=my_simplify(
+                    - sp.Rational(1, 2) * sp.log(4 * sp.pi * sp.sqrt(tau_1 * tau_2) * sp.S(tau_2**k) / tau_1**k)
+                    - sp.log(1 - sp.sqrt(sp.S(tau_1) / tau_2))
+                )
             )
 
     @classmethod

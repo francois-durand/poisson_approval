@@ -32,3 +32,7 @@ XYZ_BALLOTS_WITHOUT_INVERSION = _f_abc_xyz(BALLOTS_WITHOUT_INVERSIONS)
 XYZ_BALLOTS_INVERTED = _f_abc_xyz(PAIRS_INVERTED)
 XYZ_BALLOTS_WITH_INVERSIONS = _f_abc_xyz(BALLOTS_WITH_INVERSIONS)
 XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS = _f_abc_xyz(WEAK_ORDERS_WITHOUT_INVERSIONS)
+
+
+NORMALIZATION_WARNING = ("Warning: the input is not normalized, I will normalize it. If you use floats, consider using "
+                         "fractions. To disable this warning, use the parameter normalization_warning=False.")

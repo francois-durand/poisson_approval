@@ -7,7 +7,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict
+from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict, look_equal
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -157,21 +157,21 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             self._d_weak_order_share[sort_weak_order(weak_order)] += share
         # Normalize if necessary
         total = sum(self._d_ranking_share.values()) + sum(self._d_weak_order_share.values())
-        if not isclose(total, 1.):
+        if not look_equal(total, 1):
             if normalization_warning:
                 warnings.warn("Warning: profile is not normalized, I will normalize it.")
             for ranking in self._d_ranking_share.keys():
-                self._d_ranking_share[ranking] /= total
+                self._d_ranking_share[ranking] = my_division(self._d_ranking_share[ranking], total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
         for ranking, histogram in self.d_ranking_histogram.items():
             if len(histogram) == 0:
                 continue
             total = np.sum(histogram)
-            if not isclose(total, 1.):
+            if not look_equal(total, 1):
                 if normalization_warning:
-                    warnings.warn("Warning: profile is not normalized, I will normalize it.")
-                self.d_ranking_histogram[ranking] = histogram / total
+                    warnings.warn(NORMALIZATION_WARNING)
+                self.d_ranking_histogram[ranking] = np.array([my_division(v, total) for v in histogram])
 
     @cached_property
     def d_ranking_share(self):

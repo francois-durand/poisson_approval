@@ -2,6 +2,7 @@ import sympy as sp
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventPivotWeak import EventPivotWeak
+from poisson_approval.utils.Util import my_simplify
 
 
 class EventPivotTij(Event):
@@ -60,5 +61,5 @@ class EventPivotTij(Event):
             self.asymptotic = (Asymptotic.poisson_one_more(tau_y + tau_yz, tau_x + tau_xz)
                                + Asymptotic.poisson_eq(tau_y + tau_yz, tau_x + tau_xz))
         else:
-            _phi_xz_tilde = self._phi_xz if tau_xz != 0 else self._phi_x * self._phi_z
+            _phi_xz_tilde = self._phi_xz if tau_xz != 0 else my_simplify(self._phi_x * self._phi_z)
             self.asymptotic = pivot_weak.asymptotic * (1 + _phi_xz_tilde)

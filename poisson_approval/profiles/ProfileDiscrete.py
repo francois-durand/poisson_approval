@@ -4,7 +4,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order
+from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, look_equal, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -153,14 +153,14 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
         # Normalize if necessary
         total = (sum([sum(d_utility_share.values()) for d_utility_share in self.d_ranking_utility_share.values()])
                  + sum(self._d_weak_order_share.values()))
-        if not isclose(total, 1.):
+        if not look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for d_utility_share in self.d_ranking_utility_share.values():
                 for utility, share in d_utility_share.items():
-                    d_utility_share[utility] = share / total
+                    d_utility_share[utility] = my_division(share, total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
 
     @cached_property
     def d_ranking_share(self):

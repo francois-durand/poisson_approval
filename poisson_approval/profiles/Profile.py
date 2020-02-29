@@ -7,7 +7,8 @@ from poisson_approval.containers.Winners import Winners
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import is_lover, my_division, sort_ballot, ballot_low_u, ballot_high_u, product_dict
+from poisson_approval.utils.Util import is_lover, my_division, sort_ballot, ballot_low_u, ballot_high_u, product_dict, \
+    look_equal
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
@@ -82,10 +83,10 @@ class Profile(DeleteCacheMixin):
         m = self.weighted_maj_graph
         min_score = [min(m[0, 1], m[0, 2]), min(m[1, 0], m[1, 2]), min(m[2, 0], m[2, 1])]
         maximin = max(min_score)
-        if maximin > 10**(-8):
-            return 1.
-        elif maximin > - 10**(-8):
+        if look_equal(maximin, 0, abs_tol=1E-8):
             return .5
+        elif maximin > 0:
+            return 1.
         else:
             return 0.
 
@@ -94,14 +95,14 @@ class Profile(DeleteCacheMixin):
         """bool : Whether there is a `majority favorite` (a candidate ranked first by strictly more than half of the
         voters).
         """
-        return (self.abc + self.acb + self.d_weak_order_share['a>b~c'] > 0.5
-                or self.bac + self.bca + self.d_weak_order_share['b>a~c'] > 0.5
-                or self.cab + self.cba + self.d_weak_order_share['c>a~b'] > 0.5)
+        return (self.abc + self.acb + self.d_weak_order_share['a>b~c'] > Fraction(1, 2)
+                or self.bac + self.bca + self.d_weak_order_share['b>a~c'] > Fraction(1, 2)
+                or self.cab + self.cba + self.d_weak_order_share['c>a~b'] > Fraction(1, 2))
 
     @cached_property
     def has_majority_ranking(self):
         """bool : Whether there is a majority ranking (a ranking shared by strictly more than half of the voters)."""
-        return max(self.d_ranking_share.values()) > 0.5
+        return max(self.d_ranking_share.values()) > Fraction(1, 2)
 
     # Single-peakedness
     @cached_property
