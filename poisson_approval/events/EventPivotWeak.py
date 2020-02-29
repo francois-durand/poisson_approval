@@ -2,7 +2,7 @@ import sympy as sp
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
-from poisson_approval.utils.Util import isclose
+from poisson_approval.utils.Util import look_equal
 
 
 class EventPivotWeak(Event):
@@ -56,7 +56,7 @@ phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
             w_y = sp.S(tau_y + tau_yz)  # > 0
             s_x = tau_xy + tau_x * sp.sqrt(sp.S(w_y) / w_x)
             s_z = tau_z + tau_yz * sp.sqrt(sp.S(w_x) / w_y)
-            if isclose(s_x, s_z):
+            if look_equal(s_x, s_z):
                 if tau_z != 0 or tau_xy != 0 or (tau_x != 0 and tau_y != 0 and tau_xz != 0 and tau_yz != 0):
                     self.asymptotic = Asymptotic.poisson_eq(w_x, w_y) * sp.Rational(1, 2)
                 else:

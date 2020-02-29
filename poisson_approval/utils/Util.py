@@ -1013,7 +1013,7 @@ def my_division(x, y):
     return result.numerator if result.denominator == 1 else result
 
 
-def isclose(x, y, *args, **kwargs):
+def look_equal(x, y, *args, **kwargs):
     """Test if two numbers can reasonably be considered as equal.
 
     Parameters
@@ -1027,18 +1027,19 @@ def isclose(x, y, *args, **kwargs):
 
     Returns
     -------
+    bool
         If `x` or `y` is a float or numpy float (but not a sympy float), then return
         ``math.isclose(x, y, *args, **kwargs)``. In all other cases, return True iff `x` is equal to `y`.
 
     Examples
     --------
-        >>> isclose(1, 0.999999999999)
+        >>> look_equal(1, 0.999999999999)
         True
-        >>> isclose(1, np.float(0.999999999999))
+        >>> look_equal(1, np.float(0.999999999999))
         True
-        >>> isclose(1, sp.Float(0.999999999999))
+        >>> look_equal(1, sp.Float(0.999999999999))
         False
-        >>> isclose(1, Fraction(999999999999, 1000000000000))
+        >>> look_equal(1, Fraction(999999999999, 1000000000000))
         False
     """
     if isinstance(x, float) or isinstance(y, float):

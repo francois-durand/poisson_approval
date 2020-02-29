@@ -1,3 +1,4 @@
+from fractions import Fraction
 from poisson_approval.containers.Winners import Winners
 from poisson_approval.utils.UtilCache import cached_property
 
@@ -43,7 +44,7 @@ class AnalyzedStrategies:
         With plurals ("equilibria"):
 
             >>> from poisson_approval import StrategyOrdinal, ProfileOrdinal
-            >>> profile = ProfileOrdinal({'abc': 0.2, 'acb': 0.3, 'bac': 0.5})
+            >>> profile = ProfileOrdinal({'abc': Fraction(2, 10), 'acb': Fraction(3, 10), 'bac': Fraction(5, 10)})
             >>> analyzed_strategies = AnalyzedStrategies(
             ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile),
             ...                 StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'ab'}, profile)],

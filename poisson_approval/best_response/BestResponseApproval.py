@@ -1,7 +1,7 @@
 import sympy as sp
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import isclose
+from poisson_approval.utils.Util import look_equal
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -83,13 +83,13 @@ class BestResponseApproval(BestResponse):
             # for the offset method will fail, so we must be cautious.
             psi_k_greater_but_close_to_one = False
             if self.trio.psi[self.k] >= 1:
-                if isclose(self.trio.psi[self.k], 1, rel_tol=1e-1):
+                if look_equal(self.trio.psi[self.k], 1, rel_tol=1e-1):
                     psi_k_greater_but_close_to_one = True
                 else:  # pragma: no cover
                     raise AssertionError('Unexpected: self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
             psi_i_greater_but_close_to_one = False
             if self.trio.psi[self.i] >= 1:
-                if isclose(self.trio.psi[self.i], 1, rel_tol=1e-1):
+                if look_equal(self.trio.psi[self.i], 1, rel_tol=1e-1):
                     psi_i_greater_but_close_to_one = True
                 else:  # pragma: no cover
                     raise AssertionError('Unexpected: self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])

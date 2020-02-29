@@ -1,6 +1,6 @@
 import sympy as sp
 from fractions import Fraction
-from poisson_approval.utils.Util import isnan, isneginf, isclose
+from poisson_approval.utils.Util import isnan, isneginf, look_equal
 
 
 # noinspection NonAsciiCharacters
@@ -180,7 +180,7 @@ class Asymptotic:
             other = Asymptotic(0, 0, sp.log(other))
 
         def my_addition(x, y):
-            return 0 if isclose(x, y) else x + y
+            return 0 if look_equal(x, -y) else x + y
 
         return Asymptotic(my_addition(self.mu, other.mu),
                           my_addition(self.nu, other.nu),
@@ -259,11 +259,11 @@ class Asymptotic:
             other = Asymptotic(0, 0, sp.log(other))
         if isnan(self.mu) or isnan(other.mu):
             return Asymptotic(sp.nan, sp.nan, sp.nan)
-        elif isclose(self.mu, other.mu):
+        elif look_equal(self.mu, other.mu):
             mu = max(self.mu, other.mu)
             if isnan(self.nu) or isnan(other.nu):
                 return Asymptotic(mu, sp.nan, sp.nan)
-            elif isclose(self.nu, other.nu):
+            elif look_equal(self.nu, other.nu):
                 nu = max(self.nu, other.nu)
                 xi = sp.log(sp.exp(self.xi) + sp.exp(other.xi))
                 return Asymptotic(mu, nu, xi)
@@ -279,8 +279,8 @@ class Asymptotic:
     def __radd__(self, other):
         return self + other
 
-    def isclose(self, other, *args, **kwargs):
-        """Test near-equality.
+    def look_equal(self, other, *args, **kwargs):
+        """Test if two asymptotic developments can reasonably be considered as equal.
 
         Parameters
         ----------
@@ -292,15 +292,15 @@ class Asymptotic:
 
         Returns
         -------
-        isclose : bool
-            True if this asymptotic development is approximately equal to `other`, in the sense of :func:`isclose`.
+        bool
+            True if this asymptotic development can reasonably be considered equal to `other`. Cf :func:`look_equal`.
 
         Examples
         --------
-            >>> Asymptotic(mu=1, nu=2, xi=3).isclose(
+            >>> Asymptotic(mu=1, nu=2, xi=3).look_equal(
             ...     Asymptotic(mu=0.999999999999, nu=2.00000000001, xi=3))
             True
-            >>> Asymptotic(mu=1, nu=2, xi=3).isclose(
+            >>> Asymptotic(mu=1, nu=2, xi=3).look_equal(
             ...     Asymptotic(mu=Fraction(999999999999, 1000000000000), nu=2, xi=3))
             False
         """
@@ -310,9 +310,9 @@ class Asymptotic:
                                      or isnan(other.mu) or isnan(other.nu) or isnan(other.xi))
         if some_coefficients_are_nan:
             raise ValueError('Can assert isclose only when all coefficients are known.')
-        return (isclose(self.mu, other.mu, *args, **kwargs)
-                and isclose(self.nu, other.nu, * args, ** kwargs)
-                and isclose(self.xi, other.xi, *args, **kwargs))
+        return (look_equal(self.mu, other.mu, *args, **kwargs)
+                and look_equal(self.nu, other.nu, * args, ** kwargs)
+                and look_equal(self.xi, other.xi, *args, **kwargs))
 
     @classmethod
     def poisson_value(cls, tau, k):
@@ -518,7 +518,7 @@ class Asymptotic:
             Asymptotic(mu=0, nu=0, xi=-log(2))
             >>> asymptotic = Asymptotic.poisson_ge(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
             >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic.isclose(Asymptotic(mu=asymptotic_eq.mu,
+            >>> asymptotic.look_equal(Asymptotic(mu=asymptotic_eq.mu,
             ...                               nu=asymptotic_eq.nu,
             ...                               xi=asymptotic_eq.xi + sp.log(sp.Rational(3, 2))))
             True
@@ -555,7 +555,7 @@ class Asymptotic:
             Asymptotic(mu=0, nu=0, xi=-log(2))
             >>> asymptotic = Asymptotic.poisson_gt(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
             >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic.isclose(Asymptotic(mu=asymptotic_eq.mu,
+            >>> asymptotic.look_equal(Asymptotic(mu=asymptotic_eq.mu,
             ...                               nu=asymptotic_eq.nu,
             ...                               xi=asymptotic_eq.xi - sp.log(2)))
             True
@@ -590,7 +590,7 @@ class Asymptotic:
             Asymptotic(mu=0, nu=0, xi=-log(2))
             >>> asymptotic = Asymptotic.poisson_gt_one_more(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
             >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic.isclose(Asymptotic(mu=asymptotic_eq.mu,
+            >>> asymptotic.look_equal(Asymptotic(mu=asymptotic_eq.mu,
             ...                               nu=asymptotic_eq.nu,
             ...                               xi=asymptotic_eq.xi - sp.log(6)))
             True

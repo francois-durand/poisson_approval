@@ -244,10 +244,10 @@ class ProfileCardinal(Profile):
                 continue
             actual_threshold = strategy.d_ranking_threshold[ranking]
             br_threshold = d_ranking_best_response[ranking].threshold_utility
-            test = (isclose(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
-                            self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
-                    and isclose(self.have_ranking_with_utility_above_u(ranking, actual_threshold),
-                                self.have_ranking_with_utility_above_u(ranking, br_threshold), abs_tol=1E-9))
+            test = (look_equal(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
+                               self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
+                    and look_equal(self.have_ranking_with_utility_above_u(ranking, actual_threshold),
+                                   self.have_ranking_with_utility_above_u(ranking, br_threshold), abs_tol=1E-9))
             if not test:
                 return EquilibriumStatus.NOT_EQUILIBRIUM
         return EquilibriumStatus.EQUILIBRIUM
@@ -572,9 +572,9 @@ def _my_round(x):
         >>> _my_round(0.123456789)
         0.123456789
     """
-    if isclose(x, 1):
+    if look_equal(x, 1):
         return 1
-    if isclose(x, 0, abs_tol=1E-9):
+    if look_equal(x, 0, abs_tol=1E-9):
         return 0
     return x
 

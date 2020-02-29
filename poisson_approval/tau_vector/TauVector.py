@@ -1,5 +1,6 @@
 import warnings
 import sympy as sp
+from math import isclose
 from functools import partial
 from fractions import Fraction
 from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
@@ -18,7 +19,7 @@ from poisson_approval.events.EventTrio2t import EventTrio2t
 from poisson_approval.events.EventPivotWeak import EventPivotWeak
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import sort_ballot, isclose
+from poisson_approval.utils.Util import sort_ballot, look_equal
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -65,126 +66,124 @@ class TauVector:
         >>> tau.cb
         0
         >>> tau.duo_ab
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.duo_ba
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.duo_ac
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), \
+phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.duo_ca
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), \
+phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.duo_bc
-        <asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(15)/5)**2 - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 1, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.duo_cb
-        <asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(15)/5)**2 - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 1, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.pivot_weak_ab
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_weak_ba
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_weak_ac
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), \
+phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_weak_ca
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), \
+phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_weak_bc
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.pivot_weak_cb
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = \
-0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.pivot_strict_ab
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_strict_ba
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_strict_ac
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), \
+phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_strict_ca
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), \
+phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_strict_bc
         <asymptotic = exp(- inf)>
         >>> tau.pivot_strict_cb
         <asymptotic = exp(- inf)>
         >>> tau.pivot_tij_abc
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_tij_acb
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(70)/10 + sqrt(30)/10)**2 - log(n)/2 + log((21**(3/4)/21)*sqrt(210)/(14*sqrt(pi)) \
++ sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_tij_bac
-        <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + log(n) - log(10) + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_tij_bca
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.302013 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 + \
+log(sqrt(15)*(2**(3/4)/2)/(6*sqrt(pi)) + (2**(3/4)/2)*sqrt(30)/(6*sqrt(pi))) + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.pivot_tij_cab
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 + log(sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi)) \
++ (21**(3/4)/21)*sqrt(210)/(6*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_tij_cba
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.pivot_tjk_abc
         <asymptotic = exp(- inf)>
         >>> tau.pivot_tjk_acb
         <asymptotic = exp(- inf)>
         >>> tau.pivot_tjk_bac
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(70)/10 + sqrt(30)/10)**2 - log(n)/2 + log((21**(3/4)/21)*sqrt(210)/(14*sqrt(pi)) \
++ sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_tjk_bca
-        <asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
+        <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 + log(sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi)) \
++ (21**(3/4)/21)*sqrt(210)/(6*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
         >>> tau.pivot_tjk_cab
-        <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.pivot_tjk_cba
-        <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+        <asymptotic = exp(- n/10 + log(n) - log(10) + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
         >>> tau.trio
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.trio_1t_a
         <asymptotic = exp(- inf)>
         >>> tau.trio_1t_b
-        <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.48597 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) + log(n)/2 \
+- log(10) - log(12*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.trio_1t_c
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.490239 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(30)/10 + sqrt(15)/5)**2) - log(n)/2 - log(3*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.trio_2t_ab
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(12*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.trio_2t_ac
         <asymptotic = exp(- inf)>
         >>> tau.trio_2t_bc
-        <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) + log(n)/2 \
+- log(10) - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.trio_2t_ba
-        <asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(12*sqrt(2)*pi/5)/2 + o(1)), \
+phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         >>> tau.trio_2t_ca
         <asymptotic = exp(- inf)>
         >>> tau.trio_2t_cb
-        <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
+        <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) + log(n)/2 \
+- log(10) - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
     """
 
     def __init__(self, d_ballot_share: dict, normalization_warning: bool = True,
                  voting_rule=APPROVAL):
-        """
-            >>> tau = TauVector({'non_existing_ballot': 1})
-            Traceback (most recent call last):
-            ValueError: Unknown key: non_existing_ballot
-        """
         # Populate the dictionary and check for typos in the input
-        self.d_ballot_share = DictPrintingInOrderIgnoringZeros()
+        self.d_ballot_share = DictPrintingInOrderIgnoringZeros({
+            ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS})
         for ballot, share in d_ballot_share.items():
-            if ballot in BALLOTS_WITH_INVERSIONS:
-                sorted_key = ''.join(sorted(ballot))
-                self.d_ballot_share[sorted_key] = share
-            else:
-                raise ValueError('Unknown key: ' + ballot)
-        for ballot in BALLOTS_WITHOUT_INVERSIONS:
-            if ballot not in self.d_ballot_share:
-                self.d_ballot_share[ballot] = 0
+            self.d_ballot_share[sort_ballot(ballot)] += share
         # Normalize if necessary
         total = sum(self.d_ballot_share.values())
-        if not isclose(total, 1., rel_tol=10E-4):
+        if not look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: tau is not normalized, I will normalize it.")
+                warnings.warn("Warning: tau is not normalized, I will normalize it. If you use floats, consider using "
+                              "fractions. To disable this warning, use the parameter normalization_warning=False.")
             for ballot in self.d_ballot_share.keys():
                 self.d_ballot_share[ballot] = self.d_ballot_share[ballot] / total
         # Voting rule
@@ -286,7 +285,7 @@ phi_ab = 0.707107>
         Returns
         -------
         isclose : bool
-            True if this tau-vector is approximately equal to `other`.
+            True if this tau-vector is approximately equal to `other`. Cf. :func:`isclose`.
 
         Examples
         --------
@@ -366,11 +365,11 @@ phi_ab = 0.707107>
             Focus.DIRECT
         """
         magnitudes = sorted([self.pivot_weak_ab.mu, self.pivot_weak_ac.mu, self.pivot_weak_bc.mu])
-        if isclose(magnitudes[0], magnitudes[2]):
+        if look_equal(magnitudes[0], magnitudes[2]):
             return Focus.UNFOCUSED
-        elif isclose(magnitudes[0], magnitudes[1]):
+        elif look_equal(magnitudes[0], magnitudes[1]):
             return Focus.FORWARD_FOCUSED
-        elif isclose(magnitudes[1], magnitudes[2]):
+        elif look_equal(magnitudes[1], magnitudes[2]):
             return Focus.BACKWARD_FOCUSED
         else:
             return Focus.DIRECT
@@ -383,13 +382,10 @@ phi_ab = 0.707107>
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.print_weak_pivots()
-            pivot_weak_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            pivot_weak_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
-            pivot_weak_bc:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
-            trio:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+            pivot_weak_ab:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            pivot_weak_ac:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            pivot_weak_bc:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
+            trio:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         """
         for pair in PAIRS_WITHOUT_INVERSIONS:
             print('pivot_weak_%s: ' % pair, getattr(self, 'pivot_weak_%s' % pair))
@@ -403,50 +399,34 @@ phi_ab = 0.707107>
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.print_all_pivots()
-            pivot_weak_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            pivot_weak_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
-            pivot_weak_bc:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
-            pivot_strict_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            pivot_strict_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
+            pivot_weak_ab:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            pivot_weak_ac:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            pivot_weak_bc:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
+            pivot_strict_ab:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            pivot_strict_ac:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
             pivot_strict_bc:  <asymptotic = exp(- inf)>
-            pivot_tij_abc:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            pivot_tij_acb:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
-            pivot_tij_bac:  <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            pivot_tij_bca:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.302013 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
-            pivot_tij_cab:  <asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
-            pivot_tij_cba:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+            pivot_tij_abc:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            pivot_tij_acb:  <asymptotic = exp(- n*(-sqrt(70)/10 + sqrt(30)/10)**2 - log(n)/2 + log((21**(3/4)/21)*sqrt(210)/(14*sqrt(pi)) + sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            pivot_tij_bac:  <asymptotic = exp(- n/10 + log(n) - log(10) + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            pivot_tij_bca:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 + log(sqrt(15)*(2**(3/4)/2)/(6*sqrt(pi)) + (2**(3/4)/2)*sqrt(30)/(6*sqrt(pi))) + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
+            pivot_tij_cab:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 + log(sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi)) + (21**(3/4)/21)*sqrt(210)/(6*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            pivot_tij_cba:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
             pivot_tjk_abc:  <asymptotic = exp(- inf)>
             pivot_tjk_acb:  <asymptotic = exp(- inf)>
-            pivot_tjk_bac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
-            pivot_tjk_bca:  <asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, \
-phi_c = 1.52753, phi_ab = 0.654654>
-            pivot_tjk_cab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            pivot_tjk_cba:  <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            trio:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+            pivot_tjk_bac:  <asymptotic = exp(- n*(-sqrt(70)/10 + sqrt(30)/10)**2 - log(n)/2 + log((21**(3/4)/21)*sqrt(210)/(14*sqrt(pi)) + sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            pivot_tjk_bca:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 + log(sqrt(10)*(21**(3/4)/21)/(2*sqrt(pi)) + (21**(3/4)/21)*sqrt(210)/(6*sqrt(pi))) + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            pivot_tjk_cab:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            pivot_tjk_cba:  <asymptotic = exp(- n/10 + log(n) - log(10) + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            trio:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
             trio_1t_a:  <asymptotic = exp(- inf)>
-            trio_1t_b:  <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.48597 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
-            trio_1t_c:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.490239 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
-            trio_2t_ab:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
+            trio_1t_b:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) + log(n)/2 - log(10) - log(12*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
+            trio_1t_c:  <asymptotic = exp(n*(-1/10 - (-sqrt(30)/10 + sqrt(15)/5)**2) - log(n)/2 - log(3*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
+            trio_2t_ab:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) - log(n)/2 - log(12*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
             trio_2t_ac:  <asymptotic = exp(- inf)>
-            trio_2t_bc:  <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, \
-phi_ab = 0.707107>
-            duo_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-            duo_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \
-phi_ab = 0.654654>
-            duo_bc:  <asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, \
-phi_ab = 0.707107>
+            trio_2t_bc:  <asymptotic = exp(n*(-1/10 - (-sqrt(15)/5 + sqrt(30)/10)**2) + log(n)/2 - log(10) - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
+            duo_ab:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
+            duo_ac:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(70)/10)**2 - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>
+            duo_bc:  <asymptotic = exp(- n*(-sqrt(30)/10 + sqrt(15)/5)**2 - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 1, phi_c = sqrt(2), phi_ab = sqrt(2)/2>
         """
         for pair in PAIRS_WITHOUT_INVERSIONS:
             print('pivot_weak_%s: ' % pair, getattr(self, 'pivot_weak_%s' % pair))
@@ -565,21 +545,21 @@ phi_ab = 0.707107>
     def pivot_ab_easy_or_tight(self):
         """bool : True if the pivot `ab` is easy or tight, False if it is difficult."""
         pivot_easy = self.score_ab_in_duo_ab > self.score_c_in_duo_ab
-        pivot_tight = isclose(self.score_ab_in_duo_ab, self.score_c_in_duo_ab)
+        pivot_tight = look_equal(self.score_ab_in_duo_ab, self.score_c_in_duo_ab)
         return pivot_easy or pivot_tight
 
     @cached_property
     def pivot_ac_easy_or_tight(self):
         """bool : True if the pivot `ac` is easy or tight, False if it is difficult."""
         pivot_easy = self.score_ac_in_duo_ac > self.score_b_in_duo_ac
-        pivot_tight = isclose(self.score_ac_in_duo_ac, self.score_b_in_duo_ac)
+        pivot_tight = look_equal(self.score_ac_in_duo_ac, self.score_b_in_duo_ac)
         return pivot_easy or pivot_tight
 
     @cached_property
     def pivot_bc_easy_or_tight(self):
         """bool : True if the pivot `bc` is easy or tight, False if it is difficult."""
         pivot_easy = self.score_bc_in_duo_bc > self.score_a_in_duo_bc
-        pivot_tight = isclose(self.score_bc_in_duo_bc, self.score_a_in_duo_bc)
+        pivot_tight = look_equal(self.score_bc_in_duo_bc, self.score_a_in_duo_bc)
         return pivot_easy or pivot_tight
 
     @cached_property
