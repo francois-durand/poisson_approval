@@ -1,9 +1,6 @@
-import math
-import numpy as np
-import sympy as sp
-from fractions import Fraction
+import sympy
 from poisson_approval.utils.computation_engine import computation_engine
-from poisson_approval.utils.Util import isnan, isneginf, look_equal, my_simplify
+from poisson_approval.utils.Util import isnan, isneginf
 
 
 # noinspection NonAsciiCharacters
@@ -18,7 +15,8 @@ class Asymptotic:
         Coefficient of the term in `log n`.
     mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Constant coefficient.
-    symbolic : Whether the computations are symbolic or approximate.
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
 
     Attributes
     ----------
@@ -40,6 +38,7 @@ class Asymptotic:
     Examples
     --------
 
+        >>> import math
         >>> asymptotic = Asymptotic(mu=-1 / 9, nu=-1 / 2, xi=-1 / 2 * math.log(8 * math.pi / 9))
         >>> print(asymptotic)
         exp(- 0.111111 n - 0.5 log n - 0.513473 + o(1))
@@ -67,6 +66,8 @@ class Asymptotic:
 
         Examples
         --------
+            >>> import numpy as np
+            >>> from fractions import Fraction
             >>> Asymptotic(mu=- Fraction(1, 10), nu=np.nan, xi=3)
             Asymptotic(mu=Fraction(-1, 10), nu=nan, xi=3)
         """
@@ -81,6 +82,8 @@ class Asymptotic:
 
         Examples
         --------
+            >>> import numpy as np
+            >>> from fractions import Fraction
             >>> print(Asymptotic(mu=- Fraction(1, 10), nu=np.nan, xi=3))
             exp(- 0.1 n + ? log n + 3 + o(1))
             >>> print(Asymptotic(mu=-np.inf, nu=-np.inf, xi=-np.inf))
@@ -103,13 +106,13 @@ class Asymptotic:
                 return ' + ?' if suffix == 1 else ' + ? %s' % suffix
             if x == 0:
                 return ''
-            a = sp.symbols('a')
+            a = sympy.symbols('a')
             result = str(a + x * suffix)
             assert result[0:2] == 'a '
             return result[1:]
 
-        n = sp.symbols('n')
-        s = nice(self.mu, n) + nice(self.nu, sp.log(n)) + nice(self.xi, 1)
+        n = sympy.symbols('n')
+        s = nice(self.mu, n) + nice(self.nu, sympy.log(n)) + nice(self.xi, 1)
         s += ' + o(1)'
         if s[1] == "+":
             s = s[3:]
@@ -157,6 +160,7 @@ class Asymptotic:
 
         Examples
         --------
+            >>> import numpy as np
             >>> Asymptotic(mu=-1, nu=0, xi=0).limit
             0
             >>> Asymptotic(mu=1, nu=0, xi=0).limit
@@ -203,6 +207,7 @@ class Asymptotic:
 
         Examples
         --------
+            >>> import numpy as np
             >>> print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=2, xi=3))
             exp(43 n + 53 log n + 72 + o(1))
             >>> print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=np.nan, xi=np.nan))
@@ -242,6 +247,7 @@ class Asymptotic:
 
         Examples
         --------
+            >>> import numpy as np
             >>> print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=2, xi=3))
             exp(41 n + 49 log n + 66 + o(1))
             >>> print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=np.nan, xi=np.nan))
@@ -355,6 +361,8 @@ class Asymptotic:
             The parameter of the Poisson distribution is ``tau * n``, where `n` tends to infinity.
         k : int
             The desired value in ``P(X = k)``.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -392,6 +400,8 @@ class Asymptotic:
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         k : int
             The desired value in ``P(X_1 = X_2 + k)``.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -430,7 +440,7 @@ class Asymptotic:
                 mu=ce.simplify(- (ce.sqrt(tau_1) - ce.sqrt(tau_2)) ** 2),
                 nu=- ce.Rational(1, 2),
                 xi=ce.simplify(- ce.Rational(1, 2)
-                                * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)),
+                               * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)),
                 symbolic=symbolic
             )
 
@@ -442,6 +452,8 @@ class Asymptotic:
         ----------
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -469,6 +481,8 @@ class Asymptotic:
         ----------
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -495,6 +509,8 @@ class Asymptotic:
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         k : int
             The desired value in ``P(X_1 >= X_2 + k)``.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -550,6 +566,8 @@ class Asymptotic:
         ----------
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -587,6 +605,8 @@ class Asymptotic:
         ----------
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
@@ -624,6 +644,8 @@ class Asymptotic:
         ----------
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
+        symbolic : bool
+            Whether the computations are symbolic or approximate.
 
         Returns
         -------
