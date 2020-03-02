@@ -1,17 +1,17 @@
-from poisson_approval.utils.ComputationEngineExact import ComputationEngineExact
-from poisson_approval.utils.ComputationEngineApproximate import ComputationEngineApproximate
+from poisson_approval.utils.ComputationEngineSymbolic import ComputationEngineSymbolic
+from poisson_approval.utils.ComputationEngineNumeric import ComputationEngineNumeric
 
 
-def computation_engine(exact):
+def computation_engine(symbolic):
     """Choose the computation engine.
 
     Parameters
     ----------
-    exact : bool
+    symbolic : bool
 
     Returns
     -------
     ComputationEngine
-        :class:`ComputationEngineExact` if `exact` is True, :class:`ComputationEngineApproximate` otherwise.
+        :class:`ComputationEngineSymbolic` if `symbolic` is True, :class:`ComputationEngineNumeric` otherwise.
     """
-    return ComputationEngineExact if exact else ComputationEngineApproximate
+    return ComputationEngineSymbolic if symbolic else ComputationEngineNumeric

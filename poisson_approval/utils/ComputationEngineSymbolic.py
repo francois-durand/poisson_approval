@@ -5,12 +5,12 @@ from fractions import Fraction
 from poisson_approval.utils.ComputationEngine import ComputationEngine
 
 
-class ComputationEngineExact(ComputationEngine):
-    """Computation engine: exact computation.
+class ComputationEngineSymbolic(ComputationEngine):
+    """Computation engine: symbolic computation.
 
-    This engine relies on the external package `sympy` in order to perform exact computation:
+    This engine relies on the external package `sympy` in order to perform symbolic computation:
 
-        >>> ce = ComputationEngineExact
+        >>> ce = ComputationEngineSymbolic
         >>> ce.inf
         oo
         >>> ce.nan

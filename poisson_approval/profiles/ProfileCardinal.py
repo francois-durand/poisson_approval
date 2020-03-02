@@ -394,7 +394,7 @@ class ProfileCardinal(Profile):
                 print('strategy: %s' % strategy)
                 print('tau_full_response: %s' % tau_full_response)
                 print('tau_actual: %s' % tau_actual)
-            # If there is an exact cycle, it is useless to continue looping.
+            # If there is an symbolic cycle, it is useless to continue looping.
             break_ = (tau_actual, tau_perceived) in zip(taus_actual, taus_perceived)
 
             taus_actual.append(tau_actual)

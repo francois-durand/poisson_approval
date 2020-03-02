@@ -5,12 +5,12 @@ from fractions import Fraction
 from poisson_approval.utils.ComputationEngine import ComputationEngine
 
 
-class ComputationEngineApproximate(ComputationEngine):
-    """Computation engine: approximate computation.
+class ComputationEngineNumeric(ComputationEngine):
+    """Computation engine: numeric computation.
 
-    This engine performs approximate computation, using floats when necessary:
+    This engine performs numeric computation, using floats when necessary:
 
-        >>> ce = ComputationEngineApproximate
+        >>> ce = ComputationEngineNumeric
         >>> ce.inf
         inf
         >>> ce.nan

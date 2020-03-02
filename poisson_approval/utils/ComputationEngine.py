@@ -6,8 +6,8 @@ from abc import ABC, abstractmethod
 class ComputationEngine(ABC):
     """Computation engine
 
-    Define how some mathematical operations are performed. Cf. :class:`ComputationEngineExact` and
-    :class:`ComputationEngineApproximate` for some examples.
+    Define how some mathematical operations are performed. Cf. :class:`ComputationEngineSymbolic` and
+    :class:`ComputationEngineNumeric` for some examples.
     """
 
     # Constants

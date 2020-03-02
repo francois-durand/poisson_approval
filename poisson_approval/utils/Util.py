@@ -958,7 +958,7 @@ def sort_weak_order(weak_order):
 
 def my_division(x, y):
     """
-    Division of two numbers, trying to be exact if it is reasonable.
+    Division of two numbers, trying to be symbolic if it is reasonable.
 
     Parameters
     ----------
@@ -986,7 +986,7 @@ def my_division(x, y):
         >>> my_division(0.1, Fraction(5, 2))
         0.04
 
-    If `x` and `y` are integers, decimals, fractions or sympy expressions, then the result is exact:
+    If `x` and `y` are integers, decimals, fractions or sympy expressions, then the result is symbolic:
 
         >>> my_division(2, Fraction(5, 2))
         Fraction(4, 5)
