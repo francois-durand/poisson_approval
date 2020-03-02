@@ -37,6 +37,8 @@ class ProfileTwelve(ProfileCardinal):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
 
     Notes
     -----
@@ -126,8 +128,9 @@ class ProfileTwelve(ProfileCardinal):
     """
 
     def __init__(self, d_type_share, d_weak_order_share=None, normalization_warning=True,
-                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
+                         symbolic=symbolic)
         if d_weak_order_share is None:
             d_weak_order_share = dict()
         # Populate the dictionaries of types and weak orders

@@ -32,6 +32,8 @@ class ProfileNoisyDiscrete(ProfileCardinalContinuous):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
 
     Attributes
     ----------
@@ -149,8 +151,9 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
     """
 
     def __init__(self, d, noise=None, d_weak_order_share=None, normalization_warning=True,
-                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
+                         symbolic=symbolic)
         self.d_ranking_utility_noise_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
         if d_weak_order_share is None:

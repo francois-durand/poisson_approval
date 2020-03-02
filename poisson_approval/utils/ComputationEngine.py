@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from abc import ABC, abstractmethod
 
 
@@ -39,6 +40,21 @@ class ComputationEngine(ABC):
     # Functions
 
     @classmethod
+    def barycenter(cls, a, b, ratio_b):
+        """Barycenter.
+
+        Cf. :meth:`ComputationEngineNumeric.barycenter` for specifications and examples.
+        """
+        try:
+            # b and ratio_b are numbers
+            return cls.multiply_with_absorbing_zero(1 - ratio_b, a) + cls.multiply_with_absorbing_zero(ratio_b, b)
+        except TypeError:
+            # b and ratio_b are iterables
+            ratio_a = 1 - sum(ratio_b)
+            return cls.multiply_with_absorbing_zero(ratio_a, a) + sum([
+                cls.multiply_with_absorbing_zero(r, x) for r, x in zip(b, ratio_b)])
+
+    @classmethod
     @abstractmethod
     def exp(cls, x):
         """Exponential.
@@ -60,7 +76,30 @@ class ComputationEngine(ABC):
         pass
 
     @classmethod
-    @abstractmethod
+    def look_equal(cls, x, y, *args, **kwargs):
+        """Test if two numbers can reasonably be considered as equal.
+
+        Parameters
+        ----------
+        x : Number
+        y : Number
+        *args
+            Cf. :func:`math.isclose`.
+        **kwargs
+            Cf. :func:`math.isclose`.
+
+        Returns
+        -------
+        bool
+            If `x` or `y` is a float or numpy float (but not a sympy float), then return
+            ``math.isclose(x, y, *args, **kwargs)``. In all other cases, return True iff `x` is equal to `y`.
+        """
+        if isinstance(x, float) or isinstance(y, float):
+            return math.isclose(x, y, *args, **kwargs)
+        else:
+            return cls.simplify(x - y) == 0
+
+    @classmethod
     def multiply_with_absorbing_zero(cls, x, y):
         """Multiplication with absorbing zero.
 
@@ -77,6 +116,12 @@ class ComputationEngine(ABC):
         x = cls.simplify(x)
         y = cls.simplify(y)
         return cls.S(0) if x == 0 or y == 0 else x * y
+
+    @classmethod
+    def ones(cls, *args, **kwargs):
+        """Array of ones.
+        """
+        return np.ones(*args, **kwargs, dtype=int)
 
     # noinspection PyPep8Naming
     @classmethod
@@ -106,6 +151,12 @@ class ComputationEngine(ABC):
         pass
 
     @classmethod
+    def simplify_vector(cls, x):
+        """Simplify the coefficients if necessary.
+        """
+        return np.array([cls.simplify(value) for value in x])
+
+    @classmethod
     @abstractmethod
     def sqrt(cls, x):
         """Square root.
@@ -113,25 +164,7 @@ class ComputationEngine(ABC):
         pass
 
     @classmethod
-    def look_equal(cls, x, y, *args, **kwargs):
-        """Test if two numbers can reasonably be considered as equal.
-
-        Parameters
-        ----------
-        x : Number
-        y : Number
-        *args
-            Cf. :func:`math.isclose`.
-        **kwargs
-            Cf. :func:`math.isclose`.
-
-        Returns
-        -------
-        bool
-            If `x` or `y` is a float or numpy float (but not a sympy float), then return
-            ``math.isclose(x, y, *args, **kwargs)``. In all other cases, return True iff `x` is equal to `y`.
+    def zeros(cls, *args, **kwargs):
+        """Array of zeros.
         """
-        if isinstance(x, float) or isinstance(y, float):
-            return math.isclose(x, y, *args, **kwargs)
-        else:
-            return cls.simplify(x - y) == 0
+        return np.zeros(*args, **kwargs, dtype=int)

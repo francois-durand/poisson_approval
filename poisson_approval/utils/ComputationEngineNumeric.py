@@ -51,6 +51,54 @@ class ComputationEngineNumeric(ComputationEngine):
     # Functions
 
     @classmethod
+    def barycenter(cls, a, b, ratio_b):
+        """Barycenter.
+
+        Parameters
+        ----------
+        a : Number
+        b : Number or iterable
+        ratio_b : Number or iterable
+            The ratio of `b` in the result. If an iterable, must be the same size as `b`.
+
+        Returns
+        -------
+        Number
+            The result of ``(1 - ratio_b) * a + ratio_b * b``. The added value of this function is to preserve the type
+            of `a` (resp. `b`) when `ratio_b` is 0 (resp. 1). If `b` and `ratio_b` are iterable, return
+            ``(1 - sum(ratio_b)) * a + sum(ratio_b * b)``.
+
+        Examples
+        --------
+        In this first example, `barycenter` preserves the type Fraction, whereas a naive computation returns a float:
+
+            >>> from fractions import Fraction
+            >>> a, b = Fraction(1, 10), 0.7
+            >>> ratio_b = 0
+            >>> ComputationEngineNumeric.barycenter(a, b, ratio_b)
+            Fraction(1, 10)
+            >>> (1 - ratio_b) * a + ratio_b * b
+            0.1
+
+        The second example is symmetric of the first one, in the sense that it preserves the type of `b`:
+
+            >>> a, b = 0.7, 42
+            >>> ratio_b = 1
+            >>> ComputationEngineNumeric.barycenter(a, b, ratio_b)
+            42
+            >>> (1 - ratio_b) * a + ratio_b * b
+            42.0
+
+        In the following example, `b` and `ratio_b` are iterables:
+
+            >>> a = 0
+            >>> b = [-1 , 1]
+            >>> ComputationEngineNumeric.barycenter(0, [-1, 1], [Fraction(2, 10), Fraction(3, 10)])
+            Fraction(1, 10)
+        """
+        return super().barycenter(a, b, ratio_b)
+
+    @classmethod
     def exp(cls, x):
         return math.exp(x)
 
@@ -73,7 +121,7 @@ class ComputationEngineNumeric(ComputationEngine):
     @classmethod
     def simplify(cls, x):
         if isinstance(x, Fraction) and x.denominator == 1:
-            return x
+            return x.numerator
         else:
             return x
 

@@ -23,10 +23,12 @@ class ProfileCardinal(Profile):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
     """
 
-    def __init__(self, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
-        super().__init__(voting_rule=voting_rule)
+    def __init__(self, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
+        super().__init__(voting_rule=voting_rule, symbolic=symbolic)
         self.ratio_sincere = ratio_sincere
         self.ratio_fanatic = ratio_fanatic
 

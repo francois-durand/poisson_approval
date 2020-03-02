@@ -6,18 +6,28 @@ from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.containers.Winners import Winners
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import is_lover, my_division, sort_ballot, ballot_low_u, ballot_high_u, product_dict, \
-    look_equal
+from poisson_approval.utils.Util import is_lover, my_division, sort_ballot, ballot_low_u, ballot_high_u, product_dict
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
 # noinspection PyUnresolvedReferences
 class Profile(DeleteCacheMixin):
-    """A profile of preference (abstract class)."""
+    """A profile of preference (abstract class).
 
-    def __init__(self, voting_rule):
+    Parameters
+    ----------
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
+    """
+
+    def __init__(self, voting_rule=APPROVAL, symbolic=False):
         self.voting_rule = voting_rule
+        self.symbolic = symbolic
+        self.ce = computation_engine(symbolic)
 
     voting_rule = property_deleting_cache('_voting_rule')
 
@@ -82,10 +92,10 @@ class Profile(DeleteCacheMixin):
         """
         m = self.weighted_maj_graph
         min_score = [min(m[0, 1], m[0, 2]), min(m[1, 0], m[1, 2]), min(m[2, 0], m[2, 1])]
-        maximin = max(min_score)
-        if look_equal(maximin, 0, abs_tol=1E-8):
+        maxi_min = max(min_score)
+        if self.ce.look_equal(maxi_min, 0, abs_tol=1E-8):
             return .5
-        elif maximin > 0:
+        elif maxi_min > 0:
             return 1.
         else:
             return 0.
@@ -111,9 +121,9 @@ class Profile(DeleteCacheMixin):
         return ((self.abc == 0 and self.bac == 0 and self.d_weak_order_share['a~b>c'] == 0
                  and self.d_weak_order_share['a>b~c'] == 0 and self.d_weak_order_share['b>a~c'] == 0)
                 or (self.acb == 0 and self.cab == 0 and self.d_weak_order_share['a~c>b'] == 0
-                    and self.d_weak_order_share['a>b~c'] == 0  and self.d_weak_order_share['c>a~b'] == 0)
+                    and self.d_weak_order_share['a>b~c'] == 0 and self.d_weak_order_share['c>a~b'] == 0)
                 or (self.bca == 0 and self.cba == 0 and self.d_weak_order_share['b~c>a'] == 0
-                    and self.d_weak_order_share['c>a~b'] == 0  and self.d_weak_order_share['b>a~c'] == 0))
+                    and self.d_weak_order_share['c>a~b'] == 0 and self.d_weak_order_share['b>a~c'] == 0))
 
     # Has full support
     @cached_property

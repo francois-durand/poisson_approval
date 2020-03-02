@@ -39,6 +39,8 @@ class ProfileHistogram(ProfileCardinalContinuous):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
 
     Notes
     -----
@@ -130,14 +132,15 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
     """
 
     def __init__(self, d_ranking_share, d_ranking_histogram, d_weak_order_share=None,
-                 normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
+                 normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
         """
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
             ...                            d_ranking_histogram={'non_existing_ranking': [1]})
             Traceback (most recent call last):
             KeyError: 'non_existing_ranking'
         """
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
+                         symbolic=symbolic)
         if d_weak_order_share is None:
             d_weak_order_share = dict()
         # Populate the dictionary (and check for typos in the input)
