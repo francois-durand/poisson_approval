@@ -19,7 +19,7 @@ def test_scores_in_duos():
     """
         >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
         >>> tau.score_ba_in_duo_ba
-        0.6
+        Fraction(3, 5)
         >>> tau.score_ca_in_duo_ca
         0.45825756949558394
         >>> tau.score_cb_in_duo_cb

@@ -11,11 +11,11 @@ def test_plurality():
     """
         >>> profile = ProfileOrdinal(d_ranking_share={'abc': 1, 'acb': 1}, voting_rule=PLURALITY)
         >>> profile
-        ProfileOrdinal({'abc': 0.5, 'acb': 0.5}, voting_rule='Plurality')
+        ProfileOrdinal({'abc': Fraction(1, 2), 'acb': Fraction(1, 2)}, voting_rule='Plurality')
         >>> print(profile)
-        <abc: 0.5, acb: 0.5> (Condorcet winner: a) (Plurality)
+        <abc: 1/2, acb: 1/2> (Condorcet winner: a) (Plurality)
         >>> profile.tau_fanatic
-        TauVector({'a': 1.0}, voting_rule='Plurality')
+        TauVector({'a': Fraction(1, 1)}, voting_rule='Plurality')
     """
     pass
 
@@ -24,11 +24,11 @@ def test_anti_plurality():
     """
         >>> profile = ProfileOrdinal(d_ranking_share={'abc': 1, 'acb': 1}, voting_rule=ANTI_PLURALITY)
         >>> profile
-        ProfileOrdinal({'abc': 0.5, 'acb': 0.5}, voting_rule='Anti-plurality')
+        ProfileOrdinal({'abc': Fraction(1, 2), 'acb': Fraction(1, 2)}, voting_rule='Anti-plurality')
         >>> print(profile)
-        <abc: 0.5, acb: 0.5> (Condorcet winner: a) (Anti-plurality)
+        <abc: 1/2, acb: 1/2> (Condorcet winner: a) (Anti-plurality)
         >>> profile.tau_fanatic
-        TauVector({'ab': 0.5, 'ac': 0.5}, voting_rule='Anti-plurality')
+        TauVector({'ab': Fraction(1, 2), 'ac': Fraction(1, 2)}, voting_rule='Anti-plurality')
     """
     pass
 

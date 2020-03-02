@@ -86,8 +86,6 @@ class ProfileOrdinal(Profile):
         <abc: ab, bac: b, cab: ac> ==> b (FF)
         <abc: ab, bac: ab, cab: c> ==> a, b (FF)
         <abc: ab, bac: ab, cab: ac> ==> a (D)
-        >>> profile.analyzed_strategies_ordinal.equilibria[0].d_ranking_best_response['acb'].threshold_utility
-
         >>> print(profile.analyzed_strategies_ordinal.equilibria[0])
         <abc: a, bac: b, cab: ac> ==> b
         >>> print(profile.analyzed_strategies_ordinal.winners_at_equilibrium)

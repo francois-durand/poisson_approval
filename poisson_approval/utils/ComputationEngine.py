@@ -59,6 +59,25 @@ class ComputationEngine(ABC):
         """
         pass
 
+    @classmethod
+    @abstractmethod
+    def multiply_with_absorbing_zero(cls, x, y):
+        """Multiplication with absorbing zero.
+
+        Parameters
+        ----------
+        x, y : Number
+
+        Returns
+        -------
+        Number
+            If `x` or `y` is 0, then 0 (even if the other input is ``nan``). Otherwise, the product
+            of `x` and `y`.
+        """
+        x = cls.simplify(x)
+        y = cls.simplify(y)
+        return cls.S(0) if x == 0 or y == 0 else x * y
+
     # noinspection PyPep8Naming
     @classmethod
     @abstractmethod

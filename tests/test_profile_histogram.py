@@ -36,10 +36,11 @@ def test_plurality():
         ...                            d_ranking_histogram = {'abc': [1, 1], 'acb': [1]},
         ...                            voting_rule=PLURALITY)
         >>> profile
-        ProfileHistogram({'abc': 0.5, 'acb': 0.5}, {'abc': array([0.5, 0.5]), 'acb': array([1])}, \
-voting_rule='Plurality')
+        ProfileHistogram({'abc': Fraction(1, 2), 'acb': Fraction(1, 2)}, \
+{'abc': array([Fraction(1, 2), Fraction(1, 2)], dtype=object), \
+'acb': array([1])}, voting_rule='Plurality')
         >>> print(profile)
-        <abc: 0.5 [0.5 0.5], acb: 0.5 [1]> (Condorcet winner: a) (Plurality)
+        <abc: 1/2 [Fraction(1, 2) Fraction(1, 2)], acb: 1/2 [1]> (Condorcet winner: a) (Plurality)
     """
     pass
 
@@ -50,10 +51,11 @@ def test_anti_plurality():
         ...                            d_ranking_histogram = {'abc': [1, 1], 'acb': [1]},
         ...                            voting_rule=ANTI_PLURALITY)
         >>> profile
-        ProfileHistogram({'abc': 0.5, 'acb': 0.5}, {'abc': array([0.5, 0.5]), 'acb': array([1])}, \
+        ProfileHistogram({'abc': Fraction(1, 2), 'acb': Fraction(1, 2)}, \
+{'abc': array([Fraction(1, 2), Fraction(1, 2)], dtype=object), 'acb': array([1])}, \
 voting_rule='Anti-plurality')
         >>> print(profile)
-        <abc: 0.5 [0.5 0.5], acb: 0.5 [1]> (Condorcet winner: a) (Anti-plurality)
+        <abc: 1/2 [Fraction(1, 2) Fraction(1, 2)], acb: 1/2 [1]> (Condorcet winner: a) (Anti-plurality)
     """
     pass
 

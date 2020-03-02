@@ -1,7 +1,5 @@
-import sympy as sp
 from poisson_approval.best_response.BestResponse import BestResponse
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import look_equal, my_simplify
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -42,12 +40,15 @@ class BestResponseApproval(BestResponse):
         :attr:`threshold_utility` and :attr:`justification`. The threshold utility may be NaN, because this method is
         not always sufficient.
         """
-        threshold_utility = my_simplify(((
-            self.pivot_tij.asymptotic * sp.Rational(1, 2)
-            + self.trio_1t.asymptotic * sp.Rational(1, 3) + self.trio_2t.asymptotic * sp.Rational(1, 6)
+        threshold_utility = self.ce.simplify(((
+            self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
+            + self.trio_1t.asymptotic * self.ce.Rational(1, 3)
+            + self.trio_2t.asymptotic * self.ce.Rational(1, 6)
         ) / (
-            self.pivot_tij.asymptotic * sp.Rational(1, 2) + self.pivot_tjk.asymptotic * sp.Rational(1, 2)
-            + self.trio_1t.asymptotic * sp.Rational(2, 3) + self.trio_2t.asymptotic * sp.Rational(1, 3)
+            self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
+            + self.pivot_tjk.asymptotic * self.ce.Rational(1, 2)
+            + self.trio_1t.asymptotic * self.ce.Rational(2, 3)
+            + self.trio_2t.asymptotic * self.ce.Rational(1, 3)
         )).limit)
         justification = self.ASYMPTOTIC
         return threshold_utility, justification
@@ -59,22 +60,23 @@ class BestResponseApproval(BestResponse):
         theorem does not apply and this method returns ``nan, ''``.
         """
         if self.tau.has_two_consecutive_zeros:
-            return sp.nan, ''
+            return self.ce.nan, ''
         if self.pivot_ij_easy_or_tight and self.pivot_jk_easy_or_tight:
             # Both pivots are easy => We can forget the trios.
-            threshold_utility = my_simplify(((
-                self.pivot_tij.asymptotic * sp.Rational(1, 2)
+            threshold_utility = self.ce.simplify(((
+                self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
             ) / (
-                self.pivot_tij.asymptotic * sp.Rational(1, 2) + self.pivot_tjk.asymptotic * sp.Rational(1, 2)
+                self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
+                + self.pivot_tjk.asymptotic * self.ce.Rational(1, 2)
             )).limit)
             justification = self.ASYMPTOTIC_SIMPLIFIED
         elif self.pivot_ij_easy_or_tight:
             # ... but pivot jk is difficult.
-            threshold_utility = sp.S(1)
+            threshold_utility = self.ce.S(1)
             justification = self.EASY_VS_DIFFICULT
         elif self.pivot_jk_easy_or_tight:
             # ... but pivot ij is difficult.
-            threshold_utility = sp.S(0)
+            threshold_utility = self.ce.S(0)
             justification = self.DIFFICULT_VS_EASY
         else:
             # Both pivots are difficult => offset method.
@@ -83,13 +85,13 @@ class BestResponseApproval(BestResponse):
             # for the offset method will fail, so we must be cautious.
             psi_k_greater_but_close_to_one = False
             if self.trio.psi[self.k] >= 1:
-                if look_equal(self.trio.psi[self.k], 1, rel_tol=1e-1):
+                if self.ce.look_equal(self.trio.psi[self.k], 1, rel_tol=1e-1):
                     psi_k_greater_but_close_to_one = True
                 else:  # pragma: no cover
                     raise AssertionError('Unexpected: self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
             psi_i_greater_but_close_to_one = False
             if self.trio.psi[self.i] >= 1:
-                if look_equal(self.trio.psi[self.i], 1, rel_tol=1e-1):
+                if self.ce.look_equal(self.trio.psi[self.i], 1, rel_tol=1e-1):
                     psi_i_greater_but_close_to_one = True
                 else:  # pragma: no cover
                     raise AssertionError('Unexpected: self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
@@ -97,11 +99,11 @@ class BestResponseApproval(BestResponse):
                 raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
             elif psi_k_greater_but_close_to_one:
                 # pij ~= inf, pjk < inf ==> u = 1
-                threshold_utility = sp.S(1)
+                threshold_utility = self.ce.S(1)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
             elif psi_i_greater_but_close_to_one:
                 # pij < inf, pjk ~= inf ==> u = 0
-                threshold_utility = sp.S(0)
+                threshold_utility = self.ce.S(0)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
             else:
                 # General case of the offset method (at last!)
@@ -109,8 +111,8 @@ class BestResponseApproval(BestResponse):
                 pjk = (1 + self.trio.psi[self.j]) * self.trio.psi[self.i] ** 2 / (1 - self.trio.psi[self.i])
                 p1t = self.trio.psi[self.i]
                 p2t = self.trio.psi[self.ij]
-                threshold_utility = my_simplify((pij / 2 + p1t / 3 + p2t / 6)
-                                                / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3))
+                threshold_utility = self.ce.simplify((pij / 2 + p1t / 3 + p2t / 6)
+                                                     / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3))
                 justification = self.OFFSET_METHOD
         return threshold_utility, justification
 

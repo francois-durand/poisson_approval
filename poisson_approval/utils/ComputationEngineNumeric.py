@@ -72,7 +72,10 @@ class ComputationEngineNumeric(ComputationEngine):
 
     @classmethod
     def simplify(cls, x):
-        return x
+        if isinstance(x, Fraction) and x.denominator == 1:
+            return x
+        else:
+            return x
 
     @classmethod
     def sqrt(cls, x):
