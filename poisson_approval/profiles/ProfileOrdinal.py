@@ -490,7 +490,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> from fractions import Fraction
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> profile.distribution_winners()
-            array([0., 0., 1., 0.])
+            array([0, 0, 1, 0])
         """
         if test is None:
             # noinspection PyUnusedLocal
