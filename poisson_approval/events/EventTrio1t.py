@@ -1,9 +1,7 @@
-import sympy as sp
 from poisson_approval.utils.Util import isneginf
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
 from poisson_approval.events.EventTrio import EventTrio
-from poisson_approval.utils.Util import my_simplify
 
 
 class EventTrio1t(Event):
@@ -24,7 +22,8 @@ class EventTrio1t(Event):
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
-        event_trio = EventTrio(candidate_x='x', candidate_y='y', candidate_z='z',
+        ce = self.ce
+        event_trio = EventTrio(candidate_x='x', candidate_y='y', candidate_z='z', symbolic=self.symbolic,
                                tau_x=tau_x, tau_y=tau_y, tau_z=tau_z, tau_xy=tau_xy, tau_xz=tau_xz, tau_yz=tau_yz)
         self._phi_x = event_trio.phi['x']
         self._phi_y = event_trio.phi['y']
@@ -34,33 +33,38 @@ class EventTrio1t(Event):
         self._phi_yz = event_trio.phi['yz']
         if tau_x == 0 and tau_yz == 0:
             # Cross diagram 1
-            self.asymptotic = Asymptotic.poisson_one_more(tau_y, tau_xz) * Asymptotic.poisson_one_more(tau_z, tau_xy)
+            self.asymptotic = (Asymptotic.poisson_one_more(tau_y, tau_xz, symbolic=self.symbolic)
+                               * Asymptotic.poisson_one_more(tau_z, tau_xy, symbolic=self.symbolic))
         elif (tau_y == 0 and tau_xz == 0) or (tau_z == 0 and tau_xy == 0):
             # Cross diagram 2
-            self.asymptotic = (Asymptotic.poisson_one_more(tau_yz, tau_x)
-                               * Asymptotic.poisson_eq(tau_y, tau_xz) * Asymptotic.poisson_eq(tau_z, tau_xy))
+            self.asymptotic = (Asymptotic.poisson_one_more(tau_yz, tau_x, symbolic=self.symbolic)
+                               * Asymptotic.poisson_eq(tau_y, tau_xz, symbolic=self.symbolic)
+                               * Asymptotic.poisson_eq(tau_z, tau_xy, symbolic=self.symbolic))
         elif (tau_x == 0 and tau_xy == 0) or (tau_x == 0 and tau_xz == 0):
             # Flower diagram 1
             self.asymptotic = (
-                (Asymptotic.poisson_value(tau_yz, 0) * Asymptotic.poisson_one_more(tau_y, tau_xz)
-                 * Asymptotic.poisson_one_more(tau_z, tau_xy))
-                + (Asymptotic.poisson_value(tau_yz, 1) * Asymptotic.poisson_eq(tau_y, tau_xz)
-                   * Asymptotic.poisson_eq(tau_z, tau_xy))
+                (Asymptotic.poisson_value(tau_yz, 0, symbolic=self.symbolic)
+                 * Asymptotic.poisson_one_more(tau_y, tau_xz, symbolic=self.symbolic)
+                 * Asymptotic.poisson_one_more(tau_z, tau_xy, symbolic=self.symbolic))
+                + (Asymptotic.poisson_value(tau_yz, 1, symbolic=self.symbolic)
+                   * Asymptotic.poisson_eq(tau_y, tau_xz, symbolic=self.symbolic)
+                   * Asymptotic.poisson_eq(tau_z, tau_xy, symbolic=self.symbolic))
             )
         elif (tau_y == 0 and tau_xy == 0) or (tau_z == 0 and tau_xz == 0):
             # Flower diagram 2
-            self.asymptotic = (Asymptotic.poisson_one_more(tau_yz, tau_x)
-                               * Asymptotic.poisson_eq(tau_y, tau_xz) * Asymptotic.poisson_eq(tau_z, tau_xy))
+            self.asymptotic = (Asymptotic.poisson_one_more(tau_yz, tau_x, symbolic=self.symbolic)
+                               * Asymptotic.poisson_eq(tau_y, tau_xz, symbolic=self.symbolic)
+                               * Asymptotic.poisson_eq(tau_z, tau_xy, symbolic=self.symbolic))
         elif (tau_y == 0 and tau_yz == 0) or (tau_z == 0 and tau_yz == 0):
             # Flower diagram 3
-            self.asymptotic = Asymptotic(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
+            self.asymptotic = Asymptotic(mu=-ce.inf, nu=-ce.inf, xi=-ce.inf, symbolic=self.symbolic)
         else:
-            _phi_x_tilde = self._phi_x if tau_x != 0 else my_simplify(self._phi_xy * self._phi_xz)
+            _phi_x_tilde = self._phi_x if tau_x != 0 else ce.simplify(self._phi_xy * self._phi_xz)
             self.asymptotic = event_trio.asymptotic * _phi_x_tilde
         if isneginf(self.asymptotic.mu):
-            self._phi_x = sp.nan
-            self._phi_y = sp.nan
-            self._phi_z = sp.nan
-            self._phi_xy = sp.nan
-            self._phi_xz = sp.nan
-            self._phi_yz = sp.nan
+            self._phi_x = ce.nan
+            self._phi_y = ce.nan
+            self._phi_z = ce.nan
+            self._phi_xy = ce.nan
+            self._phi_xz = ce.nan
+            self._phi_yz = ce.nan

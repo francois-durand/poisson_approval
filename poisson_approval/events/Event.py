@@ -1,3 +1,4 @@
+from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.Util import isnan
 
 
@@ -12,6 +13,8 @@ class Event:
         A candidate (e.g. ``'b'``).
     candidate_z : str
         A candidate (e.g. ``'c'``).
+    symbolic : bool
+        Whether the computations are symbolic or approximate.
     kwargs
         Use ``tau_..`` for the values of the tau-vector (probability for each kind of ballot). For example, ``tau_a``,
         ``tau_ab``, etc.
@@ -50,7 +53,7 @@ class Event:
     Cf. :class:`EventPivotWeak`.
     """
 
-    def __init__(self, candidate_x, candidate_y, candidate_z, **kwargs):
+    def __init__(self, candidate_x, candidate_y, candidate_z, symbolic=False, **kwargs):
         """
         Examples
         --------
@@ -61,6 +64,8 @@ class Event:
         # -------------
         # Preliminaries
         # -------------
+        self.symbolic = symbolic
+        self.ce = computation_engine(symbolic)
         # Create labels
         self._label_x, self._label_y, self._label_z = candidate_x, candidate_y, candidate_z
         self._label_xy = ''.join(sorted([self._label_x, self._label_y]))
@@ -155,7 +160,10 @@ class Event:
         for label in lab_sorted:
             val = getattr(self, 'phi_' + label)
             if not isnan(val):
-                s += ', phi_' + label + ' = %s' % val
+                if self.symbolic:
+                    s += ', phi_' + label + ' = %s' % val
+                else:
+                    s += ', phi_' + label + ' = {:.6g}'.format(float(val))
         return '<%s>' % s
 
     def _repr_pretty_(self, p, cycle):  # pragma: no cover

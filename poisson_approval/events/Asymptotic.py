@@ -438,8 +438,8 @@ class Asymptotic:
         else:
             return cls(
                 mu=ce.simplify(- (ce.sqrt(tau_1) - ce.sqrt(tau_2)) ** 2),
-                nu=- ce.Rational(1, 2),
-                xi=ce.simplify(- ce.Rational(1, 2)
+                nu=- ce.S(1) / 2,
+                xi=ce.simplify(- ce.S(1) / 2
                                * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)),
                 symbolic=symbolic
             )
@@ -550,9 +550,9 @@ class Asymptotic:
             # Use the offset theorem with event X_1 = X_2, then infinite sum.
             return cls(
                 mu=ce.simplify(- (ce.sqrt(tau_1) - ce.sqrt(tau_2)) ** 2),
-                nu=- ce.Rational(1, 2),
+                nu=- ce.S(1) / 2,
                 xi=ce.simplify(
-                    - ce.Rational(1, 2) * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)
+                    - ce.S(1) / 2 * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)
                     - ce.log(1 - ce.sqrt(ce.S(tau_1) / tau_2))
                 ),
                 symbolic=symbolic
