@@ -1,5 +1,8 @@
+import math
+import numpy as np
 import sympy as sp
 from fractions import Fraction
+from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.Util import isnan, isneginf, look_equal, my_simplify
 
 
@@ -15,6 +18,7 @@ class Asymptotic:
         Coefficient of the term in `log n`.
     mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Constant coefficient.
+    exact : Whether the computations are exact or approximate.
 
     Attributes
     ----------
@@ -36,18 +40,20 @@ class Asymptotic:
     Examples
     --------
 
-        >>> asymptotic = Asymptotic(mu=-Fraction(1, 9), nu=-Fraction(1, 2), xi=-Fraction(1, 2) * sp.log(8 * sp.pi / 9))
+        >>> asymptotic = Asymptotic(mu=-1 / 9, nu=-1 / 2, xi=-1 / 2 * math.log(8 * math.pi / 9))
         >>> print(asymptotic)
-        exp(- n/9 - log(n)/2 - log(8*pi/9)/2 + o(1))
+        exp(- 0.111111 n - 0.5 log n - 0.513473 + o(1))
         >>> asymptotic.mu
-        Fraction(-1, 9)
+        -0.1111111111111111
         >>> asymptotic.nu
-        Fraction(-1, 2)
+        -0.5
         >>> asymptotic.xi
-        -log(8*pi/9)/2
+        -0.5134734250965083
     """
 
-    def __init__(self, mu, nu, xi):
+    def __init__(self, mu, nu, xi, exact=False):
+        self.exact = exact
+        self.ce = computation_engine(exact)
         self.mu = self.μ = mu
         self.nu = self.ν = nu
         self.xi = self.ξ = xi
@@ -61,12 +67,8 @@ class Asymptotic:
 
         Examples
         --------
-            >>> Asymptotic(mu=- Fraction(1, 10), nu=sp.nan, xi=3)
+            >>> Asymptotic(mu=- Fraction(1, 10), nu=np.nan, xi=3)
             Asymptotic(mu=Fraction(-1, 10), nu=nan, xi=3)
-            >>> Asymptotic(- (sp.sqrt(3) - sp.sqrt(2)) ** 2,
-            ...            - sp.Rational(1, 2),
-            ...            - sp.log(4 * sp.sqrt(6) * sp.pi) / 2)
-            Asymptotic(mu=-(-sqrt(2) + sqrt(3))**2, nu=-1/2, xi=-log(4*sqrt(6)*pi)/2)
         """
         return 'Asymptotic(mu=%r, nu=%r, xi=%r)' % (self.mu, self.nu, self.xi)
 
@@ -79,14 +81,18 @@ class Asymptotic:
 
         Examples
         --------
-            >>> print(Asymptotic(mu=- Fraction(1, 10), nu=sp.nan, xi=3))
-            exp(- n/10 + ? log(n) + 3 + o(1))
-            >>> print(Asymptotic(- (sp.sqrt(3) - sp.sqrt(2)) ** 2,
-            ...                  - sp.Rational(1, 2),
-            ...                  - sp.log(4 * sp.sqrt(6) * sp.pi) / 2))
-            exp(- n*(-sqrt(2) + sqrt(3))**2 - log(n)/2 - log(4*sqrt(6)*pi)/2 + o(1))
-            >>> print(Asymptotic(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo))
+            >>> print(Asymptotic(mu=- Fraction(1, 10), nu=np.nan, xi=3))
+            exp(- 0.1 n + ? log n + 3 + o(1))
+            >>> print(Asymptotic(mu=-np.inf, nu=-np.inf, xi=-np.inf))
             exp(- inf)
+        """
+        if self.exact:
+            return self._str_exact()
+        else:
+            return self._str_approximate()
+
+    def _str_exact(self):
+        """Auxiliary function for __str__
         """
         if isneginf(self.mu) and isneginf(self.nu) and isneginf(self.xi):
             return "exp(- inf)"
@@ -112,6 +118,35 @@ class Asymptotic:
         s = "exp(%s)" % s
         return s
 
+    def _str_approximate(self):
+        """Auxiliary function for __str__
+        """
+        if isneginf(self.mu) and isneginf(self.nu) and isneginf(self.xi):
+            return "exp(- inf)"
+
+        def nice(x, suffix):
+            if isnan(x):
+                return ' + ? ' + suffix if suffix else ' + ?'
+            if x == 1 and suffix:
+                return ' + ' + suffix
+            if x == -1 and suffix:
+                return ' - ' + suffix
+            if x == 0:
+                return ''
+            result = ' + ' if x > 0 else ' - '
+            result += "{:.6g}".format(float(abs(x)))
+            result += ' ' + suffix if suffix else ''
+            return result
+
+        s = nice(self.mu, 'n') + nice(self.nu, 'log n') + nice(self.xi, '')
+        s += ' + o(1)'
+        if s[1] == "+":
+            s = s[3:]
+        else:
+            s = s[1:]
+        s = "exp(%s)" % s
+        return s
+
     def _repr_pretty_(self, p, cycle):  # pragma: no cover
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
@@ -125,37 +160,34 @@ class Asymptotic:
             >>> Asymptotic(mu=-1, nu=0, xi=0).limit
             0
             >>> Asymptotic(mu=1, nu=0, xi=0).limit
-            oo
-            >>> Asymptotic(mu=-1, nu=sp.nan, xi=sp.nan).limit
+            inf
+            >>> Asymptotic(mu=-1, nu=np.nan, xi=np.nan).limit
             0
-            >>> Asymptotic(mu=0, nu=-1, xi=sp.nan).limit
+            >>> Asymptotic(mu=0, nu=-1, xi=np.nan).limit
             0
-            >>> Asymptotic(mu=0, nu=0, xi=2).limit
-            exp(2)
 
-        ``sp.nan`` means that the limit is unknown:
-
-            >>> Asymptotic(mu=0, nu=0, xi=sp.nan).limit
+        ``nan`` means that the limit is unknown:
+            >>> Asymptotic(mu=0, nu=0, xi=np.nan).limit
             nan
         """
         if isnan(self.mu):
-            return sp.nan
+            return self.ce.nan
         elif self.mu > 0:
-            return sp.oo
+            return self.ce.inf
         elif self.mu < 0:
             return 0
         else:  # self.mu == 0
             if isnan(self.nu):
-                return sp.nan
+                return self.ce.nan
             elif self.nu > 0:
-                return sp.oo
+                return self.ce.inf
             elif self.nu < 0:
                 return 0
             else:  # self.nu == 0:
                 if isnan(self.xi):
-                    return sp.nan
+                    return self.ce.nan
                 else:
-                    return my_simplify(sp.exp(self.xi))
+                    return self.ce.simplify(self.ce.exp(self.xi))
 
     def __mul__(self, other):
         """Multiplication of two asymptotic developments.
@@ -172,26 +204,27 @@ class Asymptotic:
         Examples
         --------
             >>> print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=2, xi=3))
-            exp(43*n + 53*log(n) + 72 + o(1))
-            >>> print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=sp.nan, xi=sp.nan))
-            exp(43*n + ? log(n) + ? + o(1))
+            exp(43 n + 53 log n + 72 + o(1))
+            >>> print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=np.nan, xi=np.nan))
+            exp(43 n + ? log n + ? + o(1))
         """
         if not isinstance(other, Asymptotic):
-            other = Asymptotic(0, 0, sp.log(other))
+            other = Asymptotic(0, 0, self.ce.log(other), exact=self.exact)
 
         def my_addition(x, y):
-            return 0 if look_equal(x, -y) else my_simplify(x + y)
+            return 0 if self.ce.look_equal(x, -y) else self.ce.simplify(x + y)
 
         return Asymptotic(my_addition(self.mu, other.mu),
                           my_addition(self.nu, other.nu),
-                          my_addition(self.xi, other.xi))
+                          my_addition(self.xi, other.xi),
+                          exact=self.exact)
 
     def __rmul__(self, other):
         """
         Examples
         --------
             >>> print(3 * Asymptotic(mu=42, nu=51, xi=69))
-            exp(42*n + 51*log(n) + log(3) + 69 + o(1))
+            exp(42 n + 51 log n + 70.0986 + o(1))
         """
         return self * other
 
@@ -210,21 +243,21 @@ class Asymptotic:
         Examples
         --------
             >>> print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=2, xi=3))
-            exp(41*n + 49*log(n) + 66 + o(1))
-            >>> print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=sp.nan, xi=sp.nan))
-            exp(41*n + ? log(n) + ? + o(1))
+            exp(41 n + 49 log n + 66 + o(1))
+            >>> print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=np.nan, xi=np.nan))
+            exp(41 n + ? log n + ? + o(1))
             >>> print(1 / Asymptotic(mu=42, nu=51, xi=69))
-            exp(- 42*n - 51*log(n) - 69 + o(1))
+            exp(- 42 n - 51 log n - 69 + o(1))
             >>> print(Asymptotic(mu=42, nu=51, xi=69) / 2)
-            exp(42*n + 51*log(n) - log(2) + 69 + o(1))
+            exp(42 n + 51 log n + 68.3069 + o(1))
         """
         if not isinstance(other, Asymptotic):
-            other = Asymptotic(0, 0, sp.log(other))
-        return self * Asymptotic(- other.mu, - other.nu, - other.xi)
+            other = Asymptotic(0, 0, self.ce.log(other), exact=self.exact)
+        return self * Asymptotic(- other.mu, - other.nu, - other.xi, exact=self.exact)
 
     def __rtruediv__(self, other):
         if not isinstance(other, Asymptotic):
-            other = Asymptotic(0, 0, sp.log(other))
+            other = Asymptotic(0, 0, self.ce.log(other), exact=self.exact)
         return other / self
 
     # noinspection PyTypeChecker
@@ -243,38 +276,38 @@ class Asymptotic:
         Examples
         --------
             >>> print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=1, nu=51, xi=3))
-            exp(42*n + 2*log(n) + 69 + o(1))
+            exp(42 n + 2 log n + 69 + o(1))
             >>> print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=42, nu=51, xi=3))
-            exp(42*n + 51*log(n) + 3 + o(1))
+            exp(42 n + 51 log n + 3 + o(1))
             >>> print(Asymptotic(mu=42, nu=2, xi=4) + Asymptotic(mu=42, nu=2, xi=3))
-            exp(42*n + 2*log(n) + log(1 + E) + 3 + o(1))
+            exp(42 n + 2 log n + 4.31326 + o(1))
             >>> print(Asymptotic(mu=42, nu=2, xi=4) + 1)
-            exp(42*n + 2*log(n) + 4 + o(1))
+            exp(42 n + 2 log n + 4 + o(1))
             >>> print(1 + Asymptotic(mu=42, nu=2, xi=4))
-            exp(42*n + 2*log(n) + 4 + o(1))
+            exp(42 n + 2 log n + 4 + o(1))
             >>> print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=41.99999999, nu=51, xi=3))
-            exp(42*n + 51*log(n) + 3 + o(1))
+            exp(42 n + 51 log n + 3 + o(1))
         """
         if not isinstance(other, Asymptotic):
-            other = Asymptotic(0, 0, sp.log(other))
+            other = Asymptotic(0, 0, self.ce.log(other), exact=self.exact)
         if isnan(self.mu) or isnan(other.mu):
-            return Asymptotic(sp.nan, sp.nan, sp.nan)
-        elif look_equal(self.mu, other.mu):
+            return Asymptotic(self.ce.nan, self.ce.nan, self.ce.nan, exact=self.exact)
+        elif self.ce.look_equal(self.mu, other.mu):
             mu = max(self.mu, other.mu)
             if isnan(self.nu) or isnan(other.nu):
-                return Asymptotic(mu, sp.nan, sp.nan)
-            elif look_equal(self.nu, other.nu):
+                return Asymptotic(mu, self.ce.nan, self.ce.nan, exact=self.exact)
+            elif self.ce.look_equal(self.nu, other.nu):
                 nu = max(self.nu, other.nu)
-                xi = my_simplify(sp.log(sp.exp(self.xi) + sp.exp(other.xi)))
-                return Asymptotic(mu, nu, xi)
+                xi = self.ce.simplify(self.ce.log(self.ce.exp(self.xi) + self.ce.exp(other.xi)))
+                return Asymptotic(mu, nu, xi, exact=self.exact)
             elif self.nu > other.nu:
-                return Asymptotic(mu, self.nu, self.xi)
+                return Asymptotic(mu, self.nu, self.xi, exact=self.exact)
             else:
-                return Asymptotic(mu, other.nu, other.xi)
+                return Asymptotic(mu, other.nu, other.xi, exact=self.exact)
         elif self.mu > other.mu:
-            return Asymptotic(self.mu, self.nu, self.xi)
+            return Asymptotic(self.mu, self.nu, self.xi, exact=self.exact)
         else:
-            return Asymptotic(other.mu, other.nu, other.xi)
+            return Asymptotic(other.mu, other.nu, other.xi, exact=self.exact)
 
     def __radd__(self, other):
         return self + other
@@ -293,29 +326,27 @@ class Asymptotic:
         Returns
         -------
         bool
-            True if this asymptotic development can reasonably be considered equal to `other`. Cf :func:`look_equal`.
+            True if this asymptotic development can reasonably be considered equal to `other`. Cf.
+             :meth:`ComputationEngine.look_equal`.
 
         Examples
         --------
             >>> Asymptotic(mu=1, nu=2, xi=3).look_equal(
             ...     Asymptotic(mu=0.999999999999, nu=2.00000000001, xi=3))
             True
-            >>> Asymptotic(mu=1, nu=2, xi=3).look_equal(
-            ...     Asymptotic(mu=Fraction(999999999999, 1000000000000), nu=2, xi=3))
-            False
         """
         if not isinstance(other, Asymptotic):
             return False
         some_coefficients_are_nan = (isnan(self.mu) or isnan(self.nu) or isnan(self.xi)
                                      or isnan(other.mu) or isnan(other.nu) or isnan(other.xi))
         if some_coefficients_are_nan:
-            raise ValueError('Can assert isclose only when all coefficients are known.')
-        return (look_equal(self.mu, other.mu, *args, **kwargs)
-                and look_equal(self.nu, other.nu, * args, ** kwargs)
-                and look_equal(self.xi, other.xi, *args, **kwargs))
+            raise ValueError('Can assert look_equal only when all coefficients are known.')
+        return (self.ce.look_equal(self.mu, other.mu, *args, **kwargs)
+                and self.ce.look_equal(self.nu, other.nu, * args, ** kwargs)
+                and self.ce.look_equal(self.xi, other.xi, *args, **kwargs))
 
     @classmethod
-    def poisson_value(cls, tau, k):
+    def poisson_value(cls, tau, k, exact=False):
         """Asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau * n)``.
 
         Parameters
@@ -337,19 +368,22 @@ class Asymptotic:
             >>> print(Asymptotic.poisson_value(tau=0, k=1))
             exp(- inf)
             >>> print(Asymptotic.poisson_value(tau=1, k=1))
-            exp(- n + log(n) + o(1))
-            >>> Asymptotic.poisson_value(tau=2, k=3)
-            Asymptotic(mu=-2, nu=3, xi=log(4/3))
+            exp(- n + log n + o(1))
+            >>> from math import log
+            >>> Asymptotic.poisson_value(tau=2, k=3).look_equal(
+            ...     Asymptotic(mu=-2, nu=3, xi=3 * log(2) - log(6)))
+            True
         """
+        ce = computation_engine(exact)
         if tau == 0:
             if k == 0:
-                return cls(mu=0, nu=0, xi=0)
+                return cls(mu=0, nu=0, xi=0, exact=exact)
             else:
-                return cls(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
-        return cls(mu=- tau, nu=k, xi=my_simplify(k * sp.log(tau) - sp.log(sp.factorial(k))))
+                return cls(mu=-ce.inf, nu=-ce.inf, xi=-ce.inf, exact=exact)
+        return cls(mu=- tau, nu=k, xi=ce.simplify(k * ce.log(tau) - ce.log(ce.factorial(k))), exact=exact)
 
     @classmethod
-    def poisson_x1_eq_x2_plus_k(cls, tau_1, tau_2, k):
+    def poisson_x1_eq_x2_plus_k(cls, tau_1, tau_2, k, exact=False):
         """Asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -366,36 +400,42 @@ class Asymptotic:
 
         Examples
         --------
+            >>> from math import log, pi, sqrt
             >>> print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=0, tau_2=1, k=0))
             exp(- n + o(1))
             >>> print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=0, tau_2=1, k=1))
             exp(- inf)
             >>> print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=0, k=1))
-            exp(- n + log(n) + o(1))
-            >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=2, tau_2=0, k=3)
-            Asymptotic(mu=-2, nu=3, xi=log(4/3))
-            >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=1, k=0)
-            Asymptotic(mu=0, nu=-1/2, xi=-log(4*pi)/2)
-            >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=2, k=3)
-            Asymptotic(mu=-3 + 2*sqrt(2), nu=-1/2, xi=-11*log(2)/4 - log(pi)/2)
+            exp(- n + log n + o(1))
+            >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=2, tau_2=0, k=3).look_equal(
+            ...     Asymptotic(mu=-2, nu=3, xi=3 * log(2) - log(6)))
+            True
+            >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=1, k=0).look_equal(
+            ...     Asymptotic(mu=0, nu=- 1 / 2, xi=- 1 / 2 * log(4 * pi)))
+            True
+            >>> Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=2, k=3).look_equal(
+            ...     Asymptotic(mu=- (1 - sqrt(2)) ** 2, nu=- 1 / 2, xi=- 1 / 2 * log(32 * pi * sqrt(2))))
+            True
         """
+        ce = computation_engine(exact)
         if tau_1 == 0:
             if k == 0:
-                return cls(mu=- tau_2, nu=0, xi=0)
+                return cls(mu=- tau_2, nu=0, xi=0, exact=exact)
             else:
-                return cls(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
+                return cls(mu=-ce.inf, nu=-ce.inf, xi=-ce.inf, exact=exact)
         elif tau_2 == 0:
-            return cls(mu=- tau_1, nu=k, xi=my_simplify(k * sp.log(tau_1) - sp.log(sp.factorial(k))))
+            return cls(mu=- tau_1, nu=k, xi=ce.simplify(k * ce.log(tau_1) - ce.log(ce.factorial(k))), exact=exact)
         else:
             return cls(
-                mu=my_simplify(- (sp.sqrt(tau_1) - sp.sqrt(tau_2)) ** 2),
-                nu=- sp.Rational(1, 2),
-                xi=my_simplify(- sp.Rational(1, 2)
-                                * sp.log(4 * sp.pi * sp.sqrt(tau_1 * tau_2) * sp.S(tau_2**k) / tau_1**k))
+                mu=ce.simplify(- (ce.sqrt(tau_1) - ce.sqrt(tau_2)) ** 2),
+                nu=- ce.Rational(1, 2),
+                xi=ce.simplify(- ce.Rational(1, 2)
+                                * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)),
+                exact=exact
             )
 
     @classmethod
-    def poisson_eq(cls, tau_1, tau_2):
+    def poisson_eq(cls, tau_1, tau_2, exact=False):
         """Asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -410,17 +450,19 @@ class Asymptotic:
 
         Examples
         --------
+            >>> from math import pi, log
             >>> print(Asymptotic.poisson_eq(tau_1=0, tau_2=0))
             exp(o(1))
-            >>> print(Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=0))
-            exp(- n/10 + o(1))
-            >>> Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            Asymptotic(mu=-2/5, nu=-1/2, xi=-log(6*pi/5)/2)
+            >>> print(Asymptotic.poisson_eq(tau_1=1/10, tau_2=0))
+            exp(- 0.1 n + o(1))
+            >>> Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10).look_equal(
+            ...     Asymptotic(mu=-.4, nu=-.5, xi=-.5 * log(1.2 * pi)))
+            True
         """
-        return cls.poisson_x1_eq_x2_plus_k(tau_1, tau_2, 0)
+        return cls.poisson_x1_eq_x2_plus_k(tau_1, tau_2, 0, exact=exact)
 
     @classmethod
-    def poisson_one_more(cls, tau_1, tau_2):
+    def poisson_one_more(cls, tau_1, tau_2, exact=False):
         """Asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -435,15 +477,16 @@ class Asymptotic:
 
         Examples
         --------
-            >>> print(Asymptotic.poisson_one_more(tau_1=0, tau_2=Fraction(1, 10)))
+            >>> from math import pi, log
+            >>> print(Asymptotic.poisson_one_more(tau_1=0, tau_2=1/10))
             exp(- inf)
-            >>> print(Asymptotic.poisson_one_more(tau_1=Fraction(1, 10), tau_2=0))
-            exp(- n/10 + log(n) - log(10) + o(1))
+            >>> print(Asymptotic.poisson_one_more(tau_1=1/10, tau_2=0))
+            exp(- 0.1 n + log n - 2.30259 + o(1))
         """
-        return cls.poisson_x1_eq_x2_plus_k(tau_1, tau_2, 1)
+        return cls.poisson_x1_eq_x2_plus_k(tau_1, tau_2, 1, exact=exact)
 
     @classmethod
-    def poisson_x1_ge_x2_plus_k(cls, tau_1, tau_2, k):
+    def poisson_x1_ge_x2_plus_k(cls, tau_1, tau_2, k, exact=False):
         """Asymptotic development of ``P(X_1 >= X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -460,41 +503,47 @@ class Asymptotic:
 
         Examples
         --------
+            >>> from math import log, sqrt, pi
             >>> print(Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=0, tau_2=1, k=0))
             exp(- n + o(1))
             >>> print(Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=0, tau_2=1, k=1))
             exp(- inf)
             >>> print(Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=0, k=0))
             exp(o(1))
-            >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=1, k=0)
-            Asymptotic(mu=0, nu=0, xi=-log(2))
-            >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=2, k=3)
-            Asymptotic(mu=-3 + 2*sqrt(2), nu=-1/2, xi=-11*log(2)/4 - log(pi)/2 - log(1 - sqrt(2)/2))
+            >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=1, k=0).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=- log(2)))
+            True
+            >>> Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=2, k=3).look_equal(Asymptotic(
+            ...     mu=- (1 - sqrt(2)) ** 2, nu=- 1 / 2,
+            ...     xi=(- 1 / 2 * log(32 * pi * sqrt(2)) - log(1 - sqrt(1 / 2)))))
+            True
         """
+        ce = computation_engine(exact)
         if tau_1 == 0:
             if k == 0:
-                return cls(mu=- tau_2, nu=0, xi=0)
+                return cls(mu=- tau_2, nu=0, xi=0, exact=exact)
             else:
-                return cls(mu=-sp.oo, nu=-sp.oo, xi=-sp.oo)
+                return cls(mu=-ce.inf, nu=-ce.inf, xi=-ce.inf, exact=exact)
         elif tau_1 > tau_2:
             # Probability 1 => the log tends to 0.
-            return cls(mu=0, nu=0, xi=0)
+            return cls(mu=0, nu=0, xi=0, exact=exact)
         elif tau_1 == tau_2:
             # Probability 1/2 => the log tends to - log(2).
-            return cls(mu=0, nu=0, xi=- sp.log(2))
+            return cls(mu=0, nu=0, xi=- ce.log(2), exact=exact)
         else:
             # Use the offset theorem with event X_1 = X_2, then infinite sum.
             return cls(
-                mu=my_simplify(- (sp.sqrt(tau_1) - sp.sqrt(tau_2)) ** 2),
-                nu=- sp.Rational(1, 2),
-                xi=my_simplify(
-                    - sp.Rational(1, 2) * sp.log(4 * sp.pi * sp.sqrt(tau_1 * tau_2) * sp.S(tau_2**k) / tau_1**k)
-                    - sp.log(1 - sp.sqrt(sp.S(tau_1) / tau_2))
-                )
+                mu=ce.simplify(- (ce.sqrt(tau_1) - ce.sqrt(tau_2)) ** 2),
+                nu=- ce.Rational(1, 2),
+                xi=ce.simplify(
+                    - ce.Rational(1, 2) * ce.log(4 * ce.pi * ce.sqrt(tau_1 * tau_2) * ce.S(tau_2**k) / tau_1**k)
+                    - ce.log(1 - ce.sqrt(ce.S(tau_1) / tau_2))
+                ),
+                exact=exact
             )
 
     @classmethod
-    def poisson_ge(cls, tau_1, tau_2):
+    def poisson_ge(cls, tau_1, tau_2, exact=False):
         """Asymptotic development of ``P(X_1 >= X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -509,27 +558,29 @@ class Asymptotic:
 
         Examples
         --------
+            >>> from math import log
             >>> print(Asymptotic.poisson_ge(tau_1=0, tau_2=0))
             exp(o(1))
-            >>> print(Asymptotic.poisson_ge(tau_1=0, tau_2=Fraction(1, 10)))
-            exp(- n/10 + o(1))
-            >>> print(Asymptotic.poisson_ge(tau_1=Fraction(1, 10), tau_2=0))
+            >>> print(Asymptotic.poisson_ge(tau_1=0, tau_2=1/10))
+            exp(- 0.1 n + o(1))
+            >>> print(Asymptotic.poisson_ge(tau_1=1/10, tau_2=0))
             exp(o(1))
-            >>> Asymptotic.poisson_ge(tau_1=Fraction(9, 10), tau_2=Fraction(1, 10))
-            Asymptotic(mu=0, nu=0, xi=0)
-            >>> Asymptotic.poisson_ge(tau_1=Fraction(3, 10), tau_2=Fraction(3, 10))
-            Asymptotic(mu=0, nu=0, xi=-log(2))
-            >>> asymptotic = Asymptotic.poisson_ge(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic.look_equal(Asymptotic(mu=asymptotic_eq.mu,
-            ...                               nu=asymptotic_eq.nu,
-            ...                               xi=asymptotic_eq.xi + sp.log(sp.Rational(3, 2))))
+            >>> Asymptotic.poisson_ge(tau_1=9/10, tau_2=1/10).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=0))
+            True
+            >>> Asymptotic.poisson_ge(tau_1=3/10, tau_2=3/10).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))
+            True
+            >>> asymptotic = Asymptotic.poisson_ge(tau_1=1/10, tau_2=9/10)
+            >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)
+            >>> asymptotic.look_equal(
+            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi + log(3/2)))
             True
         """
-        return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 0)
+        return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 0, exact=exact)
 
     @classmethod
-    def poisson_gt(cls, tau_1, tau_2):
+    def poisson_gt(cls, tau_1, tau_2, exact=False):
         """Asymptotic development of ``P(X_1 > X_2)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -544,29 +595,29 @@ class Asymptotic:
 
         Examples
         --------
-            >>> from poisson_approval import Asymptotic
-            >>> import sympy as sp
+            >>> from math import log
             >>> print(Asymptotic.poisson_gt(tau_1=0, tau_2=0))
             exp(- inf)
-            >>> print(Asymptotic.poisson_gt(tau_1=0, tau_2=Fraction(1, 10)))
+            >>> print(Asymptotic.poisson_gt(tau_1=0, tau_2=1/10))
             exp(- inf)
-            >>> print(Asymptotic.poisson_gt(tau_1=Fraction(1, 10), tau_2=0))
+            >>> print(Asymptotic.poisson_gt(tau_1=1/10, tau_2=0))
             exp(o(1))
-            >>> Asymptotic.poisson_gt(tau_1=Fraction(9, 10), tau_2=Fraction(1, 10))
-            Asymptotic(mu=0, nu=0, xi=0)
-            >>> Asymptotic.poisson_gt(tau_1=Fraction(3, 10), tau_2=Fraction(3, 10))
-            Asymptotic(mu=0, nu=0, xi=-log(2))
-            >>> asymptotic = Asymptotic.poisson_gt(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic.look_equal(Asymptotic(mu=asymptotic_eq.mu,
-            ...                               nu=asymptotic_eq.nu,
-            ...                               xi=asymptotic_eq.xi - sp.log(2)))
+            >>> Asymptotic.poisson_gt(tau_1=9/10, tau_2=1/10).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=0))
+            True
+            >>> Asymptotic.poisson_gt(tau_1=3/10, tau_2=3/10).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))
+            True
+            >>> asymptotic = Asymptotic.poisson_gt(tau_1=1/10, tau_2=9/10)
+            >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)
+            >>> asymptotic.look_equal(
+            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(2)))
             True
         """
-        return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 1)
+        return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 1, exact=exact)
 
     @classmethod
-    def poisson_gt_one_more(cls, tau_1, tau_2):
+    def poisson_gt_one_more(cls, tau_1, tau_2, exact=False):
         """Asymptotic development of ``P(X_1 > X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.
 
         Parameters
@@ -581,21 +632,23 @@ class Asymptotic:
 
         Examples
         --------
+            >>> from math import log
             >>> print(Asymptotic.poisson_gt_one_more(tau_1=0, tau_2=0))
             exp(- inf)
-            >>> print(Asymptotic.poisson_gt_one_more(tau_1=0, tau_2=Fraction(1, 10)))
+            >>> print(Asymptotic.poisson_gt_one_more(tau_1=0, tau_2=1/10))
             exp(- inf)
-            >>> print(Asymptotic.poisson_gt_one_more(tau_1=Fraction(1, 10), tau_2=0))
+            >>> print(Asymptotic.poisson_gt_one_more(tau_1=1/10, tau_2=0))
             exp(o(1))
-            >>> Asymptotic.poisson_gt_one_more(tau_1=Fraction(9, 10), tau_2=Fraction(1, 10))
-            Asymptotic(mu=0, nu=0, xi=0)
-            >>> Asymptotic.poisson_gt_one_more(tau_1=Fraction(3, 10), tau_2=Fraction(3, 10))
-            Asymptotic(mu=0, nu=0, xi=-log(2))
-            >>> asymptotic = Asymptotic.poisson_gt_one_more(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=Fraction(1, 10), tau_2=Fraction(9, 10))
-            >>> asymptotic.look_equal(Asymptotic(mu=asymptotic_eq.mu,
-            ...                               nu=asymptotic_eq.nu,
-            ...                               xi=asymptotic_eq.xi - sp.log(6)))
+            >>> Asymptotic.poisson_gt_one_more(tau_1=9/10, tau_2=1/10).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=0))
+            True
+            >>> Asymptotic.poisson_gt_one_more(tau_1=3/10, tau_2=3/10).look_equal(
+            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))
+            True
+            >>> asymptotic = Asymptotic.poisson_gt_one_more(tau_1=1/10, tau_2=9/10)
+            >>> asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)
+            >>> asymptotic.look_equal(
+            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(6)))
             True
         """
-        return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 2)
+        return cls.poisson_x1_ge_x2_plus_k(tau_1, tau_2, 2, exact=exact)

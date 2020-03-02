@@ -1,3 +1,4 @@
+import math
 from abc import ABC, abstractmethod
 
 
@@ -27,12 +28,27 @@ class ComputationEngine(ABC):
         """
         pass
 
+    @property
+    @classmethod
+    @abstractmethod
+    def pi(cls):
+        """Pi.
+        """
+        pass
+
     # Functions
 
     @classmethod
     @abstractmethod
     def exp(cls, x):
         """Exponential.
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def factorial(cls, x):
+        """Factorial.
         """
         pass
 
@@ -47,7 +63,7 @@ class ComputationEngine(ABC):
     @classmethod
     @abstractmethod
     def Rational(cls, x, y):
-        """Rational number.
+        """Rational number. Should return a fraction, even in an approximate engine.
         """
         pass
 
@@ -76,3 +92,27 @@ class ComputationEngine(ABC):
         """Square root.
         """
         pass
+
+    @classmethod
+    def look_equal(cls, x, y, *args, **kwargs):
+        """Test if two numbers can reasonably be considered as equal.
+
+        Parameters
+        ----------
+        x : Number
+        y : Number
+        *args
+            Cf. :func:`math.isclose`.
+        **kwargs
+            Cf. :func:`math.isclose`.
+
+        Returns
+        -------
+        bool
+            If `x` or `y` is a float or numpy float (but not a sympy float), then return
+            ``math.isclose(x, y, *args, **kwargs)``. In all other cases, return True iff `x` is equal to `y`.
+        """
+        if isinstance(x, float) or isinstance(y, float):
+            return math.isclose(x, y, *args, **kwargs)
+        else:
+            return cls.simplify(x - y) == 0

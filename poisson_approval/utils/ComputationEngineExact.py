@@ -1,4 +1,7 @@
+import math
+import numpy as np
 import sympy as sp
+from fractions import Fraction
 from poisson_approval.utils.ComputationEngine import ComputationEngine
 
 
@@ -24,18 +27,36 @@ class ComputationEngineExact(ComputationEngine):
         -1 + 3*sqrt(2)/5
         >>> ce.sqrt(3)
         sqrt(3)
+
+    Usage of :meth:`look_equal`:
+
+        >>> ce.look_equal(1, 0.999999999999)
+        True
+        >>> ce.look_equal(1, np.float(0.999999999999))
+        True
+        >>> ce.look_equal(1, sp.Float(0.999999999999))
+        False
+        >>> ce.look_equal(1, Fraction(999999999999, 1000000000000))
+        False
+        >>> ce.look_equal(ce.sqrt(2), ce.Rational(14142135623730951, 10000000000000000))
+        False
     """
 
     # Constants
 
     inf = sp.oo
     nan = sp.nan
+    pi = sp.pi
 
     # Functions
 
     @classmethod
     def exp(cls, x):
         return sp.exp(x)
+
+    @classmethod
+    def factorial(cls, x):
+        return sp.factorial(x)
 
     @classmethod
     def log(cls, x):
@@ -51,7 +72,7 @@ class ComputationEngineExact(ComputationEngine):
 
     @classmethod
     def simplify(cls, x):
-        return sp.simplify(x)
+        return sp.simplify(x, ratio=1)
 
     @classmethod
     def sqrt(cls, x):
