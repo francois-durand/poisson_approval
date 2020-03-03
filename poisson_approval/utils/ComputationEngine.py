@@ -13,29 +13,14 @@ class ComputationEngine(ABC):
 
     # Constants
 
-    @property
-    @classmethod
-    @abstractmethod
-    def inf(cls):
-        """Positive infinity.
-        """
-        pass
+    inf = None
+    """Positive infinity."""
 
-    @property
-    @classmethod
-    @abstractmethod
-    def nan(cls):
-        """Not a Number.
-        """
-        pass
+    nan = None
+    """Not a Number."""
 
-    @property
-    @classmethod
-    @abstractmethod
-    def pi(cls):
-        """Pi.
-        """
-        pass
+    pi = None
+    """Pi."""
 
     # Functions
 
@@ -81,8 +66,7 @@ class ComputationEngine(ABC):
 
         Parameters
         ----------
-        x : Number
-        y : Number
+        x, y : Number
         *args
             Cf. :func:`math.isclose`.
         **kwargs
@@ -127,7 +111,7 @@ class ComputationEngine(ABC):
     @classmethod
     @abstractmethod
     def Rational(cls, x, y):
-        """Rational number. Should return a fraction, even in an approximate engine.
+        """Rational number. Should return a fraction, even in a numeric engine.
         """
         pass
 

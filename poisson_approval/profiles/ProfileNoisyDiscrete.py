@@ -29,7 +29,7 @@ class ProfileNoisyDiscrete(ProfileCardinalContinuous):
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
     symbolic : bool
-        Whether the computations are symbolic or approximate.
+        Whether the computations are symbolic or numeric.
 
     Attributes
     ----------

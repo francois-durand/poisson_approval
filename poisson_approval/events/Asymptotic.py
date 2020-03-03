@@ -16,7 +16,7 @@ class Asymptotic:
     mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Constant coefficient.
     symbolic : bool
-        Whether the computations are symbolic or approximate.
+        Whether the computations are symbolic or numeric.
 
     Attributes
     ----------
@@ -362,7 +362,7 @@ class Asymptotic:
         k : int
             The desired value in ``P(X = k)``.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -401,7 +401,7 @@ class Asymptotic:
         k : int
             The desired value in ``P(X_1 = X_2 + k)``.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -453,7 +453,7 @@ class Asymptotic:
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -482,7 +482,7 @@ class Asymptotic:
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -510,7 +510,7 @@ class Asymptotic:
         k : int
             The desired value in ``P(X_1 >= X_2 + k)``.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -567,7 +567,7 @@ class Asymptotic:
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -606,7 +606,7 @@ class Asymptotic:
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------
@@ -645,7 +645,7 @@ class Asymptotic:
         tau_1,tau_2 : Number
             The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.
         symbolic : bool
-            Whether the computations are symbolic or approximate.
+            Whether the computations are symbolic or numeric.
 
         Returns
         -------

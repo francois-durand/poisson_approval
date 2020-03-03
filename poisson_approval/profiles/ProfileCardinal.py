@@ -31,7 +31,7 @@ class ProfileCardinal(Profile):
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
     symbolic : bool
-        Whether the computations are symbolic or approximate.
+        Whether the computations are symbolic or numeric.
     """
 
     def __init__(self, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
