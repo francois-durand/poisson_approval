@@ -1,6 +1,6 @@
 import warnings
 import itertools
-from math import isclose
+from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.generators.GeneratorStrategyTwelveUniform import GeneratorStrategyTwelveUniform
@@ -10,7 +10,7 @@ from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, sort_ballot, \
-    product_dict, ballot_low_u, ballot_high_u, sort_weak_order, look_equal, my_division
+    product_dict, ballot_low_u, ballot_high_u, sort_weak_order, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -144,7 +144,7 @@ class ProfileTwelve(ProfileCardinal):
                 self._d_weak_order_share[sort_weak_order(t)] += share
         # Normalize if necessary
         total = sum(self.d_type_share.values()) + sum(self._d_weak_order_share.values())
-        if not look_equal(total, 1):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
                 warnings.warn(NORMALIZATION_WARNING)
             for t in self.d_type_share.keys():
@@ -173,11 +173,11 @@ class ProfileTwelve(ProfileCardinal):
             >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=1)
             0
         """
-        high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
-        low_u = self.d_type_share[ranking[:1] + '_' + ranking[1:]]   # E.g. a_bc
         if u == 1:
             return 0
+        high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
         if u == 0:
+            low_u = self.d_type_share[ranking[:1] + '_' + ranking[1:]]  # E.g. a_bc
             return high_u + low_u
         return high_u
 
@@ -213,23 +213,23 @@ class ProfileTwelve(ProfileCardinal):
             >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=0)
             0
         """
-        high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
-        low_u = self.d_type_share[ranking[:1] + '_' + ranking[1:]]   # E.g. a_bc
-        if u == 1:
-            return high_u + low_u
         if u == 0:
             return 0
+        low_u = self.d_type_share[ranking[:1] + '_' + ranking[1:]]   # E.g. a_bc
+        if u == 1:
+            high_u = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
+            return high_u + low_u
         return low_u
 
     def __repr__(self):
         """
-        >>> from fractions import Fraction
-        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-        ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
-        ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
-        >>> profile
-        ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5), 'c_ab': Fraction(1, 5), \
-'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
+            >>> from fractions import Fraction
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
+            ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
+            >>> profile
+            ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5), 'c_ab': Fraction(1, 5), \
+    'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_type_share)
         if self.contains_weak_orders:
@@ -244,12 +244,12 @@ class ProfileTwelve(ProfileCardinal):
 
     def __str__(self):
         """
-        >>> from fractions import Fraction
-        >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
-        ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
-        ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
-        >>> print(profile)
-        <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
+            >>> from fractions import Fraction
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
+            ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
+            >>> print(profile)
+            <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
         """
         contents = []
         if self.contains_rankings:
@@ -353,7 +353,7 @@ class ProfileTwelve(ProfileCardinal):
             >>> profile.has_majority_type
             False
         """
-        return max(self.d_type_share.values()) > 0.5
+        return max(self.d_type_share.values()) > Fraction(1, 2)
 
     # Has full support
     @cached_property
@@ -420,7 +420,7 @@ class ProfileTwelve(ProfileCardinal):
                 t[ballot_high_u(ranking, self.voting_rule)] += self.have_ranking_with_utility_above_u(ranking, u=.5)
             else:
                 t[ballot] += self.d_ranking_share[ranking]
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.

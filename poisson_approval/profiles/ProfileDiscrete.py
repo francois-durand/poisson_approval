@@ -3,7 +3,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, look_equal, my_division
+from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -155,7 +155,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
         # Normalize if necessary
         total = (sum([sum(d_utility_share.values()) for d_utility_share in self.d_ranking_utility_share.values()])
                  + sum(self._d_weak_order_share.values()))
-        if not look_equal(total, 1):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
                 warnings.warn(NORMALIZATION_WARNING)
             for d_utility_share in self.d_ranking_utility_share.values():
@@ -333,7 +333,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
                 return [None]
             d_utility_share = self.d_ranking_utility_share[ranking]
             utilities = sorted(d_utility_share.keys())
-            return [0] + [(x +y) / 2 for x, y in zip(utilities[:-1], utilities[1:])] + [1]
+            return [0] + [my_division(x +y, 2) for x, y in zip(utilities[:-1], utilities[1:])] + [1]
 
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 
