@@ -2,6 +2,36 @@
 History
 =======
 
+-----------------------------------------
+0.20.0 (2020-03-03): Symbolic Computation
+-----------------------------------------
+
+* ``Profile`` and its subclasses, ``TauVector``, ``Asymptotic`` and its constructors (such as
+  ``Asymptotic.poisson_value``, ``Asymptotic.poisson_eq``, etc.) accept an optional argument ``symbolic``. If False
+  (default), then all computations are numeric as before. If True, then almost all computations are symbolic; the
+  only exception is when the trio event can be evaluated only via the Dual Magnitude Theorem. Please note that:
+
+  * This feature relies on the external package `sympy` and works with its current version (1.5.1) but we cannot
+    guarantee that it will still work with future versions of `sympy`.
+  * When activated, it slows downs the computation considerably. In particular, it is strongly advised not to use
+    fictitious play or iterated voting in symbolic mode.
+
+* Equality and closeness tests:
+
+  * ``Asymptotic.isclose`` is renamed to ``look_equal``: in numeric mode, it is still a closeness test, but in
+    symbolic mode, it is an equality test.
+  * Remove ``StrategyThreshold.isclose``: this method was not used anymore.
+
+* ``Event`` and its subclasses take a ``TauVector`` as input, instead of the dictionary of its coefficients. Firstly, it
+  speeds up computation. Secondly, it avoids a minor bug in symbolic mode.
+
+* Utilities:
+
+  * Add the classes ``ComputationEngine``, ``ComputationEngineNumeric`` and ```ComputationEngineSymbolic``, defining
+    how some mathematical operations are performed.
+  * Add the function ``computation_engine``: choose the computation engine.
+  * Remove the utility function ``barycenter`` and include it as a method in ``ComputationEngine``.
+
 -------------------------------------
 0.19.0 (2020-02-27): Mixed Strategies
 -------------------------------------

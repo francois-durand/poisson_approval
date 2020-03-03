@@ -156,7 +156,7 @@ class Asymptotic:
 
     @property
     def limit(self):
-        """Number, ``sp.nan`` or ``sp.oo`` : Limit when `n` tends to infinity.
+        """Number, nan or infinity : Limit when `n` tends to infinity.
 
         Examples
         --------

@@ -902,7 +902,7 @@ def sort_weak_order(weak_order):
 
 def my_division(x, y):
     """
-    Division of two numbers, trying to be symbolic if it is reasonable.
+    Division of two numbers, trying to be exact if it is reasonable.
 
     Parameters
     ----------

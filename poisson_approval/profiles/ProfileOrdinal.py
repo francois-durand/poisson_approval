@@ -403,7 +403,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Notes
         -----
-        The result is symbolic (not based on a Monte-Carlo estimation).
+        The result is exact (not based on a Monte-Carlo estimation).
 
         Examples
         --------
@@ -442,7 +442,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Notes
         -----
-        The result is symbolic (not based on a Monte-Carlo estimation).
+        The result is exact (not based on a Monte-Carlo estimation).
 
         Examples
         --------
@@ -483,7 +483,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Notes
         -----
-        The result is symbolic (not based on a Monte-Carlo estimation).
+        The result is exact (not based on a Monte-Carlo estimation).
 
         Examples
         --------

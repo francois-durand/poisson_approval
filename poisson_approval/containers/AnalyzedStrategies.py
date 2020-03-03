@@ -11,7 +11,7 @@ class AnalyzedStrategies:
     equilibria : list of :class:`Strategy`
         List of the strategies where equilibrium is sure.
     utility_dependent : list of :class:`Strategy`
-        List of the strategies where the equilibrium depends on the symbolic utilities.
+        List of the strategies where the equilibrium depends on the exact utilities.
     inconclusive : list of :class:`Strategy`
         List of the strategies where we are not able to decide whether it is an equilibrium or not.
     non_equilibria : list of :class:`Strategy`

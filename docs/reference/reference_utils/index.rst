@@ -3,6 +3,7 @@ Utils
 
 .. toctree::
 
+   reference_computation_engine_func
    reference_computation_engine
    reference_computation_engine_numeric
    reference_computation_engine_symbolic
