@@ -55,9 +55,9 @@ def test_main_some_operations():
         {'abc': Fraction(79, 100), 'bac': Fraction(21, 100)}
         >>> profile.abc
         Fraction(79, 100)
-        >>> profile.have_ranking_with_utility_above_u('abc', 0.5)
+        >>> profile.have_ranking_with_utility_above_u('abc', Fraction(1, 2))
         Fraction(53, 100)
-        >>> profile.have_ranking_with_utility_below_u('abc', 0.5)
+        >>> profile.have_ranking_with_utility_below_u('abc', Fraction(1, 2))
         Fraction(13, 50)
         >>> profile.have_ranking_with_utility_u('abc', Fraction(3, 10))
         0

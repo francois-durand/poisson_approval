@@ -180,7 +180,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
     def have_ranking_with_utility_u(self, ranking, u):
         d_utility_share = self.d_ranking_utility_share[ranking]
-        return sum([share for utility, share in d_utility_share.items() if utility == u])
+        return sum([share for utility, share in d_utility_share.items() if self.ce.S(utility) == self.ce.S(u)])
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         d_utility_share = self.d_ranking_utility_share[ranking]

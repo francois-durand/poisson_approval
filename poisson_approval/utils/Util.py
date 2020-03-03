@@ -1009,14 +1009,16 @@ def my_division(x, y):
         raise ZeroDivisionError('division by zero')
     if isinstance(x, float) or isinstance(y, float):
         return x / y
-    try:
-        x = Fraction(x)
-    except (TypeError, ValueError):
-        pass
-    try:
-        y = Fraction(y)
-    except (TypeError, ValueError):
-        pass
+    if not isinstance(x, sp.Rational):
+        try:
+            x = Fraction(x)
+        except (TypeError, ValueError):
+            pass
+    if not isinstance(y, sp.Rational):
+        try:
+            y = Fraction(y)
+        except (TypeError, ValueError):
+            pass
     result = x / y
     if isinstance(result, Fraction) and result.denominator == 1:
         return result.numerator
