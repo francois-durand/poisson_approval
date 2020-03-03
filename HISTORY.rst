@@ -27,7 +27,7 @@ History
 
 * Utilities:
 
-  * Add the classes ``ComputationEngine``, ``ComputationEngineNumeric`` and ```ComputationEngineSymbolic``, defining
+  * Add the classes ``ComputationEngine``, ``ComputationEngineNumeric`` and ``ComputationEngineSymbolic``, defining
     how some mathematical operations are performed.
   * Add the function ``computation_engine``: choose the computation engine.
   * Remove the utility function ``barycenter`` and include it as a method in ``ComputationEngine``.

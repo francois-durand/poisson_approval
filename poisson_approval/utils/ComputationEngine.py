@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 # noinspection PyPropertyDefinition,PyNestedDecorators
 class ComputationEngine(ABC):
-    """Computation engine
+    """Computation engine.
 
     Define how some mathematical operations are performed. Cf. :class:`ComputationEngineSymbolic` and
     :class:`ComputationEngineNumeric` for some examples.
