@@ -44,21 +44,21 @@ class ComputationEngine(ABC):
     def exp(cls, x):
         """Exponential.
         """
-        pass
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def factorial(cls, x):
         """Factorial.
         """
-        pass
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def log(cls, x):
         """Logarithm.
         """
-        pass
+        raise NotImplementedError
 
     @classmethod
     def look_equal(cls, x, y, *args, **kwargs):
@@ -113,7 +113,7 @@ class ComputationEngine(ABC):
     def Rational(cls, x, y):
         """Rational number. Should return a fraction, even in a numeric engine.
         """
-        pass
+        raise NotImplementedError
 
     # noinspection PyPep8Naming
     @classmethod
@@ -123,7 +123,7 @@ class ComputationEngine(ABC):
 
         Return a number that has the same value as `x`. Cf. function ``S`` of the package `sympy`.
         """
-        pass
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
@@ -132,7 +132,7 @@ class ComputationEngine(ABC):
 
         Return a number that has the same value as `x`. Cf. function ``simplify`` of the package `sympy`.
         """
-        pass
+        raise NotImplementedError
 
     @classmethod
     def simplify_vector(cls, x):
@@ -145,7 +145,7 @@ class ComputationEngine(ABC):
     def sqrt(cls, x):
         """Square root.
         """
-        pass
+        raise NotImplementedError
 
     @classmethod
     def zeros(cls, *args, **kwargs):

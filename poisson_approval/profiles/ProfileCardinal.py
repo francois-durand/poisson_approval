@@ -289,7 +289,7 @@ class ProfileCardinal(Profile):
         tau : TauVector
             The initial tau-vector.
         """
-        if self.symbolic:
+        if self.symbolic:  # pragma: no cover
             warnings.warn('Using fictitious play or iterated voting with symbolic=True is strongly discouraged. '
                           'Consider defining the profile with symbolic=False.')
         if isinstance(init, Strategy):
