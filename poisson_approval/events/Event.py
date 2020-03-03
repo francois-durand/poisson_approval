@@ -1,5 +1,5 @@
 from poisson_approval.utils.computation_engine import computation_engine
-from poisson_approval.utils.Util import isnan
+from poisson_approval.utils.Util import isnan, sort_ballot
 
 
 class Event:
@@ -13,11 +13,8 @@ class Event:
         A candidate (e.g. ``'b'``).
     candidate_z : str
         A candidate (e.g. ``'c'``).
-    symbolic : bool
-        Whether the computations are symbolic or approximate.
-    kwargs
-        Use ``tau_..`` for the values of the tau-vector (probability for each kind of ballot). For example, ``tau_a``,
-        ``tau_ab``, etc.
+    tau : TauVector
+        A tau-vector.
 
     Attributes
     ----------
@@ -53,19 +50,12 @@ class Event:
     Cf. :class:`EventPivotWeak`.
     """
 
-    def __init__(self, candidate_x, candidate_y, candidate_z, symbolic=False, **kwargs):
-        """
-        Examples
-        --------
-            >>> event = Event(candidate_x='a', candidate_y='b', candidate_z='c', non_existing_argument=42)
-            Traceback (most recent call last):
-            ValueError: ('Unknown arguments: ', ['non_existing_argument'])
-        """
+    def __init__(self, candidate_x, candidate_y, candidate_z, tau):
         # -------------
         # Preliminaries
         # -------------
-        self.symbolic = symbolic
-        self.ce = computation_engine(symbolic)
+        self.symbolic = tau.symbolic
+        self.ce = computation_engine(self.symbolic)
         # Create labels
         self._label_x, self._label_y, self._label_z = candidate_x, candidate_y, candidate_z
         self._label_xy = ''.join(sorted([self._label_x, self._label_y]))
@@ -81,19 +71,18 @@ class Event:
         self._labels_std.update(self._labels_std_two)
         self._labels_std.update(self._labels_std_two_down)
         # Declare variables to tranquilize PyCharm's syntax checker
+        self.tau = tau
         self._tau_x, self._tau_y, self._tau_z = 0, 0, 0
         self._tau_xy, self._tau_xz, self._tau_yz = 0, 0, 0
         # Initialize variables such as self.tau_a and self._tau_x
         for label, label_std in self._labels_std.items():
             # Ex: label = 'ab', label_std = 'xy'
-            # Update variable such as self._tau_xy if provided.
-            if 'tau_' + label in kwargs.keys():
-                setattr(self, '_tau_' + label_std, kwargs.pop('tau_' + label))
-            # Anyway, define variable such as tau_ab (0 if not provided).
-            setattr(self, 'tau_' + label, getattr(self, '_tau_' + label_std))
-        # Check that no unused argument remains
-        if kwargs:
-            raise ValueError('Unknown arguments: ', list(kwargs.keys()))
+            # The share
+            share = tau.d_ballot_share[sort_ballot(label)]
+            # Define variable such as self._tau_xy
+            setattr(self, '_tau_' + label_std, share)
+            # Define variable such as tau_ab
+            setattr(self, 'tau_' + label, share)
         # Declare the computed variables
         self._phi_x, self._phi_y, self._phi_z = None, None, None
         self._phi_xy, self._phi_xz, self._phi_yz = None, None, None

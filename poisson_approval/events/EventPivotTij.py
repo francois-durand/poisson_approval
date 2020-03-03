@@ -1,6 +1,5 @@
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
-from poisson_approval.events.EventPivotWeak import EventPivotWeak
 
 
 class EventPivotTij(Event):
@@ -17,21 +16,21 @@ class EventPivotTij(Event):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> EventPivotTij(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...               tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(6, 10), 'c': Fraction(3, 10)})
+        >>> EventPivotTij(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):
         ce = self.ce
-        pivot_weak = EventPivotWeak(candidate_x='x', candidate_y='y', candidate_z='z', symbolic=self.symbolic,
-                                    tau_x=tau_x, tau_y=tau_y, tau_z=tau_z, tau_xy=tau_xy, tau_xz=tau_xz, tau_yz=tau_yz)
-        self._phi_x = pivot_weak.phi['x']
-        self._phi_y = pivot_weak.phi['y']
-        self._phi_z = pivot_weak.phi['z']
-        self._phi_xy = pivot_weak.phi['xy']
-        self._phi_xz = pivot_weak.phi['xz']
-        self._phi_yz = pivot_weak.phi['yz']
+        pivot_weak = getattr(self.tau, 'pivot_weak_' + self._label_xy)
+        self._phi_x = pivot_weak.phi[self._label_x]
+        self._phi_y = pivot_weak.phi[self._label_y]
+        self._phi_z = pivot_weak.phi[self._label_z]
+        self._phi_xy = pivot_weak.phi[self._label_xy]
+        self._phi_xz = pivot_weak.phi[self._label_xz]
+        self._phi_yz = pivot_weak.phi[self._label_yz]
         if tau_x == 0 and tau_xy == 0:
             # Flower diagram: holes `at the bottom`, i.e. around ``xy`` (``x`` side)
             self.asymptotic = (Asymptotic.poisson_value(tau_yz, 0, symbolic=self.symbolic)

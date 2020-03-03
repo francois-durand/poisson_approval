@@ -1,6 +1,5 @@
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
-from poisson_approval.events.EventTrio import EventTrio
 
 
 class EventPivotWeak(Event):
@@ -15,8 +14,9 @@ class EventPivotWeak(Event):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> event = EventPivotWeak(candidate_x='c', candidate_y='b', candidate_z='a',
-        ...                        tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(6, 10), 'c': Fraction(3, 10)})
+        >>> event = EventPivotWeak(candidate_x='c', candidate_y='b', candidate_z='a', tau=tau)
         >>> event
         <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
         >>> print(event.asymptotic)
@@ -80,17 +80,12 @@ class EventPivotWeak(Event):
             else:
                 # "Difficult" pivot
                 # mu_ab = mu_abc
-                pivot_trio = EventTrio('x', 'y', 'z', symbolic=self.symbolic,
-                                       tau_x=tau_x, tau_y=tau_y, tau_z=tau_z,
-                                       tau_xy=tau_xy, tau_xz=tau_xz, tau_yz=tau_yz)
-                self._phi_x = pivot_trio.phi['x']
-                self._phi_y = pivot_trio.phi['y']
-                self._phi_z = pivot_trio.phi['z']
-                self._phi_xy = pivot_trio.phi['xy']
-                self._phi_xz = pivot_trio.phi['xz']
-                self._phi_yz = pivot_trio.phi['yz']
-                if tau_z > 0:
-                    _phi_z_tilde = self._phi_z
-                else:
-                    _phi_z_tilde = ce.simplify(self._phi_xz * self._phi_yz)
-                self.asymptotic = pivot_trio.asymptotic / (1 - _phi_z_tilde)
+                trio = self.tau.trio
+                self._phi_x = trio.phi[self._label_x]
+                self._phi_y = trio.phi[self._label_y]
+                self._phi_z = trio.phi[self._label_z]
+                self._phi_xy = trio.phi[self._label_xy]
+                self._phi_xz = trio.phi[self._label_xz]
+                self._phi_yz = trio.phi[self._label_yz]
+                psi_z = trio.psi[self._label_z]
+                self.asymptotic = trio.asymptotic / (1 - psi_z)

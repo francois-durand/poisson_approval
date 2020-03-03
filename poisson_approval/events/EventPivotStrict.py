@@ -1,6 +1,5 @@
 from poisson_approval.events.Asymptotic import Asymptotic
 from poisson_approval.events.Event import Event
-from poisson_approval.events.EventTrio import EventTrio
 
 
 class EventPivotStrict(Event):
@@ -15,23 +14,24 @@ class EventPivotStrict(Event):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...                  tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(6, 10), 'c': Fraction(3, 10)})
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...                  tau_ab=Fraction(1, 10), tau_c=Fraction(9, 10))
+        >>> tau = TauVector({'ab': Fraction(1, 10), 'c': Fraction(9, 10)})
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.4 n - 0.5 log n - 1.35667 + o(1)), phi_c = 0.333333, phi_ab = 3>
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...                  tau_a=Fraction(1, 6), tau_b=Fraction(1, 6), tau_c=Fraction(1, 6),
-        ...                  tau_ab=Fraction(1, 6), tau_ac=Fraction(1, 6), tau_bc=Fraction(1, 6))
+        >>> tau = TauVector({'a': Fraction(1, 6), 'b': Fraction(1, 6), 'c': Fraction(1, 6),
+        ...                  'ab': Fraction(1, 6), 'ac': Fraction(1, 6), 'bc': Fraction(1, 6)})
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.5 log n - 1.40935 + o(1)), phi_a = 1, phi_b = 1, phi_c = 1, phi_ab = 1, phi_ac = 1, \
 phi_bc = 1>
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...                  tau_b=Fraction(1, 2), tau_ac=Fraction(1, 2))
+        >>> tau = TauVector({'b': Fraction(1, 2), 'ac': Fraction(1, 2)})
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- inf)>
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...                  tau_a=Fraction(1, 9), tau_b=Fraction(1, 9),
-        ...                  tau_ab=Fraction(1, 9), tau_ac=Fraction(1, 3), tau_bc=Fraction(1, 3))
+        >>> tau = TauVector({'a': Fraction(1, 9), 'b': Fraction(1, 9),
+        ...                  'ab': Fraction(1, 9), 'ac': Fraction(1, 3), 'bc': Fraction(1, 3)})
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.0181103 n + ? log n + ? + o(1)), phi_a = 1.17454, phi_b = 1.17454, phi_ab = 1.37954, \
 phi_ac = 0.851397, phi_bc = 0.851397>
     """
@@ -91,20 +91,9 @@ phi_ac = 0.851397, phi_bc = 0.851397>
             else:
                 # "Difficult" pivot
                 # mu_ab = mu_abc
-                pivot_trio = EventTrio('x', 'y', 'z', symbolic=self.symbolic,
-                                       tau_x=tau_x, tau_y=tau_y, tau_z=tau_z,
-                                       tau_xy=tau_xy, tau_xz=tau_xz, tau_yz=tau_yz)
-                self._phi_x = pivot_trio.phi['x']
-                self._phi_y = pivot_trio.phi['y']
-                self._phi_z = pivot_trio.phi['z']
-                self._phi_xy = pivot_trio.phi['xy']
-                self._phi_xz = pivot_trio.phi['xz']
-                self._phi_yz = pivot_trio.phi['yz']
-                if tau_z > 0:
-                    _phi_z_tilde = self._phi_z
-                else:
-                    _phi_z_tilde = ce.simplify(self._phi_xz * self._phi_yz)
-                if _phi_z_tilde == 0:
+                trio = self.tau.trio
+                psi_z = trio.psi[self._label_z]
+                if psi_z == 0:
                     # The general formula for the asymptotic would be valid, but I prefer to forbid multiplication by 0
                     # in ``Asymptotic``, so that I have to validate such cases explicitly.
                     self.asymptotic = Asymptotic(mu=-ce.inf, nu=-ce.inf, xi=-ce.inf, symbolic=self.symbolic)
@@ -116,4 +105,10 @@ phi_ac = 0.851397, phi_bc = 0.851397>
                     self._phi_xz = ce.nan
                     self._phi_yz = ce.nan
                 else:
-                    self.asymptotic = pivot_trio.asymptotic * (_phi_z_tilde / (1 - _phi_z_tilde))
+                    self.asymptotic = trio.asymptotic * (psi_z / (1 - psi_z))
+                    self._phi_x = trio.phi[self._label_x]
+                    self._phi_y = trio.phi[self._label_y]
+                    self._phi_z = trio.phi[self._label_z]
+                    self._phi_xy = trio.phi[self._label_xy]
+                    self._phi_xz = trio.phi[self._label_xz]
+                    self._phi_yz = trio.phi[self._label_yz]

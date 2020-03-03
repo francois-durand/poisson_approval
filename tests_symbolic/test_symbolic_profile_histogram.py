@@ -47,36 +47,22 @@ def test_main():
         <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         >>> profile.is_equilibrium(strategy)
         EquilibriumStatus.EQUILIBRIUM
-
-        Bug: this strategy should lead to an FF tau-vector:
-
-        >>> strategy = StrategyThreshold({'abc': 1, 'bac': 1, 'cab': Fraction(1, 2)}, profile=profile)
-        >>> print(strategy)
-        <abc: a, bac: b, cab: utility-dependent (1/2)> ==> b
-        >>> strategy.print_weak_pivots()
-        pivot_weak_ab:  <asymptotic = exp(- 0.108278753223296*n + ? log(n) + ? + o(1)), phi_a = 1.84172830809616, phi_b = 0.589621791959692, phi_c = 0.920875482125372, phi_ac = 1.69600244366199>
-        pivot_weak_ac:  <asymptotic = exp(- 0.108278753228628*n + ? log(n) + ? + o(1)), phi_a = 1.84173522494675, phi_b = 0.589624616402563, phi_c = 0.920867612473376, phi_ac = 1.69599431940483>
-        pivot_weak_bc:  <asymptotic = exp(n*(-9/10 + 3*sqrt(2)/5) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 1, phi_b = sqrt(2)/2, phi_c = sqrt(2), phi_ac = sqrt(2)>
-        trio:  <asymptotic = exp(- 0.108278753223296*n + ? log(n) + ? + o(1)), phi_a = 1.84172830809616, phi_b = 0.589621791959692, phi_c = 0.920875482125372, phi_ac = 1.69600244366199>
-        >>> print(strategy.tau.focus)
-        D
-
-        # >>> profile.analyzed_strategies_group
-        # Equilibria:
-        # <abc: ab, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
-        # <abc: a, bac: ab, cab: c> ==> a (D)
-        # <abc: a, bac: b, cab: ac> ==> b (FF)
-        # <BLANKLINE>
-        # Non-equilibria:
-        # <abc: ab, bac: ab, cab: ac> ==> a (D)
-        # <abc: ab, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
-        # <abc: ab, bac: ab, cab: c> ==> a, b (FF)
-        # <abc: ab, bac: b, cab: ac> ==> b (FF)
-        # <abc: ab, bac: b, cab: c> ==> b (FF)
-        # <abc: a, bac: ab, cab: ac> ==> a (D)
-        # <abc: a, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
-        # <abc: a, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
-        # <abc: a, bac: b, cab: c> ==> b (FF)
+        >>> profile.analyzed_strategies_group
+        Equilibria:
+        <abc: ab, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
+        <abc: a, bac: ab, cab: c> ==> a (D)
+        <abc: a, bac: b, cab: ac> ==> b (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: ab, bac: ab, cab: ac> ==> a (D)
+        <abc: ab, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
+        <abc: ab, bac: ab, cab: c> ==> a, b (FF)
+        <abc: ab, bac: b, cab: ac> ==> b (FF)
+        <abc: ab, bac: b, cab: c> ==> b (FF)
+        <abc: a, bac: ab, cab: ac> ==> a (D)
+        <abc: a, bac: ab, cab: utility-dependent (1/2)> ==> a (D)
+        <abc: a, bac: b, cab: utility-dependent (1/2)> ==> b (FF)
+        <abc: a, bac: b, cab: c> ==> b (FF)
 
     Fictitious play and iterated do work with symbolic = True, but it is not recommended because it is slow:
 

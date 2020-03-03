@@ -344,8 +344,7 @@ phi_ab = 0.707107>
     @cached_property
     def trio(self):
         """Event: trio."""
-        return EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', symbolic=self.symbolic,
-                         tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
+        return EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=self)
 
     @property
     def focus(self):
@@ -612,8 +611,7 @@ for my_ballot in BALLOTS_WITH_INVERSIONS:
 
 def _f_duo(self, candidate_x, candidate_y, candidate_z, cls, stub):
     if candidate_x < candidate_y:
-        return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z, symbolic=self.symbolic,
-                   tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
+        return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z, tau=self)
     else:
         return getattr(self, stub + '_%s%s' % (candidate_y, candidate_x))
 
@@ -639,8 +637,7 @@ for event_class, event_stub, event_doc in [
 
 
 def _f_ranking(self, candidate_x, candidate_y, candidate_z, cls):
-    return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z, symbolic=self.symbolic,
-               tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
+    return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z, tau=self)
 
 
 for event_class, event_stub, event_doc in [

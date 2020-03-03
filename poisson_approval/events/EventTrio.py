@@ -16,12 +16,14 @@ class EventTrio(Event):
     Examples
     --------
         >>> from fractions import Fraction
-        >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...           tau_a=Fraction(1, 10), tau_ab=Fraction(6, 10), tau_c=Fraction(3, 10))
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(6, 10), 'c': Fraction(3, 10)})
+        >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
-        >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c',
-        ...           tau_a=Fraction(1, 6), tau_b=Fraction(1, 6), tau_c=Fraction(1, 6),
-        ...           tau_ab=Fraction(1, 6), tau_ac=Fraction(1, 6), tau_bc=Fraction(1, 6))
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': Fraction(1, 6), 'b': Fraction(1, 6), 'c': Fraction(1, 6),
+        ...                  'ab': Fraction(1, 6), 'ac': Fraction(1, 6), 'bc': Fraction(1, 6)})
+        >>> EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(? log n + ? + o(1)), phi_a = 1, phi_b = 1, phi_c = 1, phi_ab = 1, phi_ac = 1, phi_bc = 1>
     """
 

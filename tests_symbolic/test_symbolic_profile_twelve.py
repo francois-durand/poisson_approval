@@ -37,27 +37,24 @@ def test_main():
         {'abc', 'bac', 'cab'}
         >>> profile.is_generic_in_rankings  # Are all rankings there?
         False
-
-        # Bug: the focuses are not correct for the moment.
-
-        # >>> profile.analyzed_strategies_pure
-        # Equilibria:
-        # <abc: a, bac: b, cab: ac> ==> b (FF)
-        # <abc: a, bac: ab, cab: c> ==> a (D)
-        # <abc: ab, bac: b, cab: utility-dependent> ==> b (FF)
-        # <BLANKLINE>
-        # Non-equilibria:
-        # <abc: a, bac: b, cab: c> ==> b (FF)
-        # <abc: a, bac: b, cab: utility-dependent> ==> b (FF)
-        # <abc: a, bac: ab, cab: ac> ==> a (D)
-        # <abc: a, bac: ab, cab: utility-dependent> ==> a (D)
-        # <abc: ab, bac: b, cab: c> ==> b (FF)
-        # <abc: ab, bac: b, cab: ac> ==> b (FF)
-        # <abc: ab, bac: ab, cab: c> ==> a, b (FF)
-        # <abc: ab, bac: ab, cab: ac> ==> a (D)
-        # <abc: ab, bac: ab, cab: utility-dependent> ==> a (D)
-        # >>> print(profile.analyzed_strategies_pure.winners_at_equilibrium)
-        # a, b
+        >>> profile.analyzed_strategies_pure
+        Equilibria:
+        <abc: a, bac: b, cab: ac> ==> b (FF)
+        <abc: a, bac: ab, cab: c> ==> a (D)
+        <abc: ab, bac: b, cab: utility-dependent> ==> b (FF)
+        <BLANKLINE>
+        Non-equilibria:
+        <abc: a, bac: b, cab: c> ==> b (FF)
+        <abc: a, bac: b, cab: utility-dependent> ==> b (FF)
+        <abc: a, bac: ab, cab: ac> ==> a (D)
+        <abc: a, bac: ab, cab: utility-dependent> ==> a (D)
+        <abc: ab, bac: b, cab: c> ==> b (FF)
+        <abc: ab, bac: b, cab: ac> ==> b (FF)
+        <abc: ab, bac: ab, cab: c> ==> a, b (FF)
+        <abc: ab, bac: ab, cab: ac> ==> a (D)
+        <abc: ab, bac: ab, cab: utility-dependent> ==> a (D)
+        >>> print(profile.analyzed_strategies_pure.winners_at_equilibrium)
+        a, b
     """
     pass
 
