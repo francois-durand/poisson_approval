@@ -229,7 +229,7 @@ class ProfileTwelve(ProfileCardinal):
             ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             >>> profile
             ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(3, 5), 'c_ab': Fraction(1, 5), \
-    'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
+'ca_b': Fraction(1, 10)}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
         """
         arguments = repr(self.d_type_share)
         if self.contains_weak_orders:
@@ -249,7 +249,8 @@ class ProfileTwelve(ProfileCardinal):
             ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)},
             ...                         ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             >>> print(profile)
-            <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) (ratio_fanatic: 1/5)
+            <ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b) (ratio_sincere: 1/10) \
+(ratio_fanatic: 1/5)
         """
         contents = []
         if self.contains_rankings:
