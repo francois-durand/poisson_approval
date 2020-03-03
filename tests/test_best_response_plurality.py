@@ -4,10 +4,10 @@ from poisson_approval import TauVector, BestResponsePlurality, PLURALITY, UTILIT
 
 def test_best_response_plurality():
     """
-        >>> tau = TauVector({'a': 9/15, 'b': 4/15, 'c': 2/15}, voting_rule=PLURALITY)
+        >>> tau = TauVector({'a': Fraction(9, 15), 'b': Fraction(4, 15), 'c': Fraction(2, 15)}, voting_rule=PLURALITY)
         >>> best_response = BestResponsePlurality(tau, 'abc')
         >>> print(best_response._str_very_verbose)
-        tau = <a: 0.6, b: 0.26666666666666666, c: 0.13333333333333333> ==> a (Plurality)
+        tau = <a: 3/5, b: 4/15, c: 2/15> ==> a (Plurality)
         ranking = abc
         voting_rule  = Plurality
         duo_ij = <asymptotic = exp(- 0.0666667 n - 0.5 log n - 0.807367 + o(1)), phi_a = 0.666667, phi_b = 1.5, phi_c = 1>

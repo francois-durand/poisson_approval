@@ -6,6 +6,10 @@ __version__ = '0.19.0'
 
 
 # Utils
+from poisson_approval.utils.computation_engine import computation_engine
+from poisson_approval.utils.ComputationEngine import ComputationEngine
+from poisson_approval.utils.ComputationEngineNumeric import ComputationEngineNumeric
+from poisson_approval.utils.ComputationEngineSymbolic import ComputationEngineSymbolic
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros

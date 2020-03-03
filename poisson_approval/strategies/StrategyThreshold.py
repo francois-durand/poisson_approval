@@ -1,4 +1,3 @@
-from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -146,39 +145,6 @@ class StrategyThreshold(StrategyTwelve):
                 and self.d_ranking_threshold == other.d_ranking_threshold
                 and self.d_ranking_ratio_optimistic == other.d_ranking_ratio_optimistic
                 and self.voting_rule == other.voting_rule)
-
-    def isclose(self, other, *args, **kwargs):
-        """Test near-equality.
-
-        Parameters
-        ----------
-        other : Object
-        *args
-            Cf. :func:`math.isclose`.
-        **kwargs
-            Cf. :func:`math.isclose`.
-
-        Returns
-        -------
-        isclose : bool
-            True if this strategy is approximately equal to `other`.
-
-        Examples
-        --------
-            >>> strategy = StrategyThreshold({'abc': (0.4, 0.2), 'bac': (0.51, 0.2), 'cab': (1, 0.2)})
-            >>> strategy.isclose(StrategyThreshold({
-            ...     'abc': (0.4, 0.2), 'bac': (0.51, 0.1999999999999), 'cab': (0.999999999999, 0.2)}))
-            True
-        """
-        return isinstance(other, StrategyThreshold) and all([
-            (threshold is None and other.d_ranking_threshold[ranking] is None)
-            or isclose(threshold, other.d_ranking_threshold[ranking], *args, **kwargs)
-            for ranking, threshold in self.d_ranking_threshold.items()
-        ]) and all([
-            (ratio_optimistic is None and other.d_ranking_ratio_optimistic[ranking] is None)
-            or isclose(ratio_optimistic, other.d_ranking_ratio_optimistic[ranking], *args, **kwargs)
-            for ranking, ratio_optimistic in self.d_ranking_ratio_optimistic.items()
-        ])
 
     def __repr__(self):
         d = DictPrintingInOrderIgnoringNone({

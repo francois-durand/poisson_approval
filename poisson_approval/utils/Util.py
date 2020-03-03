@@ -1,8 +1,10 @@
-import numpy as np
+import math
 import random
 import itertools
-from math import sqrt, log
+import numpy as np
+import sympy as sp
 from fractions import Fraction
+from decimal import Decimal
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -127,7 +129,6 @@ def probability(generator, n_samples, test, conditional_on=None):
     In this basic example with one generator, we estimate the probability that a random float between 0 and 1 is greater
     than .5, conditionally on being greater than .25:
 
-        >>> import random
         >>> initialize_random_seeds()
         >>> def generator():
         ...     return random.random()
@@ -138,7 +139,6 @@ def probability(generator, n_samples, test, conditional_on=None):
     of size 2, both with integer coefficients between -10 included and 11 excluded, have a dot product that is null,
     conditionally on not being null themselves:
 
-        >>> import numpy as np
         >>> initialize_random_seeds()
         >>> def generator_matrix():
         ...     return np.random.randint(-10, 11, (2, 2))
@@ -195,7 +195,6 @@ def image_distribution(generator, n_samples, f, conditional_on=None):
     In this basic example with one generator, we compute the distribution of `n` modulo 10, when `n` is drawn uniformly
     at random between 0 included and 100 excluded, conditionally on the fact that `n` is even:
 
-        >>> import numpy as np
         >>> initialize_random_seeds()
         >>> def generator_integer():
         ...     return np.random.randint(0, 100)
@@ -210,7 +209,6 @@ def image_distribution(generator, n_samples, f, conditional_on=None):
     at random between 0 included and 100 excluded, and `b` is drawn uniformly at random between 1 included and 11
     excluded:
 
-        >>> import numpy as np
         >>> initialize_random_seeds()
         >>> def generator_integer():
         ...     return np.random.randint(0, 100)
@@ -261,19 +259,21 @@ def isnan(x):
 
     Notes
     -----
-    This extends the usual numpy function ``isnan`` to fractions.
+    This extends the usual numpy function ``isnan`` to fractions and sympy expressions.
 
     Examples
     --------
-        >>> from fractions import Fraction
-        >>> isnan(Fraction(1, 10))
-        False
-        >>> isnan(1)
-        False
-        >>> isnan(np.nan)
-        True
+        >>> values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,
+        ...           sp.oo, - sp.oo,
+        ...           sp.Rational(3, 5), Fraction(3, 5),
+        ...           1, 0.42, np.inf, -np.inf, np.nan]
+        >>> print([x for x in values if isnan(x)])
+        [nan, nan]
     """
-    return np.isnan(x)
+    if isinstance(x, sp.Expr):
+        return x == sp.nan
+    else:
+        return np.isnan(x)
 
 
 @_false_for_fraction
@@ -291,19 +291,21 @@ def isposinf(x):
 
     Notes
     -----
-    This extends the usual numpy function ``isposinf`` to fractions.
+    This extends the usual numpy function ``isposinf`` to fractions and sympy expressions.
 
     Examples
     --------
-        >>> from fractions import Fraction
-        >>> isposinf(Fraction(1, 10))
-        False
-        >>> isposinf(1)
-        False
-        >>> isposinf(np.inf)
-        True
+        >>> values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,
+        ...           sp.oo, - sp.oo,
+        ...           sp.Rational(3, 5), Fraction(3, 5),
+        ...           1, 0.42, np.inf, -np.inf, np.nan]
+        >>> print([x for x in values if isposinf(x)])
+        [oo, inf]
     """
-    return np.isposinf(x)
+    if isinstance(x, sp.Expr):
+        return x == sp.oo
+    else:
+        return np.isposinf(x)
 
 
 @_false_for_fraction
@@ -321,19 +323,21 @@ def isneginf(x):
 
     Notes
     -----
-    This extends the usual numpy function ``isneginf`` to fractions.
+    This extends the usual numpy function ``isneginf`` to fractions and sympy expressions.
 
     Examples
     --------
-        >>> from fractions import Fraction
-        >>> isposinf(Fraction(1, 10))
-        False
-        >>> isneginf(1)
-        False
-        >>> isneginf(- np.inf)
-        True
+        >>> values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,
+        ...           sp.oo, - sp.oo,
+        ...           sp.Rational(3, 5), Fraction(3, 5),
+        ...           1, 0.42, np.inf, -np.inf, np.nan]
+        >>> print([x for x in values if isneginf(x)])
+        [-oo, -inf]
     """
-    return np.isneginf(x)
+    if isinstance(x, sp.Expr):
+        return x == - sp.oo
+    else:
+        return np.isneginf(x)
 
 
 def sort_ballot(ballot):
@@ -552,62 +556,6 @@ def give_figure(n, singular, plural=None):
             return str(n) + ' ' + plural
 
 
-def barycenter(a, b, ratio_b):
-    """Barycenter.
-
-    Parameters
-    ----------
-    a : Number
-    b : Number or iterable
-    ratio_b : Number or iterable
-        The ratio of `b` in the result. If an iterable, must be the same size as `b`.
-
-    Returns
-    -------
-    Number
-        The result of ``(1 - ratio_b) * a + ratio_b * b``. The added value of this function is to preserve the type
-        of `a` (resp. `b`) when `ratio_b` is 0 (resp. 1). If `b` and `ratio_b` are iterable, return
-        ``(1 - sum(ratio_b)) * a + sum(ratio_b * b)``.
-
-    Examples
-    --------
-    In this first example, `barycenter` preserves the type Fraction, whereas a naive computation returns a float:
-
-        >>> a, b = Fraction(1, 10), 0.7
-        >>> ratio_b = 0
-        >>> barycenter(a, b, ratio_b)
-        Fraction(1, 10)
-        >>> (1 - ratio_b) * a + ratio_b * b
-        0.1
-
-    The second example is symmetric of the first one, in the sense that it preserves the type of `b`:
-
-        >>> a, b = 0.7, 42
-        >>> ratio_b = 1
-        >>> barycenter(a, b, ratio_b)
-        42
-        >>> (1 - ratio_b) * a + ratio_b * b
-        42.0
-
-    In the following example, `b` and `ratio_b` are iterables:
-
-        >>> a = 0
-        >>> b = [-1 , 1]
-        >>> barycenter(0, [-1, 1], [Fraction(2, 10), Fraction(3, 10)])
-        Fraction(1, 10)
-    """
-    def multiply(ratio, x):
-        """Does not contaminate with `x`'s type if `ratio` == 0"""
-        return 0 if ratio == 0 else ratio * x
-    try:
-        # b and ratio_b are numbers
-        return multiply(1 - ratio_b, a) + multiply(ratio_b, b)
-    except TypeError:
-        # b and ratio_b are iterables
-        ratio_a = 1 - sum(ratio_b)
-        return multiply(ratio_a, a) + sum([multiply(r, x) for r, x in zip(b, ratio_b)])
-
-
 def to_callable(o):
     """Convert to a callable.
 
@@ -813,7 +761,7 @@ def one_over_sqrt_t_plus_one(t):
         >>> one_over_sqrt_t_plus_one(1)
         0.7071067811865475
     """
-    return my_division(1, sqrt(t + 1))
+    return my_division(1, math.sqrt(t + 1))
 
 
 def one_over_log_t_plus_two(t):
@@ -835,7 +783,7 @@ def one_over_log_t_plus_two(t):
         >>> one_over_log_t_plus_two(1)
         0.9102392266268373
     """
-    return my_division(1, log(t + 2))
+    return my_division(1, math.log(t + 2))
 
 
 def one_over_log_log_t_plus_fifteen(t):
@@ -857,7 +805,7 @@ def one_over_log_log_t_plus_fifteen(t):
         >>> one_over_log_log_t_plus_fifteen(1)
         0.9806022744169713
     """
-    return my_division(1, log(log(t + 15)))
+    return my_division(1, math.log(math.log(t + 15)))
 
 
 def is_weak_order(o):
@@ -970,10 +918,10 @@ def my_division(x, y):
     --------
     Typical usages:
 
-        >>> my_division(5, 2)
-        Fraction(5, 2)
         >>> my_division(6, 2)
         3
+        >>> my_division(5, 2)
+        Fraction(5, 2)
 
     If `x` or `y` is a float, then the result is a float:
 
@@ -982,13 +930,14 @@ def my_division(x, y):
         >>> my_division(0.1, Fraction(5, 2))
         0.04
 
-    If `x` and `y` are integers, decimals or fractions, then the result is a fraction:
+    If `x` and `y` are integers, decimals, fractions or sympy expressions, then the result is symbolic:
 
         >>> my_division(2, Fraction(5, 2))
         Fraction(4, 5)
-        >>> from decimal import Decimal
         >>> my_division(Decimal('0.1'), Fraction(5, 2))
         Fraction(1, 25)
+        >>> my_division(sp.sqrt(3), 2)
+        sqrt(3)/2
 
     Possible errors:
 
@@ -997,14 +946,25 @@ def my_division(x, y):
         ZeroDivisionError: division by zero
         >>> my_division(1, 'foo')
         Traceback (most recent call last):
-        ValueError: Invalid literal for Fraction: 'foo'
+        TypeError: unsupported operand type(s) for /: 'Fraction' and 'str'
+
     """
     if y == 0:
         raise ZeroDivisionError('division by zero')
     if isinstance(x, float) or isinstance(y, float):
         return x / y
-    try:
-        result = Fraction(x) / Fraction(y)
-    except TypeError:
-        raise NotImplementedError
-    return result.numerator if result.denominator == 1 else result
+    if not isinstance(x, sp.Rational):
+        try:
+            x = Fraction(x)
+        except (TypeError, ValueError):
+            pass
+    if not isinstance(y, sp.Rational):
+        try:
+            y = Fraction(y)
+        except (TypeError, ValueError):
+            pass
+    result = x / y
+    if isinstance(result, Fraction) and result.denominator == 1:
+        return result.numerator
+    else:
+        return result

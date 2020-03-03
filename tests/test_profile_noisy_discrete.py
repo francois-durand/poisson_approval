@@ -11,9 +11,10 @@ def test_plurality():
     """
         >>> profile = ProfileNoisyDiscrete({('abc', 0.2, 0.01): 1, ('acb', 0.4, 0.01): 1}, voting_rule=PLURALITY)
         >>> profile
-        ProfileNoisyDiscrete({'abc': {(0.2, 0.01): 0.5}, 'acb': {(0.4, 0.01): 0.5}}, voting_rule='Plurality')
+        ProfileNoisyDiscrete({'abc': {(0.2, 0.01): Fraction(1, 2)}, 'acb': {(0.4, 0.01): Fraction(1, 2)}}, \
+voting_rule='Plurality')
         >>> print(profile)
-        <abc 0.2 ± 0.01: 0.5, acb 0.4 ± 0.01: 0.5> (Condorcet winner: a) (Plurality)
+        <abc 0.2 ± 0.01: 1/2, acb 0.4 ± 0.01: 1/2> (Condorcet winner: a) (Plurality)
     """
     pass
 
@@ -22,9 +23,10 @@ def test_anti_plurality():
     """
         >>> profile = ProfileNoisyDiscrete({('abc', 0.2, 0.01): 1, ('acb', 0.4, 0.01): 1}, voting_rule=ANTI_PLURALITY)
         >>> profile
-        ProfileNoisyDiscrete({'abc': {(0.2, 0.01): 0.5}, 'acb': {(0.4, 0.01): 0.5}}, voting_rule='Anti-plurality')
+        ProfileNoisyDiscrete({'abc': {(0.2, 0.01): Fraction(1, 2)}, 'acb': {(0.4, 0.01): Fraction(1, 2)}}, \
+voting_rule='Anti-plurality')
         >>> print(profile)
-        <abc 0.2 ± 0.01: 0.5, acb 0.4 ± 0.01: 0.5> (Condorcet winner: a) (Anti-plurality)
+        <abc 0.2 ± 0.01: 1/2, acb 0.4 ± 0.01: 1/2> (Condorcet winner: a) (Anti-plurality)
     """
     pass
 
@@ -33,7 +35,7 @@ def test_misc_forms_of_input():
     """
         >>> profile = ProfileNoisyDiscrete({('abc', 0.2, 0.01): 0, ('abc', 0, 0.01): Fraction(3, 7)})
         >>> profile
-        ProfileNoisyDiscrete({'abc': {(0, 0.01): Fraction(1, 1)}})
+        ProfileNoisyDiscrete({'abc': {(0, 0.01): 1}})
         >>> print(profile)
         <abc 0 ± 0.01: 1> (Condorcet winner: a)
     """

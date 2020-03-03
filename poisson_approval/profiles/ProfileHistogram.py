@@ -1,8 +1,6 @@
 import warnings
-from math import isclose
-from matplotlib import pyplot as plt
-from fractions import Fraction
 import numpy as np
+from matplotlib import pyplot as plt
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
@@ -39,6 +37,8 @@ class ProfileHistogram(ProfileCardinalContinuous):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or numeric.
 
     Notes
     -----
@@ -130,19 +130,22 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
     """
 
     def __init__(self, d_ranking_share, d_ranking_histogram, d_weak_order_share=None,
-                 normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
+                 normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
         """
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
             ...                            d_ranking_histogram={'non_existing_ranking': [1]})
             Traceback (most recent call last):
             KeyError: 'non_existing_ranking'
         """
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
+                         symbolic=symbolic)
         if d_weak_order_share is None:
             d_weak_order_share = dict()
         # Populate the dictionary (and check for typos in the input)
-        self._d_ranking_share = DictPrintingInOrderIgnoringZeros({ranking: 0 for ranking in RANKINGS})
-        self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros({ranking: np.array([]) for ranking in RANKINGS})
+        self._d_ranking_share = DictPrintingInOrderIgnoringZeros(
+            {ranking: 0 for ranking in RANKINGS})
+        self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros(
+            {ranking: np.array([], dtype=int) for ranking in RANKINGS})
         for ranking, share in d_ranking_share.items():
             self._d_ranking_share[ranking] += share
         for ranking, histogram in d_ranking_histogram.items():
@@ -157,21 +160,21 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             self._d_weak_order_share[sort_weak_order(weak_order)] += share
         # Normalize if necessary
         total = sum(self._d_ranking_share.values()) + sum(self._d_weak_order_share.values())
-        if not isclose(total, 1.):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for ranking in self._d_ranking_share.keys():
-                self._d_ranking_share[ranking] /= total
+                self._d_ranking_share[ranking] = my_division(self._d_ranking_share[ranking], total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
         for ranking, histogram in self.d_ranking_histogram.items():
             if len(histogram) == 0:
                 continue
             total = np.sum(histogram)
-            if not isclose(total, 1.):
+            if not self.ce.look_equal(total, 1):
                 if normalization_warning:
-                    warnings.warn("Warning: profile is not normalized, I will normalize it.")
-                self.d_ranking_histogram[ranking] = histogram / total
+                    warnings.warn(NORMALIZATION_WARNING)
+                self.d_ranking_histogram[ranking] = np.array([my_division(v, total) for v in histogram])
 
     @cached_property
     def d_ranking_share(self):
@@ -199,9 +202,9 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=Fraction(99, 100))
             Fraction(1, 100)
             >>> profile.have_ranking_with_utility_above_u(ranking='cab', u=1)
-            Fraction(0, 1)
+            0
         """
-        return self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u)
+        return self.ce.simplify(self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u))
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
@@ -215,7 +218,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             ...     {'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)},
             ...     {'abc': [1], 'bac': [1, 0], 'cab': [Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3)]})
             >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=0)
-            Fraction(0, 1)
+            0
             >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=Fraction(1, 100))
             Fraction(1, 50)
             >>> profile.have_ranking_with_utility_below_u(ranking='cab', u=Fraction(99, 100))
@@ -227,15 +230,15 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         if share_ranking == 0:
             return 0
         if u == 1:
-            return share_ranking
+            return self.ce.simplify(share_ranking)
         histogram = self.d_ranking_histogram[ranking]
         n_bins = len(histogram)
         k = int(u * n_bins)
         if histogram[k] == 0:
             # Not really an exception, but handles fractions more nicely.
-            return share_ranking * np.sum(histogram[0:k])
+            return self.ce.simplify(share_ranking * np.sum(histogram[0:k]))
         else:
-            return share_ranking * (np.sum(histogram[0:k]) + histogram[k] * (u * n_bins - k))
+            return self.ce.simplify(share_ranking * (np.sum(histogram[0:k]) + histogram[k] * (u * n_bins - k)))
 
     def __repr__(self):
         """
@@ -462,8 +465,8 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
                 return [None]
             histogram = self.d_ranking_histogram[ranking]
             n_bins = len(histogram)
-            low_thresholds = [0] + [Fraction(i + 1, n_bins) for i, share in enumerate(histogram) if share > 0]
-            high_thresholds = [Fraction(i, n_bins) for i, share in enumerate(histogram) if share > 0] + [1]
+            low_thresholds = [0] + [self.ce.Rational(i + 1, n_bins) for i, share in enumerate(histogram) if share > 0]
+            high_thresholds = [self.ce.Rational(i, n_bins) for i, share in enumerate(histogram) if share > 0] + [1]
             thresholds = [my_division(low + high, 2) for low, high in zip(low_thresholds, high_thresholds)]
             thresholds[0] = 0
             thresholds[-1] = 1

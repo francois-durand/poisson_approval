@@ -4,10 +4,11 @@ from poisson_approval import TauVector, BestResponseAntiPlurality, ANTI_PLURALIT
 
 def test_best_response_anti_plurality():
     """
-        >>> tau = TauVector({'ab': 9/15, 'ac': 4/15, 'bc': 2/15}, voting_rule=ANTI_PLURALITY)
+        >>> tau = TauVector({'ab': Fraction(9, 15), 'ac': Fraction(4, 15), 'bc': Fraction(2, 15)},
+        ...                 voting_rule=ANTI_PLURALITY)
         >>> best_response = BestResponseAntiPlurality(tau, 'abc')
         >>> print(best_response._str_very_verbose)
-        tau = <ab: 0.6, ac: 0.26666666666666666, bc: 0.13333333333333333> ==> a (Anti-plurality)
+        tau = <ab: 3/5, ac: 4/15, bc: 2/15> ==> a (Anti-plurality)
         ranking = abc
         voting_rule  = Anti-plurality
         duo_ij = <asymptotic = exp(- 0.0228764 n - 0.5 log n - 0.431347 + o(1)), phi_ab = 1, phi_ac = 0.707107, phi_bc = 1.41421>
@@ -67,13 +68,13 @@ def test_best_response_anti_plurality():
 
 
 def test_best_response_is_ij():
-    tau = TauVector({'ab': 4 / 15, 'ac': 9 / 15, 'bc': 2 / 15}, voting_rule=ANTI_PLURALITY)
+    tau = TauVector({'ab': Fraction(4, 15), 'ac': Fraction(9, 15), 'bc': Fraction(2, 15)}, voting_rule=ANTI_PLURALITY)
     best_response = BestResponseAntiPlurality(tau, 'abc')
     assert best_response.ballot == 'ab'
 
 
 def test_best_response_is_utility_dependent():
-    tau = TauVector({'ab': 7 / 15, 'ac': 1 / 15, 'bc': 7 / 15}, voting_rule=ANTI_PLURALITY)
+    tau = TauVector({'ab': Fraction(7, 15), 'ac': Fraction(1, 15), 'bc': Fraction(7, 15)}, voting_rule=ANTI_PLURALITY)
     best_response = BestResponseAntiPlurality(tau, 'abc')
     assert best_response.threshold_utility == Fraction(1, 2)
     assert best_response.ballot == UTILITY_DEPENDENT

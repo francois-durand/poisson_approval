@@ -1,6 +1,3 @@
-import numpy as np
-from math import isclose
-from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.utils.Util import isnan, ballot_high_u, ballot_low_u
 from poisson_approval.utils.UtilCache import cached_property
@@ -32,6 +29,7 @@ class BestResponse:
     def __init__(self, tau, ranking):
         self.tau = tau
         self.ranking = ranking
+        self.ce = self.tau.ce
         self.i = ranking[0]
         self.j = ranking[1]
         self.k = ranking[2]
@@ -369,9 +367,9 @@ class BestResponse:
         """
         if isnan(self.threshold_utility):
             raise AssertionError('Unable to compute threshold utility')  # pragma: no cover
-        elif isclose(self.threshold_utility, 1):
+        elif self.ce.look_equal(self.threshold_utility, 1):
             return ballot_low_u(self.ranking, self.voting_rule)
-        elif isclose(self.threshold_utility, 0, abs_tol=1E-9):
+        elif self.ce.look_equal(self.threshold_utility, 0, abs_tol=1E-9):
             return ballot_high_u(self.ranking, self.voting_rule)
         else:
             assert 0 <= self.threshold_utility <= 1

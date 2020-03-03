@@ -1,25 +1,25 @@
+import math
 import warnings
-from math import isclose
 from functools import partial
-from fractions import Fraction
-from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import sort_ballot
-from poisson_approval.containers.Scores import Scores
-from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
-from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
 from poisson_approval.best_response.BestResponseApproval import BestResponseApproval
 from poisson_approval.best_response.BestResponsePlurality import BestResponsePlurality
-from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
-from poisson_approval.utils.UtilCache import cached_property
+from poisson_approval.constants.constants import *
+from poisson_approval.constants.Focus import Focus
+from poisson_approval.containers.Scores import Scores
 from poisson_approval.events.EventDuo import EventDuo
 from poisson_approval.events.EventPivotStrict import EventPivotStrict
 from poisson_approval.events.EventPivotTij import EventPivotTij
 from poisson_approval.events.EventPivotTjk import EventPivotTjk
-from poisson_approval.events.EventPivotWeak import EventPivotWeak
 from poisson_approval.events.EventTrio import EventTrio
 from poisson_approval.events.EventTrio1t import EventTrio1t
 from poisson_approval.events.EventTrio2t import EventTrio2t
-from poisson_approval.constants.Focus import Focus
+from poisson_approval.events.EventPivotWeak import EventPivotWeak
+from poisson_approval.utils.computation_engine import computation_engine
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
+from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
+from poisson_approval.utils.Util import sort_ballot, my_division
+from poisson_approval.utils.UtilCache import cached_property
 
 
 # noinspection PyUnresolvedReferences
@@ -30,6 +30,10 @@ class TauVector:
     ----------
     d_ballot_share : dict
         Ballot distribution, e.g. ``{'a': 0.1, 'ab': 0.6, 'c':0.3}``.
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or numeric.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
 
@@ -162,31 +166,22 @@ phi_ab = 0.707107>
         <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>
     """
 
-    def __init__(self, d_ballot_share: dict, normalization_warning: bool = True,
-                 voting_rule=APPROVAL):
-        """
-            >>> tau = TauVector({'non_existing_ballot': 1})
-            Traceback (most recent call last):
-            ValueError: Unknown key: non_existing_ballot
-        """
+    def __init__(self, d_ballot_share: dict, voting_rule=APPROVAL, symbolic=False,
+                 normalization_warning: bool = True):
+        self.symbolic = symbolic
+        self.ce = computation_engine(symbolic)
         # Populate the dictionary and check for typos in the input
-        self.d_ballot_share = DictPrintingInOrderIgnoringZeros()
+        self.d_ballot_share = DictPrintingInOrderIgnoringZeros({
+            ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS})
         for ballot, share in d_ballot_share.items():
-            if ballot in BALLOTS_WITH_INVERSIONS:
-                sorted_key = ''.join(sorted(ballot))
-                self.d_ballot_share[sorted_key] = share
-            else:
-                raise ValueError('Unknown key: ' + ballot)
-        for ballot in BALLOTS_WITHOUT_INVERSIONS:
-            if ballot not in self.d_ballot_share:
-                self.d_ballot_share[ballot] = 0
+            self.d_ballot_share[sort_ballot(ballot)] += share
         # Normalize if necessary
         total = sum(self.d_ballot_share.values())
-        if not isclose(total, 1., rel_tol=10E-4):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: tau is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for ballot in self.d_ballot_share.keys():
-                self.d_ballot_share[ballot] = self.d_ballot_share[ballot] / total
+                self.d_ballot_share[ballot] = my_division(self.d_ballot_share[ballot], total)
         # Voting rule
         self.voting_rule = voting_rule
         if self.voting_rule == PLURALITY:
@@ -286,7 +281,7 @@ phi_ab = 0.707107>
         Returns
         -------
         isclose : bool
-            True if this tau-vector is approximately equal to `other`.
+            True if this tau-vector is approximately equal to `other`. Cf. :func:`isclose`.
 
         Examples
         --------
@@ -295,7 +290,7 @@ phi_ab = 0.707107>
             True
         """
         return isinstance(other, TauVector) and all([
-            isclose(share, other.d_ballot_share[ballot], *args, **kwargs)
+            math.isclose(share, other.d_ballot_share[ballot], *args, **kwargs)
             for ballot, share in self.d_ballot_share.items()
         ])
 
@@ -349,8 +344,7 @@ phi_ab = 0.707107>
     @cached_property
     def trio(self):
         """Event: trio."""
-        return EventTrio(candidate_x='a', candidate_y='b', candidate_z='c',
-                         tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
+        return EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=self)
 
     @property
     def focus(self):
@@ -366,11 +360,11 @@ phi_ab = 0.707107>
             Focus.DIRECT
         """
         magnitudes = sorted([self.pivot_weak_ab.mu, self.pivot_weak_ac.mu, self.pivot_weak_bc.mu])
-        if isclose(magnitudes[0], magnitudes[2]):
+        if self.ce.look_equal(magnitudes[0], magnitudes[2]):
             return Focus.UNFOCUSED
-        elif isclose(magnitudes[0], magnitudes[1]):
+        elif self.ce.look_equal(magnitudes[0], magnitudes[1]):
             return Focus.FORWARD_FOCUSED
-        elif isclose(magnitudes[1], magnitudes[2]):
+        elif self.ce.look_equal(magnitudes[1], magnitudes[2]):
             return Focus.BACKWARD_FOCUSED
         else:
             return Focus.DIRECT
@@ -492,23 +486,23 @@ phi_ab = 0.707107>
     @cached_property
     def score_ab_in_duo_ab(self):
         """Number : Common score of `a` and `b` in duo `ab`."""
-        return (_multiply(self.a, self.duo_ab.phi_a)
-                + _multiply(self.ab, self.duo_ab.phi_ab)
-                + _multiply(self.ac, self.duo_ab.phi_ac))
+        return (self.ce.multiply_with_absorbing_zero(self.a, self.duo_ab.phi_a)
+                + self.ce.multiply_with_absorbing_zero(self.ab, self.duo_ab.phi_ab)
+                + self.ce.multiply_with_absorbing_zero(self.ac, self.duo_ab.phi_ac))
 
     @cached_property
     def score_ac_in_duo_ac(self):
         """Number : Common score of `a` and `c` in duo `ac`."""
-        return (_multiply(self.a, self.duo_ac.phi_a)
-                + _multiply(self.ab, self.duo_ac.phi_ab)
-                + _multiply(self.ac, self.duo_ac.phi_ac))
+        return (self.ce.multiply_with_absorbing_zero(self.a, self.duo_ac.phi_a)
+                + self.ce.multiply_with_absorbing_zero(self.ab, self.duo_ac.phi_ab)
+                + self.ce.multiply_with_absorbing_zero(self.ac, self.duo_ac.phi_ac))
 
     @cached_property
     def score_bc_in_duo_bc(self):
         """Number : Common score of `b` and `c` in duo `bc`."""
-        return (_multiply(self.b, self.duo_bc.phi_b)
-                + _multiply(self.ab, self.duo_bc.phi_ab)
-                + _multiply(self.bc, self.duo_bc.phi_bc))
+        return (self.ce.multiply_with_absorbing_zero(self.b, self.duo_bc.phi_b)
+                + self.ce.multiply_with_absorbing_zero(self.ab, self.duo_bc.phi_ab)
+                + self.ce.multiply_with_absorbing_zero(self.bc, self.duo_bc.phi_bc))
 
     @cached_property
     def score_ba_in_duo_ba(self):
@@ -528,23 +522,23 @@ phi_ab = 0.707107>
     @cached_property
     def score_c_in_duo_ab(self):
         """Number : Score of `c` in duo `ab`."""
-        return (_multiply(self.c, self.duo_ab.phi_c)
-                + _multiply(self.ac, self.duo_ab.phi_ac)
-                + _multiply(self.bc, self.duo_ab.phi_bc))
+        return (self.ce.multiply_with_absorbing_zero(self.c, self.duo_ab.phi_c)
+                + self.ce.multiply_with_absorbing_zero(self.ac, self.duo_ab.phi_ac)
+                + self.ce.multiply_with_absorbing_zero(self.bc, self.duo_ab.phi_bc))
 
     @cached_property
     def score_b_in_duo_ac(self):
         """Number : Score of `b` in duo `ac`."""
-        return (_multiply(self.b, self.duo_ac.phi_b)
-                + _multiply(self.ab, self.duo_ac.phi_ab)
-                + _multiply(self.bc, self.duo_ac.phi_bc))
+        return (self.ce.multiply_with_absorbing_zero(self.b, self.duo_ac.phi_b)
+                + self.ce.multiply_with_absorbing_zero(self.ab, self.duo_ac.phi_ab)
+                + self.ce.multiply_with_absorbing_zero(self.bc, self.duo_ac.phi_bc))
 
     @cached_property
     def score_a_in_duo_bc(self):
         """Number : Score of `a` in duo `bc`."""
-        return (_multiply(self.a, self.duo_bc.phi_a)
-                + _multiply(self.ab, self.duo_bc.phi_ab)
-                + _multiply(self.ac, self.duo_bc.phi_ac))
+        return (self.ce.multiply_with_absorbing_zero(self.a, self.duo_bc.phi_a)
+                + self.ce.multiply_with_absorbing_zero(self.ab, self.duo_bc.phi_ab)
+                + self.ce.multiply_with_absorbing_zero(self.ac, self.duo_bc.phi_ac))
 
     @cached_property
     def score_c_in_duo_ba(self):
@@ -565,21 +559,21 @@ phi_ab = 0.707107>
     def pivot_ab_easy_or_tight(self):
         """bool : True if the pivot `ab` is easy or tight, False if it is difficult."""
         pivot_easy = self.score_ab_in_duo_ab > self.score_c_in_duo_ab
-        pivot_tight = isclose(self.score_ab_in_duo_ab, self.score_c_in_duo_ab)
+        pivot_tight = self.ce.look_equal(self.score_ab_in_duo_ab, self.score_c_in_duo_ab)
         return pivot_easy or pivot_tight
 
     @cached_property
     def pivot_ac_easy_or_tight(self):
         """bool : True if the pivot `ac` is easy or tight, False if it is difficult."""
         pivot_easy = self.score_ac_in_duo_ac > self.score_b_in_duo_ac
-        pivot_tight = isclose(self.score_ac_in_duo_ac, self.score_b_in_duo_ac)
+        pivot_tight = self.ce.look_equal(self.score_ac_in_duo_ac, self.score_b_in_duo_ac)
         return pivot_easy or pivot_tight
 
     @cached_property
     def pivot_bc_easy_or_tight(self):
         """bool : True if the pivot `bc` is easy or tight, False if it is difficult."""
         pivot_easy = self.score_bc_in_duo_bc > self.score_a_in_duo_bc
-        pivot_tight = isclose(self.score_bc_in_duo_bc, self.score_a_in_duo_bc)
+        pivot_tight = self.ce.look_equal(self.score_bc_in_duo_bc, self.score_a_in_duo_bc)
         return pivot_easy or pivot_tight
 
     @cached_property
@@ -617,8 +611,7 @@ for my_ballot in BALLOTS_WITH_INVERSIONS:
 
 def _f_duo(self, candidate_x, candidate_y, candidate_z, cls, stub):
     if candidate_x < candidate_y:
-        return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z,
-                   tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
+        return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z, tau=self)
     else:
         return getattr(self, stub + '_%s%s' % (candidate_y, candidate_x))
 
@@ -644,8 +637,7 @@ for event_class, event_stub, event_doc in [
 
 
 def _f_ranking(self, candidate_x, candidate_y, candidate_z, cls):
-    return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z,
-               tau_a=self.a, tau_b=self.b, tau_c=self.c, tau_ab=self.ab, tau_ac=self.ac, tau_bc=self.bc)
+    return cls(candidate_x=candidate_x, candidate_y=candidate_y, candidate_z=candidate_z, tau=self)
 
 
 for event_class, event_stub, event_doc in [
@@ -677,10 +669,3 @@ for event_class, event_stub, event_doc in [
         getattr(TauVector, name).__name__ = name
         setattr(TauVector, name, cached_property(getattr(TauVector, name)))
         getattr(TauVector, name).__doc__ = event_doc
-
-
-# Used to compute easy and difficult pivots
-
-def _multiply(tau_something, phi_something):
-    """Return 0 if tau_something is 0, even if phi_something is nan."""
-    return 0 if tau_something == 0 else tau_something * phi_something

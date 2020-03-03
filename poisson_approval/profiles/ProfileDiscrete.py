@@ -1,10 +1,9 @@
 import warnings
-from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order
+from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, my_division
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -30,6 +29,8 @@ class ProfileDiscrete(ProfileCardinal):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or numeric.
 
     Attributes
     ----------
@@ -105,13 +106,14 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
     """
 
     def __init__(self, d, d_weak_order_share=None, normalization_warning=True, ratio_sincere=0, ratio_fanatic=0,
-                 voting_rule=APPROVAL):
+                 voting_rule=APPROVAL, symbolic=False):
         """
             >>> profile = ProfileDiscrete({42: 51})
             Traceback (most recent call last):
             TypeError: Key should be tuple or str, got: <class 'int'> instead.
         """
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
+                         symbolic=symbolic)
         self.d_ranking_utility_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
         if d_weak_order_share is None:
@@ -153,14 +155,14 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
         # Normalize if necessary
         total = (sum([sum(d_utility_share.values()) for d_utility_share in self.d_ranking_utility_share.values()])
                  + sum(self._d_weak_order_share.values()))
-        if not isclose(total, 1.):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for d_utility_share in self.d_ranking_utility_share.values():
                 for utility, share in d_utility_share.items():
-                    d_utility_share[utility] = share / total
+                    d_utility_share[utility] = my_division(share, total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
 
     @cached_property
     def d_ranking_share(self):
@@ -174,15 +176,15 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         d_utility_share = self.d_ranking_utility_share[ranking]
-        return sum([share for utility, share in d_utility_share.items() if utility > u])
+        return sum([share for utility, share in d_utility_share.items() if self.ce.S(utility) > self.ce.S(u)])
 
     def have_ranking_with_utility_u(self, ranking, u):
         d_utility_share = self.d_ranking_utility_share[ranking]
-        return sum([share for utility, share in d_utility_share.items() if utility == u])
+        return sum([share for utility, share in d_utility_share.items() if self.ce.S(utility) == self.ce.S(u)])
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         d_utility_share = self.d_ranking_utility_share[ranking]
-        return sum([share for utility, share in d_utility_share.items() if utility < u])
+        return sum([share for utility, share in d_utility_share.items() if self.ce.S(utility) < self.ce.S(u)])
 
     def __repr__(self):
         """
@@ -331,7 +333,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
                 return [None]
             d_utility_share = self.d_ranking_utility_share[ranking]
             utilities = sorted(d_utility_share.keys())
-            return [0] + [(x +y) / 2 for x, y in zip(utilities[:-1], utilities[1:])] + [1]
+            return [0] + [my_division(x +y, 2) for x, y in zip(utilities[:-1], utilities[1:])] + [1]
 
         d_ranking_possible_thresholds = {ranking: possible_thresholds(ranking) for ranking in RANKINGS}
 

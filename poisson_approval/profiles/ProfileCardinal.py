@@ -1,12 +1,19 @@
-from math import isclose
+import warnings
+import math
+import numpy as np
+from fractions import Fraction
+from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.generators.GeneratorStrategyThresholdUniform import GeneratorStrategyThresholdUniform
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.tau_vector.TauVector import TauVector
+from poisson_approval.utils.ComputationEngineNumeric import ComputationEngineNumeric
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import *
+from poisson_approval.utils.Util import candidates_to_probabilities, my_division, array_to_d_candidate_value, \
+    one_over_t_plus_one, ballot_one, ballot_one_two, ballot_low_u, ballot_high_u, \
+    to_callable, candidates_to_d_candidate_probability
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 
 
@@ -23,10 +30,12 @@ class ProfileCardinal(Profile):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or numeric.
     """
 
-    def __init__(self, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
-        super().__init__(voting_rule=voting_rule)
+    def __init__(self, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
+        super().__init__(voting_rule=voting_rule, symbolic=symbolic)
         self.ratio_sincere = ratio_sincere
         self.ratio_fanatic = ratio_fanatic
 
@@ -127,11 +136,11 @@ class ProfileCardinal(Profile):
         tau_sincere = self.tau_sincere
         tau_fanatic = self.tau_fanatic
         tau_strategic = self.tau_strategic(strategy)
-        t = {ballot: barycenter(a=tau_strategic.d_ballot_share[ballot],
-                                b=[tau_sincere.d_ballot_share[ballot], tau_fanatic.d_ballot_share[ballot]],
-                                ratio_b=[self.ratio_sincere, self.ratio_fanatic])
+        t = {ballot: self.ce.barycenter(a=tau_strategic.d_ballot_share[ballot],
+                                        b=[tau_sincere.d_ballot_share[ballot], tau_fanatic.d_ballot_share[ballot]],
+                                        ratio_b=[self.ratio_sincere, self.ratio_fanatic])
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     @cached_property
     def tau_sincere(self):
@@ -162,7 +171,7 @@ class ProfileCardinal(Profile):
                 t[ballot_one_two(ranking)] += self.d_ranking_share[ranking]
             else:
                 raise NotImplementedError
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     @cached_property
     def tau_fanatic(self):
@@ -186,7 +195,7 @@ class ProfileCardinal(Profile):
                 t[ballot_one_two(ranking)] += self.d_ranking_share[ranking]
             else:
                 raise NotImplementedError
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     def tau_strategic(self, strategy):
         """Tau-vector associated to a strategy (fully strategic voting).
@@ -213,9 +222,11 @@ class ProfileCardinal(Profile):
             share_limit_voters = self.have_ranking_with_utility_u(ranking, u=threshold)
             if share_limit_voters != 0:
                 ratio_optimistic = strategy.d_ranking_ratio_optimistic[ranking]
-                t[ballot_low_u(ranking, self.voting_rule)] += share_limit_voters * ratio_optimistic
-                t[ballot_high_u(ranking, self.voting_rule)] += share_limit_voters * (1 - ratio_optimistic)
-        return TauVector(t, voting_rule=self.voting_rule)
+                t[ballot_low_u(ranking, self.voting_rule)] += self.ce.multiply_with_absorbing_zero(
+                    share_limit_voters, ratio_optimistic)
+                t[ballot_high_u(ranking, self.voting_rule)] += self.ce.multiply_with_absorbing_zero(
+                    share_limit_voters, 1 - ratio_optimistic)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
@@ -244,10 +255,10 @@ class ProfileCardinal(Profile):
                 continue
             actual_threshold = strategy.d_ranking_threshold[ranking]
             br_threshold = d_ranking_best_response[ranking].threshold_utility
-            test = (isclose(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
-                            self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
-                    and isclose(self.have_ranking_with_utility_above_u(ranking, actual_threshold),
-                                self.have_ranking_with_utility_above_u(ranking, br_threshold), abs_tol=1E-9))
+            test = (self.ce.look_equal(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
+                                       self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
+                    and self.ce.look_equal(self.have_ranking_with_utility_above_u(ranking, actual_threshold),
+                                           self.have_ranking_with_utility_above_u(ranking, br_threshold), abs_tol=1E-9))
             if not test:
                 return EquilibriumStatus.NOT_EQUILIBRIUM
         return EquilibriumStatus.EQUILIBRIUM
@@ -278,8 +289,14 @@ class ProfileCardinal(Profile):
         tau : TauVector
             The initial tau-vector.
         """
+        if self.symbolic:
+            warnings.warn('Using fictitious play or iterated voting with symbolic=True is strongly discouraged. '
+                          'Consider defining the profile with symbolic=False.')
         if isinstance(init, Strategy):
             strategy = init.deepcopy_with_attached_profile(self)
+            tau = strategy.tau
+        elif init == 'random':
+            strategy = self.random_strategy(profile=self)
             tau = strategy.tau
         else:
             strategy = None
@@ -289,9 +306,6 @@ class ProfileCardinal(Profile):
                 tau = self.tau_sincere
             elif init == 'fanatic':
                 tau = self.tau_fanatic
-            elif init == 'random':
-                strategy = self.random_strategy(profile=self)
-                tau = strategy.tau
             else:  # pragma: no cover
                 raise ValueError
         return strategy, tau
@@ -372,19 +386,19 @@ class ProfileCardinal(Profile):
         n_episodes = n_max_episodes
         for t in range(1, n_max_episodes + 1):
             tau_perceived = TauVector({
-                ballot: _my_round(barycenter(a=tau_perceived.d_ballot_share[ballot],
-                                             b=tau_actual.d_ballot_share[ballot],
-                                             ratio_b=perception_update_ratio))
+                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_perceived.d_ballot_share[ballot],
+                                                                      b=tau_actual.d_ballot_share[ballot],
+                                                                      ratio_b=perception_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, voting_rule=self.voting_rule)
+            }, voting_rule=self.voting_rule, symbolic=self.symbolic)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau_actual = TauVector({
-                ballot: _my_round(barycenter(a=tau_actual.d_ballot_share[ballot],
-                                             b=tau_full_response.d_ballot_share[ballot],
-                                             ratio_b=ballot_update_ratio))
+                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
+                                                                      b=tau_full_response.d_ballot_share[ballot],
+                                                                      ratio_b=ballot_update_ratio))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, normalization_warning=False, voting_rule=self.voting_rule)
+            }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
             array_candidate_winning_frequency = (
                 (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
                 + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
@@ -394,7 +408,7 @@ class ProfileCardinal(Profile):
                 print('strategy: %s' % strategy)
                 print('tau_full_response: %s' % tau_full_response)
                 print('tau_actual: %s' % tau_actual)
-            # If there is an exact cycle, it is useless to continue looping.
+            # If there is an symbolic cycle, it is useless to continue looping.
             break_ = (tau_actual, tau_perceived) in zip(taus_actual, taus_perceived)
 
             taus_actual.append(tau_actual)
@@ -500,19 +514,19 @@ class ProfileCardinal(Profile):
 
         for t in range(1, n_max_episodes + 1):
             tau_perceived = TauVector({
-                ballot: _my_round(barycenter(a=tau_perceived.d_ballot_share[ballot],
-                                             b=tau_actual.d_ballot_share[ballot],
-                                             ratio_b=perception_update_ratio(t)))
+                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_perceived.d_ballot_share[ballot],
+                                                                      b=tau_actual.d_ballot_share[ballot],
+                                                                      ratio_b=perception_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, voting_rule=self.voting_rule)
+            }, voting_rule=self.voting_rule, symbolic=self.symbolic)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau_actual = TauVector({
-                ballot: _my_round(barycenter(a=tau_actual.d_ballot_share[ballot],
-                                             b=tau_full_response.d_ballot_share[ballot],
-                                             ratio_b=ballot_update_ratio(t)))
+                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
+                                                                      b=tau_full_response.d_ballot_share[ballot],
+                                                                      ratio_b=ballot_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, normalization_warning=False, voting_rule=self.voting_rule)
+            }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
             array_candidate_winning_frequency = (
                 (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
                 + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
@@ -560,7 +574,7 @@ def _my_round(x):
     Returns
     -------
     Number
-        Generally, return `x`. If `x` is close enough to 0 or 1, then return 0 or 1 respectively.
+        Generally, return `x` (converted to float). If `x` is close enough to 0 or 1, then return 0 or 1 respectively.
 
     Examples
     --------
@@ -572,11 +586,11 @@ def _my_round(x):
         >>> _my_round(0.123456789)
         0.123456789
     """
-    if isclose(x, 1):
+    if math.isclose(x, 1):
         return 1
-    if isclose(x, 0, abs_tol=1E-9):
+    if math.isclose(x, 0, abs_tol=1E-9):
         return 0
-    return x
+    return float(x)
 
 
 def _d_candidate_winning_frequency(taus):
@@ -595,6 +609,7 @@ def _d_candidate_winning_frequency(taus):
 
     Examples
     --------
+        >>> from fractions import Fraction
         >>> tau_1 = TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)})
         >>> tau_2 = TauVector({'a': 0, 'b': 0, 'c': 1})
         >>> _d_candidate_winning_frequency([tau_1, tau_2])

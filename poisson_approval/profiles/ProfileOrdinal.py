@@ -1,7 +1,6 @@
 import warnings
 import itertools
 import numpy as np
-from math import isclose
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.generators.GeneratorStrategyOrdinalUniform import GeneratorStrategyOrdinalUniform
@@ -9,8 +8,8 @@ from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, barycenter, \
-    product_dict, ballot_low_u, ballot_high_u, sort_weak_order
+from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three, \
+    product_dict, ballot_low_u, ballot_high_u, sort_weak_order, my_division
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 from poisson_approval.utils.UtilMasks import masks_area, masks_distribution, winners_distribution
 
@@ -37,6 +36,8 @@ class ProfileOrdinal(Profile):
         The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or numeric.
 
     Notes
     -----
@@ -104,13 +105,13 @@ class ProfileOrdinal(Profile):
     """
 
     def __init__(self, d_ranking_share, d_weak_order_share=None, normalization_warning=True, well_informed_voters=True,
-                 ratio_fanatic=0, voting_rule=APPROVAL):
-        super().__init__(voting_rule=voting_rule)
+                 ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
+        super().__init__(voting_rule=voting_rule, symbolic=symbolic)
         if d_weak_order_share is None:
             d_weak_order_share = dict()
         # Populate the dictionaries of rankings and weak orders
-        self._d_ranking_share = DictPrintingInOrderIgnoringZeros(
-            {ranking: 0 for ranking in RANKINGS})
+        self._d_ranking_share = DictPrintingInOrderIgnoringZeros({
+            ranking: 0 for ranking in RANKINGS})
         self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
             weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
         for order, share in itertools.chain(d_ranking_share.items(), d_weak_order_share.items()):
@@ -120,13 +121,13 @@ class ProfileOrdinal(Profile):
                 self._d_weak_order_share[sort_weak_order(order)] += share
         # Normalize if necessary
         total = sum(self._d_ranking_share.values()) + sum(self._d_weak_order_share.values())
-        if not isclose(total, 1.):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for ranking in self._d_ranking_share.keys():
-                self._d_ranking_share[ranking] /= total
+                self._d_ranking_share[ranking] = my_division(self._d_ranking_share[ranking], total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
         # Other parameters
         self.well_informed_voters = well_informed_voters
         self.ratio_fanatic = ratio_fanatic
@@ -280,11 +281,11 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         """
         tau_fanatic = self.tau_fanatic
         tau_strategic = self.tau_strategic(strategy)
-        t = {ballot: barycenter(a=tau_strategic.d_ballot_share[ballot],
-                                b=tau_fanatic.d_ballot_share[ballot],
-                                ratio_b=self.ratio_fanatic)
+        t = {ballot: self.ce.barycenter(a=tau_strategic.d_ballot_share[ballot],
+                                        b=tau_fanatic.d_ballot_share[ballot],
+                                        ratio_b=self.ratio_fanatic)
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     @cached_property
     def tau_fanatic(self):
@@ -305,7 +306,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                 t[ballot_one_two(ranking)] += share
         else:
             raise NotImplementedError
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     def tau_strategic(self, strategy):
         """Tau-vector associated to a strategy.
@@ -348,9 +349,9 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         if self.voting_rule == APPROVAL and not self.well_informed_voters:
             return TauVector(
                 {'a': t['a'] + t['ab'] + t['ac'], 'b': t['b'] + t['ab'] + t['bc'], 'c': t['c'] + t['ac'] + t['bc']},
-                normalization_warning=False, voting_rule=self.voting_rule)
+                normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
         else:
-            return TauVector(t, voting_rule=self.voting_rule)
+            return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
@@ -424,7 +425,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
              for ranking in support]
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
-        return masks_area(inf=[0] * dim, sup=[1] * dim, masks=masks)
+        return self.ce.simplify(masks_area(inf=self.ce.zeros(dim), sup=self.ce.ones(dim), masks=masks))
 
     def distribution_equilibria(self, test=None):
         """Distribution of numbers of equilibria (depending on the utilities).
@@ -462,7 +463,9 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
              for ranking in support]
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
-        return masks_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks=masks, cover_alls=cover_alls)
+        return self.ce.simplify_vector(masks_distribution(inf=self.ce.zeros(dim),
+                                                          sup=self.ce.ones(dim),
+                                                          masks=masks, cover_alls=cover_alls))
 
     def distribution_winners(self, test=None):
         """Distribution of the number of equilibrium winners (depending on the utilities).
@@ -487,7 +490,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             >>> from fractions import Fraction
             >>> profile = ProfileOrdinal({'abc': Fraction(1, 10), 'bac': Fraction(6, 10), 'cab': Fraction(3, 10)})
             >>> profile.distribution_winners()
-            array([0., 0., 1., 0.])
+            array([0, 0, 1, 0])
         """
         if test is None:
             # noinspection PyUnusedLocal
@@ -508,8 +511,10 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             )
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
-        return winners_distribution(inf=np.zeros(dim), sup=np.ones(dim), masks_winners=masks_winners,
-                                    cover_alls=cover_alls)
+        return self.ce.simplify_vector(winners_distribution(inf=self.ce.zeros(dim),
+                                                            sup=self.ce.ones(dim),
+                                                            masks_winners=masks_winners,
+                                                            cover_alls=cover_alls))
 
     @property
     def strategies_pure(self):

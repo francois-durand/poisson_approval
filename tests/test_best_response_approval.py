@@ -1,12 +1,13 @@
+from fractions import Fraction
 from poisson_approval import TauVector, BestResponseApproval, isnan, RANKINGS
 
 
 def test_best_response_approval():
     """
-        >>> tau = TauVector({'a': 9/15, 'b': 4/15, 'ac': 1/15, 'bc': 1/15})
+        >>> tau = TauVector({'a': Fraction(9, 15), 'b': Fraction(4, 15), 'ac': Fraction(1, 15), 'bc': Fraction(1, 15)})
         >>> best_response = BestResponseApproval(tau, 'abc')
         >>> print(best_response._str_very_verbose)
-        tau = <a: 0.6, ac: 0.06666666666666667, b: 0.26666666666666666, bc: 0.06666666666666667> ==> a
+        tau = <a: 3/5, ac: 1/15, b: 4/15, bc: 1/15> ==> a
         ranking = abc
         voting_rule  = Approval
         duo_ij = <asymptotic = exp(- 0.057191 n - 0.5 log n - 0.889493 + o(1)), phi_a = 0.707107, phi_b = 1.41421, phi_ac = 0.707107, phi_bc = 1.41421>

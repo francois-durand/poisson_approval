@@ -2,6 +2,8 @@ import random
 import numpy as np
 from math import isclose
 from itertools import product
+from fractions import Fraction
+from poisson_approval.utils.Util import my_division
 
 
 def masks_area_naive(inf, sup, masks):
@@ -14,14 +16,18 @@ def masks_area_naive(inf, sup, masks):
     Examples
     --------
         >>> area = masks_area_naive(inf=[0, 0], sup=[1, 2],
-        ...                         masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
-        >>> isclose(area, 0.8 * 0.6 + 0.3 * 1.6 - 0.1 * 0.2)
-        True
+        ...                         masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],
+        ...                                [(Fraction(3, 10), False), (Fraction(4, 10), True)]])
+        >>> area
+        Fraction(47, 50)
+        >>> Fraction(8, 10) * Fraction(6, 10) + Fraction(3, 10) * Fraction(16, 10) - Fraction(1, 10) * Fraction(2, 10)
+        Fraction(47, 50)
     """
     dim = len(inf)
     limits = [sorted({mask[d][0] for mask in masks}.union({inf[d], sup[d]})) for d in range(dim)]
     medians_and_lengths = [
-        [((limits[d][i + 1] + limits[d][i]) / 2, limits[d][i + 1] - limits[d][i]) for i in range(len(limits[d]) - 1)]
+        [(my_division(limits[d][i + 1] + limits[d][i], 2), limits[d][i + 1] - limits[d][i])
+         for i in range(len(limits[d]) - 1)]
         for d in range(dim)]
     area = 0
     for point in product(*medians_and_lengths):
@@ -57,9 +63,13 @@ def masks_area(inf, sup, masks):
     The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``. The second mask is the set of points
     where ``x_1 <= 0.3 and x_2 >= 0.4``.
 
-        >>> area = masks_area(inf=[0, 0], sup=[1, 2], masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
-        >>> isclose(area, 0.8 * 0.6 + 0.3 * 1.6 - 0.1 * 0.2)
-        True
+        >>> area = masks_area(inf=[0, 0], sup=[1, 2],
+        ...                   masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],
+        ...                          [(Fraction(3, 10), False), (Fraction(4, 10), True)]])
+        >>> area
+        Fraction(47, 50)
+        >>> Fraction(8, 10) * Fraction(6, 10) + Fraction(3, 10) * Fraction(16, 10) - Fraction(1, 10) * Fraction(2, 10)
+        Fraction(47, 50)
     """
     dim = len(inf)
     # Is there a mask covering everything?
@@ -89,21 +99,28 @@ def masks_distribution_naive(inf, sup, masks):
     Examples
     --------
         >>> histogram = masks_distribution_naive(inf=[0, 0], sup=[1, 2],
-        ...                                      masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
+        ...                                      masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],
+        ...                                             [(Fraction(3, 10), False), (Fraction(4, 10), True)]])
+        >>> histogram
+        array([Fraction(53, 50), Fraction(23, 25), Fraction(1, 50)], dtype=object)
+        >>> histogram = masks_distribution_naive(inf=[0, 0], sup=[1, 2],
+        ...                                      masks=[[(0.2, True), (0.6, False)],
+        ...                                             [(0.3, False), (0.4, True)]])
         >>> histogram
         array([1.06, 0.92, 0.02])
     """
     dim = len(inf)
     limits = [sorted({mask[d][0] for mask in masks}.union({inf[d], sup[d]})) for d in range(dim)]
     medians_and_lengths = [
-        [((limits[d][i + 1] + limits[d][i]) / 2, limits[d][i + 1] - limits[d][i]) for i in range(len(limits[d]) - 1)]
+        [(my_division(limits[d][i + 1] + limits[d][i], 2),
+          limits[d][i + 1] - limits[d][i]) for i in range(len(limits[d]) - 1)]
         for d in range(dim)]
-    histogram = np.zeros(dim + 1)
+    histogram = [0 for _ in range(dim + 1)]
     for point in product(*medians_and_lengths):
         n_masks = np.sum([all([(point[d][0] > mask[d][0]) == mask[d][1] for d in range(dim)]) for mask in masks])
         area = np.prod([point[d][1] for d in range(dim)])
-        histogram[n_masks] += area
-    return histogram
+        histogram[int(n_masks)] += area
+    return np.array(histogram)
 
 
 def masks_distribution(inf, sup, masks, cover_alls=0):
@@ -137,7 +154,13 @@ def masks_distribution(inf, sup, masks, cover_alls=0):
     where ``x_1 <= 0.3 and x_2 >= 0.4``.
 
         >>> histogram = masks_distribution(inf=[0, 0], sup=[1, 2],
-        ...                                masks=[[(.2, True), (.6, False)], [(.3, False), (.4, True)]])
+        ...                                masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],
+        ...                                       [(Fraction(3, 10), False), (Fraction(4, 10), True)]])
+        >>> histogram
+        array([Fraction(53, 50), Fraction(23, 25), Fraction(1, 50)], dtype=object)
+        >>> histogram = masks_distribution(inf=[0, 0], sup=[1, 2],
+        ...                                masks=[[(.2, True), (.6, False)],
+        ...                                       [(.3, False), (.4, True)]])
         >>> histogram
         array([1.06, 0.92, 0.02])
     """
@@ -178,7 +201,7 @@ def masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
     """
     dim = len(inf)
     if histogram is None:
-        histogram = np.zeros(dim + 1)
+        histogram = [0 for _ in range(dim + 1)]
     # Eliminate empty masks
     new_masks = [mask for mask in masks
                  if not any([(mask[d][0] >= sup[d]) if mask[d][1] else (mask[d][0] <= inf[d]) for d in range(dim)])]
@@ -198,7 +221,7 @@ def masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
                                histogram, cover_alls)
         masks_distribution_aux([lim if d == d_lim else inf[d] for d in range(dim)], sup, new_masks,
                                histogram, cover_alls)
-    return histogram
+    return np.array(histogram)
 
 
 def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=None):
@@ -235,13 +258,21 @@ def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=Non
 
         >>> histogram = winners_distribution(
         ...     inf=[0, 0], sup=[1, 2],
-        ...     masks_winners=[([(.2, True), (.6, False)], {'a'}), ([(.3, False), (.4, True)], {'a', 'b'})])
+        ...     masks_winners=[([(Fraction(2, 10), True), (Fraction(6, 10), False)], {'a'}),
+        ...                    ([(Fraction(3, 10), False), (Fraction(4, 10), True)], {'a', 'b'})])
+        >>> histogram
+        array([Fraction(53, 50), Fraction(23, 50), Fraction(12, 25), 0],
+              dtype=object)
+        >>> histogram = winners_distribution(
+        ...     inf=[0, 0], sup=[1, 2],
+        ...     masks_winners=[([(.2, True), (.6, False)], {'a'}),
+        ...                    ([(.3, False), (.4, True)], {'a', 'b'})])
         >>> histogram
         array([1.06, 0.46, 0.48, 0.  ])
     """
     dim = len(inf)
     if histogram is None:
-        histogram = np.zeros(4)
+        histogram = [0, 0, 0, 0]
     if cover_alls is None:
         cover_alls = set()
     # Eliminate empty masks
@@ -266,7 +297,7 @@ def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=Non
         lim = mask[d_lim][0]
         winners_distribution(inf, [lim if d == d_lim else sup[d] for d in range(dim)], new_mw, histogram, cover_alls)
         winners_distribution([lim if d == d_lim else inf[d] for d in range(dim)], sup, new_mw, histogram, cover_alls)
-    return histogram
+    return np.array(histogram)
 
 
 def random_mask(dim):

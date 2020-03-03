@@ -1,8 +1,5 @@
 import warnings
-from math import isclose
 from poisson_approval.constants.constants import *
-from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -31,6 +28,8 @@ class ProfileNoisyDiscrete(ProfileCardinalContinuous):
         and `ratio_fanatic` must not exceed 1.
     voting_rule : str
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+    symbolic : bool
+        Whether the computations are symbolic or numeric.
 
     Attributes
     ----------
@@ -148,8 +147,9 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
     """
 
     def __init__(self, d, noise=None, d_weak_order_share=None, normalization_warning=True,
-                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL):
-        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule)
+                 ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
+        super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
+                         symbolic=symbolic)
         self.d_ranking_utility_noise_share = DictPrintingInOrderIgnoringZeros({
             ranking: DictPrintingInOrderIgnoringZeros() for ranking in RANKINGS})
         if d_weak_order_share is None:
@@ -190,14 +190,14 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
         total = (sum([sum(d_utility_noise_share.values())
                       for d_utility_noise_share in self.d_ranking_utility_noise_share.values()])
                  + sum(self._d_weak_order_share.values()))
-        if not isclose(total, 1.):
+        if not self.ce.look_equal(total, 1):
             if normalization_warning:
-                warnings.warn("Warning: profile is not normalized, I will normalize it.")
+                warnings.warn(NORMALIZATION_WARNING)
             for d_utility_noise_share in self.d_ranking_utility_noise_share.values():
                 for utility_noise, share in d_utility_noise_share.items():
-                    d_utility_noise_share[utility_noise] = share / total
+                    d_utility_noise_share[utility_noise] = my_division(share, total)
             for weak_order in self._d_weak_order_share.keys():
-                self._d_weak_order_share[weak_order] /= total
+                self._d_weak_order_share[weak_order] = my_division(self._d_weak_order_share[weak_order], total)
 
     @cached_property
     def d_ranking_share(self):
@@ -221,14 +221,14 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
     def have_ranking_with_utility_above_u(self, ranking, u):
         d_umin_umax_share = self.d_ranking_umin_umax_share[ranking]
         return sum([
-            _crop((umax - u) / (umax - umin)) * share
+            _crop(my_division(umax - u, umax - umin)) * share
             for (umin, umax), share in d_umin_umax_share.items()
         ])
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         d_umin_umax_share = self.d_ranking_umin_umax_share[ranking]
         return sum([
-            _crop((u - umin) / (umax - umin)) * share
+            _crop(my_division(u - umin, umax - umin)) * share
             for (umin, umax), share in d_umin_umax_share.items()
         ])
 

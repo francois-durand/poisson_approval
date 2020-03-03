@@ -22,9 +22,9 @@ def test_add():
 
 
 def test_isclose():
-    assert not Asymptotic(mu=42, nu=51, xi=69).isclose(144)
+    assert not Asymptotic(mu=42, nu=51, xi=69).look_equal(144)
     with pytest.raises(ValueError):
-        Asymptotic(mu=np.nan, nu=51, xi=69).isclose(Asymptotic(mu=42, nu=51, xi=69))
+        Asymptotic(mu=np.nan, nu=51, xi=69).look_equal(Asymptotic(mu=42, nu=51, xi=69))
 
 
 def test_str_small_magnitudes():
