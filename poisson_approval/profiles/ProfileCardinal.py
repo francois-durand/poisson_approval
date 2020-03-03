@@ -140,7 +140,7 @@ class ProfileCardinal(Profile):
                                         b=[tau_sincere.d_ballot_share[ballot], tau_fanatic.d_ballot_share[ballot]],
                                         ratio_b=[self.ratio_sincere, self.ratio_fanatic])
              for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        return TauVector(t, voting_rule=self.voting_rule)
+        return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
     @cached_property
     def tau_sincere(self):

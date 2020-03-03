@@ -21,7 +21,7 @@ phi_ac = 1, phi_bc = 1>
         >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', symbolic=True,
         ...                  tau_a=Fraction(1, 9), tau_b=Fraction(1, 9),
         ...                  tau_ab=Fraction(1, 9), tau_ac=Fraction(1, 3), tau_bc=Fraction(1, 3))
-        <asymptotic = exp(- 0.0181103257825368*n + ? log(n) + ? + o(1)), phi_a = 1.1745395129505587, \
-phi_b = 1.1745395129505587, phi_ab = 1.3795430674821356, phi_ac = 0.8513974957623195, phi_bc = 0.8513974957623194>
+        <asymptotic = exp(- 0.0181103257825368*n + ? log(n) + ? + o(1)), phi_a = 1.17453951295056, \
+phi_b = 1.17453951295056, phi_ab = 1.37954306748214, phi_ac = 0.851397495762319, phi_bc = 0.851397495762319>
     """
     pass

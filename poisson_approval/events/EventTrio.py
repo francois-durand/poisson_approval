@@ -76,19 +76,21 @@ class EventTrio(Event):
             self._phi_yz = ce.S(1) if tau_yz > 0 else ce.nan
         else:
             # Generic case: we work with floats, not sympy expressions.
+            tau_x_f, tau_y_f, tau_z_f = float(tau_x), float(tau_y), float(tau_z)
+            tau_xy_f, tau_xz_f, tau_yz_f = float(tau_xy), float(tau_xz), float(tau_yz)
             optimizer = minimize(
                 lambda x: 2 * np.sqrt(
-                    (tau_x * x[0] + tau_xz) * (tau_yz / x[0] + tau_y)
-                ) + tau_xy * x[0] + tau_z / x[0] - 1,
+                    (tau_x_f * x[0] + tau_xz_f) * (tau_yz_f / x[0] + tau_y_f)
+                ) + tau_xy_f * x[0] + tau_z_f / x[0] - 1,
                 np.array([1 + 1e-10, 1.]),  # We don't start exactly at 1. to avoid some (rare) bugs
                 bounds=((1E-14, None), (1., 1.))
             )
-            self.asymptotic = Asymptotic(mu=optimizer.fun, nu=ce.nan, xi=ce.nan, symbolic=self.symbolic)
-            x_2 = optimizer.x[0]
-            x_1 = np.sqrt((tau_yz / x_2 + tau_y) / (tau_x * x_2 + tau_xz))
-            self._phi_x = x_1 * x_2 if tau_x > 0 else ce.nan
-            self._phi_y = 1 / x_1 if tau_y > 0 else ce.nan
+            self.asymptotic = Asymptotic(mu=ce.S(optimizer.fun), nu=ce.nan, xi=ce.nan, symbolic=self.symbolic)
+            x_2 = ce.S(optimizer.x[0])
+            x_1 = ce.simplify(ce.sqrt((ce.S(tau_yz) / x_2 + tau_y) / (tau_x * x_2 + tau_xz)))
+            self._phi_x = ce.simplify(x_1 * x_2) if tau_x > 0 else ce.nan
+            self._phi_y = ce.simplify(ce.S(1) / x_1) if tau_y > 0 else ce.nan
             self._phi_xz = x_1 if tau_xz > 0 else ce.nan
-            self._phi_yz = 1 / (x_1 * x_2) if tau_yz > 0 else ce.nan
+            self._phi_yz = ce.simplify(ce.S(1) / (x_1 * x_2)) if tau_yz > 0 else ce.nan
             self._phi_xy = x_2 if tau_xy > 0 else ce.nan
-            self._phi_z = 1 / x_2 if tau_z > 0 else ce.nan
+            self._phi_z = ce.simplify(1 / x_2) if tau_z > 0 else ce.nan
