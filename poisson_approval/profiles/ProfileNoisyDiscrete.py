@@ -221,14 +221,14 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
     def have_ranking_with_utility_above_u(self, ranking, u):
         d_umin_umax_share = self.d_ranking_umin_umax_share[ranking]
         return sum([
-            _crop(my_division(umax - self.ce.S(u), umax - umin)) * share
+            _crop(my_division(self.ce.S(umax - u), self.ce.S(umax - umin))) * share
             for (umin, umax), share in d_umin_umax_share.items()
         ])
 
     def have_ranking_with_utility_below_u(self, ranking, u):
         d_umin_umax_share = self.d_ranking_umin_umax_share[ranking]
         return sum([
-            _crop(my_division(self.ce.S(u) - umin, umax - umin)) * share
+            _crop(my_division(self.ce.S(u - umin), self.ce.S(umax - umin))) * share
             for (umin, umax), share in d_umin_umax_share.items()
         ])
 
