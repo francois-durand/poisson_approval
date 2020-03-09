@@ -1,4 +1,4 @@
-from poisson_approval import APPROVAL, PLURALITY, ANTI_PLURALITY
+from poisson_approval.constants.constants import APPROVAL, PLURALITY, ANTI_PLURALITY
 
 
 def ballot_one(ranking):
