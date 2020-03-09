@@ -164,14 +164,14 @@ def masks_distribution(inf, sup, masks, cover_alls=0):
         >>> histogram
         array([1.06, 0.92, 0.02])
     """
-    result = masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=cover_alls)
+    result = _masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=cover_alls)
     last_non_zero = result.size - 1
     while result[last_non_zero] == 0:
         last_non_zero -= 1
     return result[:last_non_zero + 1]
 
 
-def masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
+def _masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
     """Distribution of the number of masks (recursive `divide and conquer` implementation).
 
     We denote by `d` the dimension of the Euclidean space under study.
@@ -217,10 +217,10 @@ def masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
         mask = random.choice(new_masks)
         d_lim = random.choice([d for d in range(dim) if inf[d] < mask[d][0] < sup[d]])
         lim = mask[d_lim][0]
-        masks_distribution_aux(inf, [lim if d == d_lim else sup[d] for d in range(dim)], new_masks,
-                               histogram, cover_alls)
-        masks_distribution_aux([lim if d == d_lim else inf[d] for d in range(dim)], sup, new_masks,
-                               histogram, cover_alls)
+        _masks_distribution_aux(inf, [lim if d == d_lim else sup[d] for d in range(dim)], new_masks,
+                                histogram, cover_alls)
+        _masks_distribution_aux([lim if d == d_lim else inf[d] for d in range(dim)], sup, new_masks,
+                                histogram, cover_alls)
     return np.array(histogram)
 
 

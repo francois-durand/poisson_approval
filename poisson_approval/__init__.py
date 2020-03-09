@@ -17,8 +17,9 @@ from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.utils.Util import *
 from poisson_approval.utils.UtilBallots import ballot_one, ballot_two, ballot_one_two, ballot_one_three, \
     ballot_high_u, ballot_low_u
-from poisson_approval.utils.UtilCache import *
-from poisson_approval.utils.UtilMasks import *
+from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
+from poisson_approval.utils.UtilMasks import masks_area_naive, masks_area, masks_distribution_naive, \
+    masks_distribution, winners_distribution, random_mask, random_masks
 from poisson_approval.utils.UtilPreferences import is_hater, is_lover, is_weak_order, sort_weak_order
 
 # Constants
