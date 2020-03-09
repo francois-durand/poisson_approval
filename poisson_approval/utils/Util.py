@@ -45,13 +45,13 @@ def rand_simplex(d=6):
     return np.concatenate((x, [1])) - np.concatenate(([0], x))
 
 
-def rand_integers_fixed_sum(n_integers, fixed_sum):
+def rand_integers_fixed_sum(d, fixed_sum):
     """Generate integers with a given sum (uniformly).
 
     Parameters
     ----------
-    n_integers : int
-        The desired number of integers.
+    d : int
+        The desired number of integers. In other words, we consider a simplex of dimension `d - 1`.
     fixed_sum : int
         The fixed sum.
 
@@ -63,10 +63,10 @@ def rand_integers_fixed_sum(n_integers, fixed_sum):
     Examples
     --------
         >>> initialize_random_seeds()
-        >>> rand_integers_fixed_sum(n_integers=6, fixed_sum=100)
+        >>> rand_integers_fixed_sum(d=6, fixed_sum=100)
         array([ 2, 23, 34,  0, 22, 19])
     """
-    n_separators = n_integers - 1
+    n_separators = d - 1
     separators = np.concatenate((
         [-1],
         np.sort(np.random.choice(fixed_sum + n_separators, n_separators, replace=False)),
@@ -97,7 +97,7 @@ def rand_simplex_grid(d, denominator):
     """
     return np.array([
         Fraction(int(n), denominator)
-        for n in rand_integers_fixed_sum(n_integers=d, fixed_sum=denominator)])
+        for n in rand_integers_fixed_sum(d=d, fixed_sum=denominator)])
 
 
 def probability(generator, n_samples, test, conditional_on=None):
@@ -697,3 +697,76 @@ def my_division(x, y):
         return result.numerator
     else:
         return result
+
+
+def iterator_integers_fixed_sum(d, fixed_sum):
+    """Iterate over vectors of integers with a fixed sum.
+
+    Parameters
+    ----------
+    d : int
+        The desired number of integers. In other words, we consider a simplex of dimension `d - 1`.
+    fixed_sum : int
+        The fixed sum.
+
+    Yields
+    ------
+    tuple
+        Each tuple of `d` integers, whose sum is `fixed_sum`.
+
+    Examples
+    --------
+        >>> for t in iterator_integers_fixed_sum(d=3, fixed_sum=2):
+        ...     print(t)
+        (2, 0, 0)
+        (1, 1, 0)
+        (1, 0, 1)
+        (0, 2, 0)
+        (0, 1, 1)
+        (0, 0, 2)
+    """
+    if d == 1:
+        yield fixed_sum,
+    else:
+        for i in range(fixed_sum, -1, -1):
+            for r in iterator_integers_fixed_sum(d - 1, fixed_sum - i):
+                yield (i, *r)
+
+
+def iterator_simplex_grid(d, denominator):
+    """Iterate over the points in the simplex, with rational coordinates of a given denominator
+
+    Parameters
+    ----------
+    d : int
+        Number of coordinates. In other words, we consider the simplex of dimension `d - 1`.
+    denominator : int or iterable
+        The coordinates will be fractions with this denominator. If an iterable is given, we consider each
+        denominator given by the iterable.
+
+    Returns
+    -------
+    tuple
+        Each tuple of length `d`, whose coordinates are fractions of the given denominator, and whose sum is 1.
+
+    Examples
+    --------
+        >>> for t in iterator_simplex_grid(d=3, denominator=range(1, 3)):
+        ...     print(t)
+        (1, 0, 0)
+        (0, 1, 0)
+        (0, 0, 1)
+        (1, 0, 0)
+        (Fraction(1, 2), Fraction(1, 2), 0)
+        (Fraction(1, 2), 0, Fraction(1, 2))
+        (0, 1, 0)
+        (0, Fraction(1, 2), Fraction(1, 2))
+        (0, 0, 1)
+    """
+    if isinstance(denominator, int):
+        denominators = [denominator]
+    else:
+        denominators = denominator
+    for current_denominator in denominators:
+        for t in iterator_integers_fixed_sum(d, fixed_sum=current_denominator):
+            yield tuple(my_division(x, current_denominator) for x in t)
