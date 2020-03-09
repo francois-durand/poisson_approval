@@ -12,8 +12,8 @@ from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.ComputationEngineNumeric import ComputationEngineNumeric
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import candidates_to_probabilities, my_division, array_to_d_candidate_value, \
-    one_over_t_plus_one, ballot_one, ballot_one_two, ballot_low_u, ballot_high_u, \
-    to_callable, candidates_to_d_candidate_probability
+    one_over_t_plus_one, to_callable, candidates_to_d_candidate_probability
+from poisson_approval.utils.UtilBallots import ballot_one, ballot_one_two, ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 
 

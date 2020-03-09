@@ -1,5 +1,6 @@
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import isnan, ballot_high_u, ballot_low_u
+from poisson_approval.utils.Util import isnan
+from poisson_approval.utils.UtilBallots import ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property
 
 

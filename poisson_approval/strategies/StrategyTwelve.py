@@ -1,4 +1,4 @@
-from poisson_approval.utils.Util import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three
+from poisson_approval.utils.UtilBallots import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros

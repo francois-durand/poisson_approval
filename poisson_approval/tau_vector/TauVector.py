@@ -18,7 +18,8 @@ from poisson_approval.events.EventPivotWeak import EventPivotWeak
 from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import sort_ballot, my_division
+from poisson_approval.utils.Util import my_division
+from poisson_approval.utils.UtilBallots import sort_ballot
 from poisson_approval.utils.UtilCache import cached_property
 
 

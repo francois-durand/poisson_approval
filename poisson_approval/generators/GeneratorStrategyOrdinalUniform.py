@@ -1,6 +1,7 @@
 import random
 from poisson_approval.constants.constants import *
-from poisson_approval.utils.Util import initialize_random_seeds, ballot_one, ballot_one_two
+from poisson_approval.utils.Util import initialize_random_seeds
+from poisson_approval.utils.UtilBallots import ballot_one, ballot_one_two
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 
 

@@ -2,7 +2,7 @@ from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
-from poisson_approval.utils.Util import ballot_one, ballot_two, ballot_one_two, ballot_one_three
+from poisson_approval.utils.UtilBallots import ballot_one, ballot_two, ballot_one_two, ballot_one_three
 from poisson_approval.utils.UtilCache import cached_property
 
 

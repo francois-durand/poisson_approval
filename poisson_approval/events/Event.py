@@ -1,5 +1,6 @@
 from poisson_approval.utils.computation_engine import computation_engine
-from poisson_approval.utils.Util import isnan, sort_ballot
+from poisson_approval.utils.Util import isnan
+from poisson_approval.utils.UtilBallots import sort_ballot
 
 
 class Event:
