@@ -5,7 +5,8 @@ from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import sort_weak_order, my_division, product_dict
+from poisson_approval.utils.Util import my_division, product_dict
+from poisson_approval.utils.UtilPreferences import sort_weak_order
 from poisson_approval.utils.UtilCache import cached_property
 
 

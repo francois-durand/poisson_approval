@@ -9,7 +9,8 @@ from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import product_dict, sort_weak_order, my_division
+from poisson_approval.utils.Util import product_dict, my_division
+from poisson_approval.utils.UtilPreferences import sort_weak_order
 from poisson_approval.utils.UtilBallots import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three, \
     ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property

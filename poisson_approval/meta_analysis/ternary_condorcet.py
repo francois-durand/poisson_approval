@@ -5,7 +5,8 @@ try:
 except OSError:  # pragma: no cover
     pass
 from poisson_approval.constants.constants import CANDIDATES, PAIRS_WITHOUT_INVERSIONS
-from poisson_approval.utils.Util import is_weak_order, is_lover, my_division
+from poisson_approval.utils.Util import my_division
+from poisson_approval.utils.UtilPreferences import is_weak_order, is_lover
 
 
 def _polygon_victory(x, y, z, plus=0, zero=0, minus=0):  # pragma: no cover

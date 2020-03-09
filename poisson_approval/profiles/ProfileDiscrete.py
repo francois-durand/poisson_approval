@@ -3,7 +3,8 @@ from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
-from poisson_approval.utils.Util import product_dict, sort_weak_order, is_weak_order, my_division
+from poisson_approval.utils.Util import product_dict, my_division
+from poisson_approval.utils.UtilPreferences import is_weak_order, sort_weak_order
 from poisson_approval.utils.UtilCache import cached_property
 
 

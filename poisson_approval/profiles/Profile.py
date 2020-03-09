@@ -8,7 +8,8 @@ from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import is_lover, my_division, product_dict
+from poisson_approval.utils.Util import my_division, product_dict
+from poisson_approval.utils.UtilPreferences import is_lover
 from poisson_approval.utils.UtilBallots import sort_ballot, ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 

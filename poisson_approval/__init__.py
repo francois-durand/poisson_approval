@@ -19,6 +19,7 @@ from poisson_approval.utils.UtilBallots import ballot_one, ballot_two, ballot_on
     ballot_high_u, ballot_low_u
 from poisson_approval.utils.UtilCache import *
 from poisson_approval.utils.UtilMasks import *
+from poisson_approval.utils.UtilPreferences import is_hater, is_lover, is_weak_order, sort_weak_order
 
 # Constants
 from poisson_approval.constants.constants import *
