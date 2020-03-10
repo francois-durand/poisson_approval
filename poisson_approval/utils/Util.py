@@ -96,7 +96,7 @@ def rand_simplex_grid(d, denominator):
         array([Fraction(13, 50), Fraction(13, 20), Fraction(9, 100)], dtype=object)
     """
     return np.array([
-        Fraction(int(n), denominator)
+        my_division(int(n), denominator)
         for n in rand_integers_fixed_sum(d=d, fixed_sum=denominator)])
 
 

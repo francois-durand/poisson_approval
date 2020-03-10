@@ -6,6 +6,8 @@ Random Factories
    reference_rand_conditional
    reference_rand_profile_discrete_grid_uniform
    reference_rand_profile_discrete_uniform
+   reference_rand_profile_histogram_grid_uniform
+   reference_rand_profile_histogram_uniform
    reference_rand_profile_noisy_discrete_grid_uniform
    reference_rand_profile_noisy_discrete_uniform
    reference_rand_profile_ordinal_grid_uniform
