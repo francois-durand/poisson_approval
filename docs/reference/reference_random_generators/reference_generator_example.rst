@@ -1,4 +1,4 @@
-GeneratorExample
+RandConditional
 ----------------
-.. autoclass:: poisson_approval.GeneratorExample
+.. autoclass:: poisson_approval.RandConditional
     :members:
