@@ -3,7 +3,7 @@ import itertools
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.generators.GeneratorStrategyTwelveUniform import GeneratorStrategyTwelveUniform
+from poisson_approval.random_factories.RandStrategyTwelveUniform import RandStrategyTwelveUniform
 from poisson_approval.iterables.IterableStrategyTwelve import IterableStrategyTwelve
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
@@ -519,10 +519,10 @@ class ProfileTwelve(ProfileCardinal):
 
         Returns
         -------
-        StrategyThreshold
-            Uses :class:`GeneratorStrategyTwelveUniform`.
+        StrategyTwelve
+            Uses :class:`RandStrategyTwelveUniform`.
         """
-        return GeneratorStrategyTwelveUniform(**kwargs)()
+        return RandStrategyTwelveUniform(**kwargs)()
 
 
 def make_property_type_share(t, doc):

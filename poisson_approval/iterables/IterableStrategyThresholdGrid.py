@@ -86,7 +86,8 @@ class IterableStrategyThresholdGrid:
 
     Loop also over the ratios of optimistic voters:
 
-        >>> profile = ProfileHistogram({'abc': 0.75, 'bac': 0.25}, {'abc': [1], 'bac': [1]})
+        >>> from poisson_approval import ProfileDiscrete
+        >>> profile = ProfileDiscrete({('abc', 0.2): 0.75, ('bac', 0.4): 0.25})
         >>> iterable = IterableStrategyThresholdGrid(denominator_threshold=2, denominator_ratio_optimistic=2,
         ...                                          profile=profile)
         >>> for strategy in iterable:  # doctest: +ELLIPSIS

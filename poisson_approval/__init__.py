@@ -20,7 +20,7 @@ from poisson_approval.utils.Util import initialize_random_seeds, rand_simplex, r
     d_candidate_value_to_array, one_over_t_plus_one, one_over_sqrt_t_plus_one, one_over_log_t_plus_two, \
     one_over_log_log_t_plus_fifteen, my_division, iterator_integers_fixed_sum, iterate_simplex_grid
 from poisson_approval.utils.UtilBallots import ballot_one, ballot_two, ballot_one_two, ballot_one_three, \
-    ballot_high_u, ballot_low_u
+    ballot_high_u, ballot_low_u, allowed_ballots
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 from poisson_approval.utils.UtilMasks import masks_area_naive, masks_area, masks_distribution_naive, \
     masks_distribution, winners_distribution, random_mask, random_masks
@@ -87,15 +87,12 @@ from poisson_approval.iterables.IterableTauVectorGrid import IterableTauVectorGr
 # Random generators
 from poisson_approval.random_factories.RandConditional import RandConditional
 from poisson_approval.generators.GeneratorProfileOrdinalGridUniform import GeneratorProfileOrdinalGridUniform
-from poisson_approval.generators.GeneratorProfileOrdinalUniform import GeneratorProfileOrdinalUniform
+from poisson_approval.random_factories.RandProfileOrdinalUniform import RandProfileOrdinalUniform
 from poisson_approval.generators.GeneratorProfileOrdinalVariations import GeneratorProfileOrdinalVariations
 from poisson_approval.generators.GeneratorProfileHistogramSinglePeakedUniform \
     import GeneratorProfileHistogramSinglePeakedUniform
 from poisson_approval.generators.GeneratorProfileHistogramUniform import GeneratorProfileHistogramUniform
-from poisson_approval.generators.GeneratorStrategyOrdinalUniform import GeneratorStrategyOrdinalUniform
-from poisson_approval.generators.GeneratorStrategyThresholdUniform import GeneratorStrategyThresholdUniform
 from poisson_approval.generators.GeneratorTauVectorGridUniform import GeneratorTauVectorGridUniform
-from poisson_approval.generators.GeneratorTauVectorUniform import GeneratorTauVectorUniform
 
 # Meta-analysis
 from poisson_approval.meta_analysis.NiceStatsProfileOrdinal import NiceStatsProfileOrdinal

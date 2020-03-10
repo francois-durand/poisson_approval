@@ -1,6 +1,7 @@
 from poisson_approval.constants.constants import *
 from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.tau_vector.TauVector import TauVector
+from poisson_approval.utils.UtilBallots import allowed_ballots
 
 
 class IterableTauVectorGrid:
@@ -11,7 +12,7 @@ class IterableTauVectorGrid:
     denominator : int or iterable
         The grain(s) of the grid.
     ballots : iterable, optional
-        These ballots (e.g. ``'a'``, ``'ab'``) will have a variable share. Default: all ballots.
+        These ballots (e.g. ``'a'``, ``'ab'``) will have a variable share. Default: all allowed ballots.
     d_ballot_fixed_share : dict, optional
         A dictionary. For each entry ``ballot: fixed_share``, this ballot will have at least this fixed share. The total
         must be lower or equal to 1.
@@ -37,11 +38,22 @@ class IterableTauVectorGrid:
         <ab: 1> ==> a, b
         <ab: 1/2, ac: 1/2> ==> a
 
+    If the voting rule is not approval, only the relevant ballots are used:
+
+        >>> for tau in IterableTauVectorGrid(denominator=3, standardized=True, voting_rule=PLURALITY):
+        ...     print(tau)
+        <a: 1> ==> a (Plurality)
+        <a: 2/3, b: 1/3> ==> a (Plurality)
+        <a: 1/3, b: 1/3, c: 1/3> ==> a, b, c (Plurality)
+
     For more examples, cf. :class:`IterableSimplexGrid`.
     """
     def __init__(self, denominator, ballots=None, d_ballot_fixed_share=None, standardized=False, test=None, **kwargs):
         if ballots is None:
-            ballots = BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL
+            try:
+                ballots = allowed_ballots(kwargs['voting_rule'])
+            except KeyError:
+                ballots = allowed_ballots()
         self.standardized = standardized
         self._base_iterator = IterableSimplexGrid(cls=TauVector, denominator=denominator, keys=ballots,
                                                   d_key_fixed_share=d_ballot_fixed_share, test=test, **kwargs)

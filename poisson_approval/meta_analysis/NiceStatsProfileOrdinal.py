@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from poisson_approval.utils.Util import initialize_random_seeds
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
-from poisson_approval.generators.GeneratorProfileOrdinalUniform import GeneratorProfileOrdinalUniform
+from poisson_approval.random_factories.RandProfileOrdinalUniform import RandProfileOrdinalUniform
 
 
 # noinspection PyUnresolvedReferences
@@ -26,7 +26,7 @@ class NiceStatsProfileOrdinal:
     conditional_on : callable
         A function ``ProfileOrdinal -> bool``.
     generator_profiles : callable
-        A callable that inputs nothing and outputs a profile. Default: ``GeneratorProfileOrdinalUniform()``.
+        A callable that inputs nothing and outputs a profile. Default: ``RandProfileOrdinalUniform()``.
 
     Notes
     -----
@@ -75,7 +75,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         self.tests_strategy_dist = [] if tests_strategy_dist is None else tests_strategy_dist
         self.tests_strategy_winners = [] if tests_strategy_winners is None else tests_strategy_winners
         self.conditional_on = (lambda profile: True) if conditional_on is None else conditional_on
-        self.generator_profiles = GeneratorProfileOrdinalUniform() if generator_profiles is None else generator_profiles
+        self.generator_profiles = RandProfileOrdinalUniform() if generator_profiles is None else generator_profiles
         # Computed variables
         self.n_samples = None
         self.profiles = None

@@ -4,7 +4,7 @@ import numpy as np
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.generators.GeneratorStrategyThresholdUniform import GeneratorStrategyThresholdUniform
+from poisson_approval.random_factories.RandStrategyThresholdUniform import RandStrategyThresholdUniform
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
@@ -41,6 +41,8 @@ class ProfileCardinal(Profile):
 
     well_informed_voters = property_deleting_cache('_well_informed_voters')
     ratio_fanatic = property_deleting_cache('_ratio_fanatic')
+
+    is_continuous = False
 
     def have_ranking_with_utility_above_u(self, ranking, u):
         """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
@@ -559,9 +561,9 @@ class ProfileCardinal(Profile):
         Returns
         -------
         StrategyThreshold
-            Uses :class:`GeneratorStrategyThresholdUniform`.
+            Uses :class:`RandStrategyThresholdUniform`.
         """
-        return GeneratorStrategyThresholdUniform(**kwargs)()
+        return RandStrategyThresholdUniform(**kwargs)()
 
 
 def _my_round(x):

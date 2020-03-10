@@ -48,7 +48,7 @@ class IterableSimplexGrid:
         {a: 1/3, b: 2/3}
         {a: 0, b: 1}
 
-    If `d_fixed_share` is given, then these shares are fixed, and the remaining share is split between `keys`:
+    If `d_key_fixed_share` is given, then these shares are fixed, and the remaining share is split between `keys`:
 
         >>> for d in IterableSimplexGrid(cls=DictPrintingInOrder, denominator=3, keys=['a', 'b'],
         ...                              d_key_fixed_share={'c': Fraction(1, 2)}):

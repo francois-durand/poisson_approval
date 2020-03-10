@@ -1,5 +1,37 @@
-from poisson_approval.constants.constants import APPROVAL, PLURALITY, ANTI_PLURALITY
+from poisson_approval.constants.constants import APPROVAL, PLURALITY, ANTI_PLURALITY, \
+    CANDIDATES, PAIRS_WITHOUT_INVERSIONS, BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL
 
+
+def allowed_ballots(voting_rule=APPROVAL):
+    """Allowed ballots in a voting rule.
+
+    Parameters
+    ----------
+    voting_rule : str
+        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.
+
+    Returns
+    -------
+    list
+        The list of all allowed ballots.
+
+    Examples
+    --------
+        >>> allowed_ballots(APPROVAL)
+        ['a', 'ab', 'ac', 'b', 'bc', 'c']
+        >>> allowed_ballots(PLURALITY)
+        ['a', 'b', 'c']
+        >>> allowed_ballots(ANTI_PLURALITY)
+        ['ab', 'ac', 'bc']
+    """
+    if voting_rule == APPROVAL:
+        return BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL
+    elif voting_rule == PLURALITY:
+        return CANDIDATES
+    elif voting_rule == ANTI_PLURALITY:
+        return PAIRS_WITHOUT_INVERSIONS
+    else:  # pragma: no cover
+        raise NotImplementedError
 
 def ballot_one(ranking):
     """Ballot for the voter's preferred candidate.

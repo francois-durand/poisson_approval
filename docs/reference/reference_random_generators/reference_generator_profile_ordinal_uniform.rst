@@ -1,4 +1,4 @@
-GeneratorProfileOrdinalUniform
+RandProfileOrdinalUniform
 ------------------------------
-.. autoclass:: poisson_approval.GeneratorProfileOrdinalUniform
+.. autoclass:: poisson_approval.RandProfileOrdinalUniform
     :members:
