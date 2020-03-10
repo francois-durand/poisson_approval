@@ -12,13 +12,15 @@ class IterableProfileOrdinalGrid:
         The grain(s) of the grid.
     orders : iterable, optional
         These orders will have a variable share. They can be rankings, e.g. ``'abc'``, or weak orders, e.g.
-        ``'a~b>c'``.
-    d_order_fixed_share : dict
+        ``'a~b>c'``. Default: all rankings.
+    d_order_fixed_share : dict, optional
         A dictionary. For each entry ``order: fixed_share``, this order will have at least this fixed share. The total
         must be lower or equal to 1.
-    standardized : bool
-        If True, then only standardized profiles are given. Cf. :meth:`Profile.is_standardized`.
-    test : callable
+    standardized : bool, optional
+        If True, then only standardized profiles are given. Cf. :meth:`Profile.is_standardized`. You should
+        probably use this option if the arguments `orders`, `d_order_fixed_share` and `test` treat the candidates
+        symmetrically.
+    test : callable, optional
         A function ``ProfileOrdinal -> bool``. Only profiles meeting this test are given.
     kwargs
         Additional parameters are passed to `ProfileOrdinal` when creating the profile.
@@ -27,7 +29,7 @@ class IterableProfileOrdinalGrid:
     --------
     Basic usage:
 
-        >>> for profile in IterableProfileOrdinalGrid(denominator=3):
+        >>> for profile in IterableProfileOrdinalGrid(denominator=3, standardized=True):
         ...     print(profile)
         <abc: 1> (Condorcet winner: a)
         <abc: 2/3, acb: 1/3> (Condorcet winner: a)
@@ -42,7 +44,7 @@ class IterableProfileOrdinalGrid:
 
     For more examples, cf. :class:`IterableSimplexGrid`.
     """
-    def __init__(self, denominator, orders=None, d_order_fixed_share=None, standardized=True, test=None, **kwargs):
+    def __init__(self, denominator, orders=None, d_order_fixed_share=None, standardized=False, test=None, **kwargs):
         if orders is None:
             orders = RANKINGS
         self.standardized = standardized
