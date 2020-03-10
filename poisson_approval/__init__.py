@@ -104,7 +104,6 @@ from poisson_approval.random_factories.RandTauVectorGridUniform import RandTauVe
 from poisson_approval.random_factories.RandTauVectorUniform import RandTauVectorUniform
 
 # Old generators (deprecated)
-from poisson_approval.generators.GeneratorProfileOrdinalVariations import GeneratorProfileOrdinalVariations
 from poisson_approval.generators.GeneratorProfileHistogramSinglePeakedUniform \
     import GeneratorProfileHistogramSinglePeakedUniform
 from poisson_approval.generators.GeneratorProfileHistogramUniform import GeneratorProfileHistogramUniform
