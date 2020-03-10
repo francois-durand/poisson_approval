@@ -4,13 +4,13 @@ from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.containers.Winners import Winners
-from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
+from poisson_approval.iterables.IterableStrategyOrdinal import IterableStrategyOrdinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import my_division, product_dict
+from poisson_approval.utils.Util import my_division
 from poisson_approval.utils.UtilPreferences import is_lover
-from poisson_approval.utils.UtilBallots import sort_ballot, ballot_low_u, ballot_high_u
+from poisson_approval.utils.UtilBallots import sort_ballot
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
@@ -304,12 +304,7 @@ class Profile(DeleteCacheMixin):
         --------
         Cf. :class:`ProfileOrdinal`.
         """
-        d_ranking_possible_ballots = {ranking: [ballot_low_u(ranking, self.voting_rule),
-                                                ballot_high_u(ranking, self.voting_rule)]
-                                      if self.d_ranking_share[ranking] > 0 else ['']
-                                      for ranking in RANKINGS}
-        for d_ranking_ballot in product_dict(d_ranking_possible_ballots):
-            yield StrategyOrdinal(d_ranking_ballot, profile=self, voting_rule=self.voting_rule)
+        return IterableStrategyOrdinal(profile=self)
 
     @property
     def strategies_pure(self):

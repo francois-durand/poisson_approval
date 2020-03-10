@@ -4,6 +4,7 @@ from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.generators.GeneratorStrategyTwelveUniform import GeneratorStrategyTwelveUniform
+from poisson_approval.iterables.IterableStrategyTwelve import IterableStrategyTwelve
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.tau_vector.TauVector import TauVector
@@ -485,24 +486,7 @@ class ProfileTwelve(ProfileCardinal):
         StrategyTwelve
             All possible pure strategies of the profile.
         """
-        def possible_strategies(share_ranking_1, share_ranking_12, strategy_1, strategy_12):
-            if share_ranking_1 > 0 and share_ranking_12 > 0:
-                return [strategy_1, strategy_12, UTILITY_DEPENDENT]
-            elif share_ranking_1 > 0 or share_ranking_12 > 0:
-                return [strategy_1, strategy_12]
-            else:
-                return ['']
-
-        d_ranking_possible_strategies = {
-            ranking: possible_strategies(share_ranking_1=self.d_type_share[ranking[0] + '_' + ranking[1:]],
-                                         share_ranking_12=self.d_type_share[ranking[0:2] + '_' + ranking[2]],
-                                         strategy_1=ballot_low_u(ranking, self.voting_rule),
-                                         strategy_12=ballot_high_u(ranking, self.voting_rule))
-            for ranking in RANKINGS
-        }
-
-        for d_ranking_strategy in product_dict(d_ranking_possible_strategies):
-            yield StrategyTwelve(d_ranking_strategy, profile=self)
+        return IterableStrategyTwelve(profile=self)
 
     @property
     def strategies_group(self):
