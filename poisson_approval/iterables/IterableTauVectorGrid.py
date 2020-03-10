@@ -31,8 +31,8 @@ class IterableTauVectorGrid:
         >>> for tau in IterableTauVectorGrid(denominator=2, standardized=True):
         ...     print(tau)
         <a: 1> ==> a
-        <a: 1/2, b: 1/2> ==> a, b
         <a: 1/2, ab: 1/2> ==> a
+        <a: 1/2, b: 1/2> ==> a, b
         <a: 1/2, bc: 1/2> ==> a, b, c
         <ab: 1> ==> a, b
         <ab: 1/2, ac: 1/2> ==> a
@@ -41,11 +41,11 @@ class IterableTauVectorGrid:
     """
     def __init__(self, denominator, ballots=None, d_ballot_fixed_share=None, standardized=False, test=None, **kwargs):
         if ballots is None:
-            ballots = BALLOTS_WITHOUT_INVERSIONS
+            ballots = BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL
         self.standardized = standardized
         self._base_iterator = IterableSimplexGrid(cls=TauVector, denominator=denominator, keys=ballots,
                                                   d_key_fixed_share=d_ballot_fixed_share, test=test, **kwargs)
 
     def __iter__(self):
-        return (profile for profile in self._base_iterator
-                if not self.standardized or profile.is_standardized)
+        return (tau for tau in self._base_iterator
+                if not self.standardized or tau.is_standardized)

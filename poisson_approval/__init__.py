@@ -73,10 +73,6 @@ from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalC
 from poisson_approval.profiles.ProfileTwelve import ProfileTwelve
 from poisson_approval.profiles.ProfileHistogram import ProfileHistogram
 
-# Grid explorations
-from poisson_approval.explore_grid.ExploreGridProfilesOrdinal import ExploreGridProfilesOrdinal
-from poisson_approval.explore_grid.ExploreGridTaus import ExploreGridTaus
-
 # Iterables
 from poisson_approval.iterables.IterableProfileDiscreteGrid import IterableProfileDiscreteGrid
 from poisson_approval.iterables.IterableProfileNoisyDiscreteGrid import IterableProfileNoisyDiscreteGrid
