@@ -77,6 +77,9 @@ from poisson_approval.profiles.ProfileHistogram import ProfileHistogram
 from poisson_approval.explore_grid.ExploreGridProfilesOrdinal import ExploreGridProfilesOrdinal
 from poisson_approval.explore_grid.ExploreGridTaus import ExploreGridTaus
 
+# Iterables
+from poisson_approval.iterables.IterableStrategyThresholdGrid import IterableStrategyThresholdGrid
+
 # Random generators
 from poisson_approval.generators.GeneratorExample import GeneratorExample
 from poisson_approval.generators.GeneratorProfileOrdinalGridUniform import GeneratorProfileOrdinalGridUniform
