@@ -12,6 +12,6 @@ Reference
    reference_strategies/index
    reference_profiles/index
    reference_iterables/index
-   reference_random_generators/index
+   reference_random_factories/index
    reference_meta_analysis/index
    reference_utils/index
