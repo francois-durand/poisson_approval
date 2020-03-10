@@ -733,7 +733,7 @@ def iterator_integers_fixed_sum(d, fixed_sum):
                 yield (i, *r)
 
 
-def iterator_simplex_grid(d, denominator):
+def iterate_simplex_grid(d, denominator):
     """Iterate over the points in the simplex, with rational coordinates of a given denominator
 
     Parameters
@@ -751,7 +751,7 @@ def iterator_simplex_grid(d, denominator):
 
     Examples
     --------
-        >>> for t in iterator_simplex_grid(d=3, denominator=range(1, 3)):
+        >>> for t in iterate_simplex_grid(d=3, denominator=range(1, 3)):
         ...     print(t)
         (1, 0, 0)
         (0, 1, 0)

@@ -1,25 +1,32 @@
 from poisson_approval.constants.constants import *
-from poisson_approval.iterators.IterableSimplexGrid import IterableSimplexGrid
+from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
 
 
 class IterableProfileOrdinalGrid:
-    """
+    """Iterate over ordinal profiles (:class:`ProfileOrdinal`) defined on a grid.
 
     Parameters
     ----------
-    denominator
-    orders
-    d_order_fixed_share
-    standardized
-    test
+    denominator : int or iterable
+        The grain(s) of the grid.
+    orders : iterable, optional
+        These orders will have a variable share. They can be rankings, e.g. ``'abc'``, or weak orders, e.g.
+        ``'a~b>c'``.
+    d_order_fixed_share : dict
+        A dictionary. For each entry ``order: fixed_share``, this order will have at least this fixed share. The total
+        must be lower or equal to 1.
+    standardized : bool
+        If True, then only standardized profiles are given. Cf. :meth:`Profile.is_standardized`.
+    test : callable
+        A function ``ProfileOrdinal -> bool``. Only profiles meeting this test are given.
     kwargs
-
-    Returns
-    -------
+        Additional parameters are passed to `ProfileOrdinal` when creating the profile.
 
     Examples
     --------
+    Basic usage:
+
         >>> for profile in IterableProfileOrdinalGrid(denominator=3):
         ...     print(profile)
         <abc: 1> (Condorcet winner: a)
@@ -33,11 +40,7 @@ class IterableProfileOrdinalGrid:
         <abc: 1/3, bac: 1/3, cab: 1/3> (Condorcet winner: a)
         <abc: 1/3, bca: 1/3, cab: 1/3>
 
-        >>> def test_not_condorcet(profile):
-        ...     return profile.is_profile_condorcet == 0.0
-        >>> for profile in IterableProfileOrdinalGrid(denominator=3, test=test_not_condorcet):
-        ...     print(profile)
-        <abc: 1/3, bca: 1/3, cab: 1/3>
+    For more examples, cf. :class:`IterableSimplexGrid`.
     """
     def __init__(self, denominator, orders=None, d_order_fixed_share=None, standardized=True, test=None, **kwargs):
         if orders is None:
