@@ -25,7 +25,7 @@ class NiceStatsProfileOrdinal:
         For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.
     conditional_on : callable
         A function ``ProfileOrdinal -> bool``.
-    generator_profiles : callable
+    factory_profiles : callable
         A callable that inputs nothing and outputs a profile. Default: ``RandProfileOrdinalUniform()``.
 
     Notes
@@ -69,13 +69,13 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
     """
 
     def __init__(self, tests_profile=None, tests_strategy=None, tests_strategy_dist=None, tests_strategy_winners=None,
-                 conditional_on=None, generator_profiles=None):
+                 conditional_on=None, factory_profiles=None):
         self.tests_profile = [] if tests_profile is None else tests_profile
         self.tests_strategy = [] if tests_strategy is None else tests_strategy
         self.tests_strategy_dist = [] if tests_strategy_dist is None else tests_strategy_dist
         self.tests_strategy_winners = [] if tests_strategy_winners is None else tests_strategy_winners
         self.conditional_on = (lambda profile: True) if conditional_on is None else conditional_on
-        self.generator_profiles = RandProfileOrdinalUniform() if generator_profiles is None else generator_profiles
+        self.factory_profiles = RandProfileOrdinalUniform() if factory_profiles is None else factory_profiles
         # Computed variables
         self.n_samples = None
         self.profiles = None
@@ -100,7 +100,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         self.results_strategy_dist = [np.zeros(2 ** 6) for _ in range(len(self.tests_strategy_dist))]
         self.results_strategy_winners = [np.zeros(4) for _ in range(len(self.tests_strategy_winners))]
         while i_sample < n_samples:
-            profile = self.generator_profiles()
+            profile = self.factory_profiles()
             if self.conditional_on(profile):
                 i_sample += 1
             else:

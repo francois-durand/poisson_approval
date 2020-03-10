@@ -514,7 +514,7 @@ class ProfileTwelve(ProfileCardinal):
     def random_strategy(cls, **kwargs):
         """Random strategy.
 
-        This is a default generator of random strategies. It is used, for example, in
+        This is a default factory of random strategies. It is used, for example, in
         :class:`ProfileCardinal.iterated_voting`.
 
         Returns
