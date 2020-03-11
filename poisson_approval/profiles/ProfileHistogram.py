@@ -507,4 +507,18 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
     @classmethod
     def order_and_label(cls, t):
-        raise NotImplementedError
+        r"""Order and label of a discrete type.
+
+        Cf. :meth:`Profile.order_and_label`.
+
+        Examples
+        --------
+            >>> ProfileHistogram.order_and_label(('abc', (0.1, 0.5, 0.4)))
+            ('abc', '$r(abc)$')
+            >>> ProfileHistogram.order_and_label('a~b>c')
+            ('a~b>c', '$r(a\\sim b>c)$')
+        """
+        if isinstance(t, tuple):
+            return t[0], '$r(%s)$' % t[0]
+        else:
+            return cls.order_and_label_weak(t)
