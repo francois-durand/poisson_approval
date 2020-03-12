@@ -34,8 +34,9 @@ Features
 * Compute the best response to a given tau-vector.
 * Explore automatically a grid of ordinal profiles or a grid of tau-vectors.
 * Perform Monte-Carlo experiments on profiles or tau-vectors.
-* Search an equilibrium by iterated voting / fictitious play.
+* Search an equilibrium by iterated voting or fictitious play.
 * In addition to Approval, implement Plurality and Anti-plurality as Poisson games.
+* Perform numeric or symbolic computation.
 
 -------
 Credits
