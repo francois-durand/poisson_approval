@@ -10,5 +10,5 @@ Tutorials
    tutorial_ternary_plots
    tutorial_probabilities
    tutorial_iterables
-   tutorial_other_classes_of_profiles
+   tutorial_more_classes_of_profiles
    tutorial_asymptotic_developments
