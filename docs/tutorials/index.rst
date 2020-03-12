@@ -4,12 +4,11 @@ Tutorials
 
 .. toctree::
 
-   tutorial_profile_ordinal
-   tutorial_profile_twelve
-   tutorial_profile_histogram
-   tutorial_profile_discrete
-   tutorial_plurality_anti_plurality
+   tutorial_profile_noisy_discrete
+   tutorial_profile_noisy_discrete_more_options
    tutorial_tau_vector
-   tutorial_mass_simulations
    tutorial_ternary_plots
+   tutorial_probabilities
+   tutorial_iterables
+   tutorial_other_classes_of_profiles
    tutorial_asymptotic_developments
