@@ -11,6 +11,8 @@ class ProfileCardinalContinuous(ProfileCardinal):
     Cf. :class:`ProfileCardinal`.
     """
 
+    is_continuous = True
+
     def have_ranking_with_utility_u(self, ranking, u):
         """Share of voters who have a given ranking and a given utility for their middle candidate.
 

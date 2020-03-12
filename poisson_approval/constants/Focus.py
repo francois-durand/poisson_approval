@@ -38,6 +38,12 @@ class Focus:
         return self.r
 
     def __eq__(self, other):
+        """
+            >>> Focus.DIRECT == Focus.DIRECT
+            True
+            >>> Focus.DIRECT == Focus.FORWARD_FOCUSED
+            False
+        """
         return self.s == other.s
 
 

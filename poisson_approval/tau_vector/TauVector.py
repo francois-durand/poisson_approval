@@ -179,7 +179,7 @@ phi_ab = 0.707107>
         # Normalize if necessary
         total = sum(self.d_ballot_share.values())
         if not self.ce.look_equal(total, 1):
-            if normalization_warning:
+            if normalization_warning and not self.ce.look_equal(total, 1, rel_tol=1e-5):
                 warnings.warn(NORMALIZATION_WARNING)
             for ballot in self.d_ballot_share.keys():
                 self.d_ballot_share[ballot] = my_division(self.d_ballot_share[ballot], total)

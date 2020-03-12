@@ -64,3 +64,21 @@ def test_tau_anti_plurality():
 'cba': <ballot = bc, threshold_utility = 0, justification = Anti-plurality analysis>}
     """
     pass
+
+
+def test_unfocused():
+    """
+        >>> tau = TauVector({'a': 1})
+        >>> tau.focus
+        Focus.UNFOCUSED
+    """
+    pass
+
+
+def test_backward_focused():
+    """
+        >>> tau = TauVector({'ab': Fraction(1, 2), 'ac': Fraction(1, 2)})
+        >>> tau.focus
+        Focus.BACKWARD_FOCUSED
+    """
+    pass

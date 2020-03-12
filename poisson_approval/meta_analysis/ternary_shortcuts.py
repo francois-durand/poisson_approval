@@ -31,13 +31,26 @@ class SimplexToProfile:
 
     Examples
     --------
+    Typical usage:
+
         >>> simplex_to_profile = SimplexToProfile(
-        ...     ProfileNoisyDiscrete, left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type='c>a~b',
+        ...     ProfileNoisyDiscrete,
+        ...     left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type='c>a~b',
         ...     d_type_fixed_share={('abc', 0.1, 0.01): Fraction(1, 10), ('abc', 0.9, 0.01): Fraction(2, 10)})
         >>> profile = simplex_to_profile(left=Fraction(11, 80), top=Fraction(52, 80), right=Fraction(17, 80))
         >>> print(profile)
         <abc 0.1 ± 0.01: 1/10, abc 0.5 ± 0.01: 77/800, abc 0.9 ± 0.01: 1/5, bac 0.5 ± 0.01: 119/800, c>a~b: 91/200> \
 (Condorcet winner: a)
+
+    The types with variable share and fixed share may overlap:
+
+        >>> simplex_to_profile = SimplexToProfile(
+        ...     ProfileNoisyDiscrete,
+        ...     left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type='c>a~b',
+        ...     d_type_fixed_share={('abc', 0.5, 0.01): Fraction(93, 100)})
+        >>> profile = simplex_to_profile(left=Fraction(4, 7), top=Fraction(2, 7), right=Fraction(1, 7))
+        >>> print(profile)
+        <abc 0.5 ± 0.01: 97/100, bac 0.5 ± 0.01: 1/100, c>a~b: 1/50> (Condorcet winner: a)
     """
 
     def __init__(self, cls, right_type, top_type, left_type, d_type_fixed_share=None, **kwargs):
@@ -58,10 +71,11 @@ class SimplexToProfile:
             self.d_order_fixed_share[order] = self.d_order_fixed_share.get(order, 0) + share
 
     def __call__(self, right, top, left):
-        d_type_share = {self.right_type: right * self.variable_share,
-                        self.top_type: top * self.variable_share,
-                        self.left_type: left * self.variable_share}
+        d_type_share = dict()
         d_type_share.update(self.d_type_fixed_share)
+        d_type_share[self.right_type] = d_type_share.get(self.right_type, 0) + right * self.variable_share
+        d_type_share[self.top_type] = d_type_share.get(self.top_type, 0) + top * self.variable_share
+        d_type_share[self.left_type] = d_type_share.get(self.left_type, 0) + left * self.variable_share
         return self.cls(d_type_share, **self.kwargs)
 
 

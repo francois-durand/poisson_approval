@@ -149,7 +149,7 @@ TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
         (None, TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}))
         >>> initialize_random_seeds()
         >>> profile._initializer('random')
-        (StrategyTwelve({'abc': 'ab', 'acb': 'ac', 'bac': 'b', 'bca': 'bc', 'cab': 'utility-dependent', 'cba': 'bc'}), \
+        (StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}), \
 TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
     """
     pass

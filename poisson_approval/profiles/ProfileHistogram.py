@@ -6,7 +6,7 @@ from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import my_division, product_dict
-from poisson_approval.utils.UtilPreferences import sort_weak_order
+from poisson_approval.utils.UtilPreferences import sort_weak_order, is_weak_order
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -128,9 +128,20 @@ class ProfileHistogram(ProfileCardinalContinuous):
 d_weak_order_share={'a~c>b': Fraction(3, 10)})
         >>> print(profile)
         <abc: 1/10 [1], bac: 3/5 [1 0], a~c>b: 3/10> (Condorcet winner: b)
+
+    An alternate syntax to define a profile:
+
+        >>> profile = ProfileHistogram({
+        ...     ('abc', (1, )): Fraction(1, 10), ('bac', (1, 0)): Fraction(6, 10),
+        ...     ('cab', (Fraction(2, 3), 0, 0, 0, 0, 0, 0, 0, 0, Fraction(1, 3))): Fraction(2, 10),
+        ...     'a~b>c': Fraction(1, 10)
+        ... })
+        >>> print(profile)
+        <abc: 1/10 [1], bac: 3/5 [1 0], cab: 1/5 [Fraction(2, 3) 0 0 0 0 0 0 0 0 Fraction(1, 3)], a~b>c: 1/10> \
+(Condorcet winner: b)
     """
 
-    def __init__(self, d_ranking_share, d_ranking_histogram, d_weak_order_share=None,
+    def __init__(self, d_ranking_share, d_ranking_histogram=None, d_weak_order_share=None,
                  normalization_warning=True, ratio_sincere=0, ratio_fanatic=0, voting_rule=APPROVAL, symbolic=False):
         """
             >>> profile = ProfileHistogram(d_ranking_share={'abc': 1},
@@ -140,23 +151,35 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         """
         super().__init__(ratio_sincere=ratio_sincere, ratio_fanatic=ratio_fanatic, voting_rule=voting_rule,
                          symbolic=symbolic)
+        if d_ranking_histogram is None:
+            d_ranking_histogram = dict()
         if d_weak_order_share is None:
             d_weak_order_share = dict()
-        # Populate the dictionary (and check for typos in the input)
+        # Populate the dictionaries (and check for typos in the input)
         self._d_ranking_share = DictPrintingInOrderIgnoringZeros(
             {ranking: 0 for ranking in RANKINGS})
         self.d_ranking_histogram = DictPrintingInOrderIgnoringZeros(
             {ranking: np.array([], dtype=int) for ranking in RANKINGS})
-        for ranking, share in d_ranking_share.items():
-            self._d_ranking_share[ranking] += share
+        self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
+            weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
+        for key, share in d_ranking_share.items():
+            if is_weak_order(key):
+                # 'a~b>c': 0.4
+                self._d_weak_order_share[sort_weak_order(key)] += share
+            elif isinstance(key, str):
+                # 'abc': 0.4
+                self._d_ranking_share[key] += share
+            else:
+                # ('abc', (0.4, 0.3, 0.2, 0.1)): 0.4
+                ranking, histogram = key
+                self._d_ranking_share[ranking] += share
+                self.d_ranking_histogram[ranking] = np.array(histogram)
         for ranking, histogram in d_ranking_histogram.items():
             if ranking in RANKINGS:
                 self.d_ranking_histogram[ranking] = np.array(histogram)
             else:
                 raise KeyError('%s' % ranking)
         # Dictionary of weak orders
-        self._d_weak_order_share = DictPrintingInOrderIgnoringZeros({
-            weak_order: 0 for weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS})
         for weak_order, share in d_weak_order_share.items():
             self._d_weak_order_share[sort_weak_order(weak_order)] += share
         # Normalize if necessary
@@ -484,4 +507,18 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
     @classmethod
     def order_and_label(cls, t):
-        raise NotImplementedError
+        r"""Order and label of a discrete type.
+
+        Cf. :meth:`Profile.order_and_label`.
+
+        Examples
+        --------
+            >>> ProfileHistogram.order_and_label(('abc', (0.1, 0.5, 0.4)))
+            ('abc', '$r(abc)$')
+            >>> ProfileHistogram.order_and_label('a~b>c')
+            ('a~b>c', '$r(a\\sim b>c)$')
+        """
+        if isinstance(t, tuple):
+            return t[0], '$r(%s)$' % t[0]
+        else:
+            return cls.order_and_label_weak(t)

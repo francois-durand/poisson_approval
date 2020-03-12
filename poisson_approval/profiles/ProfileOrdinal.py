@@ -3,8 +3,8 @@ import itertools
 import numpy as np
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.generators.GeneratorStrategyOrdinalUniform import GeneratorStrategyOrdinalUniform
 from poisson_approval.profiles.Profile import Profile
+from poisson_approval.random_factories.RandStrategyOrdinalUniform import RandStrategyOrdinalUniform
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -548,12 +548,12 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
     def random_strategy(cls, **kwargs):
         """Random strategy.
 
-        This is a default generator of random strategies. It is used, for example, in
+        This is a default factory of random strategies. It is used, for example, in
         :class:`ProfileCardinal.iterated_voting`.
 
         Returns
         -------
         StrategyOrdinal
-            Uses :class:`GeneratorStrategyOrdinalUniform`.
+            Uses :class:`RandStrategyOrdinalUniform`.
         """
-        return GeneratorStrategyOrdinalUniform(**kwargs)()
+        return RandStrategyOrdinalUniform(**kwargs)()

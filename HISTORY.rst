@@ -2,6 +2,30 @@
 History
 =======
 
+---------------------------------------------------
+0.21.0 (2020-03-12): Iterables and Random Factories
+---------------------------------------------------
+
+* Add new iterables and random factories for profiles, tau-vectors and strategies. These iterables and random factories
+  are very flexible: you can specify that some types have a fixed share, that only some types have a variable share,
+  etc. Cf. the corresponding tutorials and the corresponding section in Reference.
+* Remove ``ExploreGridProfilesOrdinal`` and ``ExploreGridTaus``: their features are included in the new iterables.
+* Remove all classes whose name began with ``Generator``: their features are included in the new random factories.
+* All the methods that had a parameter ``generator`` now have a parameter ``factory`` instead. This choice is due to
+  the fact that the word "generator" has another meaning in Python, which could be misleading.
+* ``SimplexToProfile`` works similarly to the new iterables and random factories. In particular it is now allowed to
+  use the same type several times, for example in the fixed shares and in the variable shares.
+* There is a new syntax option to define a ``ProfileHistogram``, which is especially convenient for
+  iterables and random factories.
+* Utilities:
+
+  * Add ``iterator_integers_fixed_sum``: iterate over vectors of integers with a fixed sum.
+  * Add ``iterate_simplex_grid``: iterate over the points in the simplex, with rational coordinates of a given
+    denominator.
+  * Add ``allowed_ballots``: allowed ballots in a voting rule.
+
+* Complete revision of the tutorials.
+
 -----------------------------------------
 0.20.0 (2020-03-03): Symbolic Computation
 -----------------------------------------
