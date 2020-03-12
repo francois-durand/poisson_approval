@@ -54,6 +54,15 @@ cba: utility-dependent (0.7917250380826646, 0.5288949197529045)>
         <abc: a, acb: a, bac: b, bca: utility-dependent (0.5, 0.5), \
 cab: utility-dependent (0.07103605819788694, 0.08712929970154071), \
 cba: utility-dependent (0.02021839744032572, 0.832619845547938)>
+
+    Give the ratio of optimistic voters explicitly:
+
+        >>> rand_strategy = RandStrategyThresholdUniform(
+        ...     d_ranking_fixed_strategy={'abc': 1, 'acb': 1, 'bac': 1, 'bca': 1},
+        ...     ratio_optimistic=0.42)
+        >>> print(rand_strategy())
+        <abc: a, acb: a, bac: b, bca: b, cab: utility-dependent (0.7781567509498505, 0.42), \
+cba: utility-dependent (0.8700121482468192, 0.42)>
     """
 
     def __init__(self, profile=None, voting_rule=None, d_ranking_fixed_strategy=None, ratio_optimistic=None):

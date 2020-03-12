@@ -45,6 +45,24 @@ class IterableProfileTwelveGrid:
     For more examples, cf. :class:`IterableSimplexGrid`.
     """
     def __init__(self, denominator, types=None, d_type_fixed_share=None, standardized=False, test=None, **kwargs):
+        """
+        If `type` is None, then all types are considered:
+
+            >>> for profile in IterableProfileTwelveGrid(denominator=1):
+            ...     print(profile)
+            <a_bc: 1> (Condorcet winner: a)
+            <ab_c: 1> (Condorcet winner: a)
+            <a_cb: 1> (Condorcet winner: a)
+            <ac_b: 1> (Condorcet winner: a)
+            <b_ac: 1> (Condorcet winner: b)
+            <ba_c: 1> (Condorcet winner: b)
+            <b_ca: 1> (Condorcet winner: b)
+            <bc_a: 1> (Condorcet winner: b)
+            <c_ab: 1> (Condorcet winner: c)
+            <ca_b: 1> (Condorcet winner: c)
+            <c_ba: 1> (Condorcet winner: c)
+            <cb_a: 1> (Condorcet winner: c)
+        """
         if types is None:
             types = TWELVE_TYPES
         self.standardized = standardized

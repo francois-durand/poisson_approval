@@ -104,6 +104,30 @@ class IterableStrategyThresholdGrid:
 
     def __init__(self, denominator_threshold, denominator_ratio_optimistic=None, profile=None, voting_rule=None,
                  d_ranking_fixed_strategy=None, test=None, **kwargs):
+        """
+        We can use an iterable for `denominator_threshold` and `denominator_ratio_optimistic`:
+
+            >>> from poisson_approval import ProfileDiscrete
+            >>> profile = ProfileDiscrete({('abc', 0.2): 0.75})
+            >>> iterable = IterableStrategyThresholdGrid(denominator_threshold=[2, 3],
+            ...                                          denominator_ratio_optimistic=[2],
+            ...                                          profile=profile)
+            >>> for strategy in iterable:
+            ...     print(repr(strategy))
+            StrategyThreshold({'abc': 0})
+            StrategyThreshold({'abc': (Fraction(1, 2), 0)})
+            StrategyThreshold({'abc': (Fraction(1, 2), Fraction(1, 2))})
+            StrategyThreshold({'abc': (Fraction(1, 2), 1)})
+            StrategyThreshold({'abc': 1})
+            StrategyThreshold({'abc': 0})
+            StrategyThreshold({'abc': (Fraction(1, 3), 0)})
+            StrategyThreshold({'abc': (Fraction(1, 3), Fraction(1, 2))})
+            StrategyThreshold({'abc': (Fraction(1, 3), 1)})
+            StrategyThreshold({'abc': (Fraction(2, 3), 0)})
+            StrategyThreshold({'abc': (Fraction(2, 3), Fraction(1, 2))})
+            StrategyThreshold({'abc': (Fraction(2, 3), 1)})
+            StrategyThreshold({'abc': 1})
+        """
         # Default parameters
         if d_ranking_fixed_strategy is None:
             d_ranking_fixed_strategy = dict()
