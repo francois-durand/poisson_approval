@@ -88,3 +88,34 @@ def sort_weak_order(weak_order):
         return weak_order[0] + '>' + '~'.join(sorted([weak_order[2], weak_order[4]]))
     else:
         return '~'.join(sorted([weak_order[0], weak_order[2]])) + '>' + weak_order[4]
+
+
+def d_candidate_ordinal_utility(order):
+    """Ordinal utilities of the candidates.
+
+    Parameters
+    ----------
+    order : str
+        For example 'abc' (ranking) or 'a~b>c' (weak order).
+
+    Returns
+    -------
+    dict
+        Key: candidate. Value: an ordinal utility.
+
+    Examples
+    --------
+        >>> d_candidate_ordinal_utility('abc')
+        {'a': 1, 'b': 0.5, 'c': 0}
+        >>> d_candidate_ordinal_utility('a>b~c')
+        {'a': 1, 'b': 0, 'c': 0}
+        >>> d_candidate_ordinal_utility('a~b>c')
+        {'a': 1, 'b': 1, 'c': 0}
+    """
+    if is_weak_order(order):
+        if is_lover(order):
+            return {order[0]: 1, order[2]: 0, order[4]: 0}
+        else:
+            return {order[0]: 1, order[2]: 1, order[4]: 0}
+    else:
+        return {order[0]: 1, order[1]: .5, order[2]: 0}

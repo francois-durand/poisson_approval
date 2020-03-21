@@ -6,7 +6,7 @@ from poisson_approval.utils.Util import candidates_to_probabilities, one_over_lo
 
 
 class SimplexToProfile:
-    """Map a point of the simplex to a profile.
+    """Map a point of the simplex to a profile (for ternary plots).
 
     Parameters
     ----------
