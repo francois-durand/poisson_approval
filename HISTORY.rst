@@ -2,6 +2,23 @@
 History
 =======
 
+---------------------------------
+0.22.0 (2020-03-22): Binary Plots
+---------------------------------
+
+* Implement *binary plots*, i.e. plots designed to study profiles based on two ranking with varying utilities. Cf. the
+  corresponding tutorial.
+
+  * Intensity heat maps.
+  * Candidate heat maps.
+  * Annotate the Condorcet regions.
+
+* Utilities:
+
+  * Add ``d_candidate_ordinal_utility``: ordinal utility of a candidate for a given preference order.
+  * Add ``my_range``: similar to ``range``, but works also for fractions.
+  * Add ``my_sign``: sign of a number. Return an integer in {-1, 0, 1}, unlike ``np.sign``.
+
 ---------------------------------------------------
 0.21.0 (2020-03-12): Iterables and Random Factories
 ---------------------------------------------------

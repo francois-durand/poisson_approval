@@ -1,12 +1,10 @@
-import numpy as np
-from collections import Counter
 try:
     from shapely.geometry import Polygon, MultiPolygon
 except OSError:  # pragma: no cover
     pass
 from poisson_approval.constants.constants import CANDIDATES, PAIRS_WITHOUT_INVERSIONS
-from poisson_approval.utils.Util import my_division
-from poisson_approval.utils.UtilPreferences import is_weak_order, is_lover
+from poisson_approval.utils.Util import my_division, my_sign
+from poisson_approval.utils.UtilPreferences import d_candidate_ordinal_utility
 
 
 def _polygon_victory(x, y, z, plus=0, zero=0, minus=0):  # pragma: no cover
@@ -94,37 +92,6 @@ def _polygon_victory(x, y, z, plus=0, zero=0, minus=0):  # pragma: no cover
         raise ValueError
 
 
-def _d_candidate_ordinal_utility(order):
-    """Ordinal utilities of the candidates.
-
-    Parameters
-    ----------
-    order : str
-        For example 'abc' (ranking) or 'a~b>c' (weak order).
-
-    Returns
-    -------
-    dict
-        Key: candidate. Value: an ordinal utility.
-
-    Examples
-    --------
-        >>> _d_candidate_ordinal_utility('abc')
-        {'a': 1, 'b': 0.5, 'c': 0}
-        >>> _d_candidate_ordinal_utility('a>b~c')
-        {'a': 1, 'b': 0, 'c': 0}
-        >>> _d_candidate_ordinal_utility('a~b>c')
-        {'a': 1, 'b': 1, 'c': 0}
-    """
-    if is_weak_order(order):
-        if is_lover(order):
-            return {order[0]: 1, order[2]: 0, order[4]: 0}
-        else:
-            return {order[0]: 1, order[2]: 1, order[4]: 0}
-    else:
-        return {order[0]: 1, order[1]: .5, order[2]: 0}
-
-
 def _polygon_condorcet(candidate, order_x, order_y, order_z, d_order_fixed_share=None):  # pragma: no cover
     """Polygon representing the zone where a candidate is a Condorcet winner.
 
@@ -154,11 +121,11 @@ def _polygon_condorcet(candidate, order_x, order_y, order_z, d_order_fixed_share
     d_order_fixed_share = dict() if d_order_fixed_share is None else d_order_fixed_share
     polygon = Polygon([(1, 0, 0), (0, 1, 0), (0, 0, 1)])  # Whole simplex
     other_candidates = sorted({'a', 'b', 'c'} - {candidate})
-    d_candidate_pseudo_utility_x = _d_candidate_ordinal_utility(order_x)
-    d_candidate_pseudo_utility_y = _d_candidate_ordinal_utility(order_y)
-    d_candidate_pseudo_utility_z = _d_candidate_ordinal_utility(order_z)
+    d_candidate_pseudo_utility_x = d_candidate_ordinal_utility(order_x)
+    d_candidate_pseudo_utility_y = d_candidate_ordinal_utility(order_y)
+    d_candidate_pseudo_utility_z = d_candidate_ordinal_utility(order_z)
     d_candidate_pseudo_utilities_fixed = [
-        _d_candidate_ordinal_utility(order) for order, share in d_order_fixed_share.items()]
+        d_candidate_ordinal_utility(order) for order, share in d_order_fixed_share.items()]
     for other in other_candidates:
         plus = 0
         zero = 0
@@ -171,9 +138,9 @@ def _polygon_condorcet(candidate, order_x, order_y, order_z, d_order_fixed_share
             else:
                 minus += share
         polygon_victory = _polygon_victory(
-            np.sign(d_candidate_pseudo_utility_x[candidate] - d_candidate_pseudo_utility_x[other]),
-            np.sign(d_candidate_pseudo_utility_y[candidate] - d_candidate_pseudo_utility_y[other]),
-            np.sign(d_candidate_pseudo_utility_z[candidate] - d_candidate_pseudo_utility_z[other]),
+            my_sign(d_candidate_pseudo_utility_x[candidate] - d_candidate_pseudo_utility_x[other]),
+            my_sign(d_candidate_pseudo_utility_y[candidate] - d_candidate_pseudo_utility_y[other]),
+            my_sign(d_candidate_pseudo_utility_z[candidate] - d_candidate_pseudo_utility_z[other]),
             plus, zero, minus
         )
         try:

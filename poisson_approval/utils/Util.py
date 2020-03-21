@@ -771,3 +771,69 @@ def iterate_simplex_grid(d, denominator):
     for current_denominator in denominators:
         for t in iterator_integers_fixed_sum(d, fixed_sum=current_denominator):
             yield tuple(my_division(x, current_denominator) for x in t)
+
+
+def my_range(start, end, step):
+    """Iterable `range` adapted for fractions.
+
+    Parameters
+    ----------
+    start : Number
+        Start value (included).
+    end : Number
+        End value (excluded).
+    step : Number
+        Increment of the counter.
+
+    Examples
+    --------
+        >>> for x in my_range(0, 1, Fraction(1, 3)):
+        ...     print(x)
+        0
+        1/3
+        2/3
+
+        >>> for x in my_range(1, 0, - Fraction(1, 3)):
+        ...     print(x)
+        1
+        2/3
+        1/3
+    """
+    val = start
+    if step > 0:
+        while val < end:
+            yield val
+            val += step
+    else:
+        while val > end:
+            yield val
+            val += step
+
+
+def my_sign(x):
+    """Sign.
+
+    Parameters
+    ----------
+    x : Number
+
+    Returns
+    -------
+    int
+        Sign of x.
+
+    Examples
+    --------
+        >>> my_sign(1.5)
+        1
+        >>> my_sign(0)
+        0
+        >>> my_sign(-4.2)
+        -1
+    """
+    if x > 0:
+        return 1
+    elif x < 0:
+        return -1
+    else:
+        return 0
