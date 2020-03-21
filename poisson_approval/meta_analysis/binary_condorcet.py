@@ -120,7 +120,7 @@ def _interval_victory(x, y, plus=0, zero=0, minus=0):
         [0, 1]
         >>> _interval_victory(-1, -1)
         []
-        >>> _interval_victory(1, 1, minus=0.6)
+        >>> _interval_victory(1, 0, minus=0.5)
         []
     """
     v = 1 - plus - zero - minus  # Variable share (for variables voters)
