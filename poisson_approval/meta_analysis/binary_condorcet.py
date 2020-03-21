@@ -116,6 +116,12 @@ def _interval_victory(x, y, plus=0, zero=0, minus=0):
     --------
         >>> _interval_victory(-1, 1, minus=0.2)
         [0.625, 1]
+        >>> _interval_victory(1, 1)
+        [0, 1]
+        >>> _interval_victory(-1, -1)
+        []
+        >>> _interval_victory(1, 1, minus=0.6)
+        []
     """
     v = 1 - plus - zero - minus  # Variable share (for variables voters)
     adv = plus - minus  # Constant advantage for `a`
@@ -169,6 +175,8 @@ def _interval_condorcet(candidate, order_x, order_y, d_order_fixed_share=None):
         >>> _interval_condorcet('b', 'abc', 'cba', {'bac': 0.2})
         [0.375, 0.625]
         >>> _interval_condorcet('c', 'abc', 'cba', {'bac': 0.2})
+        [0.625, 1]
+        >>> _interval_condorcet('c', 'abc', 'cba', {'b>a~c': 0.2})
         [0.625, 1]
     """
     d_order_fixed_share = dict() if d_order_fixed_share is None else d_order_fixed_share
