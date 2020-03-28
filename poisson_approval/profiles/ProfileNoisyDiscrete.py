@@ -405,11 +405,16 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
         --------
             >>> ProfileNoisyDiscrete.order_and_label(('abc', 0.5, 0.01))
             ('abc', '$r(abc, u_b = 0.5 ± 0.01)$')
+            >>> ProfileNoisyDiscrete.order_and_label(('abc', 0.5))
+            ('abc', '$r(abc, u_b \\simeq 0.5)$')
             >>> ProfileNoisyDiscrete.order_and_label('a~b>c')
             ('a~b>c', '$r(a\\sim b>c)$')
         """
         if isinstance(t, tuple):
-            return t[0], '$r(%s, u_%s = %s ± %s)$' % (t[0], t[0][1], t[1], t[2])
+            if len(t) == 3:
+                return t[0], '$r(%s, u_%s = %s ± %s)$' % (t[0], t[0][1], t[1], t[2])
+            else:  # len(t) == 2
+                return t[0], '$r(%s, u_%s \\simeq %s)$' % (t[0], t[0][1], t[1])
         else:
             return cls.order_and_label_weak(t)
 
