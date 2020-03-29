@@ -102,7 +102,23 @@ class EventTrio(Event):
 
     def _get_bounds_and_start(self, tau_x_f, tau_y_f, tau_z_f,
                               tau_xy_f, tau_xz_f, tau_yz_f):
-        """Return inf, sup, start."""
+        """Return inf, sup, start.
+
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': 1/3, 'ac': 1/3, 'b': 1/6, 'bc': 1/6})
+        >>> event = EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
+        >>> event._get_bounds_and_start(event._tau_x, event._tau_y, event._tau_z,
+        ...                             event._tau_xy, event._tau_xz, event._tau_yz)
+        (1, 1, 1)
+        >>> event = EventTrio(candidate_x='b', candidate_y='c', candidate_z='a', tau=tau)
+        >>> event._get_bounds_and_start(event._tau_x, event._tau_y, event._tau_z,
+        ...                             event._tau_xy, event._tau_xz, event._tau_yz)
+        (1.4142135623730951, 1.4142135623730951, 1.4142135623730951)
+        >>> event = EventTrio(candidate_x='c', candidate_y='a', candidate_z='b', tau=tau)
+        >>> event._get_bounds_and_start(event._tau_x, event._tau_y, event._tau_z,
+        ...                             event._tau_xy, event._tau_xz, event._tau_yz)
+        (0.7071067811865476, 0.7071067811865476, 0.7071067811865476)
+        """
 
         # Use pivot xy
         score_xy_in_pivot_xy = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_xy, self._label_xy))
@@ -165,7 +181,7 @@ class EventTrio(Event):
 
         # Conclude
         assert inf <= sup
-        if inf == 0 and np.isposinf(sup):
+        if inf == 0 and np.isposinf(sup):  # pragma: no cover
             start = 1
         elif inf == 0:
             start = sup / 2
