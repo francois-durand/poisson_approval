@@ -4,8 +4,9 @@ import numpy as np
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.random_factories.RandStrategyThresholdUniform import RandStrategyThresholdUniform
 from poisson_approval.profiles.Profile import Profile
+from poisson_approval.random_factories.RandStrategyThresholdUniform import RandStrategyThresholdUniform
+from poisson_approval.random_factories.RandTauVectorUniform import RandTauVectorUniform
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.tau_vector.TauVector import TauVector
@@ -279,10 +280,14 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         init : Strategy or TauVector or str
-            If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`.
-            If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or ``'fanatic'``,
-            then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used. If it is the string ``'random'``,
-            then :meth:`random_strategy` is used.
+
+            * If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`.
+            * If it is a tau-vector, it is used directly.
+            * If it is a string:
+
+              * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+              * ``'random'``: :meth:`random_strategy` is used.
+              * ``'random_tau'``: draw a tau-vector uniformly at random with :class:`RandTauVectorUniform`.
 
         Returns
         -------
@@ -308,6 +313,8 @@ class ProfileCardinal(Profile):
                 tau = self.tau_sincere
             elif init == 'fanatic':
                 tau = self.tau_fanatic
+            elif init == 'random_tau':
+                tau = RandTauVectorUniform(voting_rule=self.voting_rule)()
             else:  # pragma: no cover
                 raise ValueError
         return strategy, tau
@@ -320,9 +327,16 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         init : Strategy or TauVector or str
-            The initialization. If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by
-            :meth:`tau_strategic`. If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or
-            ``'fanatic'``, then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+            The initialization.
+
+            * If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`.
+            * If it is a tau-vector, it is used directly.
+            * If it is a string:
+
+              * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+              * ``'random'``: :meth:`random_strategy` is used.
+              * ``'random_tau'``: draw a tau-vector uniformly at random with :class:`RandTauVectorUniform`.
+
         n_max_episodes : int
             Maximal number of iterations.
         perception_update_ratio : Number in [0, 1]
@@ -448,9 +462,16 @@ class ProfileCardinal(Profile):
         Parameters
         ----------
         init : Strategy or TauVector or str
-            The initialization. If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by
-            :meth:`tau_strategic`. If it is a tau-vector, it is used directly. If it is the string ``'sincere'`` or
-            ``'fanatic'``, then :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+            The initialization.
+
+            * If it is a strategy, it must be an argument accepted by :meth:`tau`, i.e. by :meth:`tau_strategic`.
+            * If it is a tau-vector, it is used directly.
+            * If it is a string:
+
+              * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
+              * ``'random'``: :meth:`random_strategy` is used.
+              * ``'random_tau'``: draw a tau-vector uniformly at random with :class:`RandTauVectorUniform`.
+
         n_max_episodes : int
             Maximal number of iterations.
         perception_update_ratio : callable or Number
@@ -521,6 +542,7 @@ class ProfileCardinal(Profile):
                                                                       ratio_b=perception_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, voting_rule=self.voting_rule, symbolic=self.symbolic)
+            print(tau_perceived)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau_actual = TauVector({
