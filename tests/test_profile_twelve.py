@@ -75,7 +75,7 @@ def test_iterated_voting_without_convergence():
         >>> result['cycle_taus_actual']
         []
         >>> result['d_candidate_winning_frequency']
-        {'a': Fraction(3, 4), 'b': Fraction(1, 4)}
+        {'a': Fraction(1, 1)}
     """
     pass
 
@@ -88,7 +88,7 @@ def test_fictitious_play_without_convergence(my_profile, my_strategy):
         >>> print(result['tau'])
         None
         >>> result['d_candidate_winning_frequency']
-        {'a': Fraction(3, 4), 'b': Fraction(1, 4)}
+        {'a': Fraction(1, 1)}
     """
     pass
 
