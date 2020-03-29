@@ -151,6 +151,10 @@ TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
         >>> profile._initializer('random')
         (StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}), \
 TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
+        >>> initialize_random_seeds()
+        >>> profile._initializer('random_tau')
+        (None, TauVector({'a': 0.4236547993389047, 'ab': 0.12122838365799216, 'ac': 0.0039303209304278885, \
+'b': 0.05394987214431912, 'bc': 0.1124259903007756, 'c': 0.2848106336275805}))
     """
     pass
 
