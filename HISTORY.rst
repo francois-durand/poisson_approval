@@ -2,6 +2,33 @@
 History
 =======
 
+----------------------------------------------------------------
+0.23.0 (2020-03-29): Improve Iterated Voting and Fictitious Play
+----------------------------------------------------------------
+
+* Random initialization of iterated voting and fictitious play:
+
+  * Add the option ``'random_tau'``: a random tau-vector that is consistent with the voting rule.
+  * Add the option ``'random_tau_undominated'``: a random tau-vector where each voter randomly uses an undominated
+    ballot. Relies on the new method ``Profile.random_tau_undominated``.
+  * Remove the option ``'random_strategy'``: it had an unnatural behavior for Plurality and Anti-Plurality.
+    Subsequently, remove also the method ``Profile.random_strategy``.
+
+* In iterated voting and fictitious play, winning frequencies are computed from t=1 instead of t=0. The motivation is
+  twofold. Firstly, if the result at initialization is essentially arbitrary and, for example, candidate `a` always
+  wins afterwards, we consider it more natural to have a winning frequency of 1 for `a`. Secondly, when using the
+  arithmetic average, the denominator is the number of steps, rather than the number of steps plus one. As a
+  consequence, we updated the helper functions in order to account for this time translation:
+
+  * Replace ``one_over_t_plus_one`` with ``one_over_t``.
+  * Replace ``one_over_sqrt_t_plus_one`` with ``one_over_sqrt_t``.
+  * Replace ``one_over_log_t_plus_two`` with ``one_over_log_t_plus_one``.
+  * Replace ``one_over_log_log_t_plus_fifteen`` with ``one_over_log_log_t_plus_fourteen``.
+
+* Fix a rare bug: in some tau-vectors, when computing the trio event, an offset was found greater than 1, whereas theory
+  shows that it is lower than 1. This used to cause a collateral error when computing the best response with the
+  offset method.
+
 ---------------------------------
 0.22.0 (2020-03-22): Binary Plots
 ---------------------------------
