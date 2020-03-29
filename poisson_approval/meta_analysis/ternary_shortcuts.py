@@ -2,7 +2,7 @@ from fractions import Fraction
 import numpy as np
 from poisson_approval.meta_analysis.ternary_plots import ternary_figure
 from poisson_approval.profiles.ProfileNoisyDiscrete import ProfileNoisyDiscrete
-from poisson_approval.utils.Util import candidates_to_probabilities, one_over_log_t_plus_two, d_candidate_value_to_array
+from poisson_approval.utils.Util import candidates_to_probabilities, one_over_log_t_plus_one, d_candidate_value_to_array
 
 
 class SimplexToProfile:
@@ -155,9 +155,9 @@ def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winner
 
 def ternary_plot_winning_frequencies(simplex_to_profile, scale,
                                      n_max_episodes, init='sincere', samples_per_point=1,
-                                     perception_update_ratio=one_over_log_t_plus_two,
-                                     ballot_update_ratio=one_over_log_t_plus_two,
-                                     winning_frequency_update_ratio=one_over_log_t_plus_two,
+                                     perception_update_ratio=one_over_log_t_plus_one,
+                                     ballot_update_ratio=one_over_log_t_plus_one,
+                                     winning_frequency_update_ratio=one_over_log_t_plus_one,
                                      title='Winning frequencies', legend_title='Winners',
                                      meth='fictitious_play', **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the winning frequencies in fictitious play / iterated voting.
