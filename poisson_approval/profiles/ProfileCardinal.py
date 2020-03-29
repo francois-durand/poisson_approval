@@ -286,9 +286,10 @@ class ProfileCardinal(Profile):
             * If it is a string:
 
               * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
-              * ``'random'``: :meth:`random_strategy` is used.
               * ``'random_tau'``: use :class:`RandTauVectorUniform` to draw a tau-vector uniformly at random that
                 is consistent with the voting rule.
+              * ``'random_tau_undominated'``: use :meth:`random_tau_undominated` to draw a tau-vector where all voters
+                cast an undominated ballot at random.
 
         Returns
         -------
@@ -303,9 +304,6 @@ class ProfileCardinal(Profile):
         if isinstance(init, Strategy):
             strategy = init.deepcopy_with_attached_profile(self)
             tau = strategy.tau
-        elif init == 'random':
-            strategy = self.random_strategy(profile=self)
-            tau = strategy.tau
         else:
             strategy = None
             if isinstance(init, TauVector):
@@ -316,6 +314,8 @@ class ProfileCardinal(Profile):
                 tau = self.tau_fanatic
             elif init == 'random_tau':
                 tau = RandTauVectorUniform(voting_rule=self.voting_rule)()
+            elif init == 'random_tau_undominated':
+                tau = self.random_tau_undominated()
             else:  # pragma: no cover
                 raise ValueError
         return strategy, tau
@@ -335,9 +335,10 @@ class ProfileCardinal(Profile):
             * If it is a string:
 
               * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
-              * ``'random'``: :meth:`random_strategy` is used.
               * ``'random_tau'``: use :class:`RandTauVectorUniform` to draw a tau-vector uniformly at random that
                 is consistent with the voting rule.
+              * ``'random_tau_undominated'``: use :meth:`random_tau_undominated` to draw a tau-vector where all voters
+                cast an undominated ballot at random.
 
         n_max_episodes : int
             Maximal number of iterations.
@@ -471,9 +472,10 @@ class ProfileCardinal(Profile):
             * If it is a string:
 
               * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
-              * ``'random'``: :meth:`random_strategy` is used.
               * ``'random_tau'``: use :class:`RandTauVectorUniform` to draw a tau-vector uniformly at random that
                 is consistent with the voting rule.
+              * ``'random_tau_undominated'``: use :meth:`random_tau_undominated` to draw a tau-vector where all voters
+                cast an undominated ballot at random.
 
         n_max_episodes : int
             Maximal number of iterations.
@@ -574,20 +576,6 @@ class ProfileCardinal(Profile):
     @classmethod
     def order_and_label(cls, t):
         raise NotImplementedError
-
-    @classmethod
-    def random_strategy(cls, **kwargs):
-        """Random strategy.
-
-        This is a default factory of random strategies. It is used, for example, in
-        :class:`ProfileCardinal.iterated_voting`.
-
-        Returns
-        -------
-        StrategyThreshold
-            Uses :class:`RandStrategyThresholdUniform`.
-        """
-        return RandStrategyThresholdUniform(**kwargs)()
 
 
 def _my_round(x):

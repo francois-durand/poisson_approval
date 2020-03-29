@@ -510,20 +510,6 @@ class ProfileTwelve(ProfileCardinal):
         else:
             return cls.order_and_label_weak(t)
 
-    @classmethod
-    def random_strategy(cls, **kwargs):
-        """Random strategy.
-
-        This is a default factory of random strategies. It is used, for example, in
-        :class:`ProfileCardinal.iterated_voting`.
-
-        Returns
-        -------
-        StrategyTwelve
-            Uses :class:`RandStrategyTwelveUniform`.
-        """
-        return RandStrategyTwelveUniform(**kwargs)()
-
 
 def make_property_type_share(t, doc):
     def _f(self):

@@ -69,17 +69,3 @@ def test_strategy_weak_order():
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
     """
     pass
-
-
-def test_random_strategy():
-    """
-        >>> initialize_random_seeds()
-        >>> print(ProfileHistogram.random_strategy())
-        <abc: utility-dependent (0.5488135039273248, 0.7151893663724195), \
-acb: utility-dependent (0.6027633760716439, 0.5448831829968969), \
-bac: utility-dependent (0.4236547993389047, 0.6458941130666561), \
-bca: utility-dependent (0.4375872112626925, 0.8917730007820798), \
-cab: utility-dependent (0.9636627605010293, 0.3834415188257777), \
-cba: utility-dependent (0.7917250380826646, 0.5288949197529045)>
-    """
-    pass

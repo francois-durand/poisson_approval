@@ -148,13 +148,18 @@ TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
         >>> profile._initializer('fanatic')
         (None, TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}))
         >>> initialize_random_seeds()
-        >>> profile._initializer('random')
-        (StrategyTwelve({'abc': 'ab', 'bca': 'bc', 'cab': 'ac'}), \
-TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
-        >>> initialize_random_seeds()
         >>> profile._initializer('random_tau')
         (None, TauVector({'a': 0.4236547993389047, 'ab': 0.12122838365799216, 'ac': 0.0039303209304278885, \
 'b': 0.05394987214431912, 'bc': 0.1124259903007756, 'c': 0.2848106336275805}))
+        >>> initialize_random_seeds()
+        >>> profile._initializer('random_tau_undominated')
+        (None, TauVector({'a': 0.33776874061001927, 'ab': 0.06223125938998075, 'ac': 0.0977450557262783, \
+'b': 0.10356670011718534, 'bc': 0.2964332998828147, 'c': 0.10225494427372171}))
+
+        >>> profile = ProfileTwelve(d_type_share={'ab_c': 1})
+        >>> initialize_random_seeds()
+        >>> profile._initializer('random_tau_undominated')
+        (None, TauVector({'a': 0.8444218515250481, 'ab': 0.15557814847495188}))
     """
     pass
 
@@ -165,14 +170,5 @@ def test_strategy_weak_order():
         >>> strategy = StrategyOrdinal({'abc': 'a'}, profile=profile)
         >>> print(strategy.tau)
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
-    """
-    pass
-
-
-def test_random_strategy():
-    """
-        >>> initialize_random_seeds()
-        >>> print(ProfileTwelve.random_strategy())
-        <abc: ab, acb: ac, bac: b, bca: bc, cab: utility-dependent, cba: bc>
     """
     pass
