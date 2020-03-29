@@ -80,12 +80,15 @@ class EventTrio(Event):
             # Generic case: we work with floats, not sympy expressions.
             tau_x_f, tau_y_f, tau_z_f = float(tau_x), float(tau_y), float(tau_z)
             tau_xy_f, tau_xz_f, tau_yz_f = float(tau_xy), float(tau_xz), float(tau_yz)
+            inf, sup, start = self._get_bounds_and_start(tau_x_f, tau_y_f, tau_z_f,
+                                                         tau_xy_f, tau_xz_f, tau_yz_f)
+            # Let's go for the actual computation
             optimizer = minimize(
                 lambda x: 2 * np.sqrt(
                     (tau_x_f * x[0] + tau_xz_f) * (tau_yz_f / x[0] + tau_y_f)
                 ) + tau_xy_f * x[0] + tau_z_f / x[0] - 1,
-                np.array([1 + 1e-10, 1.]),  # We don't start exactly at 1. to avoid some (rare) bugs
-                bounds=((1E-14, None), (1., 1.))
+                np.array([start, 1.]),
+                bounds=((inf, sup), (1., 1.))
             )
             self.asymptotic = Asymptotic(mu=ce.S(optimizer.fun), nu=ce.nan, xi=ce.nan, symbolic=self.symbolic)
             x_2 = ce.S(optimizer.x[0])
@@ -96,3 +99,96 @@ class EventTrio(Event):
             self._phi_yz = ce.simplify(ce.S(1) / (x_1 * x_2)) if tau_yz > 0 else ce.nan
             self._phi_xy = x_2 if tau_xy > 0 else ce.nan
             self._phi_z = ce.simplify(1 / x_2) if tau_z > 0 else ce.nan
+
+    def _get_bounds_and_start(self, tau_x_f, tau_y_f, tau_z_f,
+                              tau_xy_f, tau_xz_f, tau_yz_f):
+        """Return inf, sup, start.
+
+        >>> from poisson_approval import TauVector
+        >>> tau = TauVector({'a': 1/3, 'ac': 1/3, 'b': 1/6, 'bc': 1/6})
+        >>> event = EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
+        >>> event._get_bounds_and_start(event._tau_x, event._tau_y, event._tau_z,
+        ...                             event._tau_xy, event._tau_xz, event._tau_yz)
+        (1, 1, 1)
+        >>> event = EventTrio(candidate_x='b', candidate_y='c', candidate_z='a', tau=tau)
+        >>> event._get_bounds_and_start(event._tau_x, event._tau_y, event._tau_z,
+        ...                             event._tau_xy, event._tau_xz, event._tau_yz)
+        (1.4142135623730951, 1.4142135623730951, 1.4142135623730951)
+        >>> event = EventTrio(candidate_x='c', candidate_y='a', candidate_z='b', tau=tau)
+        >>> event._get_bounds_and_start(event._tau_x, event._tau_y, event._tau_z,
+        ...                             event._tau_xy, event._tau_xz, event._tau_yz)
+        (0.7071067811865476, 0.7071067811865476, 0.7071067811865476)
+        """
+
+        # Use pivot xy
+        score_xy_in_pivot_xy = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_xy, self._label_xy))
+        score_z_in_pivot_xy = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_z, self._label_xy))
+        if score_xy_in_pivot_xy > score_z_in_pivot_xy:
+            # Easy pivot      => phi_z > 1 => x_2 < 1
+            inf, sup = 0, 1 - 1e-14
+        elif score_xy_in_pivot_xy < score_z_in_pivot_xy:
+            # Difficult pivot => phi_z < 1 => x_2 > 1
+            inf, sup = 1 + 1e-14, np.inf
+        else:
+            # Tight pivot     => x_2 = 1
+            return 1, 1, 1
+
+        # Use pivot xz
+        if tau_x_f == 0 and tau_xz_f <= tau_y_f:
+            pass
+        else:
+            if tau_x_f == 0:
+                root = tau_yz_f / (tau_xz_f - tau_y_f)
+            else:
+                a = tau_x_f
+                b = tau_xz_f - tau_y_f
+                c = - tau_yz_f
+                root = (- b + np.sqrt(b ** 2 - 4 * a * c)) / (2 * a)
+            score_xz_in_pivot_xz = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_xz, self._label_xz))
+            score_y_in_pivot_xz = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_y, self._label_xz))
+            if score_xz_in_pivot_xz > score_y_in_pivot_xz:
+                # Easy pivot      => phi_y > 1 => x_1 < 1 => x_2 > root
+                inf = max(inf, root + 1e-14)
+            elif score_xz_in_pivot_xz < score_y_in_pivot_xz:
+                # Difficult pivot => phi_y < 1 => x_1 > 1 => x_2 < root
+                sup = min(sup, root - 1e-14)
+            else:
+                # Tight pivot     => x_1 = 1 => x_2 = root
+                return root, root, root
+
+        # Use pivot yz
+        if tau_y_f == 0 and tau_yz_f <= tau_x_f:
+            pass
+        else:
+            if tau_y_f == 0:
+                root = tau_xz_f / (tau_yz_f - tau_x_f)
+            else:
+                a = tau_y_f
+                b = tau_yz_f - tau_x_f
+                c = - tau_xz_f
+                root = (- b + np.sqrt(b ** 2 - 4 * a * c)) / (2 * a)
+            score_yz_in_pivot_yz = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_yz, self._label_yz))
+            score_x_in_pivot_yz = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_x, self._label_yz))
+            if score_yz_in_pivot_yz > score_x_in_pivot_yz:
+                # Easy pivot      => phi_x > 1 => x_1 * x_2 > 1 => x_2 > root
+                inf = max(inf, root + 1e-14)
+            elif score_yz_in_pivot_yz < score_x_in_pivot_yz:
+                # Difficult pivot => phi_x < 1 => x_1 * x_2 < 1 => x_2 < root
+                sup = min(sup, root - 1e-14)
+            else:
+                # Tight pivot     => x_1 * x_2 = 1 => x_2 = root
+                return root, root, root
+
+        # Conclude
+        assert inf <= sup
+        if inf == 0 and np.isposinf(sup):  # pragma: no cover
+            start = 1
+        elif inf == 0:
+            start = sup / 2
+        elif np.isposinf(sup):
+            start = inf * 2
+        else:
+            start = np.sqrt(inf * sup)
+        if inf == 0:
+            inf = 1e-14
+        return inf, sup, start

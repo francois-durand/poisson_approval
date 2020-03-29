@@ -83,25 +83,27 @@ class BestResponseApproval(BestResponse):
             # Due to approximations in trio event, psi_k and psi_i may exceptionally be greater than 1 (whereas
             # in difficult pivots, we know that they must be strictly lower than 1). In that case, the formulas
             # for the offset method will fail, so we must be cautious.
+            # EDIT: since release 0.23.0, this should not happen, because EventTrio is safer. But the following
+            # precautions don't hurt...
             psi_k_greater_but_close_to_one = False
-            if self.trio.psi[self.k] >= 1:
+            if self.trio.psi[self.k] >= 1:  # pragma: no cover
                 if self.ce.look_equal(self.trio.psi[self.k], 1, rel_tol=1e-1):
                     psi_k_greater_but_close_to_one = True
                 else:  # pragma: no cover
                     raise AssertionError('Unexpected: self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
             psi_i_greater_but_close_to_one = False
-            if self.trio.psi[self.i] >= 1:
+            if self.trio.psi[self.i] >= 1:  # pragma: no cover
                 if self.ce.look_equal(self.trio.psi[self.i], 1, rel_tol=1e-1):
                     psi_i_greater_but_close_to_one = True
                 else:  # pragma: no cover
                     raise AssertionError('Unexpected: self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
             if psi_i_greater_but_close_to_one and psi_k_greater_but_close_to_one:  # pragma: no cover
                 raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
-            elif psi_k_greater_but_close_to_one:
+            elif psi_k_greater_but_close_to_one:  # pragma: no cover
                 # pij ~= inf, pjk < inf ==> u = 1
                 threshold_utility = self.ce.S(1)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
-            elif psi_i_greater_but_close_to_one:
+            elif psi_i_greater_but_close_to_one:  # pragma: no cover
                 # pij < inf, pjk ~= inf ==> u = 0
                 threshold_utility = self.ce.S(0)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION

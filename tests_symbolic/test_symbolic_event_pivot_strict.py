@@ -20,8 +20,8 @@ phi_ac = 1, phi_bc = 1>
         <asymptotic = exp(- inf)>
         >>> tau = TauVector({'a': Fraction(1, 9), 'b': Fraction(1, 9),
         ...                  'ab': Fraction(1, 9), 'ac': Fraction(1, 3), 'bc': Fraction(1, 3)}, symbolic=True)
-        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
-        <asymptotic = exp(- 0.0181103257825368*n + ? log(n) + ? + o(1)), phi_a = 1.17453951295056, \
-phi_b = 1.17453951295056, phi_ab = 1.37954306748214, phi_ac = 0.851397495762319, phi_bc = 0.851397495762319>
+        >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)  # doctest: +ELLIPSIS
+        <asymptotic = exp(- 0.0181103...*n + ? log(n) + ? + o(1)), phi_a = 1.17453..., \
+phi_b = 1.17453..., phi_ab = 1.37953..., phi_ac = 0.851398..., phi_bc = 0.851398...>
     """
     pass

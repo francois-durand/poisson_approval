@@ -1,3 +1,4 @@
+import random
 import numpy as np
 from fractions import Fraction
 from poisson_approval.constants.constants import *
@@ -8,9 +9,10 @@ from poisson_approval.iterables.IterableStrategyOrdinal import IterableStrategyO
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
+from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.Util import my_division
 from poisson_approval.utils.UtilPreferences import is_lover
-from poisson_approval.utils.UtilBallots import sort_ballot
+from poisson_approval.utils.UtilBallots import sort_ballot, ballot_high_u, ballot_low_u
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
@@ -449,20 +451,24 @@ class Profile(DeleteCacheMixin):
         """
         return t, ('$r(%s)$' % t).replace('~', '\\sim ')
 
-    @classmethod
-    def random_strategy(cls, **kwargs):
-        """Random strategy.
+    def random_tau_undominated(self):
+        """Random tau based on undominated ballots.
 
-        This is a default factory of random strategies. It is used, for example, in
-        :class:`ProfileCardinal.iterated_voting`.
+        This is used, for example, in :meth:`ProfileCardinal.iterated_voting`.
 
         Returns
         -------
-        Strategy
-            A random strategy, whose subclass is well suited for this class of Profile. This strategy has this profile
-            embedded.
+        TauVector
+            A random tau-vector. Independently for each ranking, a proportion uniformly drawn in [0, 1] of voters
+            use one undominated ballot, and the rest use the other undominated ballot. For example, in Approval voting,
+            voters with ranking `abc` are randomly split between ballots `a` and `ab`.
         """
-        raise NotImplementedError
+        d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for ranking, share in self.d_ranking_share.items():
+            r = random.random()
+            d[ballot_low_u(ranking, self.voting_rule)] += r * share
+            d[ballot_high_u(ranking, self.voting_rule)] += (1 - r) * share
+        return TauVector(d, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
 
 def make_property_ranking_share(ranking, doc):

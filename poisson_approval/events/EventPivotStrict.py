@@ -33,7 +33,7 @@ phi_bc = 1>
         ...                  'ab': Fraction(1, 9), 'ac': Fraction(1, 3), 'bc': Fraction(1, 3)})
         >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
         <asymptotic = exp(- 0.0181103 n + ? log n + ? + o(1)), phi_a = 1.17454, phi_b = 1.17454, phi_ab = 1.37954, \
-phi_ac = 0.851397, phi_bc = 0.851397>
+phi_ac = 0.851399, phi_bc = 0.851399>
     """
 
     def _compute(self, tau_x, tau_y, tau_z, tau_xy, tau_xz, tau_yz):

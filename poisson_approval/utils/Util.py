@@ -542,8 +542,8 @@ def d_candidate_value_to_array(d_candidate_value):
     return np.array([d_candidate_value[candidate] for candidate in CANDIDATES])
 
 
-def one_over_t_plus_one(t):
-    """Function `1 / (t + 1)`.
+def one_over_t(t):
+    """Function `1 / t`.
 
     When used as an update ratio (cf. :meth:`ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic
     mean.
@@ -558,17 +558,16 @@ def one_over_t_plus_one(t):
 
     Examples
     --------
-        >>> one_over_t_plus_one(1)
+        >>> one_over_t(2)
         Fraction(1, 2)
     """
-    return my_division(1, t + 1)
+    return my_division(1, t)
 
 
-def one_over_sqrt_t_plus_one(t):
-    """Function `1 / sqrt(t + 1)`.
+def one_over_sqrt_t(t):
+    """Function `1 / sqrt(t)`.
 
-    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
-    1 in the denominator is the smallest integer such that `f(t = 1) < 1`.
+    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`.
 
     Parameters
     ----------
@@ -580,17 +579,17 @@ def one_over_sqrt_t_plus_one(t):
 
     Examples
     --------
-        >>> one_over_sqrt_t_plus_one(1)
+        >>> one_over_sqrt_t(2)
         0.7071067811865475
     """
-    return my_division(1, math.sqrt(t + 1))
+    return my_division(1, math.sqrt(t))
 
 
-def one_over_log_t_plus_two(t):
-    """Function `1 / log(t + 2)`.
+def one_over_log_t_plus_one(t):
+    """Function `1 / log(t + 1)`.
 
     This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
-    2 in the denominator is the smallest integer such that `f(t = 1) < 1`.
+    1 in the denominator is the smallest integer such that `f(t = 2) < 1`.
 
     Parameters
     ----------
@@ -602,17 +601,17 @@ def one_over_log_t_plus_two(t):
 
     Examples
     --------
-        >>> one_over_log_t_plus_two(1)
+        >>> one_over_log_t_plus_one(2)
         0.9102392266268373
     """
-    return my_division(1, math.log(t + 2))
+    return my_division(1, math.log(t + 1))
 
 
-def one_over_log_log_t_plus_fifteen(t):
-    """Function `1 / log(log(t + 15))`.
+def one_over_log_log_t_plus_fourteen(t):
+    """Function `1 / log(log(t + 14))`.
 
     This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
-    15 in the denominator is the smallest integer such that `f(t = 1) < 1`.
+    14 in the denominator is the smallest integer such that `f(t = 1) < 1`.
 
     Parameters
     ----------
@@ -624,10 +623,10 @@ def one_over_log_log_t_plus_fifteen(t):
 
     Examples
     --------
-        >>> one_over_log_log_t_plus_fifteen(1)
+        >>> one_over_log_log_t_plus_fourteen(2)
         0.9806022744169713
     """
-    return my_division(1, math.log(math.log(t + 15)))
+    return my_division(1, math.log(math.log(t + 14)))
 
 
 def my_division(x, y):
