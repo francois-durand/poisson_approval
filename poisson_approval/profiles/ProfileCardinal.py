@@ -542,7 +542,6 @@ class ProfileCardinal(Profile):
                                                                       ratio_b=perception_update_ratio(t)))
                 for ballot in BALLOTS_WITHOUT_INVERSIONS
             }, voting_rule=self.voting_rule, symbolic=self.symbolic)
-            print(tau_perceived)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
             tau_actual = TauVector({
