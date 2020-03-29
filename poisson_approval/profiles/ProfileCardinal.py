@@ -287,7 +287,8 @@ class ProfileCardinal(Profile):
 
               * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
               * ``'random'``: :meth:`random_strategy` is used.
-              * ``'random_tau'``: draw a tau-vector uniformly at random with :class:`RandTauVectorUniform`.
+              * ``'random_tau'``: use :class:`RandTauVectorUniform` to draw a tau-vector uniformly at random that
+                is consistent with the voting rule.
 
         Returns
         -------
@@ -335,7 +336,8 @@ class ProfileCardinal(Profile):
 
               * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
               * ``'random'``: :meth:`random_strategy` is used.
-              * ``'random_tau'``: draw a tau-vector uniformly at random with :class:`RandTauVectorUniform`.
+              * ``'random_tau'``: use :class:`RandTauVectorUniform` to draw a tau-vector uniformly at random that
+                is consistent with the voting rule.
 
         n_max_episodes : int
             Maximal number of iterations.
@@ -470,7 +472,8 @@ class ProfileCardinal(Profile):
 
               * ``'sincere'`` or ``'fanatic'``: :attr:`tau_sincere` or :attr:`tau_fanatic` is respectively used.
               * ``'random'``: :meth:`random_strategy` is used.
-              * ``'random_tau'``: draw a tau-vector uniformly at random with :class:`RandTauVectorUniform`.
+              * ``'random_tau'``: use :class:`RandTauVectorUniform` to draw a tau-vector uniformly at random that
+                is consistent with the voting rule.
 
         n_max_episodes : int
             Maximal number of iterations.
