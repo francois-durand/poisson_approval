@@ -21,7 +21,7 @@ phi_ac = 1, phi_bc = 1>
         >>> tau = TauVector({'a': Fraction(1, 9), 'b': Fraction(1, 9),
         ...                  'ab': Fraction(1, 9), 'ac': Fraction(1, 3), 'bc': Fraction(1, 3)}, symbolic=True)
         >>> EventPivotStrict(candidate_x='a', candidate_y='b', candidate_z='c', tau=tau)
-        <asymptotic = exp(- 0.0181103257825368*n + ? log(n) + ? + o(1)), phi_a = 1.17453951295056, \
-phi_b = 1.17453951295056, phi_ab = 1.37954306748214, phi_ac = 0.851397495762319, phi_bc = 0.851397495762319>
+        <asymptotic = exp(- 0.0181103257505651*n + ? log(n) + ? + o(1)), phi_a = 1.17453803065111, \
+phi_b = 1.17453803065111, phi_ab = 1.37953958544578, phi_ac = 0.851398570249486, phi_bc = 0.851398570249486>
     """
     pass
