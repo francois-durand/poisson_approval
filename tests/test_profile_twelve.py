@@ -34,7 +34,6 @@ def test_iterative_voting_verbose():
     t = 0
     strategy: <abc: ab> ==> a, b
     tau_actual: <ab: 1> ==> a, b
-    tau_perceived: <ab: 1> ==> a, b
     t = 1
     tau_perceived: <ab: 1> ==> a, b
     strategy: <abc: a> ==> a

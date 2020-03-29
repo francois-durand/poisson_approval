@@ -393,34 +393,38 @@ class ProfileCardinal(Profile):
         """
         winning_frequency_update_ratio = to_callable(winning_frequency_update_ratio)
         strategy, tau_actual = self._initializer(init)
-        tau_perceived = tau_actual
-        strategies = [strategy]
-        taus_actual = [tau_actual]
-        taus_perceived = [tau_perceived]
-        array_candidate_winning_frequency = None
+        tau_perceived = None
         if verbose:
             print('t = %s' % 0)
             print('strategy: %s' % strategy)
             print('tau_actual: %s' % tau_actual)
+        strategies = []
+        taus_actual = []
+        taus_perceived = []
+        array_candidate_winning_frequency = None
         n_episodes = n_max_episodes
         for t in range(1, n_max_episodes + 1):
-            tau_perceived = TauVector({
-                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_perceived.d_ballot_share[ballot],
-                                                                      b=tau_actual.d_ballot_share[ballot],
-                                                                      ratio_b=perception_update_ratio))
-                for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, voting_rule=self.voting_rule, symbolic=self.symbolic)
+            if t == 1:
+                tau_perceived = tau_actual
+            else:
+                tau_perceived = TauVector({
+                    ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_perceived.d_ballot_share[ballot],
+                                                                          b=tau_actual.d_ballot_share[ballot],
+                                                                          ratio_b=perception_update_ratio))
+                    for ballot in BALLOTS_WITHOUT_INVERSIONS
+                }, voting_rule=self.voting_rule, symbolic=self.symbolic)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
-            tau_actual = TauVector({
-                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
-                                                                      b=tau_full_response.d_ballot_share[ballot],
-                                                                      ratio_b=ballot_update_ratio))
-                for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
             if t == 1:
+                tau_actual = tau_full_response
                 array_candidate_winning_frequency = candidates_to_probabilities(tau_actual.winners)
             else:
+                tau_actual = TauVector({
+                    ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
+                                                                          b=tau_full_response.d_ballot_share[ballot],
+                                                                          ratio_b=ballot_update_ratio))
+                    for ballot in BALLOTS_WITHOUT_INVERSIONS
+                }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
                 array_candidate_winning_frequency = (
                     (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
                     + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
@@ -430,7 +434,7 @@ class ProfileCardinal(Profile):
                 print('strategy: %s' % strategy)
                 print('tau_full_response: %s' % tau_full_response)
                 print('tau_actual: %s' % tau_actual)
-            # If there is an symbolic cycle, it is useless to continue looping.
+            # If there is an exact cycle, it is useless to continue looping.
             break_ = (tau_actual, tau_perceived) in zip(taus_actual, taus_perceived)
 
             taus_actual.append(tau_actual)
@@ -535,35 +539,38 @@ class ProfileCardinal(Profile):
         winning_frequency_update_ratio = to_callable(winning_frequency_update_ratio)
 
         strategy, tau_actual = self._initializer(init)
-        array_candidate_winning_frequency = None
-        tau_perceived = tau_actual
+        tau_perceived = None
         if verbose:
             print('t = %s' % 0)
             print('strategy: %s' % strategy)
             print('tau_actual: %s' % tau_actual)
-            print('tau_perceived: %s' % tau_perceived)
+        array_candidate_winning_frequency = None
 
         for t in range(1, n_max_episodes + 1):
-            tau_perceived = TauVector({
-                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_perceived.d_ballot_share[ballot],
-                                                                      b=tau_actual.d_ballot_share[ballot],
-                                                                      ratio_b=perception_update_ratio(t)))
-                for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, voting_rule=self.voting_rule, symbolic=self.symbolic)
+            if t == 1:
+                tau_perceived = tau_actual
+            else:
+                tau_perceived = TauVector({
+                    ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_perceived.d_ballot_share[ballot],
+                                                                          b=tau_actual.d_ballot_share[ballot],
+                                                                          ratio_b=perception_update_ratio(t)))
+                    for ballot in BALLOTS_WITHOUT_INVERSIONS
+                }, voting_rule=self.voting_rule, symbolic=self.symbolic)
             strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
             tau_full_response = strategy.tau
-            tau_actual = TauVector({
-                ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
-                                                                      b=tau_full_response.d_ballot_share[ballot],
-                                                                      ratio_b=ballot_update_ratio(t)))
-                for ballot in BALLOTS_WITHOUT_INVERSIONS
-            }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
             if t == 1:
+                tau_actual = tau_full_response
                 array_candidate_winning_frequency = candidates_to_probabilities(tau_actual.winners)
             else:
-                array_candidate_winning_frequency = (
-                    (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
-                    + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
+                tau_actual = TauVector({
+                    ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
+                                                                          b=tau_full_response.d_ballot_share[ballot],
+                                                                          ratio_b=ballot_update_ratio(t)))
+                    for ballot in BALLOTS_WITHOUT_INVERSIONS
+                }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
+            array_candidate_winning_frequency = (
+                (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
+                + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
