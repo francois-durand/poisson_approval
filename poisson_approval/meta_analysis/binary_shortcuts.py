@@ -241,6 +241,9 @@ def binary_plot_convergence(xyy_to_profile, xscale, yscale,
                             meth='fictitious_play', reverse_right=False, **kwargs):  # pragma: no cover
     """Shortcut: binary plot for the convergence frequency in fictitious play / iterated voting.
 
+    Convergence frequency: out of `samples_per_points` trials, in which proportion of the cases did fictitious play or
+    iterated voting converge within `n_max_episodes` iterations?
+
     Parameters
     ----------
     xyy_to_profile : XyyToProfile

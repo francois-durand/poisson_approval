@@ -2,6 +2,14 @@
 History
 =======
 
+----------------------------------------------------
+0.24.0 (2020-03-29): Plots for Convergence Frequency
+----------------------------------------------------
+
+* Add ``ternary_plot_convergence`` and ``binary_plot_convergence``: plot the convergence frequency, which is defined
+  as the proportion of initializations where iterated voting or fictitious play lead to convergence within
+  ``n_max_episodes`` iterations.
+
 ----------------------------------------------------------------
 0.23.0 (2020-03-29): Improve Iterated Voting and Fictitious Play
 ----------------------------------------------------------------
