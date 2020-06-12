@@ -210,3 +210,61 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
                            d_order_fixed_share=simplex_to_profile.d_order_fixed_share)
     tax.set_title_padded(title)
     return figure, tax
+
+
+def ternary_plot_convergence(simplex_to_profile, scale,
+                             n_max_episodes, init='sincere', samples_per_point=1,
+                             perception_update_ratio=one_over_log_t_plus_one,
+                             ballot_update_ratio=one_over_log_t_plus_one,
+                             title='Convergence frequency',
+                             meth='fictitious_play', **kwargs):  # pragma: no cover
+    """Shortcut: ternary plot for the convergence frequency in fictitious play / iterated voting.
+
+    Convergence frequency: out of `samples_per_points` trials, in which proportion of the cases did fictitious play or
+    iterated voting converge within `n_max_episodes` iterations?
+
+    Parameters
+    ----------
+    simplex_to_profile : SimplexToProfile
+        This is responsible to generate the profiles.
+    scale : Number
+        Scale of the plot (resolution).
+    n_max_episodes : int
+        Maximum number of episodes for the fictitious play / iterated voting.
+    init : Strategy or TauVector or str
+        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+    samples_per_point : int
+        How many trials are made for each point drawn. Useful only when initialization is random.
+    perception_update_ratio, ballot_update_ratio : callable or Number
+        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+    title : str
+        Title of the plot.
+    meth : str
+        The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
+    kwargs
+        Other keyword arguments are passed to the function `heatmap_intensity`.
+    """
+    def convergence_frequency(right, top, left):
+        profile = simplex_to_profile(right, top, left)
+        n_convergences = 0
+        for _ in range(samples_per_point):
+            results = getattr(profile, meth)(init=init, n_max_episodes=n_max_episodes,
+                                             perception_update_ratio=perception_update_ratio,
+                                             ballot_update_ratio=ballot_update_ratio)
+            if results['tau'] is not None:
+                n_convergences += 1
+        return n_convergences / samples_per_point
+
+    figure, tax = ternary_figure(scale=scale)
+    tax.heatmap_intensity(convergence_frequency,
+                          right_label=simplex_to_profile.label_r,
+                          top_label=simplex_to_profile.label_t,
+                          left_label=simplex_to_profile.label_l,
+                          vmin=0., vmax=1.,
+                          **kwargs)
+    tax.annotate_condorcet(right_order=simplex_to_profile.order_r,
+                           top_order=simplex_to_profile.order_t,
+                           left_order=simplex_to_profile.order_l,
+                           d_order_fixed_share=simplex_to_profile.d_order_fixed_share)
+    tax.set_title_padded(title)
+    return figure, tax

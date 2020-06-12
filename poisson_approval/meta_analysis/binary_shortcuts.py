@@ -231,3 +231,64 @@ def binary_plot_winning_frequencies(xyy_to_profile, xscale, yscale,
                           d_order_fixed_share=xyy_to_profile.d_order_fixed_share)
     ax.set_title(title)
     return figure, ax
+
+
+def binary_plot_convergence(xyy_to_profile, xscale, yscale,
+                            n_max_episodes, init='sincere', samples_per_point=1,
+                            perception_update_ratio=one_over_log_t_plus_one,
+                            ballot_update_ratio=one_over_log_t_plus_one,
+                            title='Convergence frequency',
+                            meth='fictitious_play', reverse_right=False, **kwargs):  # pragma: no cover
+    """Shortcut: binary plot for the convergence frequency in fictitious play / iterated voting.
+
+    Parameters
+    ----------
+    xyy_to_profile : XyyToProfile
+        This is responsible to generate the profiles.
+    xscale : Number
+        Scale of the plot (resolution) on the x-axis.
+    yscale : Number
+        Scale of the plot (resolution) on the y-axis.
+    n_max_episodes : int
+        Maximum number of episodes for the fictitious play / iterated voting.
+    init : Strategy or TauVector or str
+        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+    samples_per_point : int
+        How many trials are made for each point drawn. Useful only when initialization is random.
+    perception_update_ratio, ballot_update_ratio : callable or Number
+        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+    title : str
+        Title of the plot.
+    meth : str
+        The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
+    reverse_right : bool
+        If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes
+        increasing from 0 to 1).
+    kwargs
+        Other keyword arguments are passed to the function `heatmap_intensity`.
+    """
+    def convergence_frequency(x, y1, y2):
+        profile = xyy_to_profile(x, y1, y2)
+        n_convergences = 0
+        for _ in range(samples_per_point):
+            results = getattr(profile, meth)(init=init, n_max_episodes=n_max_episodes,
+                                             perception_update_ratio=perception_update_ratio,
+                                             ballot_update_ratio=ballot_update_ratio)
+            if results['tau'] is not None:
+                n_convergences += 1
+        return n_convergences / samples_per_point
+
+    figure, ax = binary_figure(xscale=xscale, yscale=yscale)
+    ax.heatmap_intensity(convergence_frequency,
+                         x_left_label=xyy_to_profile.x_left_label,
+                         x_right_label=xyy_to_profile.x_right_label,
+                         y_left_label=xyy_to_profile.y_left_label,
+                         y_right_label=xyy_to_profile.y_right_label,
+                         reverse_right=reverse_right,
+                         vmin=0., vmax=1.,
+                         **kwargs)
+    ax.annotate_condorcet(left_order=xyy_to_profile.left_order,
+                          right_order=xyy_to_profile.right_order,
+                          d_order_fixed_share=xyy_to_profile.d_order_fixed_share)
+    ax.set_title(title)
+    return figure, ax
