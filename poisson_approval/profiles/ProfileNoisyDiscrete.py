@@ -4,7 +4,7 @@ from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalC
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import product_dict, my_division
-from poisson_approval.utils.UtilPreferences import is_weak_order, sort_weak_order
+from poisson_approval.utils.UtilPreferences import is_weak_order, sort_weak_order, is_hater
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -120,6 +120,8 @@ class ProfileNoisyDiscrete(ProfileCardinalContinuous):
         Fraction(13, 50)
         >>> profile.have_ranking_with_utility_u('abc', 0.3)
         0
+        >>> profile.d_candidate_welfare
+        {'a': 0.811, 'b': 0.712, 'c': 0}
         >>> profile.analyzed_strategies_group
         Equilibrium:
         <abc: a, bac: b> ==> a (FF)
@@ -369,6 +371,20 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
                 WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
             voting_rule=self.voting_rule)
+
+    @cached_property
+    def d_candidate_welfare(self):
+        d = {candidate: 0 for candidate in CANDIDATES}
+        for ranking, d_umin_umax_share in self.d_ranking_umin_umax_share.items():
+            for (u_min, u_max), share in d_umin_umax_share.items():
+                d[ranking[0]] += share
+                d[ranking[1]] += share * (u_min + u_max) / 2
+        for weak_order, share in self.d_weak_order_share.items():
+            if share > 0:
+                d[weak_order[0]] += share
+                if is_hater(weak_order):
+                    d[weak_order[2]] += share
+        return d
 
     @property
     def strategies_group(self):

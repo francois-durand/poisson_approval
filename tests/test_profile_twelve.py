@@ -171,3 +171,12 @@ def test_strategy_weak_order():
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
     """
     pass
+
+
+def test_welfare():
+    """
+        >>> profile = ProfileTwelve({'a~b>c': Fraction(1, 3), 'a>b~c': Fraction(2, 3)})
+        >>> profile.d_candidate_welfare
+        {'a': Fraction(1, 1), 'b': Fraction(1, 3), 'c': 0}
+    """
+    pass

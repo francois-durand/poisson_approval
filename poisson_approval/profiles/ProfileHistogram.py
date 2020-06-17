@@ -1,12 +1,13 @@
 import warnings
 import numpy as np
+from fractions import Fraction
 from matplotlib import pyplot as plt
 from poisson_approval.constants.constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import my_division, product_dict
-from poisson_approval.utils.UtilPreferences import sort_weak_order, is_weak_order
+from poisson_approval.utils.UtilPreferences import sort_weak_order, is_weak_order, is_hater
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -62,6 +63,8 @@ class ProfileHistogram(ProfileCardinalContinuous):
         Fraction(1, 10)
         >>> profile.d_ranking_share['abc']  # Alternate syntax for profile.abc
         Fraction(1, 10)
+        >>> profile.d_candidate_welfare
+        {'a': Fraction(71, 200), 'b': Fraction(13, 20), 'c': Fraction(3, 10)}
         >>> profile.weighted_maj_graph
         array([[0, Fraction(-1, 5), Fraction(2, 5)],
                [Fraction(1, 5), 0, Fraction(2, 5)],
@@ -404,6 +407,23 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
                                     WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
             ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic, voting_rule=self.voting_rule
         )
+
+    @cached_property
+    def d_candidate_welfare(self):
+        d = {candidate: 0 for candidate in CANDIDATES}
+        for ranking, histogram in self.d_ranking_histogram.items():
+            share_ranking = self.d_ranking_share[ranking]
+            d[ranking[0]] += share_ranking
+            n_bins = len(histogram)
+            for i, relative_share in enumerate(histogram):
+                utility = (i + Fraction(1, 2)) / n_bins
+                d[ranking[1]] += utility * share_ranking * relative_share
+        for weak_order, share in self.d_weak_order_share.items():
+            if share > 0:
+                d[weak_order[0]] += share
+                if is_hater(weak_order):
+                    d[weak_order[2]] += share
+        return d
 
     def plot_cdf(self, ranking, x_label=None, y_label=None, **kwargs):
         """Plot the cumulative distribution function (CDF) for a given ranking.

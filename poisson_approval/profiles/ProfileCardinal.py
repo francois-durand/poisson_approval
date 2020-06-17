@@ -118,6 +118,29 @@ class ProfileCardinal(Profile):
     def standardized_version(self):
         raise NotImplementedError
 
+    @cached_property
+    def d_candidate_welfare(self):
+        """dict : welfare of each candidate.
+            E.g. ``'a': 0.7`` means that candidate ``'a'`` has a welfare (average utility) equal to 0.7 for the voters.
+            Since utilities are in [0, 1], so is the welfare.
+        """
+        raise NotImplementedError
+
+    @cached_property
+    def d_candidate_relative_welfare(self):
+        """dict : relative welfare of each candidate.
+            This is similar to :attr:`d_candidate_welfare`, but renormalized so that the candidate with best welfare
+            has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
+            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
+            the relative welfare is 1 for all of them.
+        """
+        max_welfare = max(self.d_candidate_welfare.values())
+        min_welfare = min(self.d_candidate_welfare.values())
+        if min_welfare == max_welfare:
+            return {candidate: 1 for candidate in CANDIDATES}
+        return {candidate: (welfare - min_welfare) / (max_welfare - min_welfare)
+                for candidate, welfare in self.d_candidate_welfare.items()}
+
     # Tau and strategy-related stuff
 
     def tau(self, strategy):
