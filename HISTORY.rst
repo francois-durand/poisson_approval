@@ -3,13 +3,17 @@ History
 =======
 
 -------------------------------------------
-0.25.0 (2020-06-25): Welfare of a Candidate
+0.25.1 (2020-06-25): Welfare of a Candidate
 -------------------------------------------
 
 * ``ProfileCardinal`` now has attributes ``d_candidate_welfare`` and ``d_candidate_relative_welfare``: for each
   candidate, it gives its welfare, i.e. its total utility. The relative welfare is normalized so that the candidate
   with maximal welfare has 1 and the one with minimal welfare has 0.
 * The function ``probability`` now accepts a tuple of tests as inputs.
+* Bug fix: the recent versions of the external package ``scipy`` changed the behavior of ``scipy.optimize.minimize``.
+  Since ``PivotTrio`` relies on this function, its behavior changed in an unexpected way and it sometimes lead to
+  incorrect results, such as a positive magnitude. This version solves the problem: ``PivotTrio`` has regained its
+  former (correct) behavior.
 
 ----------------------------------------------------
 0.24.0 (2020-03-29): Plots for Convergence Frequency
