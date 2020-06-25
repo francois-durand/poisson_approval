@@ -2,6 +2,15 @@
 History
 =======
 
+-------------------------------------------
+0.25.0 (2020-06-25): Welfare of a Candidate
+-------------------------------------------
+
+* ``ProfileCardinal`` now has attributes ``d_candidate_welfare`` and ``d_candidate_relative_welfare``: for each
+  candidate, it gives its welfare, i.e. its total utility. The relative welfare is normalized so that the candidate
+  with maximal welfare has 1 and the one with minimal welfare has 0.
+* The function ``probability`` now accepts a tuple of tests as inputs.
+
 ----------------------------------------------------
 0.24.0 (2020-03-29): Plots for Convergence Frequency
 ----------------------------------------------------
