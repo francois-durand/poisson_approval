@@ -85,12 +85,12 @@ class EventTrio(Event):
             # Let's go for the actual computation
             optimizer = minimize(
                 lambda x: 2 * np.sqrt(
-                    (tau_x_f * x[0] + tau_xz_f) * (tau_yz_f / x[0] + tau_y_f)
-                ) + tau_xy_f * x[0] + tau_z_f / x[0] - 1,
-                np.array([start, 1.]),
-                bounds=((inf, sup), (1., 1.))
+                    (tau_x_f * x + tau_xz_f) * (tau_yz_f / x + tau_y_f)
+                ) + tau_xy_f * x + tau_z_f / x - 1,
+                start,
+                bounds=[(inf, sup)]
             )
-            self.asymptotic = Asymptotic(mu=ce.S(optimizer.fun), nu=ce.nan, xi=ce.nan, symbolic=self.symbolic)
+            self.asymptotic = Asymptotic(mu=ce.S(float(optimizer.fun)), nu=ce.nan, xi=ce.nan, symbolic=self.symbolic)
             x_2 = ce.S(optimizer.x[0])
             x_1 = ce.simplify(ce.sqrt((ce.S(tau_yz) / x_2 + tau_y) / (tau_x * x_2 + tau_xz)))
             self._phi_x = ce.simplify(x_1 * x_2) if tau_x > 0 else ce.nan
