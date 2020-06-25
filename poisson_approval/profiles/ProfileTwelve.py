@@ -3,16 +3,15 @@ import itertools
 from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
-from poisson_approval.random_factories.RandStrategyTwelveUniform import RandStrategyTwelveUniform
 from poisson_approval.iterables.IterableStrategyTwelve import IterableStrategyTwelve
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
-from poisson_approval.utils.Util import product_dict, my_division
-from poisson_approval.utils.UtilPreferences import sort_weak_order
-from poisson_approval.utils.UtilBallots import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three, \
+from poisson_approval.utils.Util import my_division
+from poisson_approval.utils.UtilPreferences import sort_weak_order, is_hater
+from poisson_approval.utils.UtilBallots import ballot_one, ballot_two, ballot_one_two, ballot_one_three, \
     ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property
 
@@ -66,6 +65,8 @@ class ProfileTwelve(ProfileCardinal):
         Fraction(3, 10)
         >>> profile.d_ranking_share['cab']  # Alternate syntax for profile.cab
         Fraction(3, 10)
+        >>> profile.d_candidate_welfare
+        {'a': Fraction(1, 5), 'b': Fraction(7, 10), 'c': Fraction(3, 10)}
         >>> profile.weighted_maj_graph
         array([[0, Fraction(-1, 5), Fraction(2, 5)],
                [Fraction(1, 5), 0, Fraction(2, 5)],
@@ -338,6 +339,21 @@ class ProfileTwelve(ProfileCardinal):
                                  WEAK_ORDERS_WITHOUT_INVERSIONS, XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS)},
                              ratio_sincere=self.ratio_sincere, ratio_fanatic=self.ratio_fanatic,
                              voting_rule=self.voting_rule)
+
+    @cached_property
+    def d_candidate_welfare(self):
+        d = {candidate: 0 for candidate in CANDIDATES}
+        for ranking in RANKINGS:
+            share_i_jk = self.d_type_share[ranking[:1] + '_' + ranking[1:]]  # E.g. a_bc
+            share_ij_k = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
+            d[ranking[0]] += share_i_jk + share_ij_k
+            d[ranking[1]] += share_ij_k
+        for weak_order, share in self.d_weak_order_share.items():
+            if share > 0:
+                d[weak_order[0]] += share
+                if is_hater(weak_order):
+                    d[weak_order[2]] += share
+        return d
 
     @cached_property
     def has_majority_type(self):

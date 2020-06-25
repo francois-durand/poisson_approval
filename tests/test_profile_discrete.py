@@ -58,3 +58,28 @@ def test_mixed_strategy():
         <a: 1/21, ab: 2/21, ac: 6/7> ==> a
     """
     pass
+
+
+def test_welfare():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(3, 10)): Fraction(26, 100), ('bac', Fraction(1, 10)): Fraction(21, 100),
+        ...     'a~b>c': Fraction(23, 100), 'a>b~c': Fraction(30, 100)
+        ... })
+        >>> profile.d_candidate_welfare
+        {'a': Fraction(811, 1000), 'b': Fraction(259, 500), 'c': 0}
+    """
+    pass
+
+
+def test_relative_welfare():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(1, 2)): Fraction(1, 3),
+        ...     ('bca', Fraction(1, 2)): Fraction(1, 3),
+        ...     ('cab', Fraction(1, 2)): Fraction(1, 3)
+        ... })
+        >>> profile.d_candidate_relative_welfare
+        {'a': 1, 'b': 1, 'c': 1}
+    """
+    pass
