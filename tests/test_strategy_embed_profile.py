@@ -17,6 +17,8 @@ def test():
     {a: 7/10, b: 3/5, c: 3/10}
     >>> print(strategy.winners)
     a
+    >>> strategy.share_sincere
+    >>> strategy.share_sincere_among_strategic_voters
     >>> strategy.duo_ab
     <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>
     >>> strategy.duo_ba

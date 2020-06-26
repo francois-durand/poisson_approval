@@ -87,7 +87,7 @@ class Strategy(DeleteCacheMixin):
         if self.profile is not None:
             try:
                 return self.profile.share_sincere(self)
-            except NameError:
+            except AttributeError:
                 return
 
     @cached_property
@@ -100,7 +100,7 @@ class Strategy(DeleteCacheMixin):
         if self.profile is not None:
             try:
                 return self.profile.share_sincere_among_strategic_voters(self)
-            except NameError:
+            except AttributeError:
                 return
 
 
