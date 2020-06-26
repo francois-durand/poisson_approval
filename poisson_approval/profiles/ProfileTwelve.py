@@ -442,6 +442,58 @@ class ProfileTwelve(ProfileCardinal):
                 t[ballot] += self.d_ranking_share[ranking]
         return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
+    def share_sincere_among_strategic_voters(self, strategy):
+        """Share of strategic voters that happen to cast a sincere ballot.
+
+        Parameters
+        ----------
+        strategy : StrategyTwelve
+            A strategy that specifies at least all the rankings that are present in the profile.
+
+        Returns
+        -------
+        Number
+            The ratio of sincere voters among strategic voters.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),
+            ...                          'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})
+            >>> strategy = StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': 'utility-dependent'})
+            >>> profile.share_sincere_among_strategic_voters(strategy)
+            1
+        """
+        assert self.voting_rule == strategy.voting_rule
+        # Weak orders: these voters are always "sincere", even in Plurality or Anti-Plurality. For example, in
+        # Plurality, a voter a~b>c will vote at random for a or b, and this is considered "sincere".
+        share_sincere = sum(self.d_weak_order_share.values())
+        # Rankings
+        for ranking, ballot in strategy.d_ranking_ballot.items():
+            if self.d_ranking_share[ranking] == 0:
+                continue
+            # For a ranking abc, ballot can be real ballots (e.g. 'a', 'ab'), '' or 'utility-dependent'.
+            if self.voting_rule == APPROVAL:
+                if ballot == ballot_one(ranking):
+                    share_sincere += self.have_ranking_with_utility_below_u(ranking, u=.5)
+                elif ballot == ballot_one_two(ranking):
+                    share_sincere += self.have_ranking_with_utility_above_u(ranking, u=.5)
+                else:
+                    share_sincere += self.d_ranking_share[ranking]
+            elif self.voting_rule == PLURALITY:
+                if ballot == ballot_one(ranking):
+                    share_sincere += self.d_ranking_share[ranking]
+                elif ballot == UTILITY_DEPENDENT:
+                    share_sincere += self.have_ranking_with_utility_below_u(ranking, u=.5)
+            elif self.voting_rule == ANTI_PLURALITY:
+                if ballot == ballot_one_two(ranking):
+                    share_sincere += self.d_ranking_share[ranking]
+                elif ballot == UTILITY_DEPENDENT:
+                    share_sincere += self.have_ranking_with_utility_above_u(ranking, u=.5)
+            else:
+                raise NotImplementedError
+        return self.ce.simplify(share_sincere)
+
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
 

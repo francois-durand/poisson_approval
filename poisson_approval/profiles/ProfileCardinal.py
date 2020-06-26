@@ -259,10 +259,7 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy : StrategyThreshold
-            A strategy that specifies at least all the rankings that are present in the profile. If some voters
-            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
-            ratio of optimistic voters must be specified.
+        strategy : an argument accepted by :meth:`share_sincere_among_strategic_voters`
 
         Returns
         -------

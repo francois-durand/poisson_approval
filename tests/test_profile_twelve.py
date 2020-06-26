@@ -1,7 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, EquilibriumStatus, \
-    PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds
+    PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT
 
 
 def test_iterative_voting_verbose():
@@ -178,5 +178,53 @@ def test_welfare():
         >>> profile = ProfileTwelve({'a~b>c': Fraction(1, 3), 'a>b~c': Fraction(2, 3)})
         >>> profile.d_candidate_welfare
         {'a': Fraction(1, 1), 'b': Fraction(1, 3), 'c': 0}
+    """
+    pass
+
+
+def test_share_sincere_among_strategic_voters_approval():
+    """
+        >>> profile = ProfileTwelve({'a_bc': Fraction(1, 3), 'ab_c': Fraction(2, 3)})
+        >>> strategy = StrategyTwelve({'abc': 'a'}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(1, 3)
+        >>> strategy = StrategyTwelve({'abc': UTILITY_DEPENDENT}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        1
+        >>> strategy = StrategyTwelve({'abc': 'ab'}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(2, 3)
+    """
+    pass
+
+
+def test_share_sincere_among_strategic_voters_plurality():
+    """
+        >>> profile = ProfileTwelve({'a_bc': Fraction(1, 3), 'ab_c': Fraction(2, 3)}, voting_rule=PLURALITY)
+        >>> strategy = StrategyTwelve({'abc': 'a'}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        1
+        >>> strategy = StrategyTwelve({'abc': UTILITY_DEPENDENT}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(1, 3)
+        >>> strategy = StrategyTwelve({'abc': 'b'}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+    """
+    pass
+
+
+def test_share_sincere_among_strategic_voters_anti_plurality():
+    """
+        >>> profile = ProfileTwelve({'a_bc': Fraction(1, 3), 'ab_c': Fraction(2, 3)}, voting_rule=ANTI_PLURALITY)
+        >>> strategy = StrategyTwelve({'abc': 'ab'}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        1
+        >>> strategy = StrategyTwelve({'abc': UTILITY_DEPENDENT}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(2, 3)
+        >>> strategy = StrategyTwelve({'abc': 'ac'}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
     """
     pass
