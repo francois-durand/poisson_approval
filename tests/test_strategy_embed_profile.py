@@ -1,5 +1,5 @@
-from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
-from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
+from fractions import Fraction
+from poisson_approval import ProfileOrdinal, StrategyOrdinal, ProfileDiscrete, StrategyThreshold
 
 
 def test():
@@ -169,5 +169,25 @@ phi_ab = 0.707107>
     <ballot = a, threshold_utility = 1, justification = Asymptotic method>
     >>> strategy.is_equilibrium
     EquilibriumStatus.EQUILIBRIUM
+    """
+    pass
+
+
+def test_shares():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)): 1,  # Sincere vote: a
+        ... }, ratio_fanatic=Fraction(1, 3))
+        >>> strategy = StrategyOrdinal({'abc': 'ab'}, profile=profile)
+        >>> strategy.tau
+        TauVector({'a': Fraction(1, 3), 'ab': Fraction(2, 3)})
+        >>> strategy.share_single_votes
+        Fraction(1, 3)
+        >>> strategy.share_double_votes
+        Fraction(2, 3)
+        >>> strategy.share_sincere_among_strategic_voters
+        0
+        >>> strategy.share_sincere
+        Fraction(1, 3)
     """
     pass
