@@ -254,6 +254,64 @@ class ProfileCardinal(Profile):
                     share_limit_voters, 1 - ratio_optimistic)
         return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
+    def share_sincere_among_strategic_voters(self, strategy):
+        """Share of strategic voters that happen to cast a sincere ballot.
+
+        Parameters
+        ----------
+        strategy : StrategyThreshold
+            A strategy that specifies at least all the rankings that are present in the profile. If some voters
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            ratio of optimistic voters must be specified.
+
+        Returns
+        -------
+        Number
+            The ratio of sincere voters among strategic voters. In particular, if all strategic voters happen to be
+            sincere with the given strategy, then the ratio is 1, even if there are non-strategic voters (for example,
+            in Approval, fanatic voters who have a utility > 0.5 for their second candidate and are therefore not
+            "sincere", according to our definition).
+        """
+        assert self.voting_rule == strategy.voting_rule
+        # Weak orders: these voters are always "sincere", even in Plurality or Anti-Plurality. For example, in
+        # Plurality, a voter a~b>c will vote at random for a or b, and this is considered "sincere".
+        share_sincere = sum(self.d_weak_order_share.values())
+        # Rankings
+        for ranking, threshold in strategy.d_ranking_threshold.items():
+            if self.d_ranking_share[ranking] == 0:
+                continue
+            # Voters with a utility != strategy's threshold
+            if self.voting_rule == APPROVAL:
+                if threshold <= Fraction(1, 2):
+                    share_sincere += (self.have_ranking_with_utility_below_u(ranking, u=threshold)
+                                      + self.have_ranking_with_utility_above_u(ranking, u=Fraction(1, 2)))
+                else:
+                    share_sincere += (self.have_ranking_with_utility_below_u(ranking, u=Fraction(1, 2))
+                                      + self.have_ranking_with_utility_u(ranking, u=Fraction(1, 2))
+                                      + self.have_ranking_with_utility_above_u(ranking, u=threshold))
+            elif self.voting_rule == PLURALITY:
+                share_sincere += self.have_ranking_with_utility_below_u(ranking, u=threshold)
+            elif self.voting_rule == ANTI_PLURALITY:
+                share_sincere += self.have_ranking_with_utility_above_u(ranking, u=threshold)
+            else:
+                raise NotImplementedError
+            # Voters with a utility == strategy's threshold
+            share_limit_voters = self.have_ranking_with_utility_u(ranking, u=threshold)
+            if share_limit_voters != 0:
+                ratio_optimistic = strategy.d_ranking_ratio_optimistic[ranking]
+                if self.voting_rule == APPROVAL:
+                    if threshold <= Fraction(1, 2):
+                        share_sincere += self.ce.multiply_with_absorbing_zero(share_limit_voters, ratio_optimistic)
+                    else:
+                        share_sincere += self.ce.multiply_with_absorbing_zero(share_limit_voters, 1 - ratio_optimistic)
+                elif self.voting_rule == PLURALITY:
+                    share_sincere += self.ce.multiply_with_absorbing_zero(share_limit_voters, ratio_optimistic)
+                elif self.voting_rule == ANTI_PLURALITY:
+                    share_sincere += self.ce.multiply_with_absorbing_zero(share_limit_voters, 1 - ratio_optimistic)
+                else:
+                    raise NotImplementedError
+        return self.ce.simplify(share_sincere)
+
     def is_equilibrium(self, strategy):
         """Whether a strategy is an equilibrium.
 
