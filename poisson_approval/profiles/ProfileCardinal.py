@@ -254,6 +254,34 @@ class ProfileCardinal(Profile):
                     share_limit_voters, 1 - ratio_optimistic)
         return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
+    @cached_property
+    def share_sincere_among_fanatic_voters(self):
+        """Number: Share of fanatic voters that happen to cast a sincere ballot.
+
+        In Plurality or Anti-Plurality, this number is always 1 because fanatic voters are sincere by our definition.
+
+        In Approval, this is the proportion of fanatic voters whose ballot happen to be sincere, i.e. whose utility
+        for their second candidate is lower or equal to 0.5.
+
+        Note that this share is relative to the share of fanatic voters: therefore, it is independent of
+        :attr:`ratio_fanatic` and can be defined conventionally even if :attr:`ratio_fanatic` is 0, with the same
+        computation.
+        """
+        if self.voting_rule == APPROVAL:
+            share_sincere = sum(self.d_weak_order_share.values())
+            share_sincere += sum([
+                (
+                    self.have_ranking_with_utility_below_u(ranking, Fraction(1, 2))
+                    + self.have_ranking_with_utility_u(ranking, Fraction(1, 2))
+                )
+                for ranking in RANKINGS
+            ])
+            return self.ce.simplify(share_sincere)
+        elif self.voting_rule in {PLURALITY, ANTI_PLURALITY}:
+            return 1
+        else:
+            raise NotImplementedError
+
     def share_sincere_among_strategic_voters(self, strategy):
         """Share of strategic voters that happen to cast a sincere ballot.
 

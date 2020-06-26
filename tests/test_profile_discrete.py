@@ -173,3 +173,49 @@ def test_share_sincere_among_strategic_voters_anti_plurality():
     pass
 
 
+def test_share_sincere_among_fanatic_voters_weak_orders():
+    """
+        >>> profile = ProfileDiscrete({'a~b>c': 1})
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_approval():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),   # Sincere vote: a
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),   # Sincere vote: a
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),   # Sincere vote: ab
+        ... })
+        >>> profile.share_sincere_among_fanatic_voters
+        Fraction(3, 7)
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_plurality():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),
+        ... }, voting_rule=PLURALITY)
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_anti_plurality():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),
+        ... }, voting_rule=ANTI_PLURALITY)
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+    """
+    pass
