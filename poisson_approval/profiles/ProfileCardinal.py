@@ -254,6 +254,28 @@ class ProfileCardinal(Profile):
                     share_limit_voters, 1 - ratio_optimistic)
         return TauVector(t, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
+    def share_sincere(self, strategy):
+        """Share of voters that happen to cast a sincere ballot.
+
+        Parameters
+        ----------
+        strategy : StrategyThreshold
+            A strategy that specifies at least all the rankings that are present in the profile. If some voters
+            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            ratio of optimistic voters must be specified.
+
+        Returns
+        -------
+        Number
+            The ratio of voters that happen to cast a sincere ballot. This includes all kinds of voters (sincere,
+            fanatic or strategic).
+        """
+        return self.ce.barycenter(
+            a=self.share_sincere_among_strategic_voters(strategy),
+            b=[1, self.share_sincere_among_fanatic_voters],
+            ratio_b=[self.ratio_sincere, self.ratio_fanatic]
+        )
+
     @cached_property
     def share_sincere_among_fanatic_voters(self):
         """Number: Share of fanatic voters that happen to cast a sincere ballot.

@@ -219,3 +219,28 @@ def test_share_sincere_among_fanatic_voters_anti_plurality():
         1
     """
     pass
+
+
+def test_share_sincere():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)): 1,   # Sincere vote: a
+        ... }, ratio_fanatic=Fraction(1, 3))
+        >>> strategy = StrategyOrdinal({'abc': 'ab'})
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+        >>> profile.share_sincere(strategy)
+        Fraction(1, 3)
+
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)): 1,   # Sincere vote: a
+        ... }, ratio_sincere=Fraction(1, 5))
+        >>> strategy = StrategyOrdinal({'abc': 'ab'})
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+        >>> profile.share_sincere(strategy)
+        Fraction(1, 5)
+    """
+    pass
