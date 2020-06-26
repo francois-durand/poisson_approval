@@ -78,6 +78,31 @@ class Strategy(DeleteCacheMixin):
         """
         return self.tau
 
+    @cached_property
+    def share_sincere(self):
+        """Number: Share of voters that happen to cast a sincere ballot (in the context of the given profile).
+
+        Cf. :meth:`ProfileCardinal.share_sincere`. This is defined only for a :class:`ProfileCardinal`.
+        """
+        if self.profile is not None:
+            try:
+                return self.profile.share_sincere(self)
+            except AttributeError:
+                return
+
+    @cached_property
+    def share_sincere_among_strategic_voters(self):
+        """Number: Share of strategic voters that happen to cast a sincere ballot (in the context of the given profile).
+
+        Cf. :meth:`ProfileCardinal.share_sincere_among_strategic_voters`. This is defined only for a
+        :class:`ProfileCardinal`.
+        """
+        if self.profile is not None:
+            try:
+                return self.profile.share_sincere_among_strategic_voters(self)
+            except AttributeError:
+                return
+
 
 def make_method(name):
     def _method(self):
@@ -102,7 +127,9 @@ def make_property(name, doc):
 for my_property, my_doc in [('scores', 'The scores.'),
                             ('winners', 'The winners.'),
                             ('trio', 'Event: trio.'),
-                            ('d_ranking_best_response', 'Best response profile.')]:
+                            ('d_ranking_best_response', 'Best response profile.'),
+                            ('share_single_votes', 'Share of single votes in tau (incl. fanatic and sincere voters).'),
+                            ('share_double_votes', 'Share of double votes in tau (incl. fanatic and sincere voters).')]:
     setattr(Strategy, my_property, make_property(my_property, my_doc))
 
 for my_property, my_doc in [

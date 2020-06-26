@@ -83,3 +83,164 @@ def test_relative_welfare():
         {'a': 1, 'b': 1, 'c': 1}
     """
     pass
+
+
+def test_share_sincere_among_strategic_voters_weak_orders():
+    """
+        >>> profile = ProfileDiscrete({'a~b>c': 1})
+        >>> strategy = StrategyOrdinal({})
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        1
+    """
+    pass
+
+
+def test_share_sincere_among_strategic_voters_approval():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),   # Sincere vote: a
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),   # Sincere vote: a
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),   # Sincere vote: ab
+        ... })
+        >>> strategy = StrategyThreshold({'abc': 0})
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(4, 7)
+        >>> strategy = StrategyThreshold({'abc': Fraction(2, 11)}, ratio_optimistic=Fraction(1, 3))
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(13, 21)
+        >>> strategy = StrategyThreshold({'abc': Fraction(1, 2)}, ratio_optimistic=Fraction(1, 3))
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(17, 21)
+        >>> strategy = StrategyThreshold({'abc': Fraction(9, 11)}, ratio_optimistic=Fraction(1, 3))
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(17, 21)
+        >>> strategy = StrategyThreshold({'abc': 1})
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(3, 7)
+    """
+    pass
+
+
+def test_share_sincere_among_strategic_voters_plurality():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),
+        ... }, voting_rule=PLURALITY)
+        >>> strategy = StrategyThreshold({'abc': 0}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+        >>> strategy = StrategyThreshold({'abc': Fraction(2, 11)}, ratio_optimistic=Fraction(1, 3), profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(1, 21)
+        >>> strategy = StrategyThreshold({'abc': Fraction(1, 2)}, ratio_optimistic=Fraction(1, 3), profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(5, 21)
+        >>> strategy = StrategyThreshold({'abc': Fraction(9, 11)}, ratio_optimistic=Fraction(1, 3), profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(13, 21)
+        >>> strategy = StrategyThreshold({'abc': 1}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        1
+    """
+    pass
+
+
+def test_share_sincere_among_strategic_voters_anti_plurality():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),
+        ... }, voting_rule=ANTI_PLURALITY)
+        >>> strategy = StrategyThreshold({'abc': 0}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        1
+        >>> strategy = StrategyThreshold({'abc': Fraction(2, 11)}, ratio_optimistic=Fraction(1, 3), profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(20, 21)
+        >>> strategy = StrategyThreshold({'abc': Fraction(1, 2)}, ratio_optimistic=Fraction(1, 3), profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(16, 21)
+        >>> strategy = StrategyThreshold({'abc': Fraction(9, 11)}, ratio_optimistic=Fraction(1, 3), profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        Fraction(8, 21)
+        >>> strategy = StrategyThreshold({'abc': 1}, profile=profile)
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_weak_orders():
+    """
+        >>> profile = ProfileDiscrete({'a~b>c': 1})
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_approval():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),   # Sincere vote: a
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),   # Sincere vote: a
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),   # Sincere vote: ab
+        ... })
+        >>> profile.share_sincere_among_fanatic_voters
+        Fraction(3, 7)
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_plurality():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),
+        ... }, voting_rule=PLURALITY)
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+    """
+    pass
+
+
+def test_share_sincere_among_fanatic_voters_anti_plurality():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)):   Fraction(1, 7),
+        ...     ('abc', Fraction(1, 2)):    Fraction(2, 7),
+        ...     ('abc', Fraction(9, 11)):   Fraction(4, 7),
+        ... }, voting_rule=ANTI_PLURALITY)
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+    """
+    pass
+
+
+def test_share_sincere():
+    """
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)): 1,   # Sincere vote: a
+        ... }, ratio_fanatic=Fraction(1, 3))
+        >>> strategy = StrategyOrdinal({'abc': 'ab'})
+        >>> profile.share_sincere_among_fanatic_voters
+        1
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+        >>> profile.share_sincere(strategy)
+        Fraction(1, 3)
+
+        >>> profile = ProfileDiscrete({
+        ...     ('abc', Fraction(2, 11)): 1,   # Sincere vote: a
+        ... }, ratio_sincere=Fraction(1, 5))
+        >>> strategy = StrategyOrdinal({'abc': 'ab'})
+        >>> profile.share_sincere_among_strategic_voters(strategy)
+        0
+        >>> profile.share_sincere(strategy)
+        Fraction(1, 5)
+    """
+    pass

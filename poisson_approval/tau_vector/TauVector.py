@@ -340,6 +340,32 @@ phi_ab = 0.707107>
         """
         return self == self.standardized_version
 
+    @cached_property
+    def share_single_votes(self):
+        """Number: share of single votes, i.e. votes for one candidate only.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
+            >>> tau.share_single_votes
+            Fraction(2, 5)
+        """
+        return sum([share for ballot, share in self.d_ballot_share.items() if len(ballot) == 1])
+
+    @cached_property
+    def share_double_votes(self):
+        """Number: share of double votes, i.e. votes for two candidates.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
+            >>> tau.share_double_votes
+            Fraction(3, 5)
+        """
+        return sum([share for ballot, share in self.d_ballot_share.items() if len(ballot) == 2])
+
     # Pivots
 
     @cached_property
