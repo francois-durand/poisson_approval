@@ -2,6 +2,30 @@
 History
 =======
 
+----------------------------------------------------------
+0.26.0 (2020-06-26): Descriptive Statistics of the Ballots
+----------------------------------------------------------
+
+* In ``TauVector``:
+
+  * Add ``share_single_votes``: share of single votes, i.e. votes for one candidate only.
+  * Add ``share_double_votes``: share of double votes, i.e. votes for two candidates.
+
+* In ``ProfileCardinal``:
+
+  * Add ``share_sincere_among_strategic_voters``: share of strategic voters that happen to cast a sincere ballot (when
+    a strategy is given).
+  * Add ``share_sincere_among_fanatic_voters``: share of fanatic voters that happen to cast a sincere ballot.
+  * Add ``share_sincere``: share of voters that happen to cast a sincere ballot (when a strategy is given). This
+    takes sincere, fanatic and strategic voters into account.
+
+* In ``Strategy``:
+
+  * Add ``share_single_votes`` and ``share_double_votes``: these shortcuts are defined when the strategy
+    is defined with an embedded profile.
+  * Add ``share_sincere_among_strategic_voters`` and ``share_sincere``: these shortcuts are defined when the strategy
+    is defined with an embedded profile, provided the profile is cardinal.
+
 -------------------------------------------
 0.25.1 (2020-06-25): Welfare of a Candidate
 -------------------------------------------
