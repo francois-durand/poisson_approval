@@ -68,7 +68,7 @@ def plot_distribution_scores(factory, n_samples,
     plt.xticks(np.arange(0, 1.1, 0.1))
 
 
-def _plot_cdf(data, **kwargs):
+def _plot_cdf(data, **kwargs):  # pragma: no cover
     sorted_data = np.sort(data)
     plt.step([0] + list(sorted_data) + [1], [0] + list(np.arange(sorted_data.size) / sorted_data.size) + [1],
              **kwargs)
