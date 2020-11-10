@@ -559,6 +559,7 @@ class ProfileCardinal(Profile):
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
+                tau_perceived.print_magnitudes_order()
                 print('strategy: %s' % strategy)
                 print('tau_full_response: %s' % tau_full_response)
                 print('tau_actual: %s' % tau_actual)
@@ -702,6 +703,7 @@ class ProfileCardinal(Profile):
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
+                tau_perceived.print_magnitudes_order()
                 print('strategy: %s' % strategy)
                 print('tau_full_response: %s' % tau_full_response)
                 print('tau_actual: %s' % tau_actual)

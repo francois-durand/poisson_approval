@@ -16,16 +16,19 @@ def test_iterative_voting_verbose():
     tau_actual: <ab: 1> ==> a, b
     t = 1
     tau_perceived: <ab: 1> ==> a, b
+    mu_ab > mu_ac = mu_bc
     strategy: <abc: a> ==> a
     tau_full_response: <a: 1> ==> a
     tau_actual: <a: 1> ==> a
     t = 2
     tau_perceived: <a: 1> ==> a
+    mu_ab = mu_ac = mu_bc
     strategy: <abc: a> ==> a
     tau_full_response: <a: 1> ==> a
     tau_actual: <a: 1> ==> a
     t = 3
     tau_perceived: <a: 1> ==> a
+    mu_ab = mu_ac = mu_bc
     strategy: <abc: a> ==> a
     tau_full_response: <a: 1> ==> a
     tau_actual: <a: 1> ==> a
@@ -36,11 +39,13 @@ def test_iterative_voting_verbose():
     tau_actual: <ab: 1> ==> a, b
     t = 1
     tau_perceived: <ab: 1> ==> a, b
+    mu_ab > mu_ac = mu_bc
     strategy: <abc: a> ==> a
     tau_full_response: <a: 1> ==> a
     tau_actual: <a: 1> ==> a
     t = 2
     tau_perceived: <a: 1> ==> a
+    mu_ab = mu_ac = mu_bc
     strategy: <abc: a> ==> a
     tau_full_response: <a: 1> ==> a
     tau_actual: <a: 1> ==> a
