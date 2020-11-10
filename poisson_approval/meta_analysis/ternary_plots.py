@@ -1,10 +1,16 @@
 import ternary
-from collections import Counter
+from math import floor, ceil
+from fractions import Fraction
+from collections import Counter, namedtuple
+from scipy.spatial import distance
 from ternary.helpers import simplex_iterator
 from matplotlib import pyplot as plt
 from matplotlib.patches import Patch
 from poisson_approval.meta_analysis.ternary_condorcet import draw_condorcet_zones
 from poisson_approval.meta_analysis.colors import *
+
+
+Point = namedtuple('Point', ['right', 'top', 'left'])
 
 
 def _generate_heatmap_data(f, scale):
@@ -20,24 +26,33 @@ def _generate_heatmap_data(f, scale):
 
     Returns
     -------
-    dict
+    d_scaled_point_color : dict
         Key: a point of the integer simplex defined by `scale`. Value: the RGBA code of the color representing the
         output of `f`.
+    d_point_values : dict
+        Key: a point of the simplex, with coordinates in (0, 1). Value: the values of function f(right, top, left).
 
     Examples
     --------
         >>> def f(right, top, left):
         ...     return [right, 0, 0]
-        >>> _generate_heatmap_data(f, scale=2)
+        >>> d_scaled_point_color, d_point_values = _generate_heatmap_data(f, scale=2)
+        >>> d_scaled_point_color
         {(0, 0, 2): (0.5, 0.5, 0.5, 1.0), (0, 1, 1): (0.5, 0.5, 0.5, 1.0), (0, 2, 0): (0.5, 0.5, 0.5, 1.0), \
 (1, 0, 1): (0.75, 0.5, 0.5, 1.0), (1, 1, 0): (0.75, 0.5, 0.5, 1.0), (2, 0, 0): (1.0, 0.5, 0.5, 1.0)}
+        >>> d_point_values  # doctest: +ELLIPSIS
+        {Point(right=Fraction(0, 1), top=Fraction(0, 1), left=Fraction(1, 1)): [Fraction(0, 1), 0, 0], ...
     """
-    d = dict()
+    d_point_values = dict()
+    d_scaled_point_color = dict()
     for (right, top, left) in simplex_iterator(scale):
-        values = f(right / scale, top / scale, left / scale)
+        scaled_point = (right, top, left)
+        point = Point(Fraction(right, scale), Fraction(top, scale), Fraction(left, scale))
+        values = f(*point)
+        d_point_values[point] = values
         color = abc_to_rgb(values)
-        d[(right, top, left)] = (float(color[0]), float(color[1]), float(color[2]), 1.)
-    return d
+        d_scaled_point_color[scaled_point] = (float(color[0]), float(color[1]), float(color[2]), 1.)
+    return d_scaled_point_color, d_point_values
 
 
 def ternary_figure(size_inches='auto', scale=None, boundary_width=1.0, **kwargs):  # pragma: no cover
@@ -79,6 +94,7 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
 
     def __init__(self, scale=None, size_inches='auto', **kwargs):
         self.size_inches = size_inches
+        self.d_point_values_ = None  # Used for candidate maps
         super().__init__(scale=scale, **kwargs)
 
     def _scaled_number(self, x):
@@ -256,8 +272,8 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
         kwargs
             All other keywords arguments are passed to method ``heatmap`` of python-ternary.
         """
-        data = _generate_heatmap_data(func, self.get_scale())
-        self.heatmap(data, style=style, colorbar=colorbar, use_rgba=True, **kwargs)
+        d_scaled_point_color, self.d_point_values_ = _generate_heatmap_data(func, self.get_scale())
+        self.heatmap(d_scaled_point_color, style=style, colorbar=colorbar, use_rgba=True, **kwargs)
         self.right_corner_label(right_label)
         self.top_corner_label(top_label)
         self.left_corner_label(left_label)
@@ -266,7 +282,40 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
         if legend_style == 'palette':
             self.legend_palette(title=legend_title)
         else:
-            self.legend_color_patches(title=legend_title, data=data)
+            self.legend_color_patches(title=legend_title, data=d_scaled_point_color)
+
+    def f_point_values_(self, right, top, left):
+        """Data of a candidate heatmap.
+
+        This function can be used only after a candidate heatmap has been drawn. When given a point of the simplex,
+        it considers the closest point where f was computed and returns the corresponding value. It does not
+        recompute f, and in particular the result may not be the same as a direct application of f to the point given
+        as input.
+
+        Parameters
+        ----------
+        right : Number
+        top : Number
+        left : Number
+
+        Returns
+        -------
+        array of size 3
+            The value associated respectively to each candidate a, b, c.
+        """
+        if self.d_point_values_ is None:
+            raise ValueError("No candidate heatmap has been defined")
+        scale = self.get_scale()
+        input_point = Point(right=right, top=top, left=left)
+        possible_approx_points = [
+            Point(right=ri, top=to, left=le)
+            for ri in [Fraction(floor(right * scale), scale), Fraction(ceil(right * scale), scale)]
+            for to in [Fraction(floor(top * scale), scale), Fraction(ceil(top * scale), scale)]
+            for le in [Fraction(floor(left * scale), scale), Fraction(ceil(left * scale), scale)]
+            if ri + to + le == 1
+        ]
+        best_approx_point = min(possible_approx_points, key=lambda p: distance.euclidean(input_point, p))
+        return self.d_point_values_[best_approx_point]
 
     def annotate_condorcet(self, right_order, top_order, left_order, d_order_fixed_share=None):
         """Annotate who is the Condorcet winner depending on the region.
