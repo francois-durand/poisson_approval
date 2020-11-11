@@ -2,6 +2,18 @@
 History
 =======
 
+-----------------------------------
+0.27.0 (2020-11-11): Analysis tools
+-----------------------------------
+
+* Add ``plot_distribution_scores``: CDF of the score of the winner, the challenger and the loser (conditionally
+  on the convergence of fictitious play / iterated voting).
+* Add ``TernaryAxesSubplotPoisson.f_point_values_``: when a candidate heatmap has been drawn, this function gives
+  access to the computed values.
+* Add ``TauVector.print_magnitudes_order``: print the order of the magnitudes of the weak pivots.
+* In ``fictitious_play`` and ``iterated_voting``, in verbose mode, display also the order of the magnitudes of
+  the weak pivots.
+
 ----------------------------------------------------------
 0.26.0 (2020-06-26): Descriptive Statistics of the Ballots
 ----------------------------------------------------------

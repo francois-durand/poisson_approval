@@ -396,6 +396,32 @@ phi_ab = 0.707107>
         else:
             return Focus.DIRECT
 
+    def print_magnitudes_order(self):
+        """Print the order of the magnitudes of the weak pivots.
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
+            >>> tau.print_magnitudes_order()
+            mu_ac > mu_ab > mu_bc
+
+            >>> from fractions import Fraction
+            >>> tau = TauVector({'a': Fraction(1, 3), 'b': Fraction(1, 3), 'c': Fraction(1, 3)})
+            >>> tau.print_magnitudes_order()
+            mu_ab = mu_ac = mu_bc
+        """
+        d_notation_value = {'mu_%s' % pair: getattr(self, 'pivot_weak_%s' % pair).mu
+                            for pair in ['ab', 'ac', 'bc']}
+        notation_sorted = sorted(d_notation_value.keys(), key=d_notation_value.get, reverse=True)
+        values_sorted = sorted(d_notation_value.values(), reverse=True)
+        s = notation_sorted[0]
+        s += ' = ' if values_sorted[0] == values_sorted[1] else ' > '
+        s += notation_sorted[1]
+        s += ' = ' if values_sorted[1] == values_sorted[2] else ' > '
+        s += notation_sorted[2]
+        print(s)
+
     def print_weak_pivots(self):
         """Print the weak pivots (including the 3-way tie).
 

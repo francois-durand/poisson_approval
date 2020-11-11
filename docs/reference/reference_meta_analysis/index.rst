@@ -4,6 +4,7 @@ Meta-Analysis
 .. toctree::
 
    reference_nice_stats_profile_ordinal
+   reference_plot_distribution_scores
    reference_xyy_to_profile
    reference_binary_axes_subplot_poisson
    reference_binary_figure
