@@ -5,16 +5,18 @@ Poisson Approval
 
 .. image:: https://img.shields.io/pypi/v/poisson_approval.svg
         :target: https://pypi.python.org/pypi/poisson_approval
+        :alt: PyPI Status
 
-.. image:: https://img.shields.io/travis/francois-durand/poisson_approval.svg
-        :target: https://travis-ci.org/francois-durand/poisson_approval
+.. image:: https://github.com/francois-durand/poisson_approval/workflows/build/badge.svg?branch=master
+        :target: https://github.com/francois-durand/poisson_approval/actions?query=workflow%3Abuild
+        :alt: Build Status
 
-.. image:: https://readthedocs.org/projects/poisson-approval/badge/?version=latest
-        :target: https://poisson-approval.readthedocs.io/en/latest/?badge=latest
+.. image:: https://github.com/francois-durand/poisson_approval/workflows/docs/badge.svg?branch=master
+        :target: https://github.com/francois-durand/poisson_approval/actions?query=workflow%3Adocs
         :alt: Documentation Status
 
 .. image:: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs/badge.svg
-        :target: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs/badge
+        :target: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs
         :alt: Code Coverage
 
 
@@ -22,7 +24,7 @@ Poisson Approval studies the Poisson Game of Approval Voting.
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://poisson-approval.readthedocs.io.
+* Documentation: https://francois-durand.github.io/poisson_approval.
 
 --------
 Features
