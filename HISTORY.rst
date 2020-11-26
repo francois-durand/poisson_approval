@@ -2,6 +2,13 @@
 History
 =======
 
+---------------------------------------
+0.27.1 (2020-11-26): Use GitHub actions
+---------------------------------------
+
+* This patch concerns only Poisson Approval's developpers. To develop and maintain the package, it uses GitHub actions
+  instead of additional services such as Travis-CI and ReadTheDocs.
+
 -----------------------------------
 0.27.0 (2020-11-11): Analysis tools
 -----------------------------------
