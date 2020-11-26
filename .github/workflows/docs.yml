@@ -23,8 +23,7 @@ jobs:
         run: |
           sudo apt install pandoc
           python -m pip install --upgrade pip
-          # pip install setuptools
-          pip install sphinx sphinx-rtd-theme
+          # pip install sphinx sphinx-rtd-theme
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install poisson_approval
 
