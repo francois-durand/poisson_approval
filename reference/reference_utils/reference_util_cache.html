@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UtilCache Module &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="UtilMasks Module" href="reference_util_masks.html" />
+    <link rel="prev" title="UtilBallots Module" href="reference_util_ballots.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_func.html">computation_engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine.html">ComputationEngine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_numeric.html">ComputationEngineNumeric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_symbolic.html">ComputationEngineSymbolic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order.html">DictPrintingInOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order_ignoring_none.html">DictPrintingInOrderIgnoringNone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order_ignoring_zeros.html">DictPrintingInOrderIgnoringZeros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_set_printing_in_order.html">SetPrintingInOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util.html">Util Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_ballots.html">UtilBallots Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">UtilCache Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_masks.html">UtilMasks Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_preferences.html">UtilPreferences Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Utils</a> &raquo;</li>
+        
+      <li>UtilCache Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/reference/reference_utils/reference_util_cache.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-poisson_approval.utils.UtilCache">
+<span id="utilcache-module"></span><h1>UtilCache Module<a class="headerlink" href="#module-poisson_approval.utils.UtilCache" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="poisson_approval.utils.UtilCache.DeleteCacheMixin">
+<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.utils.UtilCache.</code><code class="sig-name descname">DeleteCacheMixin</code><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilCache.html#DeleteCacheMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilCache.DeleteCacheMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mixin used to delete cached properties.</p>
+<p class="rubric">Notes</p>
+<p>Cf. decorator <a class="reference internal" href="#poisson_approval.utils.UtilCache.cached_property" title="poisson_approval.utils.UtilCache.cached_property"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cached_property()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">DeleteCacheMixin</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nd">@cached_property</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Big computation...&#39;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">x</span>
+<span class="go">Big computation...</span>
+<span class="go">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">x</span>
+<span class="go">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">delete_cache</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">x</span>
+<span class="go">Big computation...</span>
+<span class="go">42</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.UtilCache.cached_property">
+<code class="sig-prename descclassname">poisson_approval.utils.UtilCache.</code><code class="sig-name descname">cached_property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilCache.html#cached_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilCache.cached_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator used in replacement of <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> to put the value in cache automatically.</p>
+<p class="rubric">Notes</p>
+<p>The first time the attribute is used, it is computed on-demand and put in cache. Later accesses to the
+attributes will use the cached value.</p>
+<p>Cf. <a class="reference internal" href="#poisson_approval.utils.UtilCache.DeleteCacheMixin" title="poisson_approval.utils.UtilCache.DeleteCacheMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeleteCacheMixin</span></code></a> for an example.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.UtilCache.property_deleting_cache">
+<code class="sig-prename descclassname">poisson_approval.utils.UtilCache.</code><code class="sig-name descname">property_deleting_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hidden_variable_name</span></em>, <em class="sig-param"><span class="n">doc</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilCache.html#property_deleting_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilCache.property_deleting_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a property that deletes the cache when set or deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_variable_name</strong> (<em>str</em>) – The name of the hidden variable used to store the value of the property.</p></li>
+<li><p><strong>doc</strong> (<em>str</em>) – The docstring of the property.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The class must inherit from <a class="reference internal" href="#poisson_approval.utils.UtilCache.DeleteCacheMixin" title="poisson_approval.utils.UtilCache.DeleteCacheMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeleteCacheMixin</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="n">DeleteCacheMixin</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">some_parameter</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">some_parameter</span> <span class="o">=</span> <span class="n">some_parameter</span>
+<span class="gp">... </span>    <span class="n">some_parameter</span> <span class="o">=</span> <span class="n">property_deleting_cache</span><span class="p">(</span><span class="s1">&#39;_some_parameter&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nd">@cached_property</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">my_cached_property</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing my_cached_property...&#39;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="s1">&#39;Hello </span><span class="si">%s</span><span class="s1">!&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">some_parameter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_object</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="n">some_parameter</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_object</span><span class="o">.</span><span class="n">my_cached_property</span>
+<span class="go">Computing my_cached_property...</span>
+<span class="go">&#39;Hello World!&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_object</span><span class="o">.</span><span class="n">my_cached_property</span>
+<span class="go">&#39;Hello World!&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_object</span><span class="o">.</span><span class="n">some_parameter</span> <span class="o">=</span> <span class="s1">&#39;everybody&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_object</span><span class="o">.</span><span class="n">my_cached_property</span>
+<span class="go">Computing my_cached_property...</span>
+<span class="go">&#39;Hello everybody!&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_util_masks.html" class="btn btn-neutral float-right" title="UtilMasks Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reference_util_ballots.html" class="btn btn-neutral float-left" title="UtilBallots Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

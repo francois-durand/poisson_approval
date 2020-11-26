@@ -1,0 +1,1290 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# More Classes of Profiles"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.667052Z",
+     "start_time": "2020-03-29T13:16:53.139754Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from fractions import Fraction\n",
+    "from matplotlib import pyplot as plt\n",
+    "import poisson_approval as pa"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Up to now, we have always used the class of profiles ProfileNoisyDiscrete. The package provides other kinds of profiles."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ProfileHistogram"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "ProfileHistogram is probably the closest class to ProfileNoisyDiscrete, because both are:\n",
+    "\n",
+    "* *Cardinal*: the voters have explicit utilities (unlike ProfileOrdinal, cf. below).\n",
+    "* *Continuous*: there is no concentration of voters on a specific utility (unlike ProfileDiscrete, cf. below)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A ProfileHistogram can be defined manually (cf. Reference section), but it is more common to use a random factory:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.682628Z",
+     "start_time": "2020-03-29T13:16:54.669708Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc: 11/100 [Fraction(9, 100) Fraction(3, 50) Fraction(3, 100) Fraction(1, 50)\n",
+       " Fraction(21, 100) Fraction(1, 5) Fraction(3, 20) Fraction(1, 10)\n",
+       " Fraction(1, 25) Fraction(1, 10)], acb: 13/100 [Fraction(3, 100) Fraction(13, 100) Fraction(1, 25) Fraction(2, 25)\n",
+       " Fraction(21, 100) Fraction(3, 20) Fraction(1, 5) Fraction(3, 100)\n",
+       " Fraction(13, 100) 0], bac: 13/25 [0 Fraction(2, 25) Fraction(3, 100) Fraction(1, 10) Fraction(3, 50)\n",
+       " Fraction(2, 25) Fraction(7, 20) Fraction(3, 100) Fraction(1, 25)\n",
+       " Fraction(23, 100)], bca: 1/100 [Fraction(37, 100) Fraction(1, 50) Fraction(1, 25) Fraction(3, 50)\n",
+       " Fraction(9, 50) Fraction(19, 100) Fraction(3, 100) Fraction(2, 25)\n",
+       " Fraction(3, 100) 0], cab: 2/25 [Fraction(4, 25) Fraction(1, 5) Fraction(1, 100) Fraction(13, 100)\n",
+       " Fraction(1, 50) Fraction(13, 100) Fraction(3, 20) Fraction(9, 100)\n",
+       " Fraction(1, 100) Fraction(1, 10)], cba: 3/20 [Fraction(1, 100) Fraction(29, 50) Fraction(1, 25) Fraction(7, 50)\n",
+       " Fraction(1, 100) 0 Fraction(1, 100) Fraction(2, 25) Fraction(7, 100)\n",
+       " Fraction(3, 50)]> (Condorcet winner: b)"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rand_profile = pa.RandProfileHistogramGridUniform(\n",
+    "    denominator=100,\n",
+    "    denominator_bins=100,\n",
+    "    n_bins=10\n",
+    ")\n",
+    "profile = rand_profile()\n",
+    "profile"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this example, the share of voters $abc$ is:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.691643Z",
+     "start_time": "2020-03-29T13:16:54.684623Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Fraction(11, 100)"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.abc"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The distribution of their utility for their middle candidate $b$ is given by a histogram:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.701612Z",
+     "start_time": "2020-03-29T13:16:54.693599Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([Fraction(9, 100), Fraction(3, 50), Fraction(3, 100),\n",
+       "       Fraction(1, 50), Fraction(21, 100), Fraction(1, 5),\n",
+       "       Fraction(3, 20), Fraction(1, 10), Fraction(1, 25), Fraction(1, 10)],\n",
+       "      dtype=object)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.d_ranking_histogram['abc']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The above notation means for example that for a voter $abc$, the probability that her utility for her second candidate $b$ is in the first of the ten bins (i.e. between 0 and 0.1) is:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.712548Z",
+     "start_time": "2020-03-29T13:16:54.703574Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Fraction(9, 100)"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.d_ranking_histogram['abc'][0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Voters in a bin are distributed uniformly. This histogram and the CDF of this distribution can be visualized by:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.886085Z",
+     "start_time": "2020-03-29T13:16:54.713546Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.legend.Legend at 0x11bdf97b160>"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAYIAAAEGCAYAAABo25JHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4xLjAsIGh0dHA6Ly9tYXRwbG90bGliLm9yZy+17YcXAAAgAElEQVR4nO3dd5wV5fXH8c8Blia9qEiRIhYQBF0QSxQUEzQCdgELlmA0okSjscQWTdEkaiT6E1ERrKiosCrYIogFFQhYQFE6qyhI77Ds+f0xd3Fdl92B3bmz997v+/Xa1069c4Yy584885zH3B0REclcleIOQERE4qVEICKS4ZQIREQynBKBiEiGUyIQEclwVeIOYFc1atTIW7ZsGXcYIiIpZfr06T+4e+Pi1qVcImjZsiXTpk2LOwwRkZRiZot2tk6PhkREMpwSgYhIhlMiEBHJcCnXRlCcbdu2kZuby+bNm+MOJe1Ur16dZs2akZWVFXcoIhKRtEgEubm51K5dm5YtW2JmcYeTNtydFStWkJubS6tWreIOR0QiEtmjITMbYWbLzOzznaw3MxtqZnPN7FMzO3R3j7V582YaNmyoJFDOzIyGDRvqTkskzUXZRjAS6FXC+hOBtomfS4AHy3IwJYFo6M9VJP1FlgjcfTKwsoRN+gKPe+BDoJ6ZNYkqHhGRlLV1I7x5C6xeHMnHx/nWUFNgSaH53MSynzGzS8xsmplNW758eVKC21W1atX6yfzIkSMZPHgwAMOGDePxxx/f6b6TJk3igw8+iDQ+EUlRCybDg0fA+/fB129Ecog4G4uLe+ZQ7Cg57j4cGA6QnZ2dciPpXHrppSWunzRpErVq1eLII48s87G2b99O5cqVy/w5IhKzzWvgjZvhf6OgQWu44FVoeXQkh4rzjiAXaF5ovhnwbUyxROq2227jX//6FwBDhw6lXbt2dOzYkX79+rFw4UKGDRvGvffeS6dOnXj33XdZtGgRxx9/PB07duT4449n8eLgdnDevHl069aNLl26cMstt+y4C5k0aRI9evRgwIABdOjQAYBTTjmFww47jPbt2zN8+PAdsdSqVYvrrruOww47jJ49e/Lxxx/TvXt3WrduTU5OTpL/ZESkWF+OhwcOhxlPwFFD4LIPIksCEO8dQQ4w2MxGA4cDa9x9aVk/9M8vz2L2t2vLHFxh7fapw62925e4zaZNm+jUqdOO+ZUrV9KnT5+fbXfnnXeyYMECqlWrxurVq6lXrx6XXnoptWrV4pprrgGgd+/enH/++QwcOJARI0Zw5ZVXMnbsWIYMGcKQIUPo378/w4YN+8nnfvzxx3z++ec7XvMcMWIEDRo0YNOmTXTp0oXTTz+dhg0bsmHDBrp3785dd93Fqaeeyk033cSbb77J7NmzGThwYLExi0iSrF8OE/4Is16EPdtDv6eh6W6/UBlaZInAzJ4BugONzCwXuBXIAnD3YcB44CRgLrARuDCqWJKhRo0azJw5c8f8yJEjiy2O17FjR8455xxOOeUUTjnllGI/a8qUKbz44osAnHfeefzxj3/csXzs2LEADBgwYEfiAOjatetP3vUfOnQoL730EgBLlizh66+/pmHDhlStWpVevYKXuTp06EC1atXIysqiQ4cOLFy4sAx/AiKy29zhs+dhwnWwdT30uCm4E6hSNSmHjywRuHv/UtY7cHl5H7e0b+5xe/XVV5k8eTI5OTnccccdzJo1q9R9wrzCuccee+yYnjRpEm+99RZTpkyhZs2adO/efUdfgKysrB2fV6lSJapVq7ZjOi8vb3dOSUTKYk0uvHI1fP06NOsCfe6HPQ9MagiqNZRE+fn5LFmyhB49evCPf/yD1atXs379emrXrs26det2bHfkkUcyevRoAJ566imOPjp4NtitWzdeeOEFgB3ri7NmzRrq169PzZo1+fLLL/nwww8jPCsR2S35+TD1UXigGyx8F3rdCRe9nvQkAEoESbV9+3bOPfdcOnToQOfOnbnqqquoV68evXv35qWXXtrRWDx06FAee+wxOnbsyBNPPMF9990HwL///W/uueceunbtytKlS6lbt26xx+nVqxd5eXl07NiRm2++mW7duiXzNEWkNCvmwaiT4dWrodlh8Lsp0O0yqBTPG38WPKFJHdnZ2V702fsXX3zBQQcdFFNEybNx40Zq1KiBmTF69GieeeYZxo0bF/lxM+XPVyRy2/Ngyv0w6e9QuRr86q/Q+VxIQg9+M5vu7tnFrUuLonOZYvr06QwePBh3p169eowYMSLukEQkrO8+g3GDYelMOPBkOOlfUKdiFFNQIkghv/jFL/jkk0/iDkNEdkXeFpj8T3jvXqhRH84cCe1OScpdQFhKBCIiUVnycXAX8MMcOKQ//OpvULNB3FH9jBKBiEh527Ie3v4LfDQM6jaDc16Atj3jjmqnlAhERMrTvLfh5SFBpdAug6DnrVCtdtxRlUiJQESkPGxaBW/cBDOehIb7wYUTYN+yF5JMBvUjKEffffcd/fr1o02bNrRr146TTjqJr776iho1atC5c2cOOuggunbtyqhRo3bsM3LkSBo3bkynTp3o1KkT559/foxnICK75YuXgyJxM5+Bo6+CS99PmSQAuiMoN+7OqaeeysCBA3f0+p05cybff/89bdq0YcaMGQDMnz+f0047jfz8fC68MCivdPbZZ3P//ffHFruI7Kb1y2D8tTB7LOzdAQY8B/t0Kn2/CkZ3BOVk4sSJZGVl/WTsgU6dOtG8efOfbNe6dWvuuecehg4dmuwQRaS8uAff/u/vAnMmwPG3wKCJKZkEIB3vCCZcH3TcKE97d4AT7yxxk88//5zDDjss1McdeuihfPnllzvmn332Wd577z0AhgwZsuNOQUQqoNWL4eXfw7z/QvPDgyJxjfePO6oySb9EkAKKlvXQoyGRCm7jSlj4Hix4Bz4ZHdwRnPhP6PIbqJT6D1bSLxGU8s09Ku3bt2fMmDGhtp0xY4Zq94hUZFs3wKIpwYV/wTuw9FPAIasm7NcTfvkXqL9v3FGWm/RLBDE57rjjuPHGG3n44YcZNGgQAFOnTmXjxo0/2W7hwoVcc801XHHFFXGEKSLFydsCudOCgeIXvBNM52+DSlnQvCt0vwFaHQNND0vaYDHJpERQTsyMl156id///vfceeedVK9enZYtW/Lvf/+befPm0blzZzZv3kzt2rW54oor1A4gEqf87bD0k8Q3/snBt/+8TWCVoMkhcMTlwYW/xRFQtWbc0UZOZailVPrzlZTnDsvn/PiNf+G7sHlNsK7xgdDq2ODC3/KooDBcGlIZahHJPKsW/fiNf8FkWP99sLxeCzioz48X/9p7xRtnBaBEICLpYf2yH7/xz38HVi8Klu+xZ3DBb5248NdvGWuYFVHaJAJ3DzXIu+yaVHt0KBlk02pY9H5w8Z//Diz/IlherS60PPrH5/yND6xQtf8rorRIBNWrV2fFihU0bNhQyaAcuTsrVqygevXqcYci8qPvZ8Nr1wXv9Xs+VKkBLbrBIWcHF/4mnWIb+zdVpUUiaNasGbm5uSxfvjzuUNJO9erVadasWdxhiEDeVnjvHpj8L6heB35xTfC4p1kXqFIt7uhSWlokgqysLFq1ahV3GCISldzpkDMYls2GDmdCr7tgj4ZxR5U20iIRiEia2roRJv4VPvw/qLU39H8WDugVd1RpR4lARCqmBZMh5wpYtRCyL4Ket0H1ujEHlZ5KrZZkZpebWb1C8/XN7HfRhiUiGWvzGsi5Ekb1Dnr6XvAqnHyvkkCEwpTNG+Tuqwtm3H0VMCi6kEQkY82ZEIz0NeMJOPLKYKSvlkfHHVXaC/NoqJKZmSdeKDezykD6VV0Skfhs+AEm/BE+fwH2bA/9noamh8YdVcYIkwheB54zs2GAA5cCr0UalYhkBnf47HmYcB1sWQc9/gRH/T4tK3xWZGESwXXAb4HLAAPeAB6JMigRyQBrcuGVq+Hr14O+AH3+A3uquGEcSk0E7p5vZo8CHwD5wBx33x7mw82sF3AfUBl4xN3vLLK+BTAKqJfY5np3H79rpyAiKSU/H6Y/Bm/eCr4det0JXS9Rb+AYlZoIzOzXwDBgHsEdQSsz+627Tyhlv8rAA8AJQC4w1cxy3H12oc1uAp5z9wfNrB0wHmi5W2ciIhXfinnBG0GL3guqf/a+DxqoM2jcwjwauhvo4e5zAcysDfAqUGIiALoCc919fmK/0UBfoHAicKBOYrou8G340EUkZWzPgw8fgIl/g8rVggHfO5+rYnAVRJhEsKwgCSTMB5aF2K8psKTQfC5weJFtbgPeMLMrgD2AnsV9kJldAlwC0KJFixCHFpEK47vPYNxgWDoTDvg1/PpuqNMk7qikkJ0mAjM7LTE5y8zGA88RfIM/E5ga4rOLS/VFaxr3B0a6+91mdgTwhJkd7O75P9nJfTgwHIIRykIcW0TilrcFJv8T3rs3GPXrzJHQ7hTdBVRAJd0R9C40/T1wbGJ6ORBmLLdcoHmh+Wb8/NHPxUAvAHefYmbVgUaEu+MQkYpqycfBXcAPc+CQ/vCrv0HNBnFHJTux00Tg7mUdXX0q0NbMWgHfAP2AAUW2WQwcD4w0s4OA6gSJRkRS0dYN8N874KNhUKcpnDMG2p4Qd1RSijBvDVUn+ObenuBCDYC7X1TSfu6eZ2aDCTqkVQZGuPssM7sdmObuOcAfgIfN7CqCx0YXuIbEEklN8ybCy1fC6sXQZRD0vBWq1Y47KgkhTGPxE8CXwK+A24FzgC/CfHiiT8D4IstuKTQ9GzgqbLAiUgFtWgVv3AQznoQGbeDCCbDvkXFHJbsgTCLYz93PNLO+7j7KzJ4m+JYvIpnui5fh1T8EtYKOvgqOvQ6yasQdleyiMIlgW+L3ajM7GPgOdfoSyWzu8Nat8P59sHcHGPAc7NMp7qhkN4VJBMPNrD5BL+AcoBZwc6RRiUjF5Q6v3QAfPQjZF8OJd0HlrLijkjIIU2uooMDcZKB1tOGISIWWnw/j/wDTRkC3y+FXf1W/gDSgoSpFJJz87cFbQTOeDNoDjr9VSSBNKBGISOm258G438Gnz8Kx10P365UE0ogSgYiUbPs2ePESmPUiHHcTHHNt3BFJOQszeP2ZZlY7MX2Tmb1oZhpDTiQT5G2F5y8IksAJdygJpKkwg9ff7O7rzOxogk5lo4AHow1LRGK3bTM8dx58+Qr0uguOujLuiCQiYRJBwWhkvwYedPdxaPB6kfS2bROM7g9fvQYn3wvdLo07IolQmETwjZk9BJwFjDezaiH3E5FUtHUDPHVmUDuo7wOQXWJZMUkDYS7oZxGUlOjl7quBBoAeFIqkoy3r4MkzYNH7cOpDwShikvZKfGvIzCoBH7v7wQXL3H0psDTqwEQkyTavCZLAN9Ph9Efg4NPjjkiSpMQ7gsRIYZ+YmcaHFElnG1fC433h2xlw1iglgQwTph9BE4LhKj8GNhQsdPc+kUUlIsmzYQU80ReWz4Gzn4QDesUdkSRZmETw58ijEJF4rF8Go/rAqgXQ/xnYr2fcEUkMwhSde8fM9gXauvtbZlaTYMQxEUlla5fC431gTW5QRrr1saXvI2kpTM/iQcAY4KHEoqbA2CiDEpGIrcmFkSfB2m/h3BeUBDJcmNdHLycYTnItgLt/DewZZVAiEqFVi+Cxk4JRxc57ScNKSqg2gi3uvtUSlQbNrArBQPMikmpWzAvaBLaug/PHQVOVDZNwdwTvmNmNQA0zOwF4Hng52rBEpNwt/wpG/hq2bYSBrygJyA5hEsH1wHLgM+C3wHh3/1OkUYlI+fp+dpAE8vPgglehSce4I5IKJMyjoSvc/T7g4YIFZjYksUxEKrrvPgs6i1XKgoEvQ+P9445IKpgwdwQDi1l2QTnHISJR+HYGjDwZqlSHC8crCUixdnpHYGb9gQFAKzPLKbSqDrAi6sBEpIyWTIUnT4fqdeGCl6F+y7gjkgqqpEdDHxAUl2sE3F1o+Trg0yiDEpEyWjQFnjoD9mgcPA6q1zzuiKQC22kicPdFwCLgCDPbC+iSWPWFu+clIzgR2Q0LJsPTZ0OdpjAwB+rsE3dEUsGFGrMY+Bg4k2Bsgo/M7IyoAxOR3TD3v8GgMvVaBG8HKQlICGHeGroJ6OLuywDMrDHwFkHZCRGpKL56A549Fxq1DTqL7dEo7ogkRYR5a6hSQRJIWBFyPxFJli9egdEDYM8DgzYBJQHZBWEu6K+Z2etmdoGZXQC8CowP8+Fm1svM5pjZXDO7fifbnGVms81slpk9HT50EQFg1lh4fiA0OQTOz4GaDeKOSFJMmDLU15rZacDRgAHD3f2l0vYzs8rAA8AJQC4w1cxy3H12oW3aAjcAR7n7KjNTMTuRXfHtTHjxEmh6GJwzBqrXiTsiSUGlJgIzuwp43t1f3MXP7grMdff5ic8ZDfQFZhfaZhDwgLuvAijyCEpESrJxJTx3XvCKaL9nlARkt4V5NFQHeN3M3jWzyxOvkobRFFhSaD43sayw/YH9zex9M/vQzIodI8/MLjGzaWY2bfny5SEPL5LG8vPhpUuDwWXOGgV7NIw7IklhpSYCd/+zu7cnGJdgH4JqpG+F+Gwr7uOKzFcB2gLdgf7AI2ZWr5gYhrt7trtnN27cOMShRdLce/fA16/Dr/4GzbLjjkZS3K68/bMM+I7graEwz/JzgcLdGZsB3xazzTh33+buC4A5BIlBRHZm/iSY+Fc4+HToOijuaCQNhOlQdpmZTQL+S1BuYpC7h6lhOxVoa2atzKwq0A/IKbLNWKBH4jiNCB4VzQ8fvkiGWfstjLkYGraF3kPBirvxFtk1YTqU7Qv83t1n7soHu3uemQ0GXicY7H6Eu88ys9uBae6ek1j3SzObDWwHrnV3FbQTKc72bfD8hbBtE5z9BFSrFXdEkibMPbVGnczOzvZp06bFHYZI8r12I3z4AJz+KHRQlRfZNWY23d2LbVBSD2GRVDBrbJAEuv5WSUDKnRKBSEX3w1wYNxiadYFf/iXuaCQNhUoEZravmfVMTNcws9rRhiUiAGzdEHQaq1IVzhwZ/BYpZ2HeGhpEUGn0ocSiZgRv+4hIlNzhlath2Rdw+iNQt1ncEUmaCnNHcDlwFLAWwN2/Jlw/AhEpi+mPwaejofsN0Oa4uKORNBYmEWxx960FM2ZWhZ/3EBaR8vTN/2DCdbBfTzjm2rijkTQXJhG8Y2Y3AjXM7ATgeeDlaMMSyWAbV8JzA6HWXnDaw1BJ73RItML8C7seWA58BvyWYCyCm6IMSiRj5ecHZaXXLYUzR2lsAUmKMOMR5AMPJ35EJErv3g1z34ST/gXNDos7GskQYcYjOAq4jaDURBWCqqLu7q2jDU0kw8ybGBST63AmdPlN3NFIBglTa+hR4CpgOkE9IBEpb2u+gRcuhsYHQO/7VExOkipMIljj7hMij0QkU+VthecvgLwtcNYTUHWPuCOSDLPTRGBmhyYmJ5rZP4EXgS0F6939fxHHJpIZ3rwFcj8Oeg433j/uaCQDlXRHcHeR+cJV6xxQDxeRsvr8RfjoQTj8Mmh/atzRSIbaaSJw94IBY1oXDEBfwMzUUCxSVsu/gpwroFlXOOH2uKORDBamH8GYYpY9X96BiGSUrRvgufOhSjUVk5PYldRGcCDQHqhrZqcVWlUHqB51YCJpyx1e/j0s/xLOewnqNo07IslwJbURHACcDNQDehdavg7QiNkiu2vao/DZc9DjJmjTI+5oREpsIxgHjDOzI9x9ShJjEklf30yH126Atr+EX/wh7mhEgBBtBEoCIuVkRzG5veHUh1RMTiqMMB3KRKSs8vPhxUGw/nu46HUVk5MKZadfScxsSOL3UckLRyRNTf4nzH0Let0JTQ8tfXuRJCrp3vTCxO//JCMQkbQ1978w6e/QsR9kXxR3NCI/U9KjoS/MbCHQ2Mw+LbS8oPpox0gjE0kHa3Lhhd/AngfByfeqmJxUSCW9NdTfzPYGXgf6JC8kkTSRtzVoHN6+LVFMrmbcEYkUq8TGYnf/DjjEzKoCBdWw5rj7tsgjE0l1b9wE30wLRhprtF/c0YjsVJiBaY4FHgcWEjwWam5mA919csSxiaSuz8bAxw9Bt8uh/SlxRyNSojCvj94D/NLd5wCY2f7AM4DG0RMpzvI5kHMlNO8GJ/w57mhEShWmR0tWQRIAcPevgKzoQhJJYVvWw7PnBe0BZz4GlfVfRSq+MHcE08zsUeCJxPw5BMNWikhh7vDyEFjxNZw3FursE3dEIqGESQSXAZcDVxK0EUwG/i/KoERS0tRH4PMxcNzN0PrYuKMRCS1MraEt7n6Pu5/m7qe6+73uvqW0/QDMrJeZzTGzuWZ2fQnbnWFmbmbZO9tGpEIrKCa3fy84+uq4oxHZJZFVvTKzysADwIlAO6C/mbUrZrvaBHcbH0UVi0ikNq+BMRdB7b3hlAdVTE5STpT/YrsCc919vrtvBUYDfYvZ7g7gH8DmCGMRiYY7vHIVrF4Cpz+qYnKSkqJMBE2BJYXmcxPLdjCzzkBzd3+lpA8ys0vMbJqZTVu+fHn5Ryqyu2Y8CZ+/AD1uhBaHxx2NyG4J06Fsf+BaYN/C27v7caXtWswyL/S5lYB7gQtKi8HdhwPDAbKzs72UzUWSY/kcGH8ttDoWjr4q7mhEdluYt4aeB4YBDwPbd+Gzc4HmheabAd8Wmq8NHAxMsqAQ195Ajpn1cfdpu3AckeTbtgmevxCq7gGnDYdKleOOSGS3hUkEee7+4G589lSgrZm1Ar4B+gEDCla6+xqgUcG8mU0CrlESkJTw+p9g2Sw454WgkVgkhYVpI3jZzH5nZk3MrEHBT2k7uXseMJigeukXwHPuPsvMbjczVTOV1DU7JxiA/sgroG3PuKMRKTNzL/mRu5ktKGaxu3vraEIqWXZ2tk+bppsGicnqxTDsaGjQJhhyskrVuCMSCcXMprt7sX21Sn005O6tyj8kkRS0PS8YZMYdzhihJCBpI8xbQ1kEZSaOSSyaBDykMQkk40z6Oyz5KOgv0EDfjyR9hGksfpCg2mhBfaHzEst+E1VQIhXO/Enw7t3Q+TzocEbc0YiUqzCJoIu7H1Jo/m0z+ySqgEQqnPXL4cVLoNH+cOJdcUcjUu7CvDW03czaFMyYWWt2rT+BSOrKz4exl8Gm1cH4AlX3iDsikXIX5o7gWmCimc0n6C28L3BhpFGJVBQfPgBz34Rf3w17tY87GpFIhHlr6L9m1hY4gCARfBm2DLVISvtmOrx1GxzUG7IvjjsakcjsNBGY2XHu/raZnVZkVRszw91fjDg2kfhsXpsoLd0E+vwHrLjSWSLpoaQ7gmOBt4HexaxzQIlA0pM7vPL7oLT0heOhRv24IxKJ1E4Tgbvfmpi83d1/0rs4UT9IJD0VlJY+7mZo0S3uaEQiF+atoReKWTamvAMRqRBUWloyUEltBAcC7YG6RdoJ6gDVow5MJOm2bQraBVRaWjJMSW0EBwAnA/X4aTvBOmBQlEGJxOKNm+D7z+GcMSotLRmlpDaCcWb2CnCdu/8tiTGJJN/sHJj6SKK09AlxRyOSVCW2Ebj7dkD/KyS9rV4MOYNhn0PhuFvijkYk6cL0LP7AzO4HngU2FCx09/9FFpVIshSUls7PhzMeVWlpyUhhEsGRid+3F1rmQGmD14tUfD8pLR3LWEsisQtTYqJHMgIRSbr57yRKS5+r0tKS0UrtR2Bmdc3sHjOblvi528zqJiM4kcisXw4vDoJGbeHEf8QdjUiswnQoG0HwyuhZiZ+1wGNRBiUSqcKlpc9QaWmRMG0Ebdz99ELzfzazmVEFJBK5gtLSJ/0L9j447mhEYhfmjmCTmR1dMGNmRwGbogtJJELfTIe3/gwHngxdNNqqCIS7I7gMGJVoFzBgJTAw0qhEorCjtPTe0Pd+lZYWSQjz1tBM4BAzq5OYXxt5VCLlzR1euUqlpUWKEeatoYZmNhSYRDBk5X1m1jDyyETK08yn4PMx0OMGlZYWKSJMG8FoYDlwOnBGYvrZKIMSKVc7SksfA0dfHXc0IhVOmDaCBu5+R6H5v5jZKVEFJFKutm0O2gWyasKpKi0tUpwwdwQTzayfmVVK/JwFvBp1YCLloqC09KnDoE6TuKMRqZDCJILfAk8DWxM/o4GrzWydmanhWCquL16GqQ/DEYNVWlqkBGHeGqqdjEBEytXqxTDuctinMxx/a+nbi2SwMG0EmFkf4JjE7CR3fyXkfr2A+4DKwCPufmeR9VcDvwHyCBqhL3L3RSFjF/mZpz9azMszFnPrimtpkbeN67ddwfePTk/Ksft2asqAw1sk5Vgi5SnM66N3AkOA2YmfIYllpe1XGXgAOBFoB/Q3s3ZFNpsBZLt7R2AMoOpfUibjZn5D9+8e5cBts3m47hV8X2WfpBx39tK1jJv5TVKOJVLewtwRnAR0cvd8ADMbRXABv76U/boCc919fmK/0UBfgmQCgLtPLLT9h8C54UMXKWTLOli1iOM2TmAQL0HncxnS90aGJOnwZz80hdlL13L2Q1OSdMSf0t2IlEWoR0MEA9ivTEyHLUHdFFhSaD4XOLyE7S8GJhS3wswuAS4BaNFC/9gzUt5WWLMEVi+CVYsSvxf+OL1xBRC82bCkyr40T3Jp6b6dmib1eIXNXhq8s6FEILsrTCL4OzDDzCYS1Bo6BrghxH7FFXLxYjc0OxfIBo4tbr27DweGA2RnZxf7GZLi8vNh/fc7v9Cv/QaCm9JApSyo1xzq7QsH9Yb6LaHevtw4cS2Ls1ryZJJLSw84vEVsF+K47kIkfZSYCMzMgPeAbkAXgov7de7+XYjPzgWaF5pvBnxbzDF6An8CjnX3LSHjllS0afWPF/pVC3960V+9GPI2/3T72k2CC/2+R+640FN/3+B3nX2K7Rw2731dFEV2VYmJwN3dzMa6+2FAzi5+9lSgrZm1Ar4B+gEDCm9gZp2Bh4Be7r5sFz9fKqKtG+H7WfDdp7BqwU+/3W9e89Ntq9cNLuqND4D9f5W40LcMftdrAVnV4zgDkYwT5tHQh2bWxd2n7soHu3uemQ0GXid4fXSEu88ys9uBae6eA/wTqAU8H9x8sNjd++zaKUhsNq+F7z6DpZ/8+PPDnL5gt5UAAAzFSURBVB8f4VSuFlzQ67eEZl1+/EZfcLGvUS/O6EUkIUwi6AFcamYLgQ0Ej4c88cpnidx9PDC+yLJbCk333KVoJT4bV8LSmYkL/qfB75Xzflxfuwk0OQTa9YG9O0KTjlCnGVQK03ldROIUJhGcGHkUUrGs++6n3/KXfhK8sVOgXovgot+pPzTpFFz4a+8VX7wiUiY7TQRmVh24FNgP+Ax41N3zkhWYJIF70EhbcLH/LvFNf/33iQ0MGu4HzQ+HrpcEF/+9O0DNBrGGLSLlq6Q7glHANuBdfuwdnKz+OVLe8vNh5fxCj3cSP5tXB+utMux5ELQ5PrjgNzkkGNi9mkpNiaS7khJBO3fvAGBmjwIfJyckKRf522HeRJj71o/f9reuD9ZVrgp7tYf2p/x40d+zHWTViDdm2W1x9WpWj+b0UFIi2FYwkXgDKAnhSJmtWhQMyzjjKVibGwzIsndH6DTgx4t+4wOhclbckUo5iatXs3o0p4+SEsEhhcYbMKBGYr7graE6kUcn4eRtgS9fhRlPBHcBAG2Og1/9FQ44CapUjTc+iVRcvZrVozl97DQRuLvG9Kvoln0B/3sCPnkGNq2Eus2h+/XQ6Zyg/IKISAhhi85JRbFlPcx6Ef73OORODWruHPhrOPQ8aN1DY/KKyC5TIkgF7pA7Df43Cma9FDT6NjoAfvlXOKQf7NEo7ghFJIUpEVRkG1bAp88G3/6XfxE0/B58GnQ+H5p3BTXgi0g5UCKoaPLzYcGk4OL/5auwfSs0PQx63wftT4PqaqMXkfKlRFBRrMkNXvmc8SSsWQw16kP2xcGz/73axx2diKQxJYI45W2Fr14Lvv3PfQtwaN0det4KB56sMswikhRKBHFY/hXMeBxmPgMbfwgqdx5zTfDaZ4NWcUcnElqmjdP89EeLGTfzm6Qes7B2+9Th1t7l/4RAiSBZtm6AWWODTl+Lp0ClKrB/Lzj0/KC+T2X9VUhqycRxmsfN/IbZS9fSrkl6tdVlzNUnrkxed/sqTlv/NMdveZus7RugQRvo+Wc4pL9KN0tKy9Rxmts1qcOzvz0ituNHIWMSQbIzeWXfRq8NOZyx/imyfAtTanTnmLP/EIy/q9c+RaQCyZhEAEnM5HPfgtdugHVfwX49uWrN2XxbpTnHtEyvbxEikh40jmB5WjkfnukPT54O27dB/2fhnDF8W0V1f0Sk4sqoO4LIbFkP790DH/wnqP1z/K1wxOVQpVrckYmIlEqJoCzc4bMx8ObNsG4pdDw7aAiu0yTuyEREQlMi2F1LP4Hxf4QlHwYDuJ85ClocvtPNNYKUiFRUSgS7asMP8PYdMH0U1GwIvYdC53NLLP+sEaREpCJTIghr+zaY+ihM+lvQJtDtMjj2OqhRr9RdNYKUiFRkSgRhzJ8EE64PSkG37gG97oQ9D4w7KhGRcqFEUJJVi+CNP8EXL0O9faHf08EYwOoQJhK7ONrd0rG8BCgRFG/rRnjvXvhgKFglOO5mOGKwqoGKVBBxtbu1a1In1hpLUVEiKMw9GA/4jVtgbS4cfAaccDvUTd2/+EyrDimZIc46R+lIiaDAd5/BhOtg0fuwdwc4/eGgLlAKy8TqkCKy65QINq6Et/8C0x+D6vXg5Hvh0IElvg6aKuKuDqlnuCKpIXMTwfa84OL/9l9gyzroMgh63BAMESllpme4Iqkj0kRgZr2A+4DKwCPufmeR9dWAx4HDgBXA2e6+MMqYAFjwbvAYaNksaHUM9LoL9moX+WEziZ7hiqSOyBKBmVUGHgBOAHKBqWaW4+6zC212MbDK3fczs37AXcDZUcXUcPsyeG4gzB4LdVvAWY/DQX30OqiIZLQo7wi6AnPdfT6AmY0G+gKFE0Ff4LbE9BjgfjMzd/fyDqb7xte5aM3/wcpK0P1GOOpKyKpR3ocREUk5USaCpsCSQvO5QNGqbDu2cfc8M1sDNAR+KLyRmV0CXALQosXuPW6ovtd+zK10FO0HDoV6Gh9ARKRAlImguOctRb/ph9kGdx8ODAfIzs7erbuFCwecC5y7O7uKiKS1KEcoywUKf/VuBny7s23MrApQF1gZYUwiIlJElIlgKtDWzFqZWVWgH5BTZJscYGBi+gzg7SjaB0REZOciezSUeOY/GHid4PXREe4+y8xuB6a5ew7wKPCEmc0luBPoF1U8IiJSvEj7Ebj7eGB8kWW3FJreDJwZZQwiIlKyKB8NiYhIClAiEBHJcEoEIiIZTolARCTDWaq9rWlmy4FFu7l7I4r0Ws4AOufMoHPODGU5533dvXFxK1IuEZSFmU1z9+y440gmnXNm0DlnhqjOWY+GREQynBKBiEiGy7REMDzuAGKgc84MOufMEMk5Z1QbgYiI/Fym3RGIiEgRSgQiIhkuLROBmfUyszlmNtfMri9mfTUzezax/iMza5n8KMtXiHO+2sxmm9mnZvZfM9s3jjjLU2nnXGi7M8zMzSzlXzUMc85mdlbi73qWmT2d7BjLW4h/2y3MbKKZzUj8+z4pjjjLi5mNMLNlZvb5TtabmQ1N/Hl8amaHlvmg7p5WPwQlr+cBrYGqwCdAuyLb/A4YlpjuBzwbd9xJOOceQM3E9GWZcM6J7WoDk4EPgey4407C33NbYAZQPzG/Z9xxJ+GchwOXJabbAQvjjruM53wMcCjw+U7WnwRMIBjhsRvwUVmPmY53BF2Bue4+3923AqOBvkW26QuMSkyPAY43s+KGzUwVpZ6zu090942J2Q8JRoxLZWH+ngHuAP4BbE5mcBEJc86DgAfcfRWAuy9LcozlLcw5O1AnMV2Xn4+EmFLcfTIlj9TYF3jcAx8C9cysSVmOmY6JoCmwpNB8bmJZsdu4ex6wBmiYlOiiEeacC7uY4BtFKiv1nM2sM9Dc3V9JZmARCvP3vD+wv5m9b2YfmlmvpEUXjTDnfBtwrpnlEox/ckVyQovNrv5/L1WkA9PEpLhv9kXfkQ2zTSoJfT5mdi6QDRwbaUTRK/GczawScC9wQbICSoIwf89VCB4PdSe463vXzA5299URxxaVMOfcHxjp7neb2REEox4e7O750YcXi3K/fqXjHUEu0LzQfDN+fqu4Yxszq0JwO1nSrVhFF+acMbOewJ+APu6+JUmxRaW0c64NHAxMMrOFBM9Sc1K8wTjsv+1x7r7N3RcAcwgSQ6oKc84XA88BuPsUoDpBcbZ0Fer/+65Ix0QwFWhrZq3MrCpBY3BOkW1ygIGJ6TOAtz3RCpOiSj3nxGOShwiSQKo/N4ZSztnd17h7I3dv6e4tCdpF+rj7tHjCLRdh/m2PJXgxADNrRPCoaH5SoyxfYc55MXA8gJkdRJAIlic1yuTKAc5PvD3UDVjj7kvL8oFp92jI3fPMbDDwOsEbByPcfZaZ3Q5Mc/cc4FGC28e5BHcC/eKLuOxCnvM/gVrA84l28cXu3ie2oMso5DmnlZDn/DrwSzObDWwHrnX3FfFFXTYhz/kPwMNmdhXBI5ILUvmLnZk9Q/Bor1Gi3eNWIAvA3YcRtIOcBMwFNgIXlvmYKfznJSIi5SAdHw2JiMguUCIQEclwSgQiIhlOiUBEJMMpEYiIZDglAklrZtayaBVHM7vNzK5JTF9gZvsUWveImbVLTC9MvIuPmX1Q6PMG7EYczyQqRV61m+exI2aR8pZ2/QhEdtEFwOckema6+2+K28jdj0xMtgQGAKHLO5vZ3sCR7h669LeZVUnUwRKJnO4IJGOZ2RkEdZeeMrOZZlbDzCYVV4bCzNYnJu8EfpHY/ioze9fMOhXa7n0z61hk9zeAPRP7/MLMOiUKwn1qZi+ZWf3EvpPM7G9m9g4wpJiQDzGzt83sazMbVB5/BiKgRCAZzN3HANOAc9y9k7tvCrHb9cC7ie3vBR4hUdjOzPYHqrn7p0X26QPMS+zzLvA4cJ27dwQ+I+g5WqCeux/r7ncXc+yOwK+BI4BbCj/SEikLJQJJdzvrOl9eXeqfB042syzgImBkSRubWV2Ci/07iUWjCAYiKfBsCbuPc/dN7v4DMJGgVr9ImamNQNLdCqB+kWUNgAXl8eHuvtHM3iQYLOQsgkdNZbGhpMOVMi+yW3RHIGnN3dcDS82soDplA6AX8F5ik3UEJavDKm77R4ChwFR3L7GcubuvAVaZ2S8Si84D3ilhl8L6mll1M2tIUJRsauioRUqgOwLJBOcDD5hZwXP3P7v7vMT0SGCYmW0iePZemk+BPDP7hGAwlHvdfbqZrQUeCxnPwMQxaxKUiA5bPfJj4FWgBXCHu6f0kIxScaj6qEgZJRptJwEHpvGoWJLG9GhIpAzM7HzgI+BPSgKSqnRHICKS4XRHICKS4ZQIREQynBKBiEiGUyIQEclwSgQiIhnu/wEivv5QLhbs2AAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "ranking = 'abc'\n",
+    "profile.plot_histogram(ranking, label='Histogram')\n",
+    "profile.plot_cdf(ranking, label='CDF')\n",
+    "plt.ylabel('Proportion of the voters %s' % ranking)\n",
+    "plt.legend()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All other features are defined as usual. For example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.894089Z",
+     "start_time": "2020-03-29T13:16:54.887087Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc: utility-dependent (1/4), acb: utility-dependent (16/25), bac: utility-dependent (19/20), bca: utility-dependent (2/5), cab: utility-dependent (1/10), cba: utility-dependent (9/20)> ==> b"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rand_strategy = pa.RandStrategyThresholdGridUniform(denominator_threshold=100, profile=profile)\n",
+    "strategy = rand_strategy()\n",
+    "strategy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.907029Z",
+     "start_time": "2020-03-29T13:16:54.897056Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "EquilibriumStatus.NOT_EQUILIBRIUM"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.is_equilibrium"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ProfileTwelve"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In a ProfileTwelve, the voters behave as if their utility for their middle candidate was either infinitely close to 0 or to 1. For example, voters with the ranking $abc$ are split in two categories: voters ``a_bc`` (whose utility for $b$ is very low) and voters ``ab_c`` (whose utility for $b$ is very high). This can be interpreted in two ways:\n",
+    "\n",
+    "* As a model of their preferences: voters ``a_bc`` have a utility for $b$ that is very close to 1,\n",
+    "* As a behavioral model: when their best response is utility-dependent, voters ``a_bc`` always choose to vote $a$ only, no matter the utility threshold of the best response."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Create a profile:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.917036Z",
+     "start_time": "2020-03-29T13:16:54.909063Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10> (Condorcet winner: b)"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile = pa.ProfileTwelve({'ab_c': Fraction(1, 10), 'b_ac': Fraction(6, 10),\n",
+    "                            'c_ab': Fraction(2, 10), 'ca_b': Fraction(1, 10)})\n",
+    "profile"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Share of voters ``ab_c``:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.929008Z",
+     "start_time": "2020-03-29T13:16:54.918996Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Fraction(1, 10)"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.ab_c"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Which types are in the profile?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.939942Z",
+     "start_time": "2020-03-29T13:16:54.929968Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{ab_c, b_ac, c_ab, ca_b}"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.support_in_types"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Are all possible types in the profile?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.950912Z",
+     "start_time": "2020-03-29T13:16:54.941938Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.is_generic_in_types"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Is one type shared by a majority of voters?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.961882Z",
+     "start_time": "2020-03-29T13:16:54.952914Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.has_majority_type"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In addition to the usual StrategyOrdinal and StrategyThreshold, this kind of profile also accepts a StrategyTwelve:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.974891Z",
+     "start_time": "2020-03-29T13:16:54.963878Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc: ab, bac: b, cab: utility-dependent> ==> b"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy = pa.StrategyTwelve({'abc': 'ab', 'bac': 'b', 'cab': pa.UTILITY_DEPENDENT}, profile=profile)\n",
+    "strategy"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the example above, the strategy for $cab$ is utility-dependent, meaning that voters ``c_ba`` vote for $c$ and voters ``cb_a`` vote for $c$ and $b$. One can envision it as a threshold strategy, but it is useless to specify the value of the threshold because we're dealing with a ProfileTwelve."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:54.985850Z",
+     "start_time": "2020-03-29T13:16:54.975845Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "EquilibriumStatus.EQUILIBRIUM"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.is_equilibrium(strategy)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Since there is a finite number of pure strategies for a ProfileTwelve, it is possible to analyze them all:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.026748Z",
+     "start_time": "2020-03-29T13:16:54.986817Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Equilibria:\n",
+       "<abc: a, bac: b, cab: ac> ==> b (FF)\n",
+       "<abc: a, bac: ab, cab: c> ==> a (D)\n",
+       "<abc: ab, bac: b, cab: utility-dependent> ==> b (FF)\n",
+       "\n",
+       "Non-equilibria:\n",
+       "<abc: a, bac: b, cab: c> ==> b (FF)\n",
+       "<abc: a, bac: b, cab: utility-dependent> ==> b (FF)\n",
+       "<abc: a, bac: ab, cab: ac> ==> a (D)\n",
+       "<abc: a, bac: ab, cab: utility-dependent> ==> a (D)\n",
+       "<abc: ab, bac: b, cab: c> ==> b (FF)\n",
+       "<abc: ab, bac: b, cab: ac> ==> b (FF)\n",
+       "<abc: ab, bac: ab, cab: c> ==> a, b (FF)\n",
+       "<abc: ab, bac: ab, cab: ac> ==> a (D)\n",
+       "<abc: ab, bac: ab, cab: utility-dependent> ==> a (D)"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.analyzed_strategies_pure"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All other features are defined as usual."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ProfileDiscrete"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A ProfileDiscrete is similar to a ProfileNoisyDiscrete, but of course without noise:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.064648Z",
+     "start_time": "2020-03-29T13:16:55.027707Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc 0.9: 1/10, bac 0.2: 3/5, cab 0.25: 1/5, cab 0.75: 1/10> (Condorcet winner: b)"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile = pa.ProfileDiscrete({\n",
+    "    ('abc', 0.9): Fraction(1, 10),\n",
+    "    ('bac', 0.2): Fraction(6, 10),\n",
+    "    ('cab', 0.25): Fraction(2, 10),\n",
+    "    ('cab', 0.75): Fraction(1, 10)\n",
+    "})\n",
+    "profile"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-12T14:22:56.012010Z",
+     "start_time": "2020-03-12T14:22:56.006038Z"
+    }
+   },
+   "source": [
+    "In the above example, the share of voters with ranking $abc$ and a utility 0.9 for their middle candidate $b$ is 1/10, the share of voters with ranking $bac$ and a utility 0.2 for their middle candidate $a$ is 3/5, etc."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The difficulty is that there is now a concentration of voters, for example, on $(abc, 0.9)$. This opens the door to mixed strategies where voters of this type split their ballots between $a$ and $ab$. To account for this fact, a StrategyThreshold can include ratios of *optimistic voters*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.074581Z",
+     "start_time": "2020-03-29T13:16:55.066602Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc: utility-dependent (0.9, 0.7), bac: utility-dependent (0.5), cab: utility-dependent (0.5)> ==> b"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy = pa.StrategyThreshold({\n",
+    "    'abc': (0.9, 0.7),\n",
+    "    'bac': 0.5,\n",
+    "    'cab': 0.5\n",
+    "}, profile=profile)\n",
+    "strategy"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The above notation means that voters $abc$ have:\n",
+    "\n",
+    "* A utility threshold of 0.9: they vote for $a$ (resp. $ab$) if their utility for their second candidate $b$ is lower (resp. greater) than 0.9;\n",
+    "* An ratio of optimistic voters of 0.7: voters whose utility for $b$ is equal to the utility threshold 0.9 are split, with 0.7 of them voting for $a$ and the rest voting for $ab$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Like for ProfileTwelve, there is a finite number of pure strategies, so it is possible to analyze them all:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.123476Z",
+     "start_time": "2020-03-29T13:16:55.075579Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Equilibria:\n",
+       "<abc: ab, bac: b, cab: utility-dependent (0.5)> ==> b (FF)\n",
+       "<abc: a, bac: ab, cab: c> ==> a (D)\n",
+       "<abc: a, bac: b, cab: ac> ==> b (FF)\n",
+       "\n",
+       "Non-equilibria:\n",
+       "<abc: ab, bac: ab, cab: ac> ==> a (D)\n",
+       "<abc: ab, bac: ab, cab: utility-dependent (0.5)> ==> a (D)\n",
+       "<abc: ab, bac: ab, cab: c> ==> a, b (FF)\n",
+       "<abc: ab, bac: b, cab: ac> ==> b (FF)\n",
+       "<abc: ab, bac: b, cab: c> ==> b (FF)\n",
+       "<abc: a, bac: ab, cab: ac> ==> a (D)\n",
+       "<abc: a, bac: ab, cab: utility-dependent (0.5)> ==> a (D)\n",
+       "<abc: a, bac: b, cab: utility-dependent (0.5)> ==> b (FF)\n",
+       "<abc: a, bac: b, cab: c> ==> b (FF)"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.analyzed_strategies_pure"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All other features are defined as usual."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ProfileOrdinal"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A ProfileOrdinal is a bit special, in the sense that it does not represent a profile, strictly speaking, but rather a family of profiles that have the same ordinal representation."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Definition and Strategic Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.131442Z",
+     "start_time": "2020-03-29T13:16:55.124448Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc: 1/10, bac: 3/5, cab: 3/10> (Condorcet winner: b)"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile = pa.ProfileOrdinal({\n",
+    "    'abc': Fraction(1, 10), \n",
+    "    'bac': Fraction(6, 10), \n",
+    "    'cab': Fraction(3, 10)\n",
+    "})\n",
+    "profile"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let us analyze its ordinal strategies:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.162354Z",
+     "start_time": "2020-03-29T13:16:55.132426Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Equilibria:\n",
+       "<abc: a, bac: b, cab: ac> ==> b (FF)\n",
+       "<abc: a, bac: ab, cab: c> ==> a (D)\n",
+       "\n",
+       "Utility-dependent equilibrium:\n",
+       "<abc: ab, bac: b, cab: c> ==> b (FF)\n",
+       "\n",
+       "Non-equilibria:\n",
+       "<abc: a, bac: b, cab: c> ==> b (FF)\n",
+       "<abc: a, bac: ab, cab: ac> ==> a (D)\n",
+       "<abc: ab, bac: b, cab: ac> ==> b (FF)\n",
+       "<abc: ab, bac: ab, cab: c> ==> a, b (FF)\n",
+       "<abc: ab, bac: ab, cab: ac> ==> a (D)"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.analyzed_strategies_ordinal"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the example above, there are not only equilibria and non-equilibria but also a new category of strategies: utility-dependent equilibria. For example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.171322Z",
+     "start_time": "2020-03-29T13:16:55.163343Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<abc: ab, bac: b, cab: c> ==> b"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy = profile.analyzed_strategies_ordinal.utility_dependent[0]\n",
+    "strategy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.183329Z",
+     "start_time": "2020-03-29T13:16:55.173374Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<ballot = ab, threshold_utility = 0, justification = Asymptotic method>"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.d_ranking_best_response['abc']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.195258Z",
+     "start_time": "2020-03-29T13:16:55.185284Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<ballot = utility-dependent, threshold_utility = 0.836014, justification = Asymptotic method>"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.d_ranking_best_response['bac']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.208226Z",
+     "start_time": "2020-03-29T13:16:55.197253Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<ballot = utility-dependent, threshold_utility = 0.163986, justification = Asymptotic method>"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.d_ranking_best_response['cab']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "What happens here? For example, the best response for voters $bac$ is utility-dependent, with a utility threshold of 0.84 approximately. The fact that they vote $b$ in ``strategy`` is indeed a best response if and only if their utility for their second candidate $a$ is lower than this value. Overall, ``strategy`` is an equilibrium if and only if:\n",
+    "\n",
+    "* The utility of voters $bac$ for $a$ is lower than 0.84,\n",
+    "* And the utility of voters $cab$ for $a$ is lower than 0.16."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Probability computations"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The following functions compute probabilities. They are based on the assumption that voters $abc$ have the **same** utility for their second candidate $b$ and that it is drawn uniformly in [0, 1]. And similarly for voters $acb$, $bac$, etc."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Probability that there exists an equilibrium:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.219195Z",
+     "start_time": "2020-03-29T13:16:55.209222Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.proba_equilibrium()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this example, the probability is 1 because there exists some equilibria that do not depend on the utilities."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Probability that there exists an equilibrium where voters $abc$ cast a ballot $ab$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.232159Z",
+     "start_time": "2020-03-29T13:16:55.220192Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.13709468816628012"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def test_abc_vote_ab(strategy):\n",
+    "    return strategy.abc == 'ab'\n",
+    "profile.proba_equilibrium(test=test_abc_vote_ab)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Probability that there exists an equilibrium where candidate $c$ wins:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.244127Z",
+     "start_time": "2020-03-29T13:16:55.233158Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def test_c_wins(strategy):\n",
+    "    return 'c' in strategy.winners\n",
+    "profile.proba_equilibrium(test=test_c_wins)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Distribution of the number of equilibria:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.257118Z",
+     "start_time": "2020-03-29T13:16:55.245124Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.        , 0.        , 0.86290531, 0.13709469])"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.distribution_equilibria()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The above array means that it is impossible that there is 0 or 1 equilibrium, a probability 0.86 to have 2 equilibria, and a probability 0.14 to have 3 equilibria."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can access the distribution of equilibria, conditionally on a given test:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.268064Z",
+     "start_time": "2020-03-29T13:16:55.259114Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.86290531, 0.13709469])"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.distribution_equilibria(test=test_abc_vote_ab)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The above array means that there is a probability 0.86 to have no equilibrium, and a probability 0.14 to have one equilibrium (conditionally on the given test)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Distribution of the number of winners at equilibrium:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.281030Z",
+     "start_time": "2020-03-29T13:16:55.270058Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0, 0, 1, 0])"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.distribution_winners()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The array above means that there are always 2 candidates (namely $a$ and $b$) who can win at equilibrium."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can access the distribution of winners, conditionally on a given test:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:16:55.292997Z",
+     "start_time": "2020-03-29T13:16:55.282026Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.86290531, 0.13709469, 0.        , 0.        ])"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "profile.distribution_winners(test=test_abc_vote_ab)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-12T15:02:21.506602Z",
+     "start_time": "2020-03-12T15:02:21.501650Z"
+    }
+   },
+   "source": [
+    "The above array means that there is a probability 0.86 of having 0 winner (i.e. when there is no equilibrium), and a probability 0.14 to have 1 winner (conditionally on the given test)."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": false,
+   "sideBar": true,
+   "skip_h1_title": true,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {},
+   "toc_section_display": true,
+   "toc_window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.random_factories.RandProfileNoisyDiscreteUniform &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.random_factories.RandProfileNoisyDiscreteUniform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.random_factories.RandProfileNoisyDiscreteUniform</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.random_factories.RandSimplexUniform</span> <span class="kn">import</span> <span class="n">RandSimplexUniform</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">initialize_random_seeds</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileNoisyDiscrete</span> <span class="kn">import</span> <span class="n">ProfileNoisyDiscrete</span>
+
+
+<div class="viewcode-block" id="RandProfileNoisyDiscreteUniform"><a class="viewcode-back" href="../../../reference/reference_random_factories/reference_rand_profile_noisy_discrete_uniform.html#poisson_approval.RandProfileNoisyDiscreteUniform">[docs]</a><span class="k">class</span> <span class="nc">RandProfileNoisyDiscreteUniform</span><span class="p">(</span><span class="n">RandSimplexUniform</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A random factory of noisy discrete profiles (:class:`ProfileNoisyDiscrete`) following the uniform distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    types : iterable</span>
+<span class="sd">        These types will have a variable share. They can be noisy discrete types, e.g. ``(&#39;abc&#39;, 0.9, 0.01)``,</span>
+<span class="sd">        or discrete types, e.g. ``(&#39;abc&#39;, 0.9)`` (in which case the argument `noise` must be given in the additional</span>
+<span class="sd">        parameters), or weak orders, e.g. ``&#39;a~b&gt;c&#39;``.</span>
+<span class="sd">    d_type_fixed_share : dict, optional</span>
+<span class="sd">        A dictionary. For each entry ``type: fixed_share``, this type will have at least this fixed share. The total</span>
+<span class="sd">        must be lower or equal to 1.</span>
+<span class="sd">    kwargs : keyword arguments</span>
+<span class="sd">        These additional arguments will be passed directly to :class:`ProfileNoisyDiscrete`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic usage:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; rand_profile = RandProfileNoisyDiscreteUniform(types=[(&#39;abc&#39;, 0.9, 0.01), &#39;a~b&gt;c&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; profile = rand_profile()</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.9 ± 0.01: 0.5488135039273248, a~b&gt;c: 0.45118649607267525&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    Or, equivalently:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; rand_profile = RandProfileNoisyDiscreteUniform(types=[(&#39;abc&#39;, 0.9), &#39;a~b&gt;c&#39;], noise=0.01)</span>
+<span class="sd">        &gt;&gt;&gt; profile = rand_profile()</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.9 ± 0.01: 0.5488135039273248, a~b&gt;c: 0.45118649607267525&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    Using the optional parameters:</span>
+
+<span class="sd">        &gt;&gt;&gt; rand_profile = RandProfileNoisyDiscreteUniform(</span>
+<span class="sd">        ...     types=[(&#39;abc&#39;, 0.9, 0.01), &#39;a~b&gt;c&#39;], d_type_fixed_share={&#39;b&gt;a~c&#39;: 0.5},</span>
+<span class="sd">        ...     voting_rule=PLURALITY)</span>
+<span class="sd">        &gt;&gt;&gt; profile = rand_profile()</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.9 ± 0.01: 0.35759468318620974, a~b&gt;c: 0.14240531681379026, b&gt;a~c: 0.5&gt; (Condorcet winner: b) (Plurality)</span>
+
+<span class="sd">    For more examples, cf. :class:`RandSimplexUniform`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">d_type_fixed_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">ProfileNoisyDiscrete</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">types</span><span class="p">,</span> <span class="n">d_key_fixed_share</span><span class="o">=</span><span class="n">d_type_fixed_share</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

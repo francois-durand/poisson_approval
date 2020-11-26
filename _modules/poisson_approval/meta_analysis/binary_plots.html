@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.meta_analysis.binary_plots &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.meta_analysis.binary_plots</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.meta_analysis.binary_plots</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Patch</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.meta_analysis.colors</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.meta_analysis.binary_condorcet</span> <span class="kn">import</span> <span class="n">draw_condorcet_intervals</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_range</span>
+
+
+<div class="viewcode-block" id="binary_figure"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_figure.html#poisson_approval.binary_figure">[docs]</a><span class="k">def</span> <span class="nf">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Create a binary plot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xscale : Number</span>
+<span class="sd">        The x-scale of the figure. The higher it is, the higher the resolution of the heatmap on x-axis.</span>
+<span class="sd">    yscale : Number</span>
+<span class="sd">        The y-scale of the figure. The higher it is, the higher the resolution of the heatmap on y-axis.</span>
+<span class="sd">    size_inches : tuple or str</span>
+<span class="sd">        The horizontal and vertical sizes of the figure, in inches. If &#39;auto&#39;, we will try to do our best.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    figure : matplotlib.figure.Figure</span>
+<span class="sd">    binary_ax : BinaryAxesSubplotPoisson</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">binary_ax</span> <span class="o">=</span> <span class="n">BinaryAxesSubplotPoisson</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="n">size_inches</span><span class="p">)</span>
+    <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">size_inches</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="o">*</span><span class="n">size_inches</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">binary_ax</span></div>
+
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson">[docs]</a><span class="k">class</span> <span class="nc">BinaryAxesSubplotPoisson</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper for binary plots.</span>
+
+<span class="sd">    For some examples, cf. the tutorial in section &quot;Meta-Analysis&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span> <span class="o">=</span> <span class="n">xscale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span> <span class="o">=</span> <span class="n">yscale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_inches</span> <span class="o">=</span> <span class="n">size_inches</span>
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.set_title"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.set_title">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Title of the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Cf. `set_title` in matplotlib.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.heatmap_intensity"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_intensity">[docs]</a>    <span class="k">def</span> <span class="nf">heatmap_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x_left_label</span><span class="p">,</span> <span class="n">x_right_label</span><span class="p">,</span> <span class="n">y_left_label</span><span class="p">,</span> <span class="n">y_right_label</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                          <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Intensity heatmap.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func : callable</span>
+<span class="sd">            The function to plot. Input: coordinates `x`, `y1`, `y2`, each in [0, 1]. Output: a number.</span>
+<span class="sd">        x_left_label : str</span>
+<span class="sd">            Label on the left of the x-axis.</span>
+<span class="sd">        x_right_label : str</span>
+<span class="sd">            Label on the right of the x-axis.</span>
+<span class="sd">        y_left_label : str</span>
+<span class="sd">            Label of the left y-axis.</span>
+<span class="sd">        y_right_label : str</span>
+<span class="sd">            Label of the right y-axis.</span>
+<span class="sd">        reverse_right : bool</span>
+<span class="sd">            If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes</span>
+<span class="sd">            increasing from 0 to 1).</span>
+<span class="sd">        cmap : str</span>
+<span class="sd">            Colormap. Default: ``&#39;plasma&#39;``.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            All other keywords arguments are passed to method ``imshow`` of matplotlib.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">reverse_right</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">)</span>
+            <span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">)</span>
+            <span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">x_left_label</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.025</span><span class="p">),</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                     <span class="n">annotation_clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">x_right_label</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.025</span><span class="p">),</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+                     <span class="n">annotation_clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_left_label</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+        <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_right_label</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">reverse_right</span><span class="p">:</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_inches</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">5.75</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.heatmap_candidates"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_candidates">[docs]</a>    <span class="k">def</span> <span class="nf">heatmap_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x_left_label</span><span class="p">,</span> <span class="n">x_right_label</span><span class="p">,</span> <span class="n">y_left_label</span><span class="p">,</span> <span class="n">y_right_label</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">legend_title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">legend_style</span><span class="o">=</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Heatmap of a function from a 3D vector (x, y1, y2) to a 3D vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func : callable</span>
+<span class="sd">            The function to plot. Input: coordinates `x`, `y1`, `y2`, each in [0, 1]. Output: a list of 3 numbers</span>
+<span class="sd">            between 0 and 1.</span>
+<span class="sd">        x_left_label : str</span>
+<span class="sd">            Label on the left of the x-axis.</span>
+<span class="sd">        x_right_label : str</span>
+<span class="sd">            Label on the right of the x-axis.</span>
+<span class="sd">        y_left_label : str</span>
+<span class="sd">            Label of the left y-axis.</span>
+<span class="sd">        y_right_label : str</span>
+<span class="sd">            Label of the right y-axis.</span>
+<span class="sd">        reverse_right : bool</span>
+<span class="sd">            If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes</span>
+<span class="sd">            increasing from 0 to 1).</span>
+<span class="sd">        legend_title : str</span>
+<span class="sd">            Title of the legend.</span>
+<span class="sd">        legend_style : str</span>
+<span class="sd">            The style of the legend. The two available options are ``&#39;palette&#39;`` and ``&#39;color_patches&#39;``.</span>
+<span class="sd">            Cf. :meth:`legend_palette` and :meth:`legend_color_patches`.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            All other keywords arguments are passed to method ``imshow`` of matplotlib.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">reverse_right</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span><span class="n">abc_to_rgb</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">))]</span>
+                <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">))</span>
+            <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span><span class="n">abc_to_rgb</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span><span class="p">))]</span>
+                <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">))</span>
+            <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">x_left_label</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.025</span><span class="p">),</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                     <span class="n">annotation_clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">x_right_label</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.025</span><span class="p">),</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+                     <span class="n">annotation_clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_left_label</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+        <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_right_label</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">reverse_right</span><span class="p">:</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_inches</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">legend_style</span> <span class="o">==</span> <span class="s1">&#39;palette&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legend_palette</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legend_color_patches</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">m</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.annotate_condorcet"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.annotate_condorcet">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">annotate_condorcet</span><span class="p">(</span><span class="n">left_order</span><span class="p">,</span> <span class="n">right_order</span><span class="p">,</span> <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Annotate who is the Condorcet winner depending on the region.</span>
+
+<span class="sd">        We consider a setting where:</span>
+
+<span class="sd">        * Fixed shares of voters have preference orders given by `d_order_fixed_share`.</span>
+<span class="sd">        * The remaining voters are split between `left_order` and `right_order` in proportions that are given by the</span>
+<span class="sd">          x coordinate.</span>
+
+<span class="sd">        This method annotates the regions according to which candidate is the Condorcet winner, and indicates where no</span>
+<span class="sd">        one is the Condorcet winner.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        left_order : str</span>
+<span class="sd">            The order whose share is maximal for x = 0.</span>
+<span class="sd">        right_order : str</span>
+<span class="sd">            The order whose share is maximal for x = 1.</span>
+<span class="sd">        d_order_fixed_share : dict, optional</span>
+<span class="sd">            Key: order. Value: a fixed share of voters in [0, 1].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">draw_condorcet_intervals</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">left_order</span><span class="p">,</span> <span class="n">right_order</span><span class="p">,</span> <span class="n">d_order_fixed_share</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.legend_color_patches"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_color_patches">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">legend_color_patches</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">all_mixes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &quot;color patches&quot; legend to the current figure (for candidates heat maps).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title : str</span>
+<span class="sd">            Title of the legend.</span>
+<span class="sd">        all_mixes : bool</span>
+<span class="sd">            If True, then all mixes are indicated in the legend: a + b, a + c, b + c and a + b + c.</span>
+<span class="sd">        data : ndarray, optional</span>
+<span class="sd">            Array m * n * 3. This is used only if `all_mixes` is False.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        * The color patches for single candidates a, b, c are in the legend anyway.</span>
+<span class="sd">        * If `all_mixes` is True, then all mixes are indicated in the legend.</span>
+<span class="sd">        * If `all_mixes` is False and `data` is given, then if at least a value is close to a perfect mix (like half</span>
+<span class="sd">          of `a` and half of `b`), then this mix is added to the legend.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">_edge_color</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">color</span><span class="p">]</span>
+        <span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">COLOR_A</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">_edge_color</span><span class="p">(</span><span class="n">COLOR_A</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$a$&#39;</span><span class="p">),</span>
+                           <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">COLOR_B</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">_edge_color</span><span class="p">(</span><span class="n">COLOR_B</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$b$&#39;</span><span class="p">),</span>
+                           <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">COLOR_C</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">_edge_color</span><span class="p">(</span><span class="n">COLOR_C</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$c$&#39;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">all_mixes</span> <span class="ow">or</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">add_optional_patch</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">insertion</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">all_mixes</span> <span class="ow">or</span> <span class="p">(</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                 <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">data_col</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">color</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1E-1</span><span class="p">))</span>
+                                         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">for</span> <span class="n">data_col</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)):</span>
+                    <span class="n">patch</span> <span class="o">=</span> <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">_edge_color</span><span class="p">(</span><span class="n">color</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">insertion</span><span class="p">:</span>
+                        <span class="n">legend_elements</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">patch</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
+            <span class="n">add_optional_patch</span><span class="p">(</span><span class="n">COLOR_NO_ONE</span><span class="p">,</span> <span class="s1">&#39;No one&#39;</span><span class="p">,</span> <span class="n">insertion</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">add_optional_patch</span><span class="p">(</span><span class="n">COLOR_AB</span><span class="p">,</span> <span class="s1">&#39;a, b&#39;</span><span class="p">)</span>
+            <span class="n">add_optional_patch</span><span class="p">(</span><span class="n">COLOR_AC</span><span class="p">,</span> <span class="s1">&#39;a, c&#39;</span><span class="p">)</span>
+            <span class="n">add_optional_patch</span><span class="p">(</span><span class="n">COLOR_BC</span><span class="p">,</span> <span class="s1">&#39;b, c&#39;</span><span class="p">)</span>
+            <span class="n">add_optional_patch</span><span class="p">(</span><span class="n">COLOR_ABC</span><span class="p">,</span> <span class="s1">&#39;a, b, c&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span>
+                         <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.legend_palette"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_palette">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">legend_palette</span><span class="p">(</span><span class="n">title</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &quot;palette&quot; legend to the current figure (for candidates heat maps).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title : str</span>
+<span class="sd">            Title of the legend.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This is rather a hack than a real matplotlib legend. Hence the usual commands to choose the position</span>
+<span class="sd">        of the legend, for example, are not meant to work here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">old_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">legend_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">1.05</span><span class="p">,</span> <span class="o">.</span><span class="mi">63</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">DATA_PALETTE</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">169</span><span class="p">),</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">63</span><span class="p">),</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">165</span><span class="p">,</span> <span class="mi">63</span><span class="p">),</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="n">legend_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span><span class="n">old_ax</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.meta_analysis.binary_shortcuts &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.meta_analysis.binary_shortcuts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.meta_analysis.binary_shortcuts</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.meta_analysis.binary_plots</span> <span class="kn">import</span> <span class="n">binary_figure</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileNoisyDiscrete</span> <span class="kn">import</span> <span class="n">ProfileNoisyDiscrete</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">candidates_to_probabilities</span><span class="p">,</span> <span class="n">one_over_log_t_plus_one</span><span class="p">,</span> <span class="n">d_candidate_value_to_array</span>
+
+
+<div class="viewcode-block" id="XyyToProfile"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_xyy_to_profile.html#poisson_approval.XyyToProfile">[docs]</a><span class="k">class</span> <span class="nc">XyyToProfile</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Map a point (x, y1, y2) to a profile (for binary plots).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cls : class</span>
+<span class="sd">        :class:`ProfileDiscrete` or :class:`ProfileNoisyDiscrete`.</span>
+<span class="sd">    left_ranking, right_ranking: str</span>
+<span class="sd">        A ranking, whose share is maximal on the left (resp. on the right).</span>
+<span class="sd">    d_type_fixed_share : dict</span>
+<span class="sd">        Key: a type that is suitable for the kind of profile used. Value: a share of voters.</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the profile. E.g. ``voting_rule``, ``ratio_fanatic``, etc.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    An `XyyToProfile` object is a callable. When called, it inputs three parameters `x`, `y1`, `y2` in the interval</span>
+<span class="sd">    [0, 1]. It outputs the profile defined by:</span>
+
+<span class="sd">    * The class is given by `cls`,</span>
+<span class="sd">    * According to `d_type_fixed_share`, some types are assigned fixed shares of voters.</span>
+<span class="sd">    * The other voters are distributed between ``left_ranking`` and ``right_ranking``, in respective proportions that</span>
+<span class="sd">      are given by `1 - x` and `x`.</span>
+<span class="sd">    * The voters of ``left_ranking`` have a utility `y1` for their second candidate.</span>
+<span class="sd">    * The voters of ``right_ranking`` have a utility `y2` for their second candidate.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Typical usage:</span>
+
+<span class="sd">        &gt;&gt;&gt; xyy_to_profile = XyyToProfile(</span>
+<span class="sd">        ...     ProfileNoisyDiscrete,</span>
+<span class="sd">        ...     d_type_fixed_share={(&#39;abc&#39;, 0.4, 0.01): Fraction(2, 11)},</span>
+<span class="sd">        ...     left_ranking=&#39;bca&#39;, right_ranking=&#39;cab&#39;,</span>
+<span class="sd">        ...     noise=0.01)</span>
+<span class="sd">        &gt;&gt;&gt; profile = xyy_to_profile(x=Fraction(4, 9), y1=0.7, y2=0.9)</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.4 ± 0.01: 2/11, bca 0.7 ± 0.01: 5/11, cab 0.9 ± 0.01: 4/11&gt;</span>
+
+<span class="sd">    The types with variable share and fixed share may overlap:</span>
+
+<span class="sd">        &gt;&gt;&gt; xyy_to_profile = XyyToProfile(</span>
+<span class="sd">        ...     ProfileNoisyDiscrete,</span>
+<span class="sd">        ...     d_type_fixed_share={(&#39;abc&#39;, 0.4, 0.01): Fraction(2, 11)},</span>
+<span class="sd">        ...     left_ranking=&#39;abc&#39;, right_ranking=&#39;cab&#39;,</span>
+<span class="sd">        ...     noise=0.01)</span>
+<span class="sd">        &gt;&gt;&gt; profile = xyy_to_profile(x=Fraction(4, 9), y1=0.4, y2=0.9)</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.4 ± 0.01: 7/11, cab 0.9 ± 0.01: 4/11&gt; (Condorcet winner: a)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">left_ranking</span><span class="p">,</span> <span class="n">right_ranking</span><span class="p">,</span> <span class="n">d_type_fixed_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">d_type_fixed_share</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d_type_fixed_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="bp">cls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_order</span> <span class="o">=</span> <span class="n">left_ranking</span><span class="p">,</span> <span class="n">right_ranking</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span> <span class="o">=</span> <span class="n">d_type_fixed_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_fixed_share</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="c1"># Computed parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_order_fixed_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_type_fixed_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">order</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_left_label</span> <span class="o">=</span> <span class="s1">&#39;$r(</span><span class="si">%s</span><span class="s1">)$&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_right_label</span> <span class="o">=</span> <span class="s1">&#39;$r(</span><span class="si">%s</span><span class="s1">)$&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_left_label</span> <span class="o">=</span> <span class="s1">&#39;$u_</span><span class="si">%s</span><span class="s1">$&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_order</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_right_label</span> <span class="o">=</span> <span class="s1">&#39;$u_</span><span class="si">%s</span><span class="s1">$&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_order</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+        <span class="n">d_type_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">d_type_share</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span><span class="p">)</span>
+        <span class="n">d_type_share</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span> <span class="n">y1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">d_type_share</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span>
+        <span class="n">d_type_share</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_order</span><span class="p">,</span> <span class="n">y2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">d_type_share</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">right_order</span><span class="p">,</span> <span class="n">y2</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">d_type_share</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="binary_plot_n_equilibria"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_plot_n_equilibria.html#poisson_approval.binary_plot_n_equilibria">[docs]</a><span class="k">def</span> <span class="nf">binary_plot_n_equilibria</span><span class="p">(</span><span class="n">xyy_to_profile</span><span class="p">,</span> <span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Number of equilibria&#39;</span><span class="p">,</span>
+                             <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;analyzed_strategies_ordinal&#39;</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: binary plot for the number of equilibria.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xyy_to_profile : XyyToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    xscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the x-axis.</span>
+<span class="sd">    yscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the y-axis.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the :class:`AnalyzedStrategies` property used to count the equilibria.</span>
+<span class="sd">    reverse_right : bool</span>
+<span class="sd">        If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes</span>
+<span class="sd">        increasing from 0 to 1).</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_intensity`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">n_equilibria</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">xyy_to_profile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)</span><span class="o">.</span><span class="n">equilibria</span><span class="p">)</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">heatmap_intensity</span><span class="p">(</span><span class="n">n_equilibria</span><span class="p">,</span>
+                         <span class="n">x_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_left_label</span><span class="p">,</span>
+                         <span class="n">x_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_right_label</span><span class="p">,</span>
+                         <span class="n">y_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_left_label</span><span class="p">,</span>
+                         <span class="n">y_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_right_label</span><span class="p">,</span>
+                         <span class="n">reverse_right</span><span class="o">=</span><span class="n">reverse_right</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">left_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span>
+                          <span class="n">right_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">right_order</span><span class="p">,</span>
+                          <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="binary_plot_winners_at_equilibrium"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_plot_winners_at_equilibrium.html#poisson_approval.binary_plot_winners_at_equilibrium">[docs]</a><span class="k">def</span> <span class="nf">binary_plot_winners_at_equilibrium</span><span class="p">(</span><span class="n">xyy_to_profile</span><span class="p">,</span> <span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Winners at equilibrium&#39;</span><span class="p">,</span>
+                                       <span class="n">legend_title</span><span class="o">=</span><span class="s1">&#39;Winners&#39;</span><span class="p">,</span> <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;analyzed_strategies_ordinal&#39;</span><span class="p">,</span>
+                                       <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: binary plot for the winners at equilibrium.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xyy_to_profile : XyyToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    xscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the x-axis.</span>
+<span class="sd">    yscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the y-axis.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    legend_title : str</span>
+<span class="sd">        Title of the legend of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the :class:`AnalyzedStrategies` property used to count the equilibria.</span>
+<span class="sd">    reverse_right : bool</span>
+<span class="sd">        If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes</span>
+<span class="sd">        increasing from 0 to 1).</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_candidates`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">winners_at_equilibrium</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">xyy_to_profile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">candidates_to_probabilities</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)</span><span class="o">.</span><span class="n">winners_at_equilibrium</span><span class="p">)</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">heatmap_candidates</span><span class="p">(</span><span class="n">winners_at_equilibrium</span><span class="p">,</span>
+                          <span class="n">x_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_left_label</span><span class="p">,</span>
+                          <span class="n">x_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_right_label</span><span class="p">,</span>
+                          <span class="n">y_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_left_label</span><span class="p">,</span>
+                          <span class="n">y_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_right_label</span><span class="p">,</span>
+                          <span class="n">reverse_right</span><span class="o">=</span><span class="n">reverse_right</span><span class="p">,</span>
+                          <span class="n">legend_style</span><span class="o">=</span><span class="s1">&#39;color_patches&#39;</span><span class="p">,</span>
+                          <span class="n">legend_title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">left_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span>
+                          <span class="n">right_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">right_order</span><span class="p">,</span>
+                          <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="binary_plot_winning_frequencies"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_plot_winning_frequencies.html#poisson_approval.binary_plot_winning_frequencies">[docs]</a><span class="k">def</span> <span class="nf">binary_plot_winning_frequencies</span><span class="p">(</span><span class="n">xyy_to_profile</span><span class="p">,</span> <span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span>
+                                    <span class="n">n_max_episodes</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;sincere&#39;</span><span class="p">,</span> <span class="n">samples_per_point</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                    <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                    <span class="n">winning_frequency_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Winning frequencies&#39;</span><span class="p">,</span> <span class="n">legend_title</span><span class="o">=</span><span class="s1">&#39;Winners&#39;</span><span class="p">,</span>
+                                    <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;fictitious_play&#39;</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: binary plot for the winning frequencies in fictitious play / iterated voting.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xyy_to_profile : XyyToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    xscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the x-axis.</span>
+<span class="sd">    yscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the y-axis.</span>
+<span class="sd">    n_max_episodes : int</span>
+<span class="sd">        Maximum number of episodes for the fictitious play / iterated voting.</span>
+<span class="sd">    init : Strategy or TauVector or str</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    samples_per_point : int</span>
+<span class="sd">        How many trials are made for each point drawn. Useful only when initialization is random.</span>
+<span class="sd">    perception_update_ratio, ballot_update_ratio, winning_frequency_update_ratio : callable or Number</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    legend_title : str</span>
+<span class="sd">        Title of the legend of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the method (``&#39;fictitious_play&#39;`` or ``&#39;iterated_voting&#39;``).</span>
+<span class="sd">    reverse_right : bool</span>
+<span class="sd">        If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes</span>
+<span class="sd">        increasing from 0 to 1).</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_candidates`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">winning_frequencies</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">xyy_to_profile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+        <span class="n">a_candidate_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples_per_point</span><span class="p">):</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">n_max_episodes</span><span class="p">,</span>
+                                             <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">perception_update_ratio</span><span class="p">,</span>
+                                             <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">ballot_update_ratio</span><span class="p">,</span>
+                                             <span class="n">winning_frequency_update_ratio</span><span class="o">=</span><span class="n">winning_frequency_update_ratio</span><span class="p">)</span>
+            <span class="n">a_candidate_value</span> <span class="o">=</span> <span class="n">a_candidate_value</span> <span class="o">+</span> <span class="n">d_candidate_value_to_array</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">a_candidate_value</span> <span class="o">/</span> <span class="n">samples_per_point</span>
+
+    <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">heatmap_candidates</span><span class="p">(</span><span class="n">winning_frequencies</span><span class="p">,</span>
+                          <span class="n">x_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_left_label</span><span class="p">,</span>
+                          <span class="n">x_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_right_label</span><span class="p">,</span>
+                          <span class="n">y_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_left_label</span><span class="p">,</span>
+                          <span class="n">y_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_right_label</span><span class="p">,</span>
+                          <span class="n">reverse_right</span><span class="o">=</span><span class="n">reverse_right</span><span class="p">,</span>
+                          <span class="n">legend_style</span><span class="o">=</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span>
+                          <span class="n">legend_title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">left_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span>
+                          <span class="n">right_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">right_order</span><span class="p">,</span>
+                          <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="binary_plot_convergence"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_plot_convergence.html#poisson_approval.binary_plot_convergence">[docs]</a><span class="k">def</span> <span class="nf">binary_plot_convergence</span><span class="p">(</span><span class="n">xyy_to_profile</span><span class="p">,</span> <span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span>
+                            <span class="n">n_max_episodes</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;sincere&#39;</span><span class="p">,</span> <span class="n">samples_per_point</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                            <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Convergence frequency&#39;</span><span class="p">,</span>
+                            <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;fictitious_play&#39;</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: binary plot for the convergence frequency in fictitious play / iterated voting.</span>
+
+<span class="sd">    Convergence frequency: out of `samples_per_points` trials, in which proportion of the cases did fictitious play or</span>
+<span class="sd">    iterated voting converge within `n_max_episodes` iterations?</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xyy_to_profile : XyyToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    xscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the x-axis.</span>
+<span class="sd">    yscale : Number</span>
+<span class="sd">        Scale of the plot (resolution) on the y-axis.</span>
+<span class="sd">    n_max_episodes : int</span>
+<span class="sd">        Maximum number of episodes for the fictitious play / iterated voting.</span>
+<span class="sd">    init : Strategy or TauVector or str</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    samples_per_point : int</span>
+<span class="sd">        How many trials are made for each point drawn. Useful only when initialization is random.</span>
+<span class="sd">    perception_update_ratio, ballot_update_ratio : callable or Number</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the method (``&#39;fictitious_play&#39;`` or ``&#39;iterated_voting&#39;``).</span>
+<span class="sd">    reverse_right : bool</span>
+<span class="sd">        If True, then the y-axis on the right goes decreasing from 1 to 0 (whereas the y-axis on the left goes</span>
+<span class="sd">        increasing from 0 to 1).</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_intensity`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">convergence_frequency</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">xyy_to_profile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+        <span class="n">n_convergences</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples_per_point</span><span class="p">):</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">n_max_episodes</span><span class="p">,</span>
+                                             <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">perception_update_ratio</span><span class="p">,</span>
+                                             <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">ballot_update_ratio</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">n_convergences</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">n_convergences</span> <span class="o">/</span> <span class="n">samples_per_point</span>
+
+    <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">heatmap_intensity</span><span class="p">(</span><span class="n">convergence_frequency</span><span class="p">,</span>
+                         <span class="n">x_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_left_label</span><span class="p">,</span>
+                         <span class="n">x_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">x_right_label</span><span class="p">,</span>
+                         <span class="n">y_left_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_left_label</span><span class="p">,</span>
+                         <span class="n">y_right_label</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">y_right_label</span><span class="p">,</span>
+                         <span class="n">reverse_right</span><span class="o">=</span><span class="n">reverse_right</span><span class="p">,</span>
+                         <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">left_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">left_order</span><span class="p">,</span>
+                          <span class="n">right_order</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">right_order</span><span class="p">,</span>
+                          <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">xyy_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

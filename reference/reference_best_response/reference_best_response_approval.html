@@ -1,0 +1,917 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BestResponseApproval &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="BestResponsePlurality" href="reference_best_response_plurality.html" />
+    <link rel="prev" title="BestResponse" href="reference_best_response.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Best Responses</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_best_response.html">BestResponse</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BestResponseApproval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_best_response_plurality.html">BestResponsePlurality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_best_response_anti_plurality.html">BestResponseAntiPlurality</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Best Responses</a> &raquo;</li>
+        
+      <li>BestResponseApproval</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/reference/reference_best_response/reference_best_response_approval.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="bestresponseapproval">
+<h1>BestResponseApproval<a class="headerlink" href="#bestresponseapproval" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="poisson_approval.BestResponseApproval">
+<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">BestResponseApproval</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tau</span></em>, <em class="sig-param"><span class="n">ranking</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/best_response/BestResponseApproval.html#BestResponseApproval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.BestResponseApproval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Best response for a given ordinal type of voter in Approval voting.</p>
+<p>The main objective of this class is to compute <a class="reference internal" href="#poisson_approval.BestResponseApproval.threshold_utility" title="poisson_approval.BestResponseApproval.threshold_utility"><code class="xref py py-attr docutils literal notranslate"><span class="pre">threshold_utility</span></code></a>.</p>
+<p>It also provides the string <a class="reference internal" href="#poisson_approval.BestResponseApproval.justification" title="poisson_approval.BestResponseApproval.justification"><code class="xref py py-attr docutils literal notranslate"><span class="pre">justification</span></code></a>, indicating which sub-algorithm was used. Nowadays, possible
+values are <code class="docutils literal notranslate"><span class="pre">'Asymptotic</span> <span class="pre">method'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Simplified</span> <span class="pre">asymptotic</span> <span class="pre">method'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Easy</span> <span class="pre">vs</span> <span class="pre">difficult</span> <span class="pre">pivot'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Difficult</span> <span class="pre">vs</span> <span class="pre">easy</span> <span class="pre">pivot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Offset</span> <span class="pre">method'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Offset</span> <span class="pre">method</span> <span class="pre">with</span> <span class="pre">trio</span> <span class="pre">approximation</span> <span class="pre">correction'</span></code>.</p>
+<p>:param Cf. <a class="reference internal" href="reference_best_response.html#poisson_approval.BestResponse" title="poisson_approval.BestResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BestResponse</span></code></a>.:</p>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">Cf. :class:`BestResponse`</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.ballot">
+<em class="property">property </em><code class="sig-name descname">ballot</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.ballot" title="Permalink to this definition">¶</a></dt>
+<dd><p>This can be a valid ballot or <code class="docutils literal notranslate"><span class="pre">'utility-dependent'</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.duo_ij">
+<em class="property">property </em><code class="sig-name descname">duo_ij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.duo_ij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The duo ij.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_duo.html#poisson_approval.EventDuo" title="poisson_approval.EventDuo">EventDuo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.duo_ik">
+<em class="property">property </em><code class="sig-name descname">duo_ik</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.duo_ik" title="Permalink to this definition">¶</a></dt>
+<dd><p>The duo ik.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_duo.html#poisson_approval.EventDuo" title="poisson_approval.EventDuo">EventDuo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.duo_ji">
+<em class="property">property </em><code class="sig-name descname">duo_ji</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.duo_ji" title="Permalink to this definition">¶</a></dt>
+<dd><p>The duo ji.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_duo.html#poisson_approval.EventDuo" title="poisson_approval.EventDuo">EventDuo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.duo_jk">
+<em class="property">property </em><code class="sig-name descname">duo_jk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.duo_jk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The duo jk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_duo.html#poisson_approval.EventDuo" title="poisson_approval.EventDuo">EventDuo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.duo_ki">
+<em class="property">property </em><code class="sig-name descname">duo_ki</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.duo_ki" title="Permalink to this definition">¶</a></dt>
+<dd><p>The duo ki.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_duo.html#poisson_approval.EventDuo" title="poisson_approval.EventDuo">EventDuo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.duo_kj">
+<em class="property">property </em><code class="sig-name descname">duo_kj</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.duo_kj" title="Permalink to this definition">¶</a></dt>
+<dd><p>The duo kj.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_duo.html#poisson_approval.EventDuo" title="poisson_approval.EventDuo">EventDuo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.justification">
+<em class="property">property </em><code class="sig-name descname">justification</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.justification" title="Permalink to this definition">¶</a></dt>
+<dd><p>How the program computed the utility threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_ij_easy_or_tight">
+<em class="property">property </em><code class="sig-name descname">pivot_ij_easy_or_tight</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_ij_easy_or_tight" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the pivot <cite>ij</cite> is easy or tight, False if it is difficult.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_ik_easy_or_tight">
+<em class="property">property </em><code class="sig-name descname">pivot_ik_easy_or_tight</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_ik_easy_or_tight" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the pivot <cite>ik</cite> is easy or tight, False if it is difficult.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_ji_easy_or_tight">
+<em class="property">property </em><code class="sig-name descname">pivot_ji_easy_or_tight</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_ji_easy_or_tight" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the pivot <cite>ji</cite> is easy or tight, False if it is difficult.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_jk_easy_or_tight">
+<em class="property">property </em><code class="sig-name descname">pivot_jk_easy_or_tight</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_jk_easy_or_tight" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the pivot <cite>jk</cite> is easy or tight, False if it is difficult.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_ki_easy_or_tight">
+<em class="property">property </em><code class="sig-name descname">pivot_ki_easy_or_tight</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_ki_easy_or_tight" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the pivot <cite>ki</cite> is easy or tight, False if it is difficult.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_kj_easy_or_tight">
+<em class="property">property </em><code class="sig-name descname">pivot_kj_easy_or_tight</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_kj_easy_or_tight" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the pivot <cite>kj</cite> is easy or tight, False if it is difficult.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_strict_ij">
+<em class="property">property </em><code class="sig-name descname">pivot_strict_ij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_strict_ij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The strict pivot ij.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_strict.html#poisson_approval.EventPivotStrict" title="poisson_approval.EventPivotStrict">EventPivotStrict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_strict_ik">
+<em class="property">property </em><code class="sig-name descname">pivot_strict_ik</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_strict_ik" title="Permalink to this definition">¶</a></dt>
+<dd><p>The strict pivot ik.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_strict.html#poisson_approval.EventPivotStrict" title="poisson_approval.EventPivotStrict">EventPivotStrict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_strict_ji">
+<em class="property">property </em><code class="sig-name descname">pivot_strict_ji</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_strict_ji" title="Permalink to this definition">¶</a></dt>
+<dd><p>The strict pivot ji.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_strict.html#poisson_approval.EventPivotStrict" title="poisson_approval.EventPivotStrict">EventPivotStrict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_strict_jk">
+<em class="property">property </em><code class="sig-name descname">pivot_strict_jk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_strict_jk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The strict pivot jk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_strict.html#poisson_approval.EventPivotStrict" title="poisson_approval.EventPivotStrict">EventPivotStrict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_strict_ki">
+<em class="property">property </em><code class="sig-name descname">pivot_strict_ki</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_strict_ki" title="Permalink to this definition">¶</a></dt>
+<dd><p>The strict pivot ki.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_strict.html#poisson_approval.EventPivotStrict" title="poisson_approval.EventPivotStrict">EventPivotStrict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_strict_kj">
+<em class="property">property </em><code class="sig-name descname">pivot_strict_kj</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_strict_kj" title="Permalink to this definition">¶</a></dt>
+<dd><p>The strict pivot kj.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_strict.html#poisson_approval.EventPivotStrict" title="poisson_approval.EventPivotStrict">EventPivotStrict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij">
+<em class="property">property </em><code class="sig-name descname">pivot_tij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>personalized pivot</cite> between candidates i and j. This is just another notation for
+<a class="reference internal" href="#poisson_approval.BestResponseApproval.pivot_tij_ijk" title="poisson_approval.BestResponseApproval.pivot_tij_ijk"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pivot_tij_ijk</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij_ijk">
+<em class="property">property </em><code class="sig-name descname">pivot_tij_ijk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij_ijk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first personalized pivot for voters ijk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij_ikj">
+<em class="property">property </em><code class="sig-name descname">pivot_tij_ikj</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij_ikj" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first personalized pivot for voters ikj.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij_jik">
+<em class="property">property </em><code class="sig-name descname">pivot_tij_jik</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij_jik" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first personalized pivot for voters jik.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij_jki">
+<em class="property">property </em><code class="sig-name descname">pivot_tij_jki</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij_jki" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first personalized pivot for voters jki.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij_kij">
+<em class="property">property </em><code class="sig-name descname">pivot_tij_kij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij_kij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first personalized pivot for voters kij.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tij_kji">
+<em class="property">property </em><code class="sig-name descname">pivot_tij_kji</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tij_kji" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first personalized pivot for voters kji.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tij.html#poisson_approval.EventPivotTij" title="poisson_approval.EventPivotTij">EventPivotTij</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>personalized pivot</cite> between candidates j and k. This is just another notation for
+<a class="reference internal" href="#poisson_approval.BestResponseApproval.pivot_tjk_ijk" title="poisson_approval.BestResponseApproval.pivot_tjk_ijk"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pivot_tjk_ijk</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk_ijk">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk_ijk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk_ijk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second personalized pivot for voters ijk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk_ikj">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk_ikj</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk_ikj" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second personalized pivot for voters ikj.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk_jik">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk_jik</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk_jik" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second personalized pivot for voters jik.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk_jki">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk_jki</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk_jki" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second personalized pivot for voters jki.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk_kij">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk_kij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk_kij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second personalized pivot for voters kij.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_tjk_kji">
+<em class="property">property </em><code class="sig-name descname">pivot_tjk_kji</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_tjk_kji" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second personalized pivot for voters kji.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_tjk.html#poisson_approval.EventPivotTjk" title="poisson_approval.EventPivotTjk">EventPivotTjk</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_weak_ij">
+<em class="property">property </em><code class="sig-name descname">pivot_weak_ij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_weak_ij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weak pivot ij.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_weak.html#poisson_approval.EventPivotWeak" title="poisson_approval.EventPivotWeak">EventPivotWeak</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_weak_ik">
+<em class="property">property </em><code class="sig-name descname">pivot_weak_ik</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_weak_ik" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weak pivot ik.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_weak.html#poisson_approval.EventPivotWeak" title="poisson_approval.EventPivotWeak">EventPivotWeak</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_weak_ji">
+<em class="property">property </em><code class="sig-name descname">pivot_weak_ji</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_weak_ji" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weak pivot ji.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_weak.html#poisson_approval.EventPivotWeak" title="poisson_approval.EventPivotWeak">EventPivotWeak</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_weak_jk">
+<em class="property">property </em><code class="sig-name descname">pivot_weak_jk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_weak_jk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weak pivot jk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_weak.html#poisson_approval.EventPivotWeak" title="poisson_approval.EventPivotWeak">EventPivotWeak</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_weak_ki">
+<em class="property">property </em><code class="sig-name descname">pivot_weak_ki</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_weak_ki" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weak pivot ki.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_weak.html#poisson_approval.EventPivotWeak" title="poisson_approval.EventPivotWeak">EventPivotWeak</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.pivot_weak_kj">
+<em class="property">property </em><code class="sig-name descname">pivot_weak_kj</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.pivot_weak_kj" title="Permalink to this definition">¶</a></dt>
+<dd><p>The weak pivot kj.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_pivot_weak.html#poisson_approval.EventPivotWeak" title="poisson_approval.EventPivotWeak">EventPivotWeak</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.results">
+<em class="property">property </em><code class="sig-name descname">results</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cf. <a class="reference internal" href="#poisson_approval.BestResponseApproval.threshold_utility" title="poisson_approval.BestResponseApproval.threshold_utility"><code class="xref py py-attr docutils literal notranslate"><span class="pre">threshold_utility</span></code></a> and <a class="reference internal" href="#poisson_approval.BestResponseApproval.justification" title="poisson_approval.BestResponseApproval.justification"><code class="xref py py-attr docutils literal notranslate"><span class="pre">justification</span></code></a>.
+These results use:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#poisson_approval.BestResponseApproval.results_asymptotic_method" title="poisson_approval.BestResponseApproval.results_asymptotic_method"><code class="xref py py-meth docutils literal notranslate"><span class="pre">results_asymptotic_method()</span></code></a> if there are two consecutive zeros in the “compass diagram” of the
+tau-vector,</p></li>
+<li><p><a class="reference internal" href="#poisson_approval.BestResponseApproval.results_limit_pivot_theorem" title="poisson_approval.BestResponseApproval.results_limit_pivot_theorem"><code class="xref py py-meth docutils literal notranslate"><span class="pre">results_limit_pivot_theorem()</span></code></a> otherwise.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple (threshold_utility, justification)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.results_asymptotic_method">
+<em class="property">property </em><code class="sig-name descname">results_asymptotic_method</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.results_asymptotic_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Results according to the asymptotic method. Cf.
+<a class="reference internal" href="#poisson_approval.BestResponseApproval.threshold_utility" title="poisson_approval.BestResponseApproval.threshold_utility"><code class="xref py py-attr docutils literal notranslate"><span class="pre">threshold_utility</span></code></a> and <a class="reference internal" href="#poisson_approval.BestResponseApproval.justification" title="poisson_approval.BestResponseApproval.justification"><code class="xref py py-attr docutils literal notranslate"><span class="pre">justification</span></code></a>. The threshold utility may be NaN, because this method is
+not always sufficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple (threshold_utility, justification)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.results_limit_pivot_theorem">
+<em class="property">property </em><code class="sig-name descname">results_limit_pivot_theorem</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.results_limit_pivot_theorem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Results according to the limit pivot theorem.
+Cf. <a class="reference internal" href="#poisson_approval.BestResponseApproval.threshold_utility" title="poisson_approval.BestResponseApproval.threshold_utility"><code class="xref py py-attr docutils literal notranslate"><span class="pre">threshold_utility</span></code></a> and <a class="reference internal" href="#poisson_approval.BestResponseApproval.justification" title="poisson_approval.BestResponseApproval.justification"><code class="xref py py-attr docutils literal notranslate"><span class="pre">justification</span></code></a>. If the tau-vector has two consecutive zeros, the
+theorem does not apply and this method returns <code class="docutils literal notranslate"><span class="pre">nan,</span> <span class="pre">''</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple (threshold_utility, justification)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.threshold_utility">
+<em class="property">property </em><code class="sig-name descname">threshold_utility</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.threshold_utility" title="Permalink to this definition">¶</a></dt>
+<dd><p>The threshold value of the utility for the second candidate (where the optimal ballot changes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio">
+<em class="property">property </em><code class="sig-name descname">trio</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 3-candidate tie.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio.html#poisson_approval.EventTrio" title="poisson_approval.EventTrio">EventTrio</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_1t">
+<em class="property">property </em><code class="sig-name descname">trio_1t</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_1t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first <cite>personalized trio</cite>. This is just another notation for <a class="reference internal" href="#poisson_approval.BestResponseApproval.trio_1t_i" title="poisson_approval.BestResponseApproval.trio_1t_i"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trio_1t_i</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_1t.html#poisson_approval.EventTrio1t" title="poisson_approval.EventTrio1t">EventTrio1t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_1t_i">
+<em class="property">property </em><code class="sig-name descname">trio_1t_i</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_1t_i" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first <cite>personalized trio</cite> (where candidate <cite>i</cite> has one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_1t.html#poisson_approval.EventTrio1t" title="poisson_approval.EventTrio1t">EventTrio1t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_1t_j">
+<em class="property">property </em><code class="sig-name descname">trio_1t_j</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_1t_j" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first <cite>personalized trio</cite> (where candidate <cite>j</cite> has one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_1t.html#poisson_approval.EventTrio1t" title="poisson_approval.EventTrio1t">EventTrio1t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_1t_k">
+<em class="property">property </em><code class="sig-name descname">trio_1t_k</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_1t_k" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first <cite>personalized trio</cite> (where candidate <cite>k</cite> has one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_1t.html#poisson_approval.EventTrio1t" title="poisson_approval.EventTrio1t">EventTrio1t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t">
+<em class="property">property </em><code class="sig-name descname">trio_2t</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite>. This is just another notation for <a class="reference internal" href="#poisson_approval.BestResponseApproval.trio_2t_ij" title="poisson_approval.BestResponseApproval.trio_2t_ij"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trio_2t_ij</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_1t.html#poisson_approval.EventTrio1t" title="poisson_approval.EventTrio1t">EventTrio1t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t_ij">
+<em class="property">property </em><code class="sig-name descname">trio_2t_ij</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t_ij" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite> (where candidates i and j have one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_2t.html#poisson_approval.EventTrio2t" title="poisson_approval.EventTrio2t">EventTrio2t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t_ik">
+<em class="property">property </em><code class="sig-name descname">trio_2t_ik</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t_ik" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite> (where candidates i and k have one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_2t.html#poisson_approval.EventTrio2t" title="poisson_approval.EventTrio2t">EventTrio2t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t_ji">
+<em class="property">property </em><code class="sig-name descname">trio_2t_ji</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t_ji" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite> (where candidates j and i have one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_2t.html#poisson_approval.EventTrio2t" title="poisson_approval.EventTrio2t">EventTrio2t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t_jk">
+<em class="property">property </em><code class="sig-name descname">trio_2t_jk</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t_jk" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite> (where candidates j and k have one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_2t.html#poisson_approval.EventTrio2t" title="poisson_approval.EventTrio2t">EventTrio2t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t_ki">
+<em class="property">property </em><code class="sig-name descname">trio_2t_ki</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t_ki" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite> (where candidates k and i have one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_2t.html#poisson_approval.EventTrio2t" title="poisson_approval.EventTrio2t">EventTrio2t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.BestResponseApproval.trio_2t_kj">
+<em class="property">property </em><code class="sig-name descname">trio_2t_kj</code><a class="headerlink" href="#poisson_approval.BestResponseApproval.trio_2t_kj" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second <cite>personalized trio</cite> (where candidates k and j have one vote less).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_events/reference_event_trio_2t.html#poisson_approval.EventTrio2t" title="poisson_approval.EventTrio2t">EventTrio2t</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_best_response_plurality.html" class="btn btn-neutral float-right" title="BestResponsePlurality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reference_best_response.html" class="btn btn-neutral float-left" title="BestResponse" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

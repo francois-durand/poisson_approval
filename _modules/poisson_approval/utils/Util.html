@@ -1,0 +1,1075 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.utils.Util &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.utils.Util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.utils.Util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
+
+
+<div class="viewcode-block" id="initialize_random_seeds"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.initialize_random_seeds">[docs]</a><span class="k">def</span> <span class="nf">initialize_random_seeds</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initialize the random seeds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The desired random seed. Default: 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rand_simplex"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.rand_simplex">[docs]</a><span class="k">def</span> <span class="nf">rand_simplex</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draw a random point in the simplex.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : int</span>
+<span class="sd">        Number of coordinates. In other words, we consider the simplex of dimension `d - 1`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        A numpy array of length `d`, whose sum is 1.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; rand_simplex(d=6)  # doctest: +SKIP</span>
+<span class="sd">        array([0.4236548 , 0.12122838, 0.00393032, 0.05394987, 0.11242599, 0.28481063])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="rand_integers_fixed_sum"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.rand_integers_fixed_sum">[docs]</a><span class="k">def</span> <span class="nf">rand_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fixed_sum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate integers with a given sum (uniformly).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : int</span>
+<span class="sd">        The desired number of integers. In other words, we consider a simplex of dimension `d - 1`.</span>
+<span class="sd">    fixed_sum : int</span>
+<span class="sd">        The fixed sum.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        A numpy array of `d` integers, whose sum is `fixed_sum`, and drawn uniformly.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; rand_integers_fixed_sum(d=6, fixed_sum=100)</span>
+<span class="sd">        array([ 2, 23, 34,  0, 22, 19])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_separators</span> <span class="o">=</span> <span class="n">d</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">separators</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+        <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fixed_sum</span> <span class="o">+</span> <span class="n">n_separators</span><span class="p">,</span> <span class="n">n_separators</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)),</span>
+        <span class="p">[</span><span class="n">fixed_sum</span> <span class="o">+</span> <span class="n">n_separators</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">up</span> <span class="o">-</span> <span class="n">down</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">down</span><span class="p">,</span> <span class="n">up</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">separators</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">separators</span><span class="p">[</span><span class="mi">1</span><span class="p">:])])</span></div>
+
+
+<div class="viewcode-block" id="rand_simplex_grid"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.rand_simplex_grid">[docs]</a><span class="k">def</span> <span class="nf">rand_simplex_grid</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">denominator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draw a random point in the simplex, with rational coordinates of a given denominator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : int</span>
+<span class="sd">        Number of coordinates. In other words, we consider the simplex of dimension `d - 1`.</span>
+<span class="sd">    denominator : int</span>
+<span class="sd">        The coordinates will be fractions with this denominator.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        A numpy array of length `d`, whose coordinates are fractions of the given denominator, and whose sum is 1.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; rand_simplex_grid(d=3, denominator=100)</span>
+<span class="sd">        array([Fraction(13, 50), Fraction(13, 20), Fraction(9, 100)], dtype=object)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">my_division</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">denominator</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">rand_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">fixed_sum</span><span class="o">=</span><span class="n">denominator</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="probability"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.probability">[docs]</a><span class="k">def</span> <span class="nf">probability</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">conditional_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Probability that a random `something` meets some given test.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factory : callable or tuple</span>
+<span class="sd">        This can be:</span>
+
+<span class="sd">        * Either a callable that takes no input and that outputs a (random) `something`,</span>
+<span class="sd">        * Or a tuple of such factories (cf. examples below).</span>
+<span class="sd">    n_samples : int</span>
+<span class="sd">        Number of samples.</span>
+<span class="sd">    test : callable or tuple</span>
+<span class="sd">        This can be:</span>
+
+<span class="sd">        * Either a function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</span>
+<span class="sd">        * Or a tuple of such functions (cf. examples below).</span>
+<span class="sd">    conditional_on : callable</span>
+<span class="sd">        A function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</span>
+<span class="sd">        Default: always True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or tuple</span>
+<span class="sd">        This can be:</span>
+
+<span class="sd">        * Either the probability that the output(s) generated by `factory` meet(s) `test`, conditional on the fact</span>
+<span class="sd">          that it meets `conditional_on`, based on a Monte-Carlo estimation of `n_samples` trials.</span>
+<span class="sd">        * Either a tuple giving this probability for each member of `test`, when `test` is a tuple itself.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In this basic example with one factory, we estimate the probability that a random float between 0 and 1 is greater</span>
+<span class="sd">    than .5, conditionally on being greater than .25:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_number():</span>
+<span class="sd">        ...     return random.random()</span>
+<span class="sd">        &gt;&gt;&gt; probability(factory=rand_number, n_samples=1000,</span>
+<span class="sd">        ...             test=lambda x: x &gt; .5, conditional_on=lambda x: x &gt; .25)</span>
+<span class="sd">        0.661</span>
+
+<span class="sd">    In this example with a tuple of factories, we estimate the probability that a random 2*2 matrix and a random vector</span>
+<span class="sd">    of size 2, both with integer coefficients between -10 included and 11 excluded, have a dot product that is null,</span>
+<span class="sd">    conditionally on not being null themselves:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_matrix():</span>
+<span class="sd">        ...     return np.random.randint(-10, 11, (2, 2))</span>
+<span class="sd">        &gt;&gt;&gt; def rand_vector():</span>
+<span class="sd">        ...     return np.random.randint(-10, 11, 2)</span>
+<span class="sd">        &gt;&gt;&gt; def test_dot_zero(matrix, vector):</span>
+<span class="sd">        ...     return np.all(np.dot(matrix, vector) == 0)</span>
+<span class="sd">        &gt;&gt;&gt; def test_non_trivial(matrix, vector):</span>
+<span class="sd">        ...     return not np.all(matrix == 0) and not np.all(vector == 0)</span>
+<span class="sd">        &gt;&gt;&gt; probability(factory=(rand_matrix, rand_vector), n_samples=10000,</span>
+<span class="sd">        ...             test=test_dot_zero, conditional_on=test_non_trivial)</span>
+<span class="sd">        0.0003</span>
+
+<span class="sd">    In the following example, we estimate the probability that a random float between 0 and 1 is greater than .5,</span>
+<span class="sd">    and the probability that it is greater than .75, conditionally on being greater than .25:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_number():</span>
+<span class="sd">        ...     return random.random()</span>
+<span class="sd">        &gt;&gt;&gt; probability(factory=rand_number, n_samples=1000,</span>
+<span class="sd">        ...             test=(lambda x: x &gt; .5, lambda x: x &gt; .75), conditional_on=lambda x: x &gt; .25)</span>
+<span class="sd">        (0.661, 0.332)</span>
+
+<span class="sd">    When using a tuple of tests, the same samples are used to estimate each probability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">factory</span> <span class="o">=</span> <span class="p">(</span><span class="n">factory</span><span class="p">,)</span>
+    <span class="n">is_test_tuple</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_test_tuple</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="p">(</span><span class="n">test</span><span class="p">,)</span>
+    <span class="n">l_test_success</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">the_test</span> <span class="ow">in</span> <span class="n">test</span><span class="p">]</span>
+    <span class="n">i_samples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i_samples</span> <span class="o">&lt;</span> <span class="n">n_samples</span><span class="p">:</span>
+        <span class="n">somethings</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factory</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">conditional_on</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">conditional_on</span><span class="p">(</span><span class="o">*</span><span class="n">somethings</span><span class="p">):</span>
+            <span class="n">i_samples</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i_test</span><span class="p">,</span> <span class="n">the_test</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">the_test</span><span class="p">(</span><span class="o">*</span><span class="n">somethings</span><span class="p">):</span>
+                    <span class="n">l_test_success</span><span class="p">[</span><span class="n">i_test</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">l_test_rate</span> <span class="o">=</span> <span class="p">[</span><span class="n">successes</span> <span class="o">/</span> <span class="n">n_samples</span> <span class="k">for</span> <span class="n">successes</span> <span class="ow">in</span> <span class="n">l_test_success</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">is_test_tuple</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">l_test_rate</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">l_test_rate</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="image_distribution"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.image_distribution">[docs]</a><span class="k">def</span> <span class="nf">image_distribution</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">conditional_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Distribution of ``f(something)`` for a random `something`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factory : callable or tuple</span>
+<span class="sd">        This can be:</span>
+
+<span class="sd">        * Either a callable that takes no input and that outputs a (random) `something`,</span>
+<span class="sd">        * Or a tuple of such factories (cf. examples below).</span>
+<span class="sd">    n_samples : int</span>
+<span class="sd">        Number of samples.</span>
+<span class="sd">    f : callable</span>
+<span class="sd">        A function that take as input(s) the output(s) of the factory(ies).</span>
+<span class="sd">    conditional_on : callable</span>
+<span class="sd">        A function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</span>
+<span class="sd">        Default: always True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DictPrintingInOrder</span>
+<span class="sd">        Keys: the obtained outputs for `f`. Values: the probability that `f(something)` has this output when `something`</span>
+<span class="sd">        is generated by `factory`, conditional on the fact that it meets `conditional_on`,</span>
+<span class="sd">        based on a Monte-Carlo estimation of `n_samples` trials.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In this basic example with one factory, we compute the distribution of `n` modulo 10, when `n` is drawn uniformly</span>
+<span class="sd">    at random between 0 included and 100 excluded, conditionally on the fact that `n` is even:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_integer():</span>
+<span class="sd">        ...     return np.random.randint(0, 100)</span>
+<span class="sd">        &gt;&gt;&gt; def modulo_10(n):</span>
+<span class="sd">        ...     return n % 10</span>
+<span class="sd">        &gt;&gt;&gt; def is_even(n):</span>
+<span class="sd">        ...     return n % 2 == 0</span>
+<span class="sd">        &gt;&gt;&gt; image_distribution(factory=rand_integer, n_samples=100, f=modulo_10, conditional_on=is_even)</span>
+<span class="sd">        {0: 0.21, 2: 0.21, 4: 0.2, 6: 0.18, 8: 0.2}</span>
+
+<span class="sd">    In this example with a tuple of factories, we compute the distribution of `a mod b`, when `a` is drawn uniformly</span>
+<span class="sd">    at random between 0 included and 100 excluded, and `b` is drawn uniformly at random between 1 included and 11</span>
+<span class="sd">    excluded:</span>
+
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_integer():</span>
+<span class="sd">        ...     return np.random.randint(0, 100)</span>
+<span class="sd">        &gt;&gt;&gt; def rand_divider():</span>
+<span class="sd">        ...     return np.random.randint(1, 11)</span>
+<span class="sd">        &gt;&gt;&gt; def modulo(a, b):</span>
+<span class="sd">        ...     return a % b</span>
+<span class="sd">        &gt;&gt;&gt; image_distribution(factory=(rand_integer, rand_divider),</span>
+<span class="sd">        ...                    n_samples=100, f=modulo)</span>
+<span class="sd">        {0: 0.31, 1: 0.16, 2: 0.18, 3: 0.12, 4: 0.07, 5: 0.04, 6: 0.02, 7: 0.08, 9: 0.02}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">factory</span> <span class="o">=</span> <span class="p">(</span><span class="n">factory</span><span class="p">,)</span>
+    <span class="n">d_result_occurrences</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">i_samples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i_samples</span> <span class="o">&lt;</span> <span class="n">n_samples</span><span class="p">:</span>
+        <span class="n">somethings</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">factory</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">conditional_on</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">conditional_on</span><span class="p">(</span><span class="o">*</span><span class="n">somethings</span><span class="p">):</span>
+            <span class="n">i_samples</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">somethings</span><span class="p">)</span>
+            <span class="n">d_result_occurrences</span><span class="p">[</span><span class="n">result</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_result_occurrences</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">result</span><span class="p">:</span> <span class="n">occurrences</span> <span class="o">/</span> <span class="n">n_samples</span>
+                                <span class="k">for</span> <span class="n">result</span><span class="p">,</span> <span class="n">occurrences</span> <span class="ow">in</span> <span class="n">d_result_occurrences</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span></div>
+
+
+<span class="k">def</span> <span class="nf">_false_for_fraction</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator to return False when the input is a Fraction (cf. usages below).&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">_f</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="vm">__doc__</span>
+    <span class="k">return</span> <span class="n">_f</span>
+
+
+<div class="viewcode-block" id="isnan"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.isnan">[docs]</a><span class="nd">@_false_for_fraction</span>
+<span class="k">def</span> <span class="nf">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Is nan.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if `x` is nan.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This extends the usual numpy function ``isnan`` to fractions and sympy expressions.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,</span>
+<span class="sd">        ...           sp.oo, - sp.oo,</span>
+<span class="sd">        ...           sp.Rational(3, 5), Fraction(3, 5),</span>
+<span class="sd">        ...           1, 0.42, np.inf, -np.inf, np.nan]</span>
+<span class="sd">        &gt;&gt;&gt; print([x for x in values if isnan(x)])</span>
+<span class="sd">        [nan, nan]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">Expr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isposinf"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.isposinf">[docs]</a><span class="nd">@_false_for_fraction</span>
+<span class="k">def</span> <span class="nf">isposinf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Is positive infinity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if `x` is positive infinity.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This extends the usual numpy function ``isposinf`` to fractions and sympy expressions.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,</span>
+<span class="sd">        ...           sp.oo, - sp.oo,</span>
+<span class="sd">        ...           sp.Rational(3, 5), Fraction(3, 5),</span>
+<span class="sd">        ...           1, 0.42, np.inf, -np.inf, np.nan]</span>
+<span class="sd">        &gt;&gt;&gt; print([x for x in values if isposinf(x)])</span>
+<span class="sd">        [oo, inf]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">Expr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isposinf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isneginf"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.isneginf">[docs]</a><span class="nd">@_false_for_fraction</span>
+<span class="k">def</span> <span class="nf">isneginf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Is negative infinity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if `x` is negative infinity.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This extends the usual numpy function ``isneginf`` to fractions and sympy expressions.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; values = [sp.sqrt(3) - sp.sqrt(2), sp.nan,</span>
+<span class="sd">        ...           sp.oo, - sp.oo,</span>
+<span class="sd">        ...           sp.Rational(3, 5), Fraction(3, 5),</span>
+<span class="sd">        ...           1, 0.42, np.inf, -np.inf, np.nan]</span>
+<span class="sd">        &gt;&gt;&gt; print([x for x in values if isneginf(x)])</span>
+<span class="sd">        [-oo, -inf]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">Expr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isneginf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="give_figure"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.give_figure">[docs]</a><span class="k">def</span> <span class="nf">give_figure</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">singular</span><span class="p">,</span> <span class="n">plural</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Combine a number with a unit, whose word can be singular or plural.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The number.</span>
+<span class="sd">    singular : str</span>
+<span class="sd">        The singular word.</span>
+<span class="sd">    plural : str</span>
+<span class="sd">        The plural word. Default: the singular with a final &#39;s&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The number and the word.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; give_figure(1, &#39;apple&#39;)</span>
+<span class="sd">        &#39;1 apple&#39;</span>
+<span class="sd">        &gt;&gt;&gt; give_figure(2, &#39;apple&#39;)</span>
+<span class="sd">        &#39;2 apples&#39;</span>
+<span class="sd">        &gt;&gt;&gt; give_figure(1, &#39;equilibrium&#39;, &#39;equilibria&#39;)</span>
+<span class="sd">        &#39;1 equilibrium&#39;</span>
+<span class="sd">        &gt;&gt;&gt; give_figure(2, &#39;equilibrium&#39;, &#39;equilibria&#39;)</span>
+<span class="sd">        &#39;2 equilibria&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">singular</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">plural</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">singular</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">plural</span></div>
+
+
+<div class="viewcode-block" id="to_callable"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.to_callable">[docs]</a><span class="k">def</span> <span class="nf">to_callable</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert to a callable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    o : object</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    callable</span>
+<span class="sd">        The conversion of `o` to a callable.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    If `o` is callable, then return `o`:</span>
+
+<span class="sd">        &gt;&gt;&gt; def square(x):</span>
+<span class="sd">        ...     return x**2</span>
+<span class="sd">        &gt;&gt;&gt; my_function = to_callable(square)</span>
+<span class="sd">        &gt;&gt;&gt; my_function(4)</span>
+<span class="sd">        16</span>
+
+<span class="sd">    If `o` is not callable, then return a function ``*args, **kwargs -&gt; o``:</span>
+
+<span class="sd">        &gt;&gt;&gt; x = 42</span>
+<span class="sd">        &gt;&gt;&gt; my_function = to_callable(x)</span>
+<span class="sd">        &gt;&gt;&gt; my_function(&#39;some_argument&#39;, keyword=&#39;some_value&#39;)</span>
+<span class="sd">        42</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">o</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">o</span>
+        <span class="k">return</span> <span class="n">my_function</span></div>
+
+
+<div class="viewcode-block" id="product_dict"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.product_dict">[docs]</a><span class="k">def</span> <span class="nf">product_dict</span><span class="p">(</span><span class="n">d_key_possible_values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterable: product of dictionaries.</span>
+
+<span class="sd">    Source: https://stackoverflow.com/questions/5228158/cartesian-product-of-a-dictionary-of-lists.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d_key_possible_values</span>
+<span class="sd">        To each key, associate a list of possible values (cf. example below).</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A dictionary that, to each key, associates one of its possible values. All elements of the Cartesian product</span>
+<span class="sd">        are returned this way.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; d_key_possible_values = {&#39;foo&#39;: [0, 1], &#39;bar&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]}</span>
+<span class="sd">        &gt;&gt;&gt; for d_key_value in product_dict(d_key_possible_values):</span>
+<span class="sd">        ...     print(d_key_value)</span>
+<span class="sd">        {&#39;foo&#39;: 0, &#39;bar&#39;: &#39;a&#39;}</span>
+<span class="sd">        {&#39;foo&#39;: 0, &#39;bar&#39;: &#39;b&#39;}</span>
+<span class="sd">        {&#39;foo&#39;: 0, &#39;bar&#39;: &#39;c&#39;}</span>
+<span class="sd">        {&#39;foo&#39;: 1, &#39;bar&#39;: &#39;a&#39;}</span>
+<span class="sd">        {&#39;foo&#39;: 1, &#39;bar&#39;: &#39;b&#39;}</span>
+<span class="sd">        {&#39;foo&#39;: 1, &#39;bar&#39;: &#39;c&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">d_key_possible_values</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">d_key_possible_values</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">vals</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">instance</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="candidates_to_d_candidate_probability"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.candidates_to_d_candidate_probability">[docs]</a><span class="k">def</span> <span class="nf">candidates_to_d_candidate_probability</span><span class="p">(</span><span class="n">candidates</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a set of candidates to a dictionary of probabilities (random tie-break).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    candidates : set</span>
+<span class="sd">        A subset of ``{&#39;a&#39;, &#39;b&#39;, &#39;c&#39;}``. Typically: a set of winners.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DictPrintingInOrderIgnoringZeros</span>
+<span class="sd">        Key: ``&#39;a&#39;``, ``&#39;b&#39;`` or ``&#39;c&#39;``. Value: the probability of this candidate winning with a uniformly random</span>
+<span class="sd">        tie-break.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; winners = {&#39;a&#39;, &#39;b&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; candidates_to_d_candidate_probability(winners)</span>
+<span class="sd">        {&#39;a&#39;: Fraction(1, 2), &#39;b&#39;: Fraction(1, 2)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_candidates</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+        <span class="n">candidate</span><span class="p">:</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_candidates</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="candidates_to_probabilities"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.candidates_to_probabilities">[docs]</a><span class="k">def</span> <span class="nf">candidates_to_probabilities</span><span class="p">(</span><span class="n">candidates</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a set of candidates to an array of probabilities (random tie-break).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    candidates : set</span>
+<span class="sd">        A subset of ``{&#39;a&#39;, &#39;b&#39;, &#39;c&#39;}``. Typically: a set of winners.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        Array of size 3. For example, the first coefficient is the probability that candidate `a` win by a random</span>
+<span class="sd">        tie-break.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; winners = {&#39;a&#39;, &#39;b&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; candidates_to_probabilities(winners)</span>
+<span class="sd">        array([Fraction(1, 2), Fraction(1, 2), 0], dtype=object)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_candidates</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_candidates</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="array_to_d_candidate_value"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.array_to_d_candidate_value">[docs]</a><span class="k">def</span> <span class="nf">array_to_d_candidate_value</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert an array to a dictionary of candidates and values</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values : ndarray</span>
+<span class="sd">        An array of size 3.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DictPrintingInOrderIgnoringZeros</span>
+<span class="sd">        The corresponding dictionary.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; values = [42, 51, 69]</span>
+<span class="sd">        &gt;&gt;&gt; array_to_d_candidate_value(values)</span>
+<span class="sd">        {&#39;a&#39;: 42, &#39;b&#39;: 51, &#39;c&#39;: 69}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span><span class="n">candidate</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">CANDIDATES</span><span class="p">,</span> <span class="n">values</span><span class="p">)})</span></div>
+
+
+<div class="viewcode-block" id="d_candidate_value_to_array"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.d_candidate_value_to_array">[docs]</a><span class="k">def</span> <span class="nf">d_candidate_value_to_array</span><span class="p">(</span><span class="n">d_candidate_value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a dictionary of candidates and values to an array</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d_candidate_value : dict</span>
+<span class="sd">        Key: ``&#39;a&#39;``, ``&#39;b&#39;`` or ``&#39;c&#39;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        The corresponding array.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; d_candidate_value = {&#39;a&#39;: 42, &#39;b&#39;: 51, &#39;c&#39;: 69}</span>
+<span class="sd">        &gt;&gt;&gt; d_candidate_value_to_array(d_candidate_value)</span>
+<span class="sd">        array([42, 51, 69])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d_candidate_value</span><span class="p">[</span><span class="n">candidate</span><span class="p">]</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="one_over_t"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_t">[docs]</a><span class="k">def</span> <span class="nf">one_over_t</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function `1 / t`.</span>
+
+<span class="sd">    When used as an update ratio (cf. :meth:`ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic</span>
+<span class="sd">    mean.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Number</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; one_over_t(2)</span>
+<span class="sd">        Fraction(1, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">my_division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="one_over_sqrt_t"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_sqrt_t">[docs]</a><span class="k">def</span> <span class="nf">one_over_sqrt_t</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function `1 / sqrt(t)`.</span>
+
+<span class="sd">    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Number</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; one_over_sqrt_t(2)</span>
+<span class="sd">        0.7071067811865475</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">my_division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">t</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="one_over_log_t_plus_one"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_log_t_plus_one">[docs]</a><span class="k">def</span> <span class="nf">one_over_log_t_plus_one</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function `1 / log(t + 1)`.</span>
+
+<span class="sd">    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant</span>
+<span class="sd">    1 in the denominator is the smallest integer such that `f(t = 2) &lt; 1`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Number</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; one_over_log_t_plus_one(2)</span>
+<span class="sd">        0.9102392266268373</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">my_division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="one_over_log_log_t_plus_fourteen"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen">[docs]</a><span class="k">def</span> <span class="nf">one_over_log_log_t_plus_fourteen</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function `1 / log(log(t + 14))`.</span>
+
+<span class="sd">    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant</span>
+<span class="sd">    14 in the denominator is the smallest integer such that `f(t = 1) &lt; 1`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Number</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; one_over_log_log_t_plus_fourteen(2)</span>
+<span class="sd">        0.9806022744169713</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">my_division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">14</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="my_division"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.my_division">[docs]</a><span class="k">def</span> <span class="nf">my_division</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Division of two numbers, trying to be exact if it is reasonable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : Number</span>
+<span class="sd">    y : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Number</span>
+<span class="sd">        The division of `x` by `y`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Typical usages:</span>
+
+<span class="sd">        &gt;&gt;&gt; my_division(6, 2)</span>
+<span class="sd">        3</span>
+<span class="sd">        &gt;&gt;&gt; my_division(5, 2)</span>
+<span class="sd">        Fraction(5, 2)</span>
+
+<span class="sd">    If `x` or `y` is a float, then the result is a float:</span>
+
+<span class="sd">        &gt;&gt;&gt; my_division(Fraction(5, 2), 0.1)</span>
+<span class="sd">        25.0</span>
+<span class="sd">        &gt;&gt;&gt; my_division(0.1, Fraction(5, 2))</span>
+<span class="sd">        0.04</span>
+
+<span class="sd">    If `x` and `y` are integers, decimals, fractions or sympy expressions, then the result is symbolic:</span>
+
+<span class="sd">        &gt;&gt;&gt; my_division(2, Fraction(5, 2))</span>
+<span class="sd">        Fraction(4, 5)</span>
+<span class="sd">        &gt;&gt;&gt; my_division(Decimal(&#39;0.1&#39;), Fraction(5, 2))</span>
+<span class="sd">        Fraction(1, 25)</span>
+<span class="sd">        &gt;&gt;&gt; my_division(sp.sqrt(3), 2)</span>
+<span class="sd">        sqrt(3)/2</span>
+
+<span class="sd">    Possible errors:</span>
+
+<span class="sd">        &gt;&gt;&gt; my_division(1, 0)</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">        ZeroDivisionError: division by zero</span>
+<span class="sd">        &gt;&gt;&gt; my_division(1, &#39;foo&#39;)</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">        TypeError: unsupported operand type(s) for /: &#39;Fraction&#39; and &#39;str&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s1">&#39;division by zero&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">Rational</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">pass</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">Rational</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">pass</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">denominator</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">numerator</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="iterator_integers_fixed_sum"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.iterator_integers_fixed_sum">[docs]</a><span class="k">def</span> <span class="nf">iterator_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fixed_sum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterate over vectors of integers with a fixed sum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : int</span>
+<span class="sd">        The desired number of integers. In other words, we consider a simplex of dimension `d - 1`.</span>
+<span class="sd">    fixed_sum : int</span>
+<span class="sd">        The fixed sum.</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Each tuple of `d` integers, whose sum is `fixed_sum`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; for t in iterator_integers_fixed_sum(d=3, fixed_sum=2):</span>
+<span class="sd">        ...     print(t)</span>
+<span class="sd">        (2, 0, 0)</span>
+<span class="sd">        (1, 1, 0)</span>
+<span class="sd">        (1, 0, 1)</span>
+<span class="sd">        (0, 2, 0)</span>
+<span class="sd">        (0, 1, 1)</span>
+<span class="sd">        (0, 0, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">fixed_sum</span><span class="p">,</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fixed_sum</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">iterator_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fixed_sum</span> <span class="o">-</span> <span class="n">i</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">r</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="iterate_simplex_grid"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.iterate_simplex_grid">[docs]</a><span class="k">def</span> <span class="nf">iterate_simplex_grid</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">denominator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterate over the points in the simplex, with rational coordinates of a given denominator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : int</span>
+<span class="sd">        Number of coordinates. In other words, we consider the simplex of dimension `d - 1`.</span>
+<span class="sd">    denominator : int or iterable</span>
+<span class="sd">        The coordinates will be fractions with this denominator. If an iterable is given, we consider each</span>
+<span class="sd">        denominator given by the iterable.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Each tuple of length `d`, whose coordinates are fractions of the given denominator, and whose sum is 1.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; for t in iterate_simplex_grid(d=3, denominator=range(1, 3)):</span>
+<span class="sd">        ...     print(t)</span>
+<span class="sd">        (1, 0, 0)</span>
+<span class="sd">        (0, 1, 0)</span>
+<span class="sd">        (0, 0, 1)</span>
+<span class="sd">        (1, 0, 0)</span>
+<span class="sd">        (Fraction(1, 2), Fraction(1, 2), 0)</span>
+<span class="sd">        (Fraction(1, 2), 0, Fraction(1, 2))</span>
+<span class="sd">        (0, 1, 0)</span>
+<span class="sd">        (0, Fraction(1, 2), Fraction(1, 2))</span>
+<span class="sd">        (0, 0, 1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">denominator</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">denominators</span> <span class="o">=</span> <span class="p">[</span><span class="n">denominator</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">denominators</span> <span class="o">=</span> <span class="n">denominator</span>
+    <span class="k">for</span> <span class="n">current_denominator</span> <span class="ow">in</span> <span class="n">denominators</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">iterator_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fixed_sum</span><span class="o">=</span><span class="n">current_denominator</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">my_division</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">current_denominator</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">t</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="my_range"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.my_range">[docs]</a><span class="k">def</span> <span class="nf">my_range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterable `range` adapted for fractions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    start : Number</span>
+<span class="sd">        Start value (included).</span>
+<span class="sd">    end : Number</span>
+<span class="sd">        End value (excluded).</span>
+<span class="sd">    step : Number</span>
+<span class="sd">        Increment of the counter.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; for x in my_range(0, 1, Fraction(1, 3)):</span>
+<span class="sd">        ...     print(x)</span>
+<span class="sd">        0</span>
+<span class="sd">        1/3</span>
+<span class="sd">        2/3</span>
+
+<span class="sd">        &gt;&gt;&gt; for x in my_range(1, 0, - Fraction(1, 3)):</span>
+<span class="sd">        ...     print(x)</span>
+<span class="sd">        1</span>
+<span class="sd">        2/3</span>
+<span class="sd">        1/3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">val</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">step</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">val</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">step</span></div>
+
+
+<div class="viewcode-block" id="my_sign"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.my_sign">[docs]</a><span class="k">def</span> <span class="nf">my_sign</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sign.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        Sign of x.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; my_sign(1.5)</span>
+<span class="sd">        1</span>
+<span class="sd">        &gt;&gt;&gt; my_sign(0)</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; my_sign(-4.2)</span>
+<span class="sd">        -1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

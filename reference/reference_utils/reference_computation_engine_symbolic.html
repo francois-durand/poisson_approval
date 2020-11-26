@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ComputationEngineSymbolic &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DictPrintingInOrder" href="reference_dict_printing_in_order.html" />
+    <link rel="prev" title="ComputationEngineNumeric" href="reference_computation_engine_numeric.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_func.html">computation_engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine.html">ComputationEngine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_numeric.html">ComputationEngineNumeric</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ComputationEngineSymbolic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order.html">DictPrintingInOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order_ignoring_none.html">DictPrintingInOrderIgnoringNone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order_ignoring_zeros.html">DictPrintingInOrderIgnoringZeros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_set_printing_in_order.html">SetPrintingInOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util.html">Util Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_ballots.html">UtilBallots Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_cache.html">UtilCache Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_masks.html">UtilMasks Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_preferences.html">UtilPreferences Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Utils</a> &raquo;</li>
+        
+      <li>ComputationEngineSymbolic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/reference/reference_utils/reference_computation_engine_symbolic.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="computationenginesymbolic">
+<h1>ComputationEngineSymbolic<a class="headerlink" href="#computationenginesymbolic" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="poisson_approval.ComputationEngineSymbolic">
+<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">ComputationEngineSymbolic</code><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computation engine: symbolic computation.</p>
+<p>This engine relies on the external package <cite>sympy</cite> in order to perform symbolic computation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span> <span class="o">=</span> <span class="n">ComputationEngineSymbolic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span>
+<span class="go">oo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span>
+<span class="go">nan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">exp(3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">log(3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">1/3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+<span class="go">1/3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">-1 + 3*sqrt(2)/5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">sqrt(3)</span>
+</pre></div>
+</div>
+<p>Usage of <a class="reference internal" href="#poisson_approval.ComputationEngineSymbolic.look_equal" title="poisson_approval.ComputationEngineSymbolic.look_equal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">look_equal()</span></code></a>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.999999999999</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">0.999999999999</span><span class="p">))</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">0.999999999999</span><span class="p">))</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">999999999999</span><span class="p">,</span> <span class="mi">1000000000000</span><span class="p">))</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">14142135623730951</span><span class="p">,</span> <span class="mi">10000000000000000</span><span class="p">))</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.Rational">
+<em class="property">classmethod </em><code class="sig-name descname">Rational</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.Rational"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.Rational" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rational number. Should return a fraction, even in a numeric engine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.S">
+<em class="property">classmethod </em><code class="sig-name descname">S</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.S"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.S" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the number if necessary.</p>
+<p>Return a number that has the same value as <cite>x</cite>. Cf. function <code class="docutils literal notranslate"><span class="pre">S</span></code> of the package <cite>sympy</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.barycenter">
+<em class="property">classmethod </em><code class="sig-name descname">barycenter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">ratio_b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.barycenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Barycenter.</p>
+<p>Cf. <a class="reference internal" href="reference_computation_engine_numeric.html#poisson_approval.ComputationEngineNumeric.barycenter" title="poisson_approval.ComputationEngineNumeric.barycenter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ComputationEngineNumeric.barycenter()</span></code></a> for specifications and examples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.exp">
+<em class="property">classmethod </em><code class="sig-name descname">exp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponential.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.factorial">
+<em class="property">classmethod </em><code class="sig-name descname">factorial</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.factorial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.factorial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factorial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.log">
+<em class="property">classmethod </em><code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logarithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.look_equal">
+<em class="property">classmethod </em><code class="sig-name descname">look_equal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.look_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if two numbers can reasonably be considered as equal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Number</em>) – </p></li>
+<li><p><strong>y</strong> (<em>Number</em>) – </p></li>
+<li><p><strong>*args</strong> – Cf. <code class="xref py py-func docutils literal notranslate"><span class="pre">math.isclose()</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Cf. <code class="xref py py-func docutils literal notranslate"><span class="pre">math.isclose()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If <cite>x</cite> or <cite>y</cite> is a float or numpy float (but not a sympy float), then return
+<code class="docutils literal notranslate"><span class="pre">math.isclose(x,</span> <span class="pre">y,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code>. In all other cases, return True iff <cite>x</cite> is equal to <cite>y</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.multiply_with_absorbing_zero">
+<em class="property">classmethod </em><code class="sig-name descname">multiply_with_absorbing_zero</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.multiply_with_absorbing_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplication with absorbing zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Number</em>) – </p></li>
+<li><p><strong>y</strong> (<em>Number</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If <cite>x</cite> or <cite>y</cite> is 0, then 0 (even if the other input is <code class="docutils literal notranslate"><span class="pre">nan</span></code>). Otherwise, the product
+of <cite>x</cite> and <cite>y</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.ones">
+<em class="property">classmethod </em><code class="sig-name descname">ones</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.ones" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array of ones.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.simplify">
+<em class="property">classmethod </em><code class="sig-name descname">simplify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.simplify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.simplify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplify the number if necessary.</p>
+<p>Return a number that has the same value as <cite>x</cite>. Cf. function <code class="docutils literal notranslate"><span class="pre">simplify</span></code> of the package <cite>sympy</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.simplify_vector">
+<em class="property">classmethod </em><code class="sig-name descname">simplify_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.simplify_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplify the coefficients if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.sqrt">
+<em class="property">classmethod </em><code class="sig-name descname">sqrt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/ComputationEngineSymbolic.html#ComputationEngineSymbolic.sqrt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.sqrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Square root.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.ComputationEngineSymbolic.zeros">
+<em class="property">classmethod </em><code class="sig-name descname">zeros</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.ComputationEngineSymbolic.zeros" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array of zeros.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_dict_printing_in_order.html" class="btn btn-neutral float-right" title="DictPrintingInOrder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reference_computation_engine_numeric.html" class="btn btn-neutral float-left" title="ComputationEngineNumeric" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

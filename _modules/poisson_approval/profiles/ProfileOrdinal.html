@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.profiles.ProfileOrdinal &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.profiles.ProfileOrdinal</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.profiles.ProfileOrdinal</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.EquilibriumStatus</span> <span class="kn">import</span> <span class="n">EquilibriumStatus</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.profiles.Profile</span> <span class="kn">import</span> <span class="n">Profile</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.random_factories.RandStrategyOrdinalUniform</span> <span class="kn">import</span> <span class="n">RandStrategyOrdinalUniform</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyOrdinal</span> <span class="kn">import</span> <span class="n">StrategyOrdinal</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.tau_vector.TauVector</span> <span class="kn">import</span> <span class="n">TauVector</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">product_dict</span><span class="p">,</span> <span class="n">my_division</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilPreferences</span> <span class="kn">import</span> <span class="n">sort_weak_order</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">ballot_one</span><span class="p">,</span> <span class="n">ballot_two</span><span class="p">,</span> <span class="n">ballot_one_two</span><span class="p">,</span> <span class="n">ballot_one_three</span><span class="p">,</span> <span class="n">ballot_low_u</span><span class="p">,</span> \
+    <span class="n">ballot_high_u</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">property_deleting_cache</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilMasks</span> <span class="kn">import</span> <span class="n">masks_area</span><span class="p">,</span> <span class="n">masks_distribution</span><span class="p">,</span> <span class="n">winners_distribution</span>
+
+
+<span class="c1"># noinspection PyUnresolvedReferences</span>
+<div class="viewcode-block" id="ProfileOrdinal"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal">[docs]</a><span class="k">class</span> <span class="nc">ProfileOrdinal</span><span class="p">(</span><span class="n">Profile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An ordinal profile of preference.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d_ranking_share : dict</span>
+<span class="sd">        E.g. ``{&#39;abc&#39;: 0.4, &#39;cab&#39;: 0.3}``. ``d_ranking_share[&#39;abc&#39;]`` is the probability that a voter prefers</span>
+<span class="sd">        candidate ``a``, then candidate ``b``, then candidate ``c``.</span>
+<span class="sd">    d_weak_order_share : dict</span>
+<span class="sd">        E.g. ``{&#39;a~b&gt;c&#39;: 0.2, &#39;a&gt;b~c&#39;: 0.1}``. ``d_weak_order_share[&#39;a~b&gt;c&#39;]`` is the probability that a voter likes</span>
+<span class="sd">        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.</span>
+<span class="sd">    normalization_warning : bool</span>
+<span class="sd">        Whether a warning should be issued if the input distribution is not normalized.</span>
+<span class="sd">    well_informed_voters : bool.</span>
+<span class="sd">        If True (default), it is the usual model. If False, voters &quot;see&quot; only the candidates&#39; expected scores and</span>
+<span class="sd">        believe that the scores follow independent Poisson distributions. This option has an effect only for Approval</span>
+<span class="sd">        (neither for Plurality nor Anti-plurality).</span>
+<span class="sd">    ratio_fanatic : Number</span>
+<span class="sd">        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`.</span>
+<span class="sd">    voting_rule : str</span>
+<span class="sd">        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.</span>
+<span class="sd">    symbolic : bool</span>
+<span class="sd">        Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If the input distribution `d_ranking_share` is not normalized, the profile will be normalized anyway and a</span>
+<span class="sd">    warning is issued (unless `normalization_warning` is False).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; profile</span>
+<span class="sd">        ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(3, 5), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc: 1/10, bac: 3/5, cab: 3/10&gt; (Condorcet winner: b)</span>
+<span class="sd">        &gt;&gt;&gt; profile.abc</span>
+<span class="sd">        Fraction(1, 10)</span>
+<span class="sd">        &gt;&gt;&gt; profile.d_ranking_share[&#39;abc&#39;]  # Alternate syntax for profile.abc</span>
+<span class="sd">        Fraction(1, 10)</span>
+<span class="sd">        &gt;&gt;&gt; profile.weighted_maj_graph</span>
+<span class="sd">        array([[0, Fraction(-1, 5), Fraction(2, 5)],</span>
+<span class="sd">               [Fraction(1, 5), 0, Fraction(2, 5)],</span>
+<span class="sd">               [Fraction(-2, 5), Fraction(-2, 5), 0]], dtype=object)</span>
+<span class="sd">        &gt;&gt;&gt; profile.condorcet_winners</span>
+<span class="sd">        Winners({&#39;b&#39;})</span>
+<span class="sd">        &gt;&gt;&gt; profile.is_profile_condorcet</span>
+<span class="sd">        1.0</span>
+<span class="sd">        &gt;&gt;&gt; profile.has_majority_favorite  # Is one candidate &#39;top&#39; in a majority of ballots?</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; profile.has_majority_ranking  # Does one ranking represent a majority of ballots?</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; profile.is_single_peaked  # Is the profile single-peaked?</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; profile.support_in_rankings</span>
+<span class="sd">        {&#39;abc&#39;, &#39;bac&#39;, &#39;cab&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; profile.is_generic_in_rankings  # Are all rankings there?</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; profile.analyzed_strategies_ordinal</span>
+<span class="sd">        Equilibria:</span>
+<span class="sd">        &lt;abc: a, bac: b, cab: ac&gt; ==&gt; b (FF)</span>
+<span class="sd">        &lt;abc: a, bac: ab, cab: c&gt; ==&gt; a (D)</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        Utility-dependent equilibrium:</span>
+<span class="sd">        &lt;abc: ab, bac: b, cab: c&gt; ==&gt; b (FF)</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        Non-equilibria:</span>
+<span class="sd">        &lt;abc: a, bac: b, cab: c&gt; ==&gt; b (FF)</span>
+<span class="sd">        &lt;abc: a, bac: ab, cab: ac&gt; ==&gt; a (D)</span>
+<span class="sd">        &lt;abc: ab, bac: b, cab: ac&gt; ==&gt; b (FF)</span>
+<span class="sd">        &lt;abc: ab, bac: ab, cab: c&gt; ==&gt; a, b (FF)</span>
+<span class="sd">        &lt;abc: ab, bac: ab, cab: ac&gt; ==&gt; a (D)</span>
+<span class="sd">        &gt;&gt;&gt; print(profile.analyzed_strategies_ordinal.equilibria[0])</span>
+<span class="sd">        &lt;abc: a, bac: b, cab: ac&gt; ==&gt; b</span>
+<span class="sd">        &gt;&gt;&gt; print(profile.analyzed_strategies_ordinal.winners_at_equilibrium)</span>
+<span class="sd">        a, b</span>
+
+<span class="sd">    The profile can include weak orders:</span>
+
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10)},</span>
+<span class="sd">        ...                          d_weak_order_share={&#39;c&gt;a~b&#39;: Fraction(3, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; profile</span>
+<span class="sd">        ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(3, 5)}, d_weak_order_share={&#39;c&gt;a~b&#39;: Fraction(3, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc: 1/10, bac: 3/5, c&gt;a~b: 3/10&gt; (Condorcet winner: b)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_ranking_share</span><span class="p">,</span> <span class="n">d_weak_order_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalization_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">well_informed_voters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">ratio_fanatic</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">voting_rule</span><span class="o">=</span><span class="n">voting_rule</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d_weak_order_share</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d_weak_order_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="c1"># Populate the dictionaries of rankings and weak orders</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+            <span class="n">ranking</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+            <span class="n">weak_order</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="n">WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="n">share</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">sort_weak_order</span><span class="p">(</span><span class="n">order</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="c1"># Normalize if necessary</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">normalization_warning</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">NORMALIZATION_WARNING</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_division</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">],</span> <span class="n">total</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_division</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">],</span> <span class="n">total</span><span class="p">)</span>
+        <span class="c1"># Other parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">well_informed_voters</span> <span class="o">=</span> <span class="n">well_informed_voters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">=</span> <span class="n">ratio_fanatic</span>
+
+    <span class="n">well_informed_voters</span> <span class="o">=</span> <span class="n">property_deleting_cache</span><span class="p">(</span><span class="s1">&#39;_well_informed_voters&#39;</span><span class="p">)</span>
+    <span class="n">ratio_fanatic</span> <span class="o">=</span> <span class="n">property_deleting_cache</span><span class="p">(</span><span class="s1">&#39;_ratio_fanatic&#39;</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_ranking_share</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_ranking_share</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_weak_order_share</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)},</span>
+<span class="sd">            ...                          well_informed_voters=False, ratio_fanatic=Fraction(1, 10))</span>
+<span class="sd">            &gt;&gt;&gt; profile</span>
+<span class="sd">            ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(3, 5), &#39;cab&#39;: Fraction(3, 10)}, \</span>
+<span class="sd">well_informed_voters=False, ratio_fanatic=Fraction(1, 10))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains_weak_orders</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, d_weak_order_share=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">well_informed_voters</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, well_informed_voters=False&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, ratio_fanatic=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, voting_rule=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="s1">&#39;ProfileOrdinal(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">arguments</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)},</span>
+<span class="sd">            ...                          well_informed_voters=False, ratio_fanatic=Fraction(1, 10))</span>
+<span class="sd">            &gt;&gt;&gt; print(profile)</span>
+<span class="sd">            &lt;abc: 1/10, bac: 3/5, cab: 3/10&gt; (Condorcet winner: b) (badly informed voters) (ratio_fanatic: 1/10)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains_rankings</span><span class="p">:</span>
+            <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains_weak_orders</span><span class="p">:</span>
+            <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_profile_condorcet</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (Condorcet winner: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">condorcet_winners</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">well_informed_voters</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (badly informed voters)&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (ratio_fanatic: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Equality test.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True iff this profile is equal to `other`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; profile == ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ProfileOrdinal</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_ranking_share</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_weak_order_share</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">well_informed_voters</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">well_informed_voters</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">ratio_fanatic</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">standardized_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ProfileOrdinal : Standardized version of the profile (makes it unique, up to permutations of the candidates).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; profile.standardized_version</span>
+<span class="sd">            ProfileOrdinal({&#39;abc&#39;: Fraction(3, 5), &#39;bac&#39;: Fraction(1, 10), &#39;cba&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; profile.is_standardized</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">permute</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">best_d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">best_signature</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">XYZ_PERMUTATIONS</span><span class="p">:</span>
+            <span class="n">d_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">translate</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="n">perm</span><span class="p">):</span> <span class="n">share</span> <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">d_test</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">sort_weak_order</span><span class="p">(</span><span class="n">translate</span><span class="p">(</span><span class="n">weak_order</span><span class="p">,</span> <span class="n">perm</span><span class="p">)):</span> <span class="n">share</span>
+                           <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+            <span class="n">signature_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">d_test</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">XYZ_RANKINGS</span><span class="p">]</span>
+            <span class="n">signature_test</span> <span class="o">+=</span> <span class="p">[</span><span class="n">d_test</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="n">XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">signature_test</span> <span class="o">&gt;</span> <span class="n">best_signature</span><span class="p">:</span>
+                <span class="n">best_signature</span> <span class="o">=</span> <span class="n">signature_test</span>
+                <span class="n">best_d</span> <span class="o">=</span> <span class="n">d_test</span>
+        <span class="k">return</span> <span class="n">ProfileOrdinal</span><span class="p">({</span><span class="n">ranking</span><span class="p">:</span> <span class="n">best_d</span><span class="p">[</span><span class="n">xyz_ranking</span><span class="p">]</span> <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">xyz_ranking</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">RANKINGS</span><span class="p">,</span> <span class="n">XYZ_RANKINGS</span><span class="p">)},</span>
+                              <span class="p">{</span><span class="n">weak_order</span><span class="p">:</span> <span class="n">best_d</span><span class="p">[</span><span class="n">xyz_weak_order</span><span class="p">]</span> <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">xyz_weak_order</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                                  <span class="n">WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">,</span> <span class="n">XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">)},</span>
+                              <span class="n">well_informed_voters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">well_informed_voters</span><span class="p">,</span> <span class="n">ratio_fanatic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span><span class="p">,</span>
+                              <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="c1"># Tau and strategy-related stuff</span>
+
+<div class="viewcode-block" id="ProfileOrdinal.tau"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.tau">[docs]</a>    <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tau-vector associated to a strategy, with partial fanatic voting.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strategy : an argument accepted by :meth:`tau_strategic`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TauVector</span>
+<span class="sd">            A share :attr:`ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters</span>
+<span class="sd">            vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector</span>
+<span class="sd">            is the barycenter of ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective</span>
+<span class="sd">            weights ``self.ratio_fanatic`` and ``1 - self.ratio_fanatic``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; strategy = StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;, &#39;cab&#39;: &#39;c&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; tau = profile.tau(strategy)</span>
+<span class="sd">            &gt;&gt;&gt; print(tau)</span>
+<span class="sd">            &lt;a: 1/10, ab: 3/5, c: 3/10&gt; ==&gt; a</span>
+<span class="sd">            &gt;&gt;&gt; τ = profile.τ(strategy)  # Alternate syntax</span>
+<span class="sd">            &gt;&gt;&gt; print(τ)</span>
+<span class="sd">            &lt;a: 1/10, ab: 3/5, c: 3/10&gt; ==&gt; a</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tau_fanatic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_fanatic</span>
+        <span class="n">tau_strategic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_strategic</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">{</span><span class="n">ballot</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">barycenter</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">tau_strategic</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">ballot</span><span class="p">],</span>
+                                        <span class="n">b</span><span class="o">=</span><span class="n">tau_fanatic</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">ballot</span><span class="p">],</span>
+                                        <span class="n">ratio_b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">BALLOTS_WITHOUT_INVERSIONS</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">TauVector</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">tau_fanatic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tau-vector associated to fanatic voting.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TauVector</span>
+<span class="sd">            In Approval or Plurality, all voters approve of their top candidate only. In Anti-Plurality, they all</span>
+<span class="sd">            disapprove of their bottom candidate, i.e. they approve their two first candidates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share_weak_voters_fanatic</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">PLURALITY</span><span class="p">}:</span>
+            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">ballot_one</span><span class="p">(</span><span class="n">ranking</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">ballot_one_two</span><span class="p">(</span><span class="n">ranking</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">return</span> <span class="n">TauVector</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProfileOrdinal.tau_strategic"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.tau_strategic">[docs]</a>    <span class="k">def</span> <span class="nf">tau_strategic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tau-vector associated to a strategy.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strategy : StrategyOrdinal</span>
+<span class="sd">            A strategy that specifies at least all the rankings that are present in the profile.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TauVector</span>
+<span class="sd">            Tau-vector associated to this profile and strategy `strategy`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; strategy = StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;, &#39;cab&#39;: &#39;c&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; tau_strategic = profile.tau_strategic(strategy)</span>
+<span class="sd">            &gt;&gt;&gt; print(tau_strategic)</span>
+<span class="sd">            &lt;a: 1/10, ab: 3/5, c: 3/10&gt; ==&gt; a</span>
+
+<span class="sd">        In the case of approval with badly informed voters, we do as if the tau-vector were the vector of scores (up</span>
+<span class="sd">        to a renormalization):</span>
+
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)},</span>
+<span class="sd">            ...                          well_informed_voters=False)</span>
+<span class="sd">            &gt;&gt;&gt; strategy = StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;, &#39;cab&#39;: &#39;c&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; tau_strategic = profile.tau_strategic(strategy)</span>
+<span class="sd">            &gt;&gt;&gt; print(tau_strategic)</span>
+<span class="sd">            &lt;a: 7/16, b: 3/8, c: 3/16&gt; ==&gt; a</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share_weak_voters_sincere</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># For weak orders, strategic = sincere</span>
+        <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">APPROVAL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">well_informed_voters</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TauVector</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;ab&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;ac&#39;</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;ab&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;bc&#39;</span><span class="p">],</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;ac&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;bc&#39;</span><span class="p">]},</span>
+                <span class="n">normalization_warning</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TauVector</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProfileOrdinal.is_equilibrium"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.is_equilibrium">[docs]</a>    <span class="k">def</span> <span class="nf">is_equilibrium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether a strategy is an equilibrium.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strategy : StrategyOrdinal</span>
+<span class="sd">            A strategy that specifies at least all the rankings that are present in the profile.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        EquilibriumStatus</span>
+<span class="sd">            Whether `strategy` is an equilibrium in this profile.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; strategy = StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;, &#39;cab&#39;: &#39;c&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; profile.is_equilibrium(strategy)</span>
+<span class="sd">            EquilibriumStatus.EQUILIBRIUM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d_ranking_best_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span><span class="o">.</span><span class="n">d_ranking_best_response</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">EQUILIBRIUM</span>
+        <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">share</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">best_response</span> <span class="o">=</span> <span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span> <span class="o">==</span> <span class="n">INCONCLUSIVE</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">INCONCLUSIVE</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">elif</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span> <span class="o">==</span> <span class="n">UTILITY_DEPENDENT</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">UTILITY_DEPENDENT</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">!=</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">NOT_EQUILIBRIUM</span>
+        <span class="k">return</span> <span class="n">status</span></div>
+
+<div class="viewcode-block" id="ProfileOrdinal.proba_equilibrium"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.proba_equilibrium">[docs]</a>    <span class="k">def</span> <span class="nf">proba_equilibrium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Probability that an equilibrium exists (depending on the utilities).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        test : callable</span>
+<span class="sd">            A function ``StrategyOrdinal -&gt; bool`` that gives a condition on the strategy. Default: always True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The probability that an equilibrium strategy exists, that meets the `test` condition.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The result is exact (not based on a Monte-Carlo estimation).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; profile.proba_equilibrium()</span>
+<span class="sd">            1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># noinspection PyUnusedLocal</span>
+            <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span> <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">equilibria</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="n">support</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">support_in_rankings</span><span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>
+        <span class="n">masks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">support</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">utility_dependent</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">masks_area</span><span class="p">(</span><span class="n">inf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">sup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">masks</span><span class="o">=</span><span class="n">masks</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ProfileOrdinal.distribution_equilibria"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.distribution_equilibria">[docs]</a>    <span class="k">def</span> <span class="nf">distribution_equilibria</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Distribution of numbers of equilibria (depending on the utilities).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        test : callable</span>
+<span class="sd">            A function ``StrategyOrdinal -&gt; bool`` that gives a condition on the strategy. Default: always True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list that represents an histogram. The distribution of number of equilibria (meeting the `test` condition).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The result is exact (not based on a Monte-Carlo estimation).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; profile.distribution_equilibria()</span>
+<span class="sd">            array([0.        , 0.        , 0.86290531, 0.13709469])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># noinspection PyUnusedLocal</span>
+            <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">cover_alls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span> <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">equilibria</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">support</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">support_in_rankings</span><span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>
+        <span class="n">masks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">support</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">utility_dependent</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify_vector</span><span class="p">(</span><span class="n">masks_distribution</span><span class="p">(</span><span class="n">inf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+                                                          <span class="n">sup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+                                                          <span class="n">masks</span><span class="o">=</span><span class="n">masks</span><span class="p">,</span> <span class="n">cover_alls</span><span class="o">=</span><span class="n">cover_alls</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ProfileOrdinal.distribution_winners"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.distribution_winners">[docs]</a>    <span class="k">def</span> <span class="nf">distribution_winners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Distribution of the number of equilibrium winners (depending on the utilities).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        test : callable</span>
+<span class="sd">            A function ``StrategyOrdinal -&gt; bool`` that gives a condition on the strategy. Default: always True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list that represents an histogram. The distribution of number of possible equilibrium winner (with</span>
+<span class="sd">            strategies that meet the `test` condition).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The result is exact (not based on a Monte-Carlo estimation).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(1, 10), &#39;bac&#39;: Fraction(6, 10), &#39;cab&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; profile.distribution_winners()</span>
+<span class="sd">            array([0, 0, 1, 0])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># noinspection PyUnusedLocal</span>
+            <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">cover_alls</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="nb">set</span><span class="p">()]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">winners</span> <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">equilibria</span>
+            <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="p">]))</span>
+        <span class="n">support</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">support_in_rankings</span><span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>
+        <span class="n">masks_winners</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span>
+                  <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">support</span><span class="p">],</span>
+                <span class="n">strategy</span><span class="o">.</span><span class="n">winners</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">utility_dependent</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify_vector</span><span class="p">(</span><span class="n">winners_distribution</span><span class="p">(</span><span class="n">inf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+                                                            <span class="n">sup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+                                                            <span class="n">masks_winners</span><span class="o">=</span><span class="n">masks_winners</span><span class="p">,</span>
+                                                            <span class="n">cover_alls</span><span class="o">=</span><span class="n">cover_alls</span><span class="p">))</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">strategies_pure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">strategies_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="ProfileOrdinal.order_and_label"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.order_and_label">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">order_and_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Order and label of a discrete type.</span>
+
+<span class="sd">        Cf. :meth:`Profile.order_and_label`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; ProfileOrdinal.order_and_label(&#39;abc&#39;)</span>
+<span class="sd">            (&#39;abc&#39;, &#39;$r(abc)$&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ProfileOrdinal.order_and_label(&#39;a~b&gt;c&#39;)</span>
+<span class="sd">            (&#39;a~b&gt;c&#39;, &#39;$r(a\\sim b&gt;c)$&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;$r(</span><span class="si">%s</span><span class="s1">)$&#39;</span> <span class="o">%</span> <span class="n">t</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label_weak</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

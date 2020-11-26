@@ -1,0 +1,887 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.events.Asymptotic &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.events.Asymptotic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.events.Asymptotic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.computation_engine</span> <span class="kn">import</span> <span class="n">computation_engine</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">isnan</span><span class="p">,</span> <span class="n">isneginf</span>
+
+
+<span class="c1"># noinspection NonAsciiCharacters</span>
+<div class="viewcode-block" id="Asymptotic"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic">[docs]</a><span class="k">class</span> <span class="nc">Asymptotic</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;An asymptotic development of the form :math:`\exp(\mu n + \nu \log n + \xi + o(1))`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``</span>
+<span class="sd">        Coefficient of the term in `n` (called &quot;magnitude&quot;).</span>
+<span class="sd">    mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``</span>
+<span class="sd">        Coefficient of the term in `log n`.</span>
+<span class="sd">    mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``</span>
+<span class="sd">        Constant coefficient.</span>
+<span class="sd">    symbolic : bool</span>
+<span class="sd">        Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    μ : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``</span>
+<span class="sd">        Alias for :attr:`mu`.</span>
+<span class="sd">    ν : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``</span>
+<span class="sd">        Alias for :attr:`nu`.</span>
+<span class="sd">    ξ : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``</span>
+<span class="sd">        Alias for :attr:`xi`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If a coefficient is ``sp.nan`` or ``np.nan``, it means that it is not known. In contrast, a coefficient 0 means</span>
+<span class="sd">    that there is no corresponding term in the asymptotic development.</span>
+
+<span class="sd">    If (and only if) the event is impossible, then ``mu = nu = xi = - inf``. It is possible to use either ``- sp.oo``</span>
+<span class="sd">    or ``- np.inf``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        &gt;&gt;&gt; import math</span>
+<span class="sd">        &gt;&gt;&gt; asymptotic = Asymptotic(mu=-1 / 9, nu=-1 / 2, xi=-1 / 2 * math.log(8 * math.pi / 9))</span>
+<span class="sd">        &gt;&gt;&gt; print(asymptotic)</span>
+<span class="sd">        exp(- 0.111111 n - 0.5 log n - 0.513473 + o(1))</span>
+<span class="sd">        &gt;&gt;&gt; asymptotic.mu</span>
+<span class="sd">        -0.1111111111111111</span>
+<span class="sd">        &gt;&gt;&gt; asymptotic.nu</span>
+<span class="sd">        -0.5</span>
+<span class="sd">        &gt;&gt;&gt; asymptotic.xi</span>
+<span class="sd">        -0.5134734250965083</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span> <span class="o">=</span> <span class="n">symbolic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ce</span> <span class="o">=</span> <span class="n">computation_engine</span><span class="p">(</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span> <span class="o">=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ν</span> <span class="o">=</span> <span class="n">nu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ξ</span> <span class="o">=</span> <span class="n">xi</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Repr.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=- Fraction(1, 10), nu=np.nan, xi=3)</span>
+<span class="sd">            Asymptotic(mu=Fraction(-1, 10), nu=nan, xi=3)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Asymptotic(mu=</span><span class="si">%r</span><span class="s1">, nu=</span><span class="si">%r</span><span class="s1">, xi=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Str.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=- Fraction(1, 10), nu=np.nan, xi=3))</span>
+<span class="sd">            exp(- 0.1 n + ? log n + 3 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=-np.inf, nu=-np.inf, xi=-np.inf))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str_symbolic</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str_approximate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_str_symbolic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Auxiliary function for __str__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">isneginf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isneginf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isneginf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;exp(- inf)&quot;</span>
+
+        <span class="k">def</span> <span class="nf">nice</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
+            <span class="c1"># x : coefficient, suffix : sympy expression</span>
+            <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s1">&#39; + ?&#39;</span> <span class="k">if</span> <span class="n">suffix</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39; + ? </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">suffix</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">suffix</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;a &#39;</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">nice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">nice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="n">nice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; + o(1)&#39;</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;exp(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">s</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">_str_approximate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Auxiliary function for __str__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">isneginf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isneginf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isneginf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;exp(- inf)&quot;</span>
+
+        <span class="k">def</span> <span class="nf">nice</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s1">&#39; + ? &#39;</span> <span class="o">+</span> <span class="n">suffix</span> <span class="k">if</span> <span class="n">suffix</span> <span class="k">else</span> <span class="s1">&#39; + ?&#39;</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">suffix</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39; + &#39;</span> <span class="o">+</span> <span class="n">suffix</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">suffix</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39; - &#39;</span> <span class="o">+</span> <span class="n">suffix</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39; + &#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39; - &#39;</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{:.6g}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">suffix</span> <span class="k">if</span> <span class="n">suffix</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">nice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">nice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="s1">&#39;log n&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">nice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; + o(1)&#39;</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;exp(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">s</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number, nan or infinity : Limit when `n` tends to infinity.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=-1, nu=0, xi=0).limit</span>
+<span class="sd">            0</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=1, nu=0, xi=0).limit</span>
+<span class="sd">            inf</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=-1, nu=np.nan, xi=np.nan).limit</span>
+<span class="sd">            0</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=0, nu=-1, xi=np.nan).limit</span>
+<span class="sd">            0</span>
+
+<span class="sd">        ``nan`` means that the limit is unknown:</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=0, nu=0, xi=np.nan).limit</span>
+<span class="sd">            nan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># self.mu == 0</span>
+            <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># self.nu == 0:</span>
+                <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiplication of two asymptotic developments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: `Asymptotic` or Number.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        product : Asymptotic</span>
+<span class="sd">            The product of this asymptotic development and `other`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=2, xi=3))</span>
+<span class="sd">            exp(43 n + 53 log n + 72 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=51, xi=69) * Asymptotic(mu=1, nu=np.nan, xi=np.nan))</span>
+<span class="sd">            exp(43 n + ? log n + ? + o(1))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Asymptotic</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">my_addition</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="n">my_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">),</span>
+                          <span class="n">my_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">),</span>
+                          <span class="n">my_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">),</span>
+                          <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; print(3 * Asymptotic(mu=42, nu=51, xi=69))</span>
+<span class="sd">            exp(42 n + 51 log n + 70.0986 + o(1))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Division of two asymptotic developments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: `Asymptotic` or Number.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ratio : Asymptotic</span>
+<span class="sd">            The division of this asymptotic development by `other`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=2, xi=3))</span>
+<span class="sd">            exp(41 n + 49 log n + 66 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=51, xi=69) / Asymptotic(mu=1, nu=np.nan, xi=np.nan))</span>
+<span class="sd">            exp(41 n + ? log n + ? + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(1 / Asymptotic(mu=42, nu=51, xi=69))</span>
+<span class="sd">            exp(- 42 n - 51 log n - 69 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=51, xi=69) / 2)</span>
+<span class="sd">            exp(42 n + 51 log n + 68.3069 + o(1))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Asymptotic</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rtruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Asymptotic</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">/</span> <span class="bp">self</span>
+
+    <span class="c1"># noinspection PyTypeChecker</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Addition of two asymptotic developments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: `Asymptotic` or Number.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sum : Asymptotic</span>
+<span class="sd">            The sum of this asymptotic development and `other`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=1, nu=51, xi=3))</span>
+<span class="sd">            exp(42 n + 2 log n + 69 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=42, nu=51, xi=3))</span>
+<span class="sd">            exp(42 n + 51 log n + 3 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=2, xi=4) + Asymptotic(mu=42, nu=2, xi=3))</span>
+<span class="sd">            exp(42 n + 2 log n + 4.31326 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=2, xi=4) + 1)</span>
+<span class="sd">            exp(42 n + 2 log n + 4 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(1 + Asymptotic(mu=42, nu=2, xi=4))</span>
+<span class="sd">            exp(42 n + 2 log n + 4 + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic(mu=42, nu=2, xi=69) + Asymptotic(mu=41.99999999, nu=51, xi=3))</span>
+<span class="sd">            exp(42 n + 51 log n + 3 + o(1))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Asymptotic</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">):</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">):</span>
+                <span class="n">nu</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span>
+                <span class="n">xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">)))</span>
+                <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Asymptotic</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">other</span>
+
+<div class="viewcode-block" id="Asymptotic.look_equal"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.look_equal">[docs]</a>    <span class="k">def</span> <span class="nf">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test if two asymptotic developments can reasonably be considered as equal.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Asymptotic</span>
+<span class="sd">        *args</span>
+<span class="sd">            Cf. :func:`math.isclose`.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Cf. :func:`math.isclose`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if this asymptotic development can reasonably be considered equal to `other`. Cf.</span>
+<span class="sd">             :meth:`ComputationEngine.look_equal`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic(mu=1, nu=2, xi=3).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0.999999999999, nu=2.00000000001, xi=3))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Asymptotic</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">some_coefficients_are_nan</span> <span class="o">=</span> <span class="p">(</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span>
+                                     <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isnan</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">some_coefficients_are_nan</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Can assert look_equal only when all coefficients are known.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="o">*</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span> <span class="n">kwargs</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">xi</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_value"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_value">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau : Number</span>
+<span class="sd">            The parameter of the Poisson distribution is ``tau * n``, where `n` tends to infinity.</span>
+<span class="sd">        k : int</span>
+<span class="sd">            The desired value in ``P(X = k)``.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X = k)``, where ``X ~ Poison(tau * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_value(tau=0, k=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_value(tau=0, k=1))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_value(tau=1, k=1))</span>
+<span class="sd">            exp(- n + log n + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; from math import log</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_value(tau=2, k=3).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=-2, nu=3, xi=3 * log(2) - log(6)))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ce</span> <span class="o">=</span> <span class="n">computation_engine</span><span class="p">(</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tau</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">nu</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">xi</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span> <span class="n">tau</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span> <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ce</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">))),</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_x1_eq_x2_plus_k"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_x1_eq_x2_plus_k">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_x1_eq_x2_plus_k</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        k : int</span>
+<span class="sd">            The desired value in ``P(X_1 = X_2 + k)``.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 = X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import log, pi, sqrt</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=0, tau_2=1, k=0))</span>
+<span class="sd">            exp(- n + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=0, tau_2=1, k=1))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=0, k=1))</span>
+<span class="sd">            exp(- n + log n + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=2, tau_2=0, k=3).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=-2, nu=3, xi=3 * log(2) - log(6)))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=1, k=0).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=- 1 / 2, xi=- 1 / 2 * log(4 * pi)))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_x1_eq_x2_plus_k(tau_1=1, tau_2=2, k=3).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=- (1 - sqrt(2)) ** 2, nu=- 1 / 2, xi=- 1 / 2 * log(32 * pi * sqrt(2))))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ce</span> <span class="o">=</span> <span class="n">computation_engine</span><span class="p">(</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tau_1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">nu</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">xi</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tau_2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tau_1</span><span class="p">)</span> <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ce</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">))),</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+                <span class="n">mu</span><span class="o">=</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="o">-</span> <span class="p">(</span><span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tau_1</span><span class="p">)</span> <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tau_2</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="n">nu</span><span class="o">=-</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="n">xi</span><span class="o">=</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                               <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tau_1</span> <span class="o">*</span> <span class="n">tau_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="n">tau_2</span><span class="o">**</span><span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau_1</span><span class="o">**</span><span class="n">k</span><span class="p">)),</span>
+                <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_eq"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_eq">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_eq</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 = X_2)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import pi, log</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_eq(tau_1=0, tau_2=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_eq(tau_1=1/10, tau_2=0))</span>
+<span class="sd">            exp(- 0.1 n + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=-.4, nu=-.5, xi=-.5 * log(1.2 * pi)))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">poisson_x1_eq_x2_plus_k</span><span class="p">(</span><span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_one_more"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_one_more">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_one_more</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 = X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import pi, log</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_one_more(tau_1=0, tau_2=1/10))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_one_more(tau_1=1/10, tau_2=0))</span>
+<span class="sd">            exp(- 0.1 n + log n - 2.30259 + o(1))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">poisson_x1_eq_x2_plus_k</span><span class="p">(</span><span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_x1_ge_x2_plus_k"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_x1_ge_x2_plus_k">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_x1_ge_x2_plus_k</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 &gt;= X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        k : int</span>
+<span class="sd">            The desired value in ``P(X_1 &gt;= X_2 + k)``.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 &gt;= X_2 + k)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import log, sqrt, pi</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=0, tau_2=1, k=0))</span>
+<span class="sd">            exp(- n + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=0, tau_2=1, k=1))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=0, k=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=1, k=0).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=- log(2)))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_x1_ge_x2_plus_k(tau_1=1, tau_2=2, k=3).look_equal(Asymptotic(</span>
+<span class="sd">            ...     mu=- (1 - sqrt(2)) ** 2, nu=- 1 / 2,</span>
+<span class="sd">            ...     xi=(- 1 / 2 * log(32 * pi * sqrt(2)) - log(1 - sqrt(1 / 2)))))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ce</span> <span class="o">=</span> <span class="n">computation_engine</span><span class="p">(</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tau_1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">nu</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">xi</span><span class="o">=-</span><span class="n">ce</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tau_1</span> <span class="o">&gt;</span> <span class="n">tau_2</span><span class="p">:</span>
+            <span class="c1"># Probability 1 =&gt; the log tends to 0.</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tau_1</span> <span class="o">==</span> <span class="n">tau_2</span><span class="p">:</span>
+            <span class="c1"># Probability 1/2 =&gt; the log tends to - log(2).</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xi</span><span class="o">=-</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use the offset theorem with event X_1 = X_2, then infinite sum.</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+                <span class="n">mu</span><span class="o">=</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="o">-</span> <span class="p">(</span><span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tau_1</span><span class="p">)</span> <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tau_2</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="n">nu</span><span class="o">=-</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="n">xi</span><span class="o">=</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span>
+                    <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tau_1</span> <span class="o">*</span> <span class="n">tau_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="n">tau_2</span><span class="o">**</span><span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau_1</span><span class="o">**</span><span class="n">k</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ce</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="n">tau_1</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau_2</span><span class="p">))</span>
+                <span class="p">),</span>
+                <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_ge"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_ge">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_ge</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 &gt;= X_2)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 &gt;= X_2)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import log</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_ge(tau_1=0, tau_2=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_ge(tau_1=0, tau_2=1/10))</span>
+<span class="sd">            exp(- 0.1 n + o(1))</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_ge(tau_1=1/10, tau_2=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_ge(tau_1=9/10, tau_2=1/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=0))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_ge(tau_1=3/10, tau_2=3/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic = Asymptotic.poisson_ge(tau_1=1/10, tau_2=9/10)</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic.look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi + log(3/2)))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">poisson_x1_ge_x2_plus_k</span><span class="p">(</span><span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_gt"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_gt">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_gt</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 &gt; X_2)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 &gt; X_2)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import log</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_gt(tau_1=0, tau_2=0))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_gt(tau_1=0, tau_2=1/10))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_gt(tau_1=1/10, tau_2=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_gt(tau_1=9/10, tau_2=1/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=0))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_gt(tau_1=3/10, tau_2=3/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic = Asymptotic.poisson_gt(tau_1=1/10, tau_2=9/10)</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic.look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(2)))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">poisson_x1_ge_x2_plus_k</span><span class="p">(</span><span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Asymptotic.poisson_gt_one_more"><a class="viewcode-back" href="../../../reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.poisson_gt_one_more">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">poisson_gt_one_more</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asymptotic development of ``P(X_1 &gt; X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_1,tau_2 : Number</span>
+<span class="sd">            The parameter of the Poisson distribution of ``X_i`` is ``tau_i * n``, where `n` tends to infinity.</span>
+<span class="sd">        symbolic : bool</span>
+<span class="sd">            Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Asymptotic</span>
+<span class="sd">            The asymptotic development of ``P(X_1 &gt; X_2 + 1)``, where ``X_i ~ Poison(tau_i * n)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from math import log</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_gt_one_more(tau_1=0, tau_2=0))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_gt_one_more(tau_1=0, tau_2=1/10))</span>
+<span class="sd">            exp(- inf)</span>
+<span class="sd">            &gt;&gt;&gt; print(Asymptotic.poisson_gt_one_more(tau_1=1/10, tau_2=0))</span>
+<span class="sd">            exp(o(1))</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_gt_one_more(tau_1=9/10, tau_2=1/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=0))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Asymptotic.poisson_gt_one_more(tau_1=3/10, tau_2=3/10).look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=0, nu=0, xi=-log(2)))</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic = Asymptotic.poisson_gt_one_more(tau_1=1/10, tau_2=9/10)</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic_eq = Asymptotic.poisson_eq(tau_1=1/10, tau_2=9/10)</span>
+<span class="sd">            &gt;&gt;&gt; asymptotic.look_equal(</span>
+<span class="sd">            ...     Asymptotic(mu=asymptotic_eq.mu, nu=asymptotic_eq.nu, xi=asymptotic_eq.xi - log(6)))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">poisson_x1_ge_x2_plus_k</span><span class="p">(</span><span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

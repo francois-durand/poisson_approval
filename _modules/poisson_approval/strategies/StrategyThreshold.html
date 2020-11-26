@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.strategies.StrategyThreshold &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.strategies.StrategyThreshold</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.strategies.StrategyThreshold</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyTwelve</span> <span class="kn">import</span> <span class="n">StrategyTwelve</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringNone</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringNone</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">ballot_one</span><span class="p">,</span> <span class="n">ballot_two</span><span class="p">,</span> <span class="n">ballot_one_two</span><span class="p">,</span> <span class="n">ballot_one_three</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+
+<span class="c1"># noinspection PyUnresolvedReferences</span>
+<div class="viewcode-block" id="StrategyThreshold"><a class="viewcode-back" href="../../../reference/reference_strategies/reference_strategy_threshold.html#poisson_approval.StrategyThreshold">[docs]</a><span class="k">class</span> <span class="nc">StrategyThreshold</span><span class="p">(</span><span class="n">StrategyTwelve</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A threshold strategy (for a cardinal profile).</span>
+
+<span class="sd">    For each ranking, there is a ``threshold`` and a ``ratio_optimistic``. E.g. assume that for ranking ``abc``,</span>
+<span class="sd">    the threshold is 0.4 and the ratio is 0.2. It means that:</span>
+
+<span class="sd">    * A voter ``abc`` votes for `ab` if their utility for `b` is strictly greater than 0.4,</span>
+<span class="sd">    * A voter ``abc`` votes for `a` if their utility for `b` is strictly lower than 0.4,</span>
+<span class="sd">    * Voters ``abc`` whose utility for `b` is equal to 0.4 are split: a ratio 0.2 are optimistic, they vote only for</span>
+<span class="sd">      `a` (they behave as if the pivot `ab` was very likely); and a ratio 0.8 are pessimistic, they vote for `ab`</span>
+<span class="sd">      (they behave as if the pivot `bc` was very likely).</span>
+
+<span class="sd">    For a given ranking, the threshold and / or the ratio may be None, which means that they are not specified for</span>
+<span class="sd">    this strategy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : dict</span>
+<span class="sd">        Cf. examples below for the different types of input syntax.</span>
+<span class="sd">    ratio_optimistic : Number</span>
+<span class="sd">        Cf. examples below for the different types of input syntax.</span>
+<span class="sd">    profile : Profile, optional</span>
+<span class="sd">        The &quot;context&quot; in which the strategy is used.</span>
+<span class="sd">    voting_rule : str</span>
+<span class="sd">        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same</span>
+<span class="sd">        voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    The two following examples illustrate different ways to define the same profile. The first possible type of input</span>
+<span class="sd">    syntax is a dict that maps a ranking to a tuple (``threshold``, ``ratio_optimistic``). It corresponds exactly to</span>
+<span class="sd">    the attribute :attr:`d_ranking_t_threshold_ratio_optimistic`:</span>
+
+<span class="sd">        &gt;&gt;&gt; strategy = StrategyThreshold({&#39;abc&#39;: (0.4, 0.2), &#39;bac&#39;: (0.51, 0.2), &#39;cab&#39;: (1, 0.2)})</span>
+<span class="sd">        &gt;&gt;&gt; print(strategy)</span>
+<span class="sd">        &lt;abc: utility-dependent (0.4, 0.2), bac: utility-dependent (0.51, 0.2), cab: c&gt;</span>
+
+<span class="sd">    The second  possible type of input syntax is a dict that maps a ranking to a threshold. All rankings have the same</span>
+<span class="sd">    ratio, given by the parameter `ratio_optimistic`:</span>
+
+<span class="sd">        &gt;&gt;&gt; strategy = StrategyThreshold({&#39;abc&#39;: 0.4, &#39;bac&#39;: 0.51, &#39;cab&#39;: 1}, ratio_optimistic=0.2)</span>
+<span class="sd">        &gt;&gt;&gt; print(strategy)</span>
+<span class="sd">        &lt;abc: utility-dependent (0.4, 0.2), bac: utility-dependent (0.51, 0.2), cab: c&gt;</span>
+
+<span class="sd">    Some operations on the strategy:</span>
+
+<span class="sd">        &gt;&gt;&gt; strategy</span>
+<span class="sd">        StrategyThreshold({&#39;abc&#39;: (0.4, 0.2), &#39;bac&#39;: (0.51, 0.2), &#39;cab&#39;: (1, 0.2)})</span>
+<span class="sd">        &gt;&gt;&gt; strategy.abc</span>
+<span class="sd">        &#39;utility-dependent&#39;</span>
+<span class="sd">        &gt;&gt;&gt; strategy.a_bc</span>
+<span class="sd">        &#39;a&#39;</span>
+<span class="sd">        &gt;&gt;&gt; strategy.ab_c</span>
+<span class="sd">        &#39;ab&#39;</span>
+<span class="sd">        &gt;&gt;&gt; strategy.d_ranking_threshold[&#39;abc&#39;]</span>
+<span class="sd">        0.4</span>
+
+<span class="sd">    It is possible not to specify the ratios of optimistic voters:</span>
+
+<span class="sd">        &gt;&gt;&gt; strategy = StrategyThreshold({&#39;abc&#39;: 0.4, &#39;bac&#39;: 0.51})</span>
+<span class="sd">        &gt;&gt;&gt; strategy</span>
+<span class="sd">        StrategyThreshold({&#39;abc&#39;: 0.4, &#39;bac&#39;: 0.51})</span>
+<span class="sd">        &gt;&gt;&gt; print(strategy)</span>
+<span class="sd">        &lt;abc: utility-dependent (0.4), bac: utility-dependent (0.51)&gt;</span>
+
+<span class="sd">    If this strategy is applied to a profile where a positive share of voters have ranking `abc` and a utility 0.2</span>
+<span class="sd">    for their middle candidate `b`, it will raise an error because the ratio of optimistic voters is needed in that</span>
+<span class="sd">    case.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ratio_optimistic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">voting_rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_voting_rule_</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">voting_rule</span><span class="p">)</span>
+        <span class="c1"># Prepare the dictionaries of thresholds and ratios</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_threshold</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringNone</span><span class="p">({</span><span class="n">ranking</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ratio_optimistic</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringNone</span><span class="p">({</span><span class="n">ranking</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_threshold</span><span class="p">[</span><span class="n">ranking</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ratio_optimistic</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_threshold</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ratio_optimistic</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratio_optimistic</span>
+        <span class="c1"># Prepare the dictionary of ballots</span>
+        <span class="n">d_ranking_ballot</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_threshold</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">elif</span> <span class="n">threshold</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">PLURALITY</span><span class="p">}:</span>
+                    <span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot_one</span><span class="p">(</span><span class="n">ranking</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+                    <span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot_one_three</span><span class="p">(</span><span class="n">ranking</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">elif</span> <span class="n">threshold</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">ANTI_PLURALITY</span><span class="p">}:</span>
+                    <span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot_one_two</span><span class="p">(</span><span class="n">ranking</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">voting_rule</span> <span class="o">==</span> <span class="n">PLURALITY</span><span class="p">:</span>
+                    <span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot_two</span><span class="p">(</span><span class="n">ranking</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">=</span> <span class="n">UTILITY_DEPENDENT</span>
+        <span class="c1"># Call parent class</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">d_ranking_ballot</span><span class="o">=</span><span class="n">d_ranking_ballot</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_ranking_t_threshold_ratio_optimistic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict : Thresholds and ratios of optimistic voters.</span>
+
+<span class="sd">        Key : ranking, e.g. ``&#39;abc&#39;``. Value: tuple (``threshold``, ``ratio_optimistic``).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DictPrintingInOrderIgnoringNone</span><span class="p">({</span>
+            <span class="n">ranking</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_threshold</span><span class="p">[</span><span class="n">ranking</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ratio_optimistic</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span>
+        <span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Equality test.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if this strategy is equal to `other`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; strategy = StrategyThreshold({&#39;abc&#39;: (0.4, 0.2), &#39;bac&#39;: (0.51, 0.2), &#39;cab&#39;: (1, 0.2)})</span>
+<span class="sd">            &gt;&gt;&gt; strategy == StrategyThreshold({&#39;abc&#39;: (0.4, 0.2), &#39;bac&#39;: (0.51, 0.2), &#39;cab&#39;: (1, 0.2)})</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StrategyThreshold</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_threshold</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_ranking_threshold</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ratio_optimistic</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_ranking_ratio_optimistic</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringNone</span><span class="p">({</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">t</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_t_threshold_ratio_optimistic</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, voting_rule=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="s1">&#39;StrategyThreshold(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">arguments</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">t_threshold_ratio_to_string</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">t</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">t_threshold_ratio_to_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_t_threshold_ratio_optimistic</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span>
+               <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">==</span> <span class="n">UTILITY_DEPENDENT</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+        <span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; ==&gt; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winners</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

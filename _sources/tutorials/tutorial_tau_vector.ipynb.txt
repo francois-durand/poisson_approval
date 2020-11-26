@@ -1,0 +1,1029 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# TauVector"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.449134Z",
+     "start_time": "2020-03-29T13:17:49.894203Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from fractions import Fraction\n",
+    "import poisson_approval as pa"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## A Tau-Vector and its Basic Properties"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The most usual way to define a tau-vector (ballot shares) is to deduce it from applying a given strategy in a given profile, like in the tutorial on ProfileNoisyDiscrete. That being said, a tau-vector can also be defined directly:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.455080Z",
+     "start_time": "2020-03-29T13:17:51.451090Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "tau = pa.TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Share of the ballot $ab$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.474069Z",
+     "start_time": "2020-03-29T13:17:51.457084Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Fraction(3, 5)"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.ab"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Scores:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.486000Z",
+     "start_time": "2020-03-29T13:17:51.476035Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{a: 7/10, b: 3/5, c: 3/10}"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.scores"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Winners:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.496969Z",
+     "start_time": "2020-03-29T13:17:51.486996Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'a'}"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.winners"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Events: Duos, Pivots and Trios"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "An Event provides the asymptotic development of the limit probability when the expected number of voters $n$ tend to infinity, as well as the offsets for each type of ballot."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Duo between $a$ and $b$:\n",
+    "\n",
+    "($a$ and $b$ have the same score, but not necessarily higher than $c$.)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.508936Z",
+     "start_time": "2020-03-29T13:17:51.500959Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.duo_ab"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Access the asymptotic development and the offsets:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.524893Z",
+     "start_time": "2020-03-29T13:17:51.510930Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "exp(- 0.1 n + o(1))"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.duo_ab.asymptotic"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.535903Z",
+     "start_time": "2020-03-29T13:17:51.528884Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.0"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.duo_ab.phi_a"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Pivots between $a$ and $b$:\n",
+    "\n",
+    "(For the definition of each variant, cf. Reference section.)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.548866Z",
+     "start_time": "2020-03-29T13:17:51.537860Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.pivot_weak_ab"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.560837Z",
+     "start_time": "2020-03-29T13:17:51.550826Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.pivot_strict_ab"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.571800Z",
+     "start_time": "2020-03-29T13:17:51.561796Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.pivot_tij_abc"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.583739Z",
+     "start_time": "2020-03-29T13:17:51.572765Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- inf)>"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.pivot_tjk_abc"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Trios:\n",
+    "\n",
+    "(For the definition of each variant, cf. Reference section.)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.594751Z",
+     "start_time": "2020-03-29T13:17:51.586730Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.trio"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.609671Z",
+     "start_time": "2020-03-29T13:17:51.595704Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- inf)>"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.trio_1t_a"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.648564Z",
+     "start_time": "2020-03-29T13:17:51.613657Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.trio_2t_ab"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Print all the weak pivots:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.662525Z",
+     "start_time": "2020-03-29T13:17:51.649561Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "pivot_weak_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_weak_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_weak_bc:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n"
+     ]
+    }
+   ],
+   "source": [
+    "tau.print_weak_pivots()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Print all the pivots:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.682472Z",
+     "start_time": "2020-03-29T13:17:51.664520Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "pivot_weak_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_weak_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_weak_bc:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "pivot_strict_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_strict_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_strict_bc:  <asymptotic = exp(- inf)>\n",
+      "pivot_tij_abc:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_tij_acb:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_tij_bac:  <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_tij_bca:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.302013 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "pivot_tij_cab:  <asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_tij_cba:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "pivot_tjk_abc:  <asymptotic = exp(- inf)>\n",
+      "pivot_tjk_acb:  <asymptotic = exp(- inf)>\n",
+      "pivot_tjk_bac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_tjk_bca:  <asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_tjk_cab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_tjk_cba:  <asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "trio:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio_1t_a:  <asymptotic = exp(- inf)>\n",
+      "trio_1t_b:  <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.48597 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio_1t_c:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.490239 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio_2t_ab:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio_2t_ac:  <asymptotic = exp(- inf)>\n",
+      "trio_2t_bc:  <asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "duo_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "duo_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "duo_bc:  <asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, phi_ab = 0.707107>\n"
+     ]
+    }
+   ],
+   "source": [
+    "tau.print_all_pivots()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Best Responses"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The *focus* of a tau-vector is defined as:\n",
+    "\n",
+    "* *Direct*: the three weak pivots have distinct magnitudes.\n",
+    "* *Forward-Focused*: the two lowest magnitudes are equal, the highest one is different.\n",
+    "* *Backward-Focused*: the two highest magnitudes are equal, the lowest one is different.\n",
+    "* *Unfocused*: the three magnitudes are equal."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.692446Z",
+     "start_time": "2020-03-29T13:17:51.684467Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Focus.DIRECT"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.focus"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Best response for each ranking:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.703416Z",
+     "start_time": "2020-03-29T13:17:51.693443Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{abc: <ballot = a, threshold_utility = 1, justification = Asymptotic method>, acb: <ballot = a, threshold_utility = 1, justification = Asymptotic method>, bac: <ballot = ab, threshold_utility = 0, justification = Asymptotic method>, bca: <ballot = bc, threshold_utility = 0, justification = Asymptotic method>, cab: <ballot = c, threshold_utility = 1, justification = Asymptotic method>, cba: <ballot = bc, threshold_utility = 0, justification = Asymptotic method>}"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.d_ranking_best_response"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Characteristics of the best response for voters with ranking $abc$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.715390Z",
+     "start_time": "2020-03-29T13:17:51.704413Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<ballot = a, threshold_utility = 1, justification = Asymptotic method>"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.d_ranking_best_response['abc']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.727352Z",
+     "start_time": "2020-03-29T13:17:51.717379Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'a'"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.d_ranking_best_response['abc'].ballot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.738322Z",
+     "start_time": "2020-03-29T13:17:51.728349Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.0"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.d_ranking_best_response['abc'].threshold_utility"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.749293Z",
+     "start_time": "2020-03-29T13:17:51.741315Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'Asymptotic method'"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.d_ranking_best_response['abc'].justification"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.759272Z",
+     "start_time": "2020-03-29T13:17:51.751288Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau.d_ranking_best_response['abc'].pivot_tij"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Strategy with Attached Profile and Implicit Tau"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As mentioned in the tutorial on ProfileNoisyDiscrete, you can define a strategy with an attached profile:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.773229Z",
+     "start_time": "2020-03-29T13:17:51.761262Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "profile = pa.ProfileNoisyDiscrete({\n",
+    "    ('abc', 0.4, 0.01): Fraction(1, 10),\n",
+    "    ('bac', 0.2, 0.01): Fraction(6, 10),\n",
+    "    ('cab', 0.7, 0.01): Fraction(3, 10)\n",
+    "})\n",
+    "strategy = pa.StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'}, profile=profile)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This defines a tau vector:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.784200Z",
+     "start_time": "2020-03-29T13:17:51.775224Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<a: 1/10, ab: 3/5, c: 3/10> ==> a"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.tau"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In that case, the strategy has shortcuts for all the properties of the tau vector. Thus for example, instead of writing:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.795172Z",
+     "start_time": "2020-03-29T13:17:51.785197Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{a: 7/10, b: 3/5, c: 3/10}"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.tau.scores"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can simply write:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.807140Z",
+     "start_time": "2020-03-29T13:17:51.797165Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{a: 7/10, b: 3/5, c: 3/10}"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "strategy.scores"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Similarly, instead of writing:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.817119Z",
+     "start_time": "2020-03-29T13:17:51.808137Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "pivot_weak_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_weak_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_weak_bc:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n"
+     ]
+    }
+   ],
+   "source": [
+    "strategy.tau.print_weak_pivots()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can write:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.829080Z",
+     "start_time": "2020-03-29T13:17:51.819107Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "pivot_weak_ab:  <asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_weak_ac:  <asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, phi_ab = 0.654654>\n",
+      "pivot_weak_bc:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n",
+      "trio:  <asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107>\n"
+     ]
+    }
+   ],
+   "source": [
+    "strategy.print_weak_pivots()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Symbolic Computation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Up to now, all the computations we made were numeric. When defining a profile or a tau-vector, you can use the option ``symbolic=True``. In that case, all computations will be symbolic if possible. Note, however, that this option is much slower than numeric computation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:51.837059Z",
+     "start_time": "2020-03-29T13:17:51.830077Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "profile = pa.ProfileNoisyDiscrete({\n",
+    "    ('abc', 0.4, 0.01): Fraction(1, 10),\n",
+    "    ('bac', 0.2, 0.01): Fraction(6, 10),\n",
+    "    ('cab', 0.7, 0.01): Fraction(3, 10)\n",
+    "}, symbolic=True)\n",
+    "strategy = pa.StrategyOrdinal({'abc': 'a', 'bac': 'ab', 'cab': 'c'}, profile=profile)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-03-29T13:17:52.378870Z",
+     "start_time": "2020-03-29T13:17:51.839054Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "pivot_weak_ab:  <asymptotic = exp(- n/10 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1>\n",
+      "pivot_weak_ac:  <asymptotic = exp(n*(-1 + sqrt(21)/5) - log(n)/2 - log(2*sqrt(21)*pi/5)/2 + o(1)), phi_a = sqrt(21)/7, phi_c = sqrt(21)/3, phi_ab = sqrt(21)/7>\n",
+      "pivot_weak_bc:  <asymptotic = exp(n*(-1 + 3*sqrt(2)/5) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>\n",
+      "trio:  <asymptotic = exp(n*(-1 + 3*sqrt(2)/5) - log(n)/2 - log(6*sqrt(2)*pi/5)/2 + o(1)), phi_a = 0, phi_c = sqrt(2), phi_ab = sqrt(2)/2>\n"
+     ]
+    }
+   ],
+   "source": [
+    "strategy.print_weak_pivots()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": false,
+   "sideBar": true,
+   "skip_h1_title": true,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {},
+   "toc_section_display": true,
+   "toc_window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

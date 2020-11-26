@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.constants.Focus &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.constants.Focus</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.constants.Focus</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="Focus"><a class="viewcode-back" href="../../../reference/reference_constants/reference_focus.html#poisson_approval.Focus">[docs]</a><span></span><span class="k">class</span> <span class="nc">Focus</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A type of focus for a tau-vector.</span>
+
+<span class="sd">    The possible values are:</span>
+
+<span class="sd">    * ``Focus.DIRECT`` (:math:`\mu_1 &gt; \mu_2 &gt; \mu_3`),</span>
+<span class="sd">    * ``Focus.FORWARD_FOCUSED`` (:math:`\mu_1 &gt; \mu_2 = \mu_3`),</span>
+<span class="sd">    * ``Focus.BACKWARD_FOCUSED`` (:math:`\mu_1 = \mu_2 &gt; \mu_3`),</span>
+<span class="sd">    * ``Focus.UNFOCUSED`` (:math:`\mu_1 = \mu_2 = \mu_3`).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; print(Focus.DIRECT)</span>
+<span class="sd">        D</span>
+<span class="sd">        &gt;&gt;&gt; print(Focus.FORWARD_FOCUSED)</span>
+<span class="sd">        FF</span>
+<span class="sd">        &gt;&gt;&gt; print(Focus.BACKWARD_FOCUSED)</span>
+<span class="sd">        BF</span>
+<span class="sd">        &gt;&gt;&gt; print(Focus.UNFOCUSED)</span>
+<span class="sd">        UF</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DIRECT</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">FORWARD_FOCUSED</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">BACKWARD_FOCUSED</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">UNFOCUSED</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">short_s</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_s</span> <span class="o">=</span> <span class="n">short_s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">short_s</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt;&gt; Focus.DIRECT == Focus.DIRECT</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; Focus.DIRECT == Focus.FORWARD_FOCUSED</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">s</span></div>
+
+
+<span class="n">Focus</span><span class="o">.</span><span class="n">DIRECT</span> <span class="o">=</span> <span class="n">Focus</span><span class="p">(</span><span class="s1">&#39;direct&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Focus.DIRECT&#39;</span><span class="p">)</span>
+<span class="n">Focus</span><span class="o">.</span><span class="n">FORWARD_FOCUSED</span> <span class="o">=</span> <span class="n">Focus</span><span class="p">(</span><span class="s1">&#39;forward-focused&#39;</span><span class="p">,</span> <span class="s1">&#39;FF&#39;</span><span class="p">,</span> <span class="s1">&#39;Focus.FORWARD_FOCUSED&#39;</span><span class="p">)</span>
+<span class="n">Focus</span><span class="o">.</span><span class="n">BACKWARD_FOCUSED</span> <span class="o">=</span> <span class="n">Focus</span><span class="p">(</span><span class="s1">&#39;backward-focused&#39;</span><span class="p">,</span> <span class="s1">&#39;BF&#39;</span><span class="p">,</span> <span class="s1">&#39;Focus.BACKWARD_FOCUSED&#39;</span><span class="p">)</span>
+<span class="n">Focus</span><span class="o">.</span><span class="n">UNFOCUSED</span> <span class="o">=</span> <span class="n">Focus</span><span class="p">(</span><span class="s1">&#39;unfocused&#39;</span><span class="p">,</span> <span class="s1">&#39;UF&#39;</span><span class="p">,</span> <span class="s1">&#39;Focus.UNFOCUSED&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

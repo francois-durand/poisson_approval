@@ -1,0 +1,717 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Probabilities"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.834964Z",
+     "start_time": "2020-06-16T12:24:46.138124Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from matplotlib import pyplot as plt\n",
+    "from fractions import Fraction\n",
+    "import poisson_approval as pa"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Random Factories"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The package provides a large variety of random factories to generate **profiles**, **strategies** or **tau-vectors**. For example, define a random factory of tau-vectors:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.841814Z",
+     "start_time": "2020-06-16T12:24:47.837853Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "rand_tau = pa.RandTauVectorUniform()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Then use this random factory to generate a tau-vector:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.863795Z",
+     "start_time": "2020-06-16T12:24:47.843870Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<a: 0.024332511082036157, ab: 0.0526900161849142, ac: 0.37096567320141516, b: 0.06740187034718637, bc: 0.21656797025148677, c: 0.26804195893296134> ==> c"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tau = rand_tau()\n",
+    "tau"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Most random factories of the package also have a \"grid\" counterpart where the coefficients are fractions of a given denominator. This is convenient to generate less \"messy\" examples:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.879712Z",
+     "start_time": "2020-06-16T12:24:47.864752Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<ab: 11/100, ac: 1/20, b: 9/20, bc: 1/4, c: 7/50> ==> b"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rand_tau = pa.RandTauVectorGridUniform(denominator=100)\n",
+    "tau = rand_tau()\n",
+    "tau"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Also, most random factories have options that enable to finely tune the distribution:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.891712Z",
+     "start_time": "2020-06-16T12:24:47.881708Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<a: 0.3591982549714359, b: 0.540801745028564, c: 0.1> ==> b (Plurality)"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rand_tau = pa.RandTauVectorUniform(\n",
+    "    ballots=['a', 'b'], \n",
+    "    d_ballot_fixed_share={'c': 0.1}, \n",
+    "    voting_rule=pa.PLURALITY\n",
+    ")\n",
+    "tau = rand_tau()\n",
+    "tau"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For more information, cf. the Reference section on random factories."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Conditional Random Factory"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "RandConditional is a random factory implementing rejection sampling. It needs:\n",
+    "\n",
+    "* Another random factory that is responsible to generate the objects,\n",
+    "* A test that the objects must meet,\n",
+    "* A maximum number of trials before renouncing (which can be None if you want to draw objects forever, until finding one that meets the test)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here, we use a conditional random factory to generate an example of TauVector with a direct focus:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.899674Z",
+     "start_time": "2020-06-16T12:24:47.893676Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def test_direct_focus(tau):\n",
+    "    return tau.focus == pa.Focus.DIRECT"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.916613Z",
+     "start_time": "2020-06-16T12:24:47.903656Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<a: 1/25, ab: 7/20, ac: 4/25, b: 13/100, bc: 6/25, c: 2/25> ==> b"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rand_tau = pa.RandConditional(\n",
+    "    factory=pa.RandTauVectorGridUniform(denominator=100),\n",
+    "    test=test_direct_focus,\n",
+    "    n_trials_max=None\n",
+    ")\n",
+    "tau = rand_tau()\n",
+    "tau"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Alternatively, RandConditional accepts a tuple of factories, and a test on the tuple of the results. Here is an example of a ProfileNoisyDiscrete and a StrategyOrdinal, such that the strategy is an equilibrium for the profile:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.927585Z",
+     "start_time": "2020-06-16T12:24:47.921599Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "rand_profile = pa.RandProfileNoisyDiscreteGridUniform(\n",
+    "    denominator=100,\n",
+    "    types=[('abc', 0.4, 0.01),\n",
+    "           ('bac', 0.2, 0.01),\n",
+    "           ('cab', 0.7, 0.01)]\n",
+    ")\n",
+    "rand_strategy = pa.RandStrategyOrdinalUniform()\n",
+    "def test_is_equilibrium(profile, strategy):\n",
+    "    return profile.is_equilibrium(strategy) == pa.EquilibriumStatus.EQUILIBRIUM"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.958545Z",
+     "start_time": "2020-06-16T12:24:47.929578Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<abc 0.4 ± 0.01: 7/20, bac 0.2 ± 0.01: 4/25, cab 0.7 ± 0.01: 49/100> (Condorcet winner: a)\n",
+      "<abc: a, acb: ac, bac: b, bca: bc, cab: ac, cba: bc>\n"
+     ]
+    }
+   ],
+   "source": [
+    "rand_example = pa.RandConditional(\n",
+    "    factory=(rand_profile, rand_strategy),\n",
+    "    test=test_is_equilibrium,\n",
+    "    n_trials_max=None\n",
+    ")\n",
+    "profile, strategy = rand_example()\n",
+    "print(profile)\n",
+    "print(strategy)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Probability Estimation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To compute a probability, use the function ``probability``."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For example, estimate the probability that a TauVector drawn uniformly at random has a direct focus:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:47.969472Z",
+     "start_time": "2020-06-16T12:24:47.959499Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def test_direct_focus(tau):\n",
+    "    return tau.focus == pa.Focus.DIRECT"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:48.079203Z",
+     "start_time": "2020-06-16T12:24:47.970468Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.53"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pa.probability(\n",
+    "    factory=pa.RandTauVectorUniform(),\n",
+    "    n_samples=100,\n",
+    "    test=test_direct_focus\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To avoid the definition of an auxiliary function, you can use a \"lambda\". For example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:48.182950Z",
+     "start_time": "2020-06-16T12:24:48.080175Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.5"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pa.probability(\n",
+    "    factory=pa.RandTauVectorUniform(),\n",
+    "    n_samples=100,\n",
+    "    test=lambda tau: tau.focus == pa.Focus.DIRECT\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-01-03T06:55:13.021088Z",
+     "start_time": "2020-01-03T06:55:13.016102Z"
+    }
+   },
+   "source": [
+    "You can also compute a conditional probability. For example, the probability that a ProfileNoisyDiscrete (generated by the random factory defined below) has an ordinal equilibrium, conditionally on having a strict Condorcet winner:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:48.188887Z",
+     "start_time": "2020-06-16T12:24:48.184895Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "rand_profile = pa.RandProfileNoisyDiscreteUniform(\n",
+    "    types=[('abc', 0.4, 0.01),\n",
+    "           ('bac', 0.2, 0.01),\n",
+    "           ('cab', 0.7, 0.01)]\n",
+    ")\n",
+    "def test_exists_ordinal_equilibrium(profile):\n",
+    "    return len(profile.analyzed_strategies_ordinal.equilibria) > 0\n",
+    "def test_is_strictly_condorcet(profile):\n",
+    "    return profile.is_profile_condorcet == 1.0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:49.498380Z",
+     "start_time": "2020-06-16T12:24:48.190879Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.0"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pa.probability(\n",
+    "    factory=rand_profile,\n",
+    "    n_samples=100,\n",
+    "    test=test_exists_ordinal_equilibrium,\n",
+    "    conditional_on=test_is_strictly_condorcet\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can also use a tuple of random factories, and tests on the tuple of the results. For example, estimate the probability that a random StrategyOrdinal is an equilibrium for a random ProfileNoisyDiscrete (generated by the random factory defined below), conditionally on the fact that the profile has a strict Condorcet winner and that the initial strategy elects the Condorcet winner:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:49.505361Z",
+     "start_time": "2020-06-16T12:24:49.499377Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "rand_profile = pa.RandProfileNoisyDiscreteUniform(\n",
+    "    types=[('abc', 0.4, 0.01),\n",
+    "           ('bac', 0.2, 0.01),\n",
+    "           ('cab', 0.7, 0.01)]\n",
+    ")\n",
+    "rand_strategy = pa.RandStrategyOrdinalUniform()\n",
+    "def test_is_equilibrium(profile, strategy):\n",
+    "    return profile.is_equilibrium(strategy) == pa.EquilibriumStatus.EQUILIBRIUM\n",
+    "def test_elect_condorcet_winner(profile, strategy):\n",
+    "    return (profile.is_profile_condorcet == 1. \n",
+    "            and profile.tau(strategy).winners == profile.condorcet_winners)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:49.749710Z",
+     "start_time": "2020-06-16T12:24:49.506359Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.35"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pa.probability(\n",
+    "    factory=(rand_profile, rand_strategy),\n",
+    "    n_samples=100,\n",
+    "    test=test_is_equilibrium,\n",
+    "    conditional_on=test_elect_condorcet_winner\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, you can also use a tuple of tests in order to estimate several probabilities with the same sample. For example, estimate the probability that a TauVector drawn uniformly at random has is direct, forward-focused, backward-focused, or unfocused:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:49.876408Z",
+     "start_time": "2020-06-16T12:24:49.752705Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(0.51, 0.49, 0.0, 0.0)"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pa.probability(\n",
+    "    factory=pa.RandTauVectorUniform(),\n",
+    "    n_samples=100,\n",
+    "    test=(lambda tau: tau.focus == pa.Focus.DIRECT, \n",
+    "          lambda tau: tau.focus == pa.Focus.FORWARD_FOCUSED,\n",
+    "          lambda tau: tau.focus == pa.Focus.BACKWARD_FOCUSED,\n",
+    "          lambda tau: tau.focus == pa.Focus.UNFOCUSED)\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Image Distribution Estimation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To compute an image distribution, use the function ``image_distribution``.\n",
+    "\n",
+    "For example, when drawing a ProfileNoisyDiscrete (with the random factory defined below) and an initial StrategyOrdinal at random, and when applying iterated voting, let us estimate the distribution of the length of the cycle to which it converges:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:49.882352Z",
+     "start_time": "2020-06-16T12:24:49.877390Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "rand_profile = pa.RandProfileNoisyDiscreteUniform(\n",
+    "    types=[('abc', 0.4, 0.01),\n",
+    "           ('bca', 0.2, 0.01),\n",
+    "           ('cab', 0.7, 0.01)]\n",
+    ")\n",
+    "rand_strategy = pa.RandStrategyOrdinalUniform()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:49.892344Z",
+     "start_time": "2020-06-16T12:24:49.884347Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def len_cycle(profile, strategy_ini):\n",
+    "    cycle = profile.iterated_voting(init=strategy_ini, n_max_episodes=100)['cycle_taus_actual']\n",
+    "    return len(cycle)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:51.024332Z",
+     "start_time": "2020-06-16T12:24:49.895324Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{1: 0.2, 2: 0.02, 3: 0.78}"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d_len_occurrences = pa.image_distribution(\n",
+    "    factory=(rand_profile, rand_strategy),\n",
+    "    n_samples=100, f=len_cycle)\n",
+    "d_len_occurrences"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2020-06-16T12:24:51.329521Z",
+     "start_time": "2020-06-16T12:24:51.026293Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<BarContainer object of 3 artists>"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAXcAAAD4CAYAAAAXUaZHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4xLjAsIGh0dHA6Ly9tYXRwbG90bGliLm9yZy+17YcXAAAQoklEQVR4nO3df4xdeVnH8feH7laMIBg7xk1/0KrFWBFZGAuGBFGWpMsmrQmraROUNUDjjwIKMRYlFes/CAkkag2UsBGJUNbV4ABDGpEl/gisHWBZ6NbiWFc6KckOy7JIUErx8Y+5i5e7t73nTm9n9n7zfiU3Od9znrn3+eZMPz1z7j3npqqQJLXlcevdgCRp8gx3SWqQ4S5JDTLcJalBhrskNei69XrhTZs21fbt29fr5SVpKn3yk5/8UlXNjKpbt3Dfvn07CwsL6/XykjSVkvxnl7pOp2WS7ElyNsliksNDtm9LcleSTye5N8mLxm1YkjQ5I8M9yQbgGHAzsAs4kGTXQNnrgTuq6kZgP/Bnk25UktRdlyP33cBiVZ2rqovACWDfQE0B39tbfhJwYXItSpLG1SXcNwPn+8ZLvXX93gC8JMkSMA+8ctgTJTmYZCHJwvLy8iralSR10SXcM2Td4A1pDgB/XlVbgBcB707yqOeuquNVNVtVszMzI9/slSStUpdwXwK29o238OjTLi8D7gCoqo8Djwc2TaJBSdL4uoT7KWBnkh1JNrLyhuncQM0XgBcAJPkxVsLd8y6StE5GhntVXQIOASeBM6x8KuZ0kqNJ9vbKXgu8IslngPcCt5X3EpakddPpIqaqmmfljdL+dUf6lu8DnjvZ1iRJq7VuV6hKemzbfvhD691Cs+5/4y3X/DW8cZgkNchwl6QGGe6S1CDDXZIaZLhLUoMMd0lqkOEuSQ0y3CWpQYa7JDXIcJekBhnuktQgw12SGmS4S1KDDHdJapDhLkkNMtwlqUGGuyQ1qFO4J9mT5GySxSSHh2x/a5J7eo/PJ/nK5FuVJHU18mv2kmwAjgEvBJaAU0nmet+bCkBV/VZf/SuBG69Br5Kkjrocue8GFqvqXFVdBE4A+65QfwB47ySakyStTpdw3wyc7xsv9dY9SpKnADuAj15m+8EkC0kWlpeXx+1VktRRl3DPkHV1mdr9wJ1V9a1hG6vqeFXNVtXszMxM1x4lSWPqEu5LwNa+8RbgwmVq9+MpGUlad13C/RSwM8mOJBtZCfC5waIkPwp8H/DxybYoSRrXyHCvqkvAIeAkcAa4o6pOJzmaZG9f6QHgRFVd7pSNJGmNjPwoJEBVzQPzA+uODIzfMLm2JElXwytUJalBhrskNchwl6QGGe6S1CDDXZIaZLhLUoMMd0lqkOEuSQ0y3CWpQYa7JDXIcJekBhnuktQgw12SGmS4S1KDDHdJapDhLkkNMtwlqUGdwj3JniRnkywmOXyZml9Mcl+S00neM9k2JUnjGPk1e0k2AMeAFwJLwKkkc1V1X1/NTuB1wHOr6qEkP3CtGpYkjdblyH03sFhV56rqInAC2DdQ8wrgWFU9BFBVD0y2TUnSOLqE+2bgfN94qbeu31OBpyb55ySfSLJnUg1KksY38rQMkCHrasjz7ASeD2wB/jHJ06rqK9/xRMlB4CDAtm3bxm5WktRNlyP3JWBr33gLcGFIzd9W1Ter6j+As6yE/XeoquNVNVtVszMzM6vtWZI0QpdwPwXsTLIjyUZgPzA3UPN+4GcBkmxi5TTNuUk2KknqbmS4V9Ul4BBwEjgD3FFVp5McTbK3V3YSeDDJfcBdwG9X1YPXqmlJ0pV1OedOVc0D8wPrjvQtF/Ca3kOStM68QlWSGmS4S1KDDHdJapDhLkkNMtwlqUGGuyQ1yHCXpAYZ7pLUIMNdkhpkuEtSgwx3SWqQ4S5JDTLcJalBhrskNchwl6QGGe6S1CDDXZIaZLhLUoM6hXuSPUnOJllMcnjI9tuSLCe5p/d4+eRblSR1NfI7VJNsAI4BLwSWgFNJ5qrqvoHS91XVoWvQoyRpTF2O3HcDi1V1rqouAieAfde2LUnS1egS7puB833jpd66QS9Ocm+SO5NsHfZESQ4mWUiysLy8vIp2JUlddAn3DFlXA+MPANur6unAR4B3DXuiqjpeVbNVNTszMzNep5KkzrqE+xLQfyS+BbjQX1BVD1bVN3rDdwDPmkx7kqTV6BLup4CdSXYk2QjsB+b6C5Lc0DfcC5yZXIuSpHGN/LRMVV1Kcgg4CWwAbq+q00mOAgtVNQe8Ksle4BLwZeC2a9izJGmEkeEOUFXzwPzAuiN9y68DXjfZ1iRJq+UVqpLUIMNdkhpkuEtSgwx3SWqQ4S5JDTLcJalBhrskNchwl6QGGe6S1CDDXZIaZLhLUoMMd0lqkOEuSQ0y3CWpQYa7JDXIcJekBhnuktSgTuGeZE+Ss0kWkxy+Qt2tSSrJ7ORalCSNa2S4J9kAHANuBnYBB5LsGlL3ROBVwN2TblKSNJ4uR+67gcWqOldVF4ETwL4hdX8IvAn4nwn2J0lahS7hvhk43zde6q37tiQ3Alur6oMT7E2StEpdwj1D1tW3NyaPA94KvHbkEyUHkywkWVheXu7epSRpLF3CfQnY2jfeAlzoGz8ReBrwsST3A88B5oa9qVpVx6tqtqpmZ2ZmVt+1JOmKuoT7KWBnkh1JNgL7gblHNlbVw1W1qaq2V9V24BPA3qpauCYdS5JGGhnuVXUJOAScBM4Ad1TV6SRHk+y91g1KksZ3XZeiqpoH5gfWHblM7fOvvi1J0tXwClVJapDhLkkNMtwlqUGGuyQ1yHCXpAYZ7pLUIMNdkhpkuEtSgwx3SWqQ4S5JDTLcJalBhrskNchwl6QGGe6S1CDDXZIaZLhLUoMMd0lqkOEuSQ3qFO5J9iQ5m2QxyeEh2381yWeT3JPkn5LsmnyrkqSuRoZ7kg3AMeBmYBdwYEh4v6eqfqKqngG8CXjLxDuVJHXW5ch9N7BYVeeq6iJwAtjXX1BVX+0bfg9Qk2tRkjSu6zrUbAbO942XgGcPFiX5DeA1wEbg54Y9UZKDwEGAbdu2jdurJKmjLkfuGbLuUUfmVXWsqn4Y+B3g9cOeqKqOV9VsVc3OzMyM16kkqbMu4b4EbO0bbwEuXKH+BPDzV9OUJOnqdAn3U8DOJDuSbAT2A3P9BUl29g1vAf5tci1KksY18px7VV1Kcgg4CWwAbq+q00mOAgtVNQccSnIT8E3gIeCl17JpSdKVdXlDlaqaB+YH1h3pW371hPuSJF0Fr1CVpAYZ7pLUIMNdkhpkuEtSgwx3SWqQ4S5JDTLcJalBhrskNchwl6QGGe6S1CDDXZIaZLhLUoMMd0lqkOEuSQ0y3CWpQYa7JDXIcJekBhnuktSgTuGeZE+Ss0kWkxwesv01Se5Lcm+Sv0/ylMm3KknqamS4J9kAHANuBnYBB5LsGij7NDBbVU8H7gTeNOlGJUnddTly3w0sVtW5qroInAD29RdU1V1V9fXe8BPAlsm2KUkax3UdajYD5/vGS8Czr1D/MuDDwzYkOQgcBNi2bVvHFh9t++EPrfpndWX3v/GW9W5B0gR0OXLPkHU1tDB5CTALvHnY9qo6XlWzVTU7MzPTvUtJ0li6HLkvAVv7xluAC4NFSW4Cfg/4mar6xmTakyStRpcj91PAziQ7kmwE9gNz/QVJbgTeDuytqgcm36YkaRwjw72qLgGHgJPAGeCOqjqd5GiSvb2yNwNPAP4qyT1J5i7zdJKkNdDltAxVNQ/MD6w70rd804T7kiRdBa9QlaQGGe6S1CDDXZIaZLhLUoMMd0lqkOEuSQ0y3CWpQYa7JDXIcJekBhnuktQgw12SGmS4S1KDDHdJapDhLkkNMtwlqUGGuyQ1yHCXpAZ1Cvcke5KcTbKY5PCQ7c9L8qkkl5LcOvk2JUnjGBnuSTYAx4CbgV3AgSS7Bsq+ANwGvGfSDUqSxtflO1R3A4tVdQ4gyQlgH3DfIwVVdX9v2/9egx4lSWPqclpmM3C+b7zUWze2JAeTLCRZWF5eXs1TSJI66BLuGbKuVvNiVXW8qmaranZmZmY1TyFJ6qBLuC8BW/vGW4AL16YdSdIkdAn3U8DOJDuSbAT2A3PXti1J0tUYGe5VdQk4BJwEzgB3VNXpJEeT7AVI8lNJloBfAN6e5PS1bFqSdGVdPi1DVc0D8wPrjvQtn2LldI0k6THAK1QlqUGGuyQ1yHCXpAYZ7pLUIMNdkhpkuEtSgwx3SWqQ4S5JDTLcJalBhrskNchwl6QGGe6S1CDDXZIaZLhLUoMMd0lqUKf7uUtXa/vhD613C826/423rHcLegzyyF2SGmS4S1KDOoV7kj1JziZZTHJ4yPbvSvK+3va7k2yfdKOSpO5GhnuSDcAx4GZgF3Agya6BspcBD1XVjwBvBf5o0o1KkrrrcuS+G1isqnNVdRE4AewbqNkHvKu3fCfwgiSZXJuSpHF0+bTMZuB833gJePblaqrqUpKHge8HvtRflOQgcLA3/FqSs32bNw3WN2Rq5pbx/uaamnmNaarm5T4DpmxeV7nPntLlh7qE+7Aj8FpFDVV1HDg+9EWShaqa7dDP1Gl1bs5r+rQ6t1bnBaufW5fTMkvA1r7xFuDC5WqSXAc8CfjyuM1IkiajS7ifAnYm2ZFkI7AfmBuomQNe2lu+FfhoVT3qyF2StDZGnpbpnUM/BJwENgC3V9XpJEeBhaqaA94JvDvJIitH7PtX0cvQ0zWNaHVuzmv6tDq3VucFq5xbPMCWpPZ4haokNchwl6QGrXm4d7iVwW1JlpPc03u8fK17XI0ktyd5IMnnLrM9Sf64N+97kzxzrXtcjQ7zen6Sh/v215G17nE1kmxNcleSM0lOJ3n1kJpp3Wdd5jZ1+y3J45P8S5LP9Ob1B0Nqpu5WKB3nNX4uVtWaPVh5Q/bfgR8CNgKfAXYN1NwG/Ola9jWhuT0PeCbwuctsfxHwYVauCXgOcPd69zyheT0f+OB697mKed0APLO3/ETg80N+F6d1n3WZ29Ttt95+eEJv+XrgbuA5AzW/Drytt7wfeN969z2heY2di2t95N7lVgZTqar+gSt/tn8f8Be14hPAk5PcsDbdrV6HeU2lqvpiVX2qt/xfwBlWrrTuN637rMvcpk5vP3ytN7y+9xj8RMjU3Qql47zGttbhPuxWBsN+6V7c+zP4ziRbh2yfRl3nPo1+uvcn5YeT/Ph6NzOu3p/uN7JyxNRv6vfZFeYGU7jfkmxIcg/wAPB3VXXZfVZVl4BHboXymNZhXjBmLq51uHe5TcEHgO1V9XTgI/z//8LTrtMtGqbQp4CnVNVPAn8CvH+d+xlLkicAfw38ZlV9dXDzkB+Zmn02Ym5Tud+q6ltV9QxWrpTfneRpAyVTuc86zGvsXFzrcB95K4OqerCqvtEbvgN41hr1dq11uY3D1Kmqrz7yJ2VVzQPXJ9m0zm11kuR6VsLvL6vqb4aUTO0+GzW3ad5vAFX1FeBjwJ6BTVN9K5TLzWs1ubjW4T7yVgYD5zT3snK+sAVzwC/3PoHxHODhqvriejd1tZL84CPnNJPsZuV36sH17Wq0Xs/vBM5U1VsuUzaV+6zL3KZxvyWZSfLk3vJ3AzcB/zpQNnW3Qukyr9Xk4pp+QXZ1u5XBq5LsBS6x8j/ubWvZ42oleS8rn0DYlGQJ+H1W3hihqt4GzLPy6YtF4OvAr6xPp+PpMK9bgV9Lcgn4b2D/Y/0fU89zgV8CPts71wnwu8A2mO59Rre5TeN+uwF4V1a+QOhxwB1V9cFM/lYoa63LvMbORW8/IEkN8gpVSWqQ4S5JDTLcJalBhrskNchwl6QGGe6S1CDDXZIa9H8AFMBy0wPXVgAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.bar(d_len_occurrences.keys(), d_len_occurrences.values())"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": false,
+   "sideBar": true,
+   "skip_h1_title": true,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {
+    "height": "calc(100% - 180px)",
+    "left": "10px",
+    "top": "150px",
+    "width": "218.875px"
+   },
+   "toc_section_display": true,
+   "toc_window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

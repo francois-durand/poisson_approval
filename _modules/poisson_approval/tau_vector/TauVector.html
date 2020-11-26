@@ -1,0 +1,935 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.tau_vector.TauVector &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.tau_vector.TauVector</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.tau_vector.TauVector</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.best_response.BestResponseAntiPlurality</span> <span class="kn">import</span> <span class="n">BestResponseAntiPlurality</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.best_response.BestResponseApproval</span> <span class="kn">import</span> <span class="n">BestResponseApproval</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.best_response.BestResponsePlurality</span> <span class="kn">import</span> <span class="n">BestResponsePlurality</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.Focus</span> <span class="kn">import</span> <span class="n">Focus</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.containers.Scores</span> <span class="kn">import</span> <span class="n">Scores</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventDuo</span> <span class="kn">import</span> <span class="n">EventDuo</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventPivotStrict</span> <span class="kn">import</span> <span class="n">EventPivotStrict</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventPivotTij</span> <span class="kn">import</span> <span class="n">EventPivotTij</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventPivotTjk</span> <span class="kn">import</span> <span class="n">EventPivotTjk</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventTrio</span> <span class="kn">import</span> <span class="n">EventTrio</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventTrio1t</span> <span class="kn">import</span> <span class="n">EventTrio1t</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventTrio2t</span> <span class="kn">import</span> <span class="n">EventTrio2t</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.events.EventPivotWeak</span> <span class="kn">import</span> <span class="n">EventPivotWeak</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.computation_engine</span> <span class="kn">import</span> <span class="n">computation_engine</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">sort_ballot</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+
+<span class="c1"># noinspection PyUnresolvedReferences</span>
+<div class="viewcode-block" id="TauVector"><a class="viewcode-back" href="../../../reference/reference_tau_vector/index.html#poisson_approval.TauVector">[docs]</a><span class="k">class</span> <span class="nc">TauVector</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A vector &#39;tau&#39; (ballot distribution)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d_ballot_share : dict</span>
+<span class="sd">        Ballot distribution, e.g. ``{&#39;a&#39;: 0.1, &#39;ab&#39;: 0.6, &#39;c&#39;:0.3}``.</span>
+<span class="sd">    voting_rule : str</span>
+<span class="sd">        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.</span>
+<span class="sd">    symbolic : bool</span>
+<span class="sd">        Whether the computations are symbolic or numeric.</span>
+<span class="sd">    normalization_warning : bool</span>
+<span class="sd">        Whether a warning should be issued if the input distribution is not normalized.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If the input distribution `d_ballot_share` is not normalized, the tau vector will be normalized anyway and a</span>
+<span class="sd">    warning is issued (unless `normalization_warning` is False).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; tau</span>
+<span class="sd">        TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; print(tau)</span>
+<span class="sd">        &lt;a: 1/10, ab: 3/5, c: 3/10&gt; ==&gt; a</span>
+<span class="sd">        &gt;&gt;&gt; tau.a</span>
+<span class="sd">        Fraction(1, 10)</span>
+<span class="sd">        &gt;&gt;&gt; tau.b</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; tau.c</span>
+<span class="sd">        Fraction(3, 10)</span>
+<span class="sd">        &gt;&gt;&gt; tau.ab</span>
+<span class="sd">        Fraction(3, 5)</span>
+<span class="sd">        &gt;&gt;&gt; tau.ba  # Alternate notation for tau.ab</span>
+<span class="sd">        Fraction(3, 5)</span>
+<span class="sd">        &gt;&gt;&gt; tau.ac</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; tau.ca  # Alternate notation for tau.ac, etc.</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; tau.bc</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; tau.cb</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; tau.duo_ab</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.duo_ba</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.duo_ac</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.duo_ca</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.duo_bc</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.duo_cb</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_weak_ab</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_weak_ba</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_weak_ac</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_weak_ca</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_weak_bc</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_weak_cb</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = \</span>
+<span class="sd">0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_strict_ab</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_strict_ba</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_strict_ac</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_strict_ca</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_strict_bc</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_strict_cb</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tij_abc</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tij_acb</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tij_bac</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tij_bca</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.302013 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tij_cab</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tij_cba</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tjk_abc</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tjk_acb</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tjk_bac</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tjk_bca</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tjk_cab</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.pivot_tjk_cba</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_1t_a</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_1t_b</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n + 0.5 log n - 3.48597 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_1t_c</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.490239 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_2t_ab</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_2t_ac</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_2t_bc</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_2t_ba</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_2t_ca</span>
+<span class="sd">        &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tau.trio_2t_cb</span>
+<span class="sd">        &lt;asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_ballot_share</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">normalization_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span> <span class="o">=</span> <span class="n">symbolic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ce</span> <span class="o">=</span> <span class="n">computation_engine</span><span class="p">(</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="c1"># Populate the dictionary and check for typos in the input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+            <span class="n">ballot</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">BALLOTS_WITHOUT_INVERSIONS</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_ballot_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">ballot</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="c1"># Normalize if necessary</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">normalization_warning</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">NORMALIZATION_WARNING</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_division</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">ballot</span><span class="p">],</span> <span class="n">total</span><span class="p">)</span>
+        <span class="c1"># Voting rule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">=</span> <span class="n">voting_rule</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">PLURALITY</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ab</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ac</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, voting_rule=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="s1">&#39;TauVector(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">arguments</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&lt;</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; ==&gt; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winners</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">scores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scores : The scores.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.scores</span>
+<span class="sd">            {&#39;a&#39;: Fraction(7, 10), &#39;b&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Scores</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ab</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ac</span><span class="p">,</span>
+                           <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ab</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span>
+                           <span class="n">c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ac</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">winners</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Winners : The winners.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.winners</span>
+<span class="sd">            Winners({&#39;a&#39;})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">winners</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Equality test.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True iff it is the same tau-vector.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau == TauVector({&#39;a&#39;: Fraction(10, 100), &#39;ab&#39;: Fraction(60, 100), &#39;c&#39;: Fraction(30, 100)})</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TauVector</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_ballot_share</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">has_two_consecutive_zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool</span>
+
+<span class="sd">        Whether the tau-vector has two consecutive holes in the &quot;compass&quot; representation. True iff</span>
+<span class="sd">        ``self.a == 0 and self.ab == 0``, or ``self.ab == 0 and self.b == 0``, etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ac</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ac</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="TauVector.isclose"><a class="viewcode-back" href="../../../reference/reference_tau_vector/index.html#poisson_approval.TauVector.isclose">[docs]</a>    <span class="k">def</span> <span class="nf">isclose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test near-equality.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Object</span>
+<span class="sd">        *args</span>
+<span class="sd">            Cf. :func:`math.isclose`.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Cf. :func:`math.isclose`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        isclose : bool</span>
+<span class="sd">            True if this tau-vector is approximately equal to `other`. Cf. :func:`isclose`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;ab&#39;: 0.4, &#39;b&#39;: 0.6})</span>
+<span class="sd">            &gt;&gt;&gt; tau.isclose(TauVector({&#39;ab&#39;: 0.4, &#39;b&#39;: 0.59999999999999999999999999}))</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TauVector</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span>
+            <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">ballot</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">])</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">standardized_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Standardized version of the profile (makes it unique, up to permutations).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        It returns the same profile, up to a permutation of the candidates. how the permutation is chosen in</span>
+<span class="sd">        practice does not really matter: the important point is that the `standardized version` is the same for all the</span>
+<span class="sd">        profile that are identical up to a permutation of the candidates.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.standardized_version</span>
+<span class="sd">            TauVector({&#39;a&#39;: Fraction(3, 10), &#39;b&#39;: Fraction(1, 10), &#39;bc&#39;: Fraction(3, 5)})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">permute</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+
+        <span class="n">best_d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">best_signature</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">XYZ_PERMUTATIONS</span><span class="p">:</span>
+            <span class="n">d_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">translate</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">perm</span><span class="p">):</span> <span class="n">share</span> <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">signature_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">d_test</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">XYZ_BALLOTS_WITHOUT_INVERSION</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">signature_test</span> <span class="o">&gt;</span> <span class="n">best_signature</span><span class="p">:</span>
+                <span class="n">best_signature</span> <span class="o">=</span> <span class="n">signature_test</span>
+                <span class="n">best_d</span> <span class="o">=</span> <span class="n">d_test</span>
+        <span class="k">return</span> <span class="n">TauVector</span><span class="p">({</span><span class="n">ballot</span><span class="p">:</span> <span class="n">best_d</span><span class="p">[</span><span class="n">xyz_ballot</span><span class="p">]</span>
+                          <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">xyz_ballot</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">BALLOTS_WITHOUT_INVERSIONS</span><span class="p">,</span> <span class="n">XYZ_BALLOTS_WITHOUT_INVERSION</span><span class="p">)},</span>
+                         <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">is_standardized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether the profile is standardized or not. Cf. :meth:`standardized_version`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.is_standardized</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardized_version</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">share_single_votes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number: share of single votes, i.e. votes for one candidate only.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.share_single_votes</span>
+<span class="sd">            Fraction(2, 5)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">share</span> <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">share_double_votes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number: share of double votes, i.e. votes for two candidates.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.share_double_votes</span>
+<span class="sd">            Fraction(3, 5)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">share</span> <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Pivots</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">trio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Event: trio.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">EventTrio</span><span class="p">(</span><span class="n">candidate_x</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">focus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Focus : Focus of this tau-vector.</span>
+
+<span class="sd">        This is based on the weak pivots.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.focus</span>
+<span class="sd">            Focus.DIRECT</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">magnitudes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_weak_ab</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_weak_ac</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_weak_bc</span><span class="o">.</span><span class="n">mu</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">magnitudes</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="n">Focus</span><span class="o">.</span><span class="n">UNFOCUSED</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">magnitudes</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="n">Focus</span><span class="o">.</span><span class="n">FORWARD_FOCUSED</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">magnitudes</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="n">Focus</span><span class="o">.</span><span class="n">BACKWARD_FOCUSED</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Focus</span><span class="o">.</span><span class="n">DIRECT</span>
+
+<div class="viewcode-block" id="TauVector.print_magnitudes_order"><a class="viewcode-back" href="../../../reference/reference_tau_vector/index.html#poisson_approval.TauVector.print_magnitudes_order">[docs]</a>    <span class="k">def</span> <span class="nf">print_magnitudes_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the order of the magnitudes of the weak pivots.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.print_magnitudes_order()</span>
+<span class="sd">            mu_ac &gt; mu_ab &gt; mu_bc</span>
+
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 3), &#39;b&#39;: Fraction(1, 3), &#39;c&#39;: Fraction(1, 3)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.print_magnitudes_order()</span>
+<span class="sd">            mu_ab = mu_ac = mu_bc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d_notation_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mu_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">)</span><span class="o">.</span><span class="n">mu</span>
+                            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;ac&#39;</span><span class="p">,</span> <span class="s1">&#39;bc&#39;</span><span class="p">]}</span>
+        <span class="n">notation_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d_notation_value</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">d_notation_value</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">values_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d_notation_value</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">notation_sorted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; = &#39;</span> <span class="k">if</span> <span class="n">values_sorted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">values_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39; &gt; &#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">notation_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; = &#39;</span> <span class="k">if</span> <span class="n">values_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">values_sorted</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39; &gt; &#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">notation_sorted</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TauVector.print_weak_pivots"><a class="viewcode-back" href="../../../reference/reference_tau_vector/index.html#poisson_approval.TauVector.print_weak_pivots">[docs]</a>    <span class="k">def</span> <span class="nf">print_weak_pivots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the weak pivots (including the 3-way tie).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.print_weak_pivots()</span>
+<span class="sd">            pivot_weak_ab:  &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            pivot_weak_ac:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_weak_bc:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">PAIRS_WITHOUT_INVERSIONS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pivot_weak_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;trio: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TauVector.print_all_pivots"><a class="viewcode-back" href="../../../reference/reference_tau_vector/index.html#poisson_approval.TauVector.print_all_pivots">[docs]</a>    <span class="k">def</span> <span class="nf">print_all_pivots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print all the pivots.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.print_all_pivots()</span>
+<span class="sd">            pivot_weak_ab:  &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            pivot_weak_ac:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_weak_bc:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            pivot_strict_ab:  &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            pivot_strict_ac:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_strict_bc:  &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">            pivot_tij_abc:  &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            pivot_tij_acb:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_tij_bac:  &lt;asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            pivot_tij_bca:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.302013 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            pivot_tij_cab:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_tij_cba:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            pivot_tjk_abc:  &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">            pivot_tjk_acb:  &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">            pivot_tjk_bac:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.371758 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_tjk_bca:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n + 0.0518905 + o(1)), phi_a = 0.654654, \</span>
+<span class="sd">phi_c = 1.52753, phi_ab = 0.654654&gt;</span>
+<span class="sd">            pivot_tjk_cab:  &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            pivot_tjk_cba:  &lt;asymptotic = exp(- 0.1 n + log n - 2.30259 + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            trio_1t_a:  &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">            trio_1t_b:  &lt;asymptotic = exp(- 0.151472 n + 0.5 log n - 3.48597 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            trio_1t_c:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.490239 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            trio_2t_ab:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            trio_2t_ac:  &lt;asymptotic = exp(- inf)&gt;</span>
+<span class="sd">            trio_2t_bc:  &lt;asymptotic = exp(- 0.151472 n + 0.5 log n - 3.1394 + o(1)), phi_a = 0, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">            duo_ab:  &lt;asymptotic = exp(- 0.1 n + o(1)), phi_a = 0, phi_c = 1, phi_ab = 1&gt;</span>
+<span class="sd">            duo_ac:  &lt;asymptotic = exp(- 0.0834849 n - 0.5 log n - 0.87535 + o(1)), phi_a = 0.654654, phi_c = 1.52753, \</span>
+<span class="sd">phi_ab = 0.654654&gt;</span>
+<span class="sd">            duo_bc:  &lt;asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, \</span>
+<span class="sd">phi_ab = 0.707107&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">PAIRS_WITHOUT_INVERSIONS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pivot_weak_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">PAIRS_WITHOUT_INVERSIONS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pivot_strict_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pivot_tij_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">ranking</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">ranking</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pivot_tjk_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">ranking</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">ranking</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;trio: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;trio_1t_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">candidate</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;trio_1t_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">candidate</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">PAIRS_WITHOUT_INVERSIONS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;trio_2t_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;trio_2t_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">PAIRS_WITHOUT_INVERSIONS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;duo_</span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;duo_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">))</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_ranking_best_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict : Best response profile.</span>
+
+<span class="sd">        * Key: a ranking (e.g. ``&#39;abc&#39;``).</span>
+<span class="sd">        * Value: a :class:`BestResponse` (whose subclass depends on :attr:`voting_rule`).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; tau = TauVector({&#39;a&#39;: Fraction(1, 10), &#39;ab&#39;: Fraction(3, 5), &#39;c&#39;: Fraction(3, 10)})</span>
+<span class="sd">            &gt;&gt;&gt; tau.d_ranking_best_response[&#39;abc&#39;]</span>
+<span class="sd">            &lt;ballot = a, threshold_utility = 1, justification = Asymptotic method&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span>
+                <span class="n">ranking</span><span class="p">:</span> <span class="n">BestResponseApproval</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="o">=</span><span class="n">ranking</span><span class="p">)</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">PLURALITY</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span>
+                <span class="n">ranking</span><span class="p">:</span> <span class="n">BestResponsePlurality</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="o">=</span><span class="n">ranking</span><span class="p">)</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span>
+                <span class="n">ranking</span><span class="p">:</span> <span class="n">BestResponseAntiPlurality</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="o">=</span><span class="n">ranking</span><span class="p">)</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_ab_in_duo_ab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Common score of `a` and `b` in duo `ab`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ab</span><span class="o">.</span><span class="n">phi_a</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ab</span><span class="o">.</span><span class="n">phi_ab</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ab</span><span class="o">.</span><span class="n">phi_ac</span><span class="p">))</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_ac_in_duo_ac</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Common score of `a` and `c` in duo `ac`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ac</span><span class="o">.</span><span class="n">phi_a</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ac</span><span class="o">.</span><span class="n">phi_ab</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ac</span><span class="o">.</span><span class="n">phi_ac</span><span class="p">))</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_bc_in_duo_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Common score of `b` and `c` in duo `bc`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_bc</span><span class="o">.</span><span class="n">phi_b</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_bc</span><span class="o">.</span><span class="n">phi_ab</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_bc</span><span class="o">.</span><span class="n">phi_bc</span><span class="p">))</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_ba_in_duo_ba</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Alternate notation for :attr:`score_ab_in_duo_ab`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_ab_in_duo_ab</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_ca_in_duo_ca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Alternate notation for :attr:`score_ac_in_duo_ac`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_ac_in_duo_ac</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_cb_in_duo_cb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Alternate notation for :attr:`score_bc_in_duo_bc`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_bc_in_duo_bc</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_c_in_duo_ab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Score of `c` in duo `ab`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ab</span><span class="o">.</span><span class="n">phi_c</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ab</span><span class="o">.</span><span class="n">phi_ac</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ab</span><span class="o">.</span><span class="n">phi_bc</span><span class="p">))</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_b_in_duo_ac</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Score of `b` in duo `ac`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ac</span><span class="o">.</span><span class="n">phi_b</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ac</span><span class="o">.</span><span class="n">phi_ab</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_ac</span><span class="o">.</span><span class="n">phi_bc</span><span class="p">))</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_a_in_duo_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Score of `a` in duo `bc`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_bc</span><span class="o">.</span><span class="n">phi_a</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_bc</span><span class="o">.</span><span class="n">phi_ab</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">multiply_with_absorbing_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duo_bc</span><span class="o">.</span><span class="n">phi_ac</span><span class="p">))</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_c_in_duo_ba</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Alternate notation for :attr:`score_c_in_duo_ab`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_c_in_duo_ab</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_b_in_duo_ca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Alternate notation for :attr:`score_b_in_duo_ac`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_b_in_duo_ac</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">score_a_in_duo_cb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number : Alternate notation for :attr:`score_a_in_duo_bc`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_a_in_duo_bc</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">pivot_ab_easy_or_tight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool : True if the pivot `ab` is easy or tight, False if it is difficult.&quot;&quot;&quot;</span>
+        <span class="n">pivot_easy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_ab_in_duo_ab</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_c_in_duo_ab</span>
+        <span class="n">pivot_tight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_ab_in_duo_ab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_c_in_duo_ab</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pivot_easy</span> <span class="ow">or</span> <span class="n">pivot_tight</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">pivot_ac_easy_or_tight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool : True if the pivot `ac` is easy or tight, False if it is difficult.&quot;&quot;&quot;</span>
+        <span class="n">pivot_easy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_ac_in_duo_ac</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_b_in_duo_ac</span>
+        <span class="n">pivot_tight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_ac_in_duo_ac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_b_in_duo_ac</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pivot_easy</span> <span class="ow">or</span> <span class="n">pivot_tight</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">pivot_bc_easy_or_tight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool : True if the pivot `bc` is easy or tight, False if it is difficult.&quot;&quot;&quot;</span>
+        <span class="n">pivot_easy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_bc_in_duo_bc</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_a_in_duo_bc</span>
+        <span class="n">pivot_tight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_bc_in_duo_bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_a_in_duo_bc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pivot_easy</span> <span class="ow">or</span> <span class="n">pivot_tight</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">pivot_ba_easy_or_tight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool : Alternate notation for :attr:`pivot_ab_easy_or_tight`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_ab_easy_or_tight</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">pivot_ca_easy_or_tight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool : Alternate notation for :attr:`pivot_ac_easy_or_tight`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_ac_easy_or_tight</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">pivot_cb_easy_or_tight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;bool : Alternate notation for :attr:`pivot_bc_easy_or_tight`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_bc_easy_or_tight</span></div>
+
+
+<span class="k">def</span> <span class="nf">_f_ballot_share</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Share of this ballot&quot;&quot;&quot;</span>
+    <span class="c1"># This function is used to define an attribute for each ballot.</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">ballot</span><span class="p">)]</span>
+
+
+<span class="k">for</span> <span class="n">my_ballot</span> <span class="ow">in</span> <span class="n">BALLOTS_WITH_INVERSIONS</span><span class="p">:</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">my_ballot</span><span class="p">,</span> <span class="nb">property</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">_f_ballot_share</span><span class="p">,</span> <span class="n">ballot</span><span class="o">=</span><span class="n">my_ballot</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">sort_ballot</span><span class="p">(</span><span class="n">my_ballot</span><span class="p">)</span> <span class="o">==</span> <span class="n">my_ballot</span><span class="p">:</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">my_ballot</span><span class="p">)</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Number: Share of the ballot ``&#39;</span><span class="si">%s</span><span class="s2">&#39;``.&quot;</span> <span class="o">%</span> <span class="n">my_ballot</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">my_ballot</span><span class="p">)</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> \
+            <span class="s2">&quot;Number: Share of the ballot ``&#39;</span><span class="si">%s</span><span class="s2">&#39;`` (alternate notation).&quot;</span> <span class="o">%</span> <span class="n">sort_ballot</span><span class="p">(</span><span class="n">my_ballot</span><span class="p">)</span>
+
+<span class="c1"># Events based on a duo: create cached properties like duo_ab, etc.</span>
+
+
+<span class="k">def</span> <span class="nf">_f_duo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate_x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">stub</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">candidate_x</span> <span class="o">&lt;</span> <span class="n">candidate_y</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">candidate_x</span><span class="o">=</span><span class="n">candidate_x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="n">candidate_y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="n">candidate_z</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stub</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">candidate_y</span><span class="p">,</span> <span class="n">candidate_x</span><span class="p">))</span>
+
+
+<span class="k">for</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">event_stub</span><span class="p">,</span> <span class="n">event_doc</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">EventDuo</span><span class="p">,</span> <span class="s1">&#39;duo&#39;</span><span class="p">,</span> <span class="s1">&#39;EventDuo : These two candidates have the same score.&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">EventPivotWeak</span><span class="p">,</span> <span class="s1">&#39;pivot_weak&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;EventPivotWeak : These two candidates have the same score, at least as high as the other.&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">EventPivotStrict</span><span class="p">,</span> <span class="s1">&#39;pivot_strict&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;EventPivotStrict : These two candidates have the same score, strictly higher than the other.&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">EventTrio2t</span><span class="p">,</span> <span class="s1">&#39;trio_2t&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;EventTrio1t : These candidates have one vote less than the other.&#39;</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">event_stub</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">_f_duo</span><span class="p">,</span> <span class="n">candidate_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
+                                         <span class="bp">cls</span><span class="o">=</span><span class="n">event_class</span><span class="p">,</span> <span class="n">stub</span><span class="o">=</span><span class="n">event_stub</span><span class="p">))</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cached_property</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">event_doc</span>
+
+
+<span class="c1"># Events based on a permutation: create cached properties like pivot_tij_abc, etc.</span>
+
+
+<span class="k">def</span> <span class="nf">_f_ranking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate_x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">candidate_x</span><span class="o">=</span><span class="n">candidate_x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="n">candidate_y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="n">candidate_z</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">event_stub</span><span class="p">,</span> <span class="n">event_doc</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">EventPivotTij</span><span class="p">,</span> <span class="s1">&#39;pivot_tij&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;EventPivotTij: Personalized pivot of type Tij (between the two most-liked candidates).&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">EventPivotTjk</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;EventPivotTjk: Personalized pivot of type Tjk (between the two least-liked candidates).&#39;</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">event_stub</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">event_stub</span> <span class="o">==</span> <span class="s1">&#39;pivot_tjk&#39;</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">_f_ranking</span><span class="p">,</span> <span class="n">candidate_x</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">event_class</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">_f_ranking</span><span class="p">,</span> <span class="n">candidate_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">event_class</span><span class="p">))</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cached_property</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">event_doc</span>
+
+
+<span class="c1"># Events based on one candidate: create cached properties like trio_1t_a, etc.</span>
+
+
+<span class="k">for</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">event_stub</span><span class="p">,</span> <span class="n">event_doc</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">EventTrio1t</span><span class="p">,</span> <span class="s1">&#39;trio_1t&#39;</span><span class="p">,</span> <span class="s1">&#39;EventTrio1t : This candidate has one vote less than the two others.&#39;</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">z</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">event_stub</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">_f_ranking</span><span class="p">,</span> <span class="n">candidate_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">candidate_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">candidate_z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">event_class</span><span class="p">))</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cached_property</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">TauVector</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">event_doc</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

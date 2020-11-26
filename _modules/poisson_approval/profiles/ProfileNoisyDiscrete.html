@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.profiles.ProfileNoisyDiscrete &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.profiles.ProfileNoisyDiscrete</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.profiles.ProfileNoisyDiscrete</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileCardinalContinuous</span> <span class="kn">import</span> <span class="n">ProfileCardinalContinuous</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyThreshold</span> <span class="kn">import</span> <span class="n">StrategyThreshold</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">product_dict</span><span class="p">,</span> <span class="n">my_division</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilPreferences</span> <span class="kn">import</span> <span class="n">is_weak_order</span><span class="p">,</span> <span class="n">sort_weak_order</span><span class="p">,</span> <span class="n">is_hater</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+
+<div class="viewcode-block" id="ProfileNoisyDiscrete"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete">[docs]</a><span class="k">class</span> <span class="nc">ProfileNoisyDiscrete</span><span class="p">(</span><span class="n">ProfileCardinalContinuous</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Profile with a discrete distribution of voters, with noise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : dict</span>
+<span class="sd">        Cf. examples below for the different types of input syntax.</span>
+<span class="sd">    noise : Number, optional</span>
+<span class="sd">        Cf. examples below for the different types of input syntax.</span>
+<span class="sd">    d_weak_order_share : dict</span>
+<span class="sd">        E.g. ``{&#39;a~b&gt;c&#39;: 0.2, &#39;a&gt;b~c&#39;: 0.1}``. ``d_weak_order_share[&#39;a~b&gt;c&#39;]`` is the probability that a voter likes</span>
+<span class="sd">        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.</span>
+<span class="sd">    normalization_warning : bool</span>
+<span class="sd">        Whether a warning should be issued if the input distribution is not normalized.</span>
+<span class="sd">    ratio_sincere : Number</span>
+<span class="sd">        The ratio of sincere voters, in the interval [0, 1]. This is used for :meth:`tau`.</span>
+<span class="sd">    ratio_fanatic : Number</span>
+<span class="sd">        The ratio of fanatic voters, in the interval [0, 1]. This is used for :meth:`tau`. The sum of `ratio_sincere`</span>
+<span class="sd">        and `ratio_fanatic` must not exceed 1.</span>
+<span class="sd">    voting_rule : str</span>
+<span class="sd">        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``.</span>
+<span class="sd">    symbolic : bool</span>
+<span class="sd">        Whether the computations are symbolic or numeric.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d_ranking_utility_noise_share : dict of dict</span>
+<span class="sd">        It maps a ranking to a dict that maps a tuple (utility, noise) to a share of voters. It means that this share</span>
+<span class="sd">        of voters have this ranking and with a utility for their second candidate that is uniformly distributed in an</span>
+<span class="sd">        interval [umin, umax], where umin = max(utility - noise, 0) and umax = min(utility + noise, 1).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If the input distribution is not normalized, the profile will be normalized anyway and a warning is</span>
+<span class="sd">    issued (unless `normalization_warning` is False).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    The four following examples illustrate different ways to define the same profile, where:</span>
+
+<span class="sd">    * 26/100 of the voters have ranking `abc` and a utility for `b` that is uniformly distributed between 0.3-0.01 and</span>
+<span class="sd">      0.3+0.01,</span>
+<span class="sd">    * 53/100 of the voters have ranking `abc` and a utility for `b` that is uniformly distributed between 0.8-0.01 and</span>
+<span class="sd">      0.8+0.01,</span>
+<span class="sd">    * 21/100 of the voters have ranking `bac` and a utility for `a` that is uniformly distributed between 0.3-0.01 and</span>
+<span class="sd">      0.1+0.01,</span>
+
+<span class="sd">    The first possible type of input syntax is a dict that maps a tuple (ranking, utility) to a share of voters. All</span>
+<span class="sd">    groups of voters have the same noise about their utility, given by the parameter `noise`:</span>
+
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">        ...     (&#39;abc&#39;, 0.3): Fraction(26, 100),</span>
+<span class="sd">        ...     (&#39;abc&#39;, 0.8): Fraction(53, 100),</span>
+<span class="sd">        ...     (&#39;bac&#39;, 0.1): Fraction(21, 100)</span>
+<span class="sd">        ... }, noise=0.01)</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    The second type of input syntax has the advantage of not repeating a ranking if is it used for several groups of</span>
+<span class="sd">    voters. It is a dict that maps a ranking to a nested dictionary, itself mapping a utility to a share of voters.</span>
+<span class="sd">    Like above, all groups of voters have the same noise, given by the parameter `noise`:</span>
+
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">        ...     &#39;abc&#39;: {0.3: Fraction(26, 100), 0.8: Fraction(53, 100)},</span>
+<span class="sd">        ...     &#39;bac&#39;: {0.1: Fraction(21, 100)}</span>
+<span class="sd">        ... }, noise=0.01)</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    The two remaining types of input syntax are variants of the two types presented above. They are a bit more verbose</span>
+<span class="sd">    but they enable to specify a specific noise for each group of voters.</span>
+
+<span class="sd">    Here is the variant of the first type of syntax. It is a dict that maps tuple (ranking, utility, noise) to</span>
+<span class="sd">    a share of voters. It corresponds exactly to the attribute :attr:`d_ranking_utility_noise_share`:</span>
+
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">        ...     (&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100),</span>
+<span class="sd">        ...     (&#39;abc&#39;, 0.8, 0.01): Fraction(53, 100),</span>
+<span class="sd">        ...     (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)</span>
+<span class="sd">        ... })</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    And here is the variant of the second type of syntax. It is a dict that maps a ranking to a nested dict, itself</span>
+<span class="sd">    mapping a tuple (utility, noise) to a share of voters:</span>
+
+<span class="sd">        &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">        ...     &#39;abc&#39;: {(0.3, 0.01): Fraction(26, 100), (0.8, 0.01): Fraction(53, 100)},</span>
+<span class="sd">        ...     &#39;bac&#39;: {(0.1, 0.01): Fraction(21, 100)}</span>
+<span class="sd">        ... })</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    Some examples of operations on the profile:</span>
+
+<span class="sd">        &gt;&gt;&gt; profile</span>
+<span class="sd">        ProfileNoisyDiscrete({&#39;abc&#39;: {(0.3, 0.01): Fraction(13, 50), (0.8, 0.01): Fraction(53, 100)}, \</span>
+<span class="sd">&#39;bac&#39;: {(0.1, 0.01): Fraction(21, 100)}})</span>
+<span class="sd">        &gt;&gt;&gt; profile.d_ranking_share</span>
+<span class="sd">        {&#39;abc&#39;: Fraction(79, 100), &#39;bac&#39;: Fraction(21, 100)}</span>
+<span class="sd">        &gt;&gt;&gt; profile.abc</span>
+<span class="sd">        Fraction(79, 100)</span>
+<span class="sd">        &gt;&gt;&gt; profile.have_ranking_with_utility_above_u(&#39;abc&#39;, 0.5)</span>
+<span class="sd">        Fraction(53, 100)</span>
+<span class="sd">        &gt;&gt;&gt; profile.have_ranking_with_utility_below_u(&#39;abc&#39;, 0.5)</span>
+<span class="sd">        Fraction(13, 50)</span>
+<span class="sd">        &gt;&gt;&gt; profile.have_ranking_with_utility_u(&#39;abc&#39;, 0.3)</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; profile.d_candidate_welfare</span>
+<span class="sd">        {&#39;a&#39;: 0.811, &#39;b&#39;: 0.712, &#39;c&#39;: 0}</span>
+<span class="sd">        &gt;&gt;&gt; profile.analyzed_strategies_group</span>
+<span class="sd">        Equilibrium:</span>
+<span class="sd">        &lt;abc: a, bac: b&gt; ==&gt; a (FF)</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        Non-equilibria:</span>
+<span class="sd">        &lt;abc: ab, bac: ab&gt; ==&gt; a, b (FF)</span>
+<span class="sd">        &lt;abc: ab, bac: b&gt; ==&gt; b (FF)</span>
+<span class="sd">        &lt;abc: utility-dependent (0.55), bac: ab&gt; ==&gt; a (FF)</span>
+<span class="sd">        &lt;abc: utility-dependent (0.55), bac: b&gt; ==&gt; a (FF)</span>
+<span class="sd">        &lt;abc: a, bac: ab&gt; ==&gt; a (FF)</span>
+<span class="sd">        &gt;&gt;&gt; print(profile.analyzed_strategies_group.winners_at_equilibrium)</span>
+<span class="sd">        a</span>
+
+<span class="sd">    The profile can include weak orders:</span>
+
+<span class="sd">        &gt;&gt;&gt; profile = ProfileNoisyDiscrete(</span>
+<span class="sd">        ...     {(&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100), (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)},</span>
+<span class="sd">        ...     d_weak_order_share={&#39;a~b&gt;c&#39;: Fraction(53, 100)})</span>
+<span class="sd">        &gt;&gt;&gt; profile</span>
+<span class="sd">        ProfileNoisyDiscrete({&#39;abc&#39;: {(0.3, 0.01): Fraction(13, 50)}, &#39;bac&#39;: {(0.1, 0.01): Fraction(21, 100)}}, \</span>
+<span class="sd">d_weak_order_share={&#39;a~b&gt;c&#39;: Fraction(53, 100)})</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.3 ± 0.01: 13/50, bac 0.1 ± 0.01: 21/100, a~b&gt;c: 53/100&gt; (Condorcet winner: a)</span>
+
+<span class="sd">    Please note that the voters with a weak order are not &quot;noisy&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_weak_order_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalization_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">ratio_sincere</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ratio_fanatic</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ratio_sincere</span><span class="o">=</span><span class="n">ratio_sincere</span><span class="p">,</span> <span class="n">ratio_fanatic</span><span class="o">=</span><span class="n">ratio_fanatic</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="n">voting_rule</span><span class="p">,</span>
+                         <span class="n">symbolic</span><span class="o">=</span><span class="n">symbolic</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+            <span class="n">ranking</span><span class="p">:</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">()</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">d_weak_order_share</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d_weak_order_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span> <span class="o">=</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+            <span class="n">weak_order</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="n">WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">})</span>
+        <span class="c1"># Input d</span>
+
+        <span class="k">def</span> <span class="nf">add_voters</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+            <span class="c1"># Ranking r, utility u, share s, noise epsilon</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">epsilon</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Noise should be &gt; 0&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">r</span><span class="p">][(</span><span class="n">u</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">is_weak_order</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">sort_weak_order</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">add_voters</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># len(tuple) == 3</span>
+                    <span class="n">add_voters</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># isinstance(key, str)</span>
+                <span class="n">d_key2_share</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">key2</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_key2_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                        <span class="n">add_voters</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">key2</span><span class="p">,</span> <span class="n">share</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># key2 is a number</span>
+                        <span class="n">add_voters</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">share</span><span class="p">)</span>
+        <span class="c1"># Input d_weak_order_share</span>
+        <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">sort_weak_order</span><span class="p">(</span><span class="n">weak_order</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="c1"># Normalize if necessary</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">(</span><span class="n">d_utility_noise_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                      <span class="k">for</span> <span class="n">d_utility_noise_share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+                 <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">normalization_warning</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">NORMALIZATION_WARNING</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">d_utility_noise_share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">utility_noise</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_utility_noise_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">d_utility_noise_share</span><span class="p">[</span><span class="n">utility_noise</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_division</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_division</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">],</span> <span class="n">total</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_ranking_share</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DictPrintingInOrderIgnoringZeros</span><span class="p">({</span>
+            <span class="n">ranking</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d_utility_noise_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">d_utility_noise_share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">})</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_ranking_umin_umax_share</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict: Dictionary that maps a ranking to a dictionary that maps a tuple (u_min, u_max) to a share of voters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">ranking</span><span class="p">:</span> <span class="p">{(</span><span class="nb">max</span><span class="p">(</span><span class="n">utility</span> <span class="o">-</span> <span class="n">noise</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">utility</span> <span class="o">+</span> <span class="n">noise</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span> <span class="n">share</span>
+                          <span class="k">for</span> <span class="p">(</span><span class="n">utility</span><span class="p">,</span> <span class="n">noise</span><span class="p">),</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_utility_noise_share</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+                <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">d_utility_noise_share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_weak_order_share</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span>
+
+<div class="viewcode-block" id="ProfileNoisyDiscrete.have_ranking_with_utility_above_u"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.have_ranking_with_utility_above_u">[docs]</a>    <span class="k">def</span> <span class="nf">have_ranking_with_utility_above_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="n">d_umin_umax_share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_umin_umax_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span>
+            <span class="n">_crop</span><span class="p">(</span><span class="n">my_division</span><span class="p">(</span><span class="n">umax</span> <span class="o">-</span> <span class="n">u</span><span class="p">,</span> <span class="n">umax</span> <span class="o">-</span> <span class="n">umin</span><span class="p">))</span> <span class="o">*</span> <span class="n">share</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">umin</span><span class="p">,</span> <span class="n">umax</span><span class="p">),</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_umin_umax_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">])</span></div>
+
+<div class="viewcode-block" id="ProfileNoisyDiscrete.have_ranking_with_utility_below_u"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.have_ranking_with_utility_below_u">[docs]</a>    <span class="k">def</span> <span class="nf">have_ranking_with_utility_below_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="n">d_umin_umax_share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_umin_umax_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span>
+            <span class="n">_crop</span><span class="p">(</span><span class="n">my_division</span><span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">umin</span><span class="p">,</span> <span class="n">umax</span> <span class="o">-</span> <span class="n">umin</span><span class="p">))</span> <span class="o">*</span> <span class="n">share</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">umin</span><span class="p">,</span> <span class="n">umax</span><span class="p">),</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_umin_umax_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">])</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100),</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.8, 0.01): Fraction(53, 100),</span>
+<span class="sd">            ...     (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)</span>
+<span class="sd">            ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))</span>
+<span class="sd">            &gt;&gt;&gt; profile</span>
+<span class="sd">            ProfileNoisyDiscrete({&#39;abc&#39;: {(0.3, 0.01): Fraction(13, 50), (0.8, 0.01): Fraction(53, 100)}, \</span>
+<span class="sd">&#39;bac&#39;: {(0.1, 0.01): Fraction(21, 100)}}, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains_weak_orders</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, d_weak_order_share=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, ratio_sincere=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, ratio_fanatic=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">arguments</span> <span class="o">+=</span> <span class="s1">&#39;, voting_rule=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="s1">&#39;ProfileNoisyDiscrete(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">arguments</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100),</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.8, 0.01): Fraction(53, 100),</span>
+<span class="sd">            ...     (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)</span>
+<span class="sd">            ... }, ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(2, 10))</span>
+<span class="sd">            &gt;&gt;&gt; print(profile)</span>
+<span class="sd">            &lt;abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100&gt; (Condorcet winner: a) \</span>
+<span class="sd">(ratio_sincere: 1/10) (ratio_fanatic: 1/5)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains_rankings</span><span class="p">:</span>
+            <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> ± </span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="n">utility</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">][(</span><span class="n">utility</span><span class="p">,</span> <span class="n">noise</span><span class="p">)])</span>
+                <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">utility</span><span class="p">,</span> <span class="n">noise</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="p">]))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains_weak_orders</span><span class="p">:</span>
+            <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_profile_condorcet</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (Condorcet winner: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">condorcet_winners</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (ratio_sincere: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (ratio_fanatic: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Equality test.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True iff this profile is equal to `other`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100),</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.8, 0.01): Fraction(53, 100),</span>
+<span class="sd">            ...     (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)</span>
+<span class="sd">            ... })</span>
+<span class="sd">            &gt;&gt;&gt; profile == ProfileNoisyDiscrete({</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100),</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.8, 0.01): Fraction(53, 100),</span>
+<span class="sd">            ...     (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)</span>
+<span class="sd">            ... })</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ProfileNoisyDiscrete</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+                         <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">])</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">d_weak_order_share</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">ratio_sincere</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">ratio_fanatic</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">standardized_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ProfileNoisyDiscrete : Standardized version of the profile (makes it unique, up to permutations of the</span>
+<span class="sd">        candidates).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; from fractions import Fraction</span>
+<span class="sd">            &gt;&gt;&gt; profile = ProfileNoisyDiscrete({</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.3, 0.01): Fraction(26, 100),</span>
+<span class="sd">            ...     (&#39;abc&#39;, 0.8, 0.01): Fraction(53, 100),</span>
+<span class="sd">            ...     (&#39;bac&#39;, 0.1, 0.01): Fraction(21, 100)</span>
+<span class="sd">            ... })</span>
+<span class="sd">            &gt;&gt;&gt; print(profile.standardized_version)</span>
+<span class="sd">            &lt;abc 0.3 ± 0.01: 13/50, abc 0.8 ± 0.01: 53/100, bac 0.1 ± 0.01: 21/100&gt; (Condorcet winner: a)</span>
+<span class="sd">            &gt;&gt;&gt; profile.is_standardized</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">permute</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">best_d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">best_signature</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">XYZ_PERMUTATIONS</span><span class="p">:</span>
+            <span class="n">d_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">translate</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="n">perm</span><span class="p">):</span> <span class="n">d_utility_noise_share</span>
+                      <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">d_utility_noise_share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">d_test</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">sort_weak_order</span><span class="p">(</span><span class="n">translate</span><span class="p">(</span><span class="n">weak_order</span><span class="p">,</span> <span class="n">perm</span><span class="p">)):</span> <span class="n">share</span>
+                           <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+            <span class="n">signature_test</span> <span class="o">=</span> <span class="p">[[(</span><span class="n">utility</span><span class="p">,</span> <span class="n">d_test</span><span class="p">[</span><span class="n">ranking</span><span class="p">][</span><span class="n">utility</span><span class="p">])</span> <span class="k">for</span> <span class="n">utility</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d_test</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+                              <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">XYZ_RANKINGS</span><span class="p">]</span>
+            <span class="n">signature_test</span> <span class="o">+=</span> <span class="p">[</span><span class="n">d_test</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="n">XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">signature_test</span> <span class="o">&gt;</span> <span class="n">best_signature</span><span class="p">:</span>
+                <span class="n">best_signature</span> <span class="o">=</span> <span class="n">signature_test</span>
+                <span class="n">best_d</span> <span class="o">=</span> <span class="n">d_test</span>
+        <span class="k">return</span> <span class="n">ProfileNoisyDiscrete</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">ranking</span><span class="p">:</span> <span class="n">best_d</span><span class="p">[</span><span class="n">xyz_ranking</span><span class="p">]</span> <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">xyz_ranking</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">RANKINGS</span><span class="p">,</span> <span class="n">XYZ_RANKINGS</span><span class="p">)},</span>
+            <span class="p">{</span><span class="n">weak_order</span><span class="p">:</span> <span class="n">best_d</span><span class="p">[</span><span class="n">xyz_weak_order</span><span class="p">]</span> <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">xyz_weak_order</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="n">WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">,</span> <span class="n">XYZ_WEAK_ORDERS_WITHOUT_INVERSIONS</span><span class="p">)},</span>
+            <span class="n">ratio_sincere</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span><span class="p">,</span> <span class="n">ratio_fanatic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span><span class="p">,</span>
+            <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_candidate_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">candidate</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">d_umin_umax_share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_umin_umax_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">u_min</span><span class="p">,</span> <span class="n">u_max</span><span class="p">),</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_umin_umax_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">ranking</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">ranking</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span> <span class="o">*</span> <span class="p">(</span><span class="n">u_min</span> <span class="o">+</span> <span class="n">u_max</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">share</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">if</span> <span class="n">is_hater</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">strategies_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator: group strategies of the profile.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        StrategyThreshold</span>
+<span class="sd">            All possible group strategies of the profile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">possible_thresholds</span><span class="p">(</span><span class="n">ranking</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="n">d_utility_noise_share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_utility_noise_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+            <span class="n">utilities</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">utility</span> <span class="k">for</span> <span class="n">utility</span><span class="p">,</span> <span class="n">noise</span> <span class="ow">in</span> <span class="n">d_utility_noise_share</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+            <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">my_division</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">utilities</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">utilities</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">d_ranking_possible_thresholds</span> <span class="o">=</span> <span class="p">{</span><span class="n">ranking</span><span class="p">:</span> <span class="n">possible_thresholds</span><span class="p">(</span><span class="n">ranking</span><span class="p">)</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">d_ranking_threshold</span> <span class="ow">in</span> <span class="n">product_dict</span><span class="p">(</span><span class="n">d_ranking_possible_thresholds</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">StrategyThreshold</span><span class="p">(</span><span class="n">d_ranking_threshold</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">strategies_pure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="ProfileNoisyDiscrete.order_and_label"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.order_and_label">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">order_and_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Order and label of a discrete type.</span>
+
+<span class="sd">        Cf. :meth:`Profile.order_and_label`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; ProfileNoisyDiscrete.order_and_label((&#39;abc&#39;, 0.5, 0.01))</span>
+<span class="sd">            (&#39;abc&#39;, &#39;$r(abc, u_b = 0.5 ± 0.01)$&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ProfileNoisyDiscrete.order_and_label((&#39;abc&#39;, 0.5))</span>
+<span class="sd">            (&#39;abc&#39;, &#39;$r(abc, u_b \\simeq 0.5)$&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ProfileNoisyDiscrete.order_and_label(&#39;a~b&gt;c&#39;)</span>
+<span class="sd">            (&#39;a~b&gt;c&#39;, &#39;$r(a\\sim b&gt;c)$&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;$r(</span><span class="si">%s</span><span class="s1">, u_</span><span class="si">%s</span><span class="s1"> = </span><span class="si">%s</span><span class="s1"> ± </span><span class="si">%s</span><span class="s1">)$&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># len(t) == 2</span>
+                <span class="k">return</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;$r(</span><span class="si">%s</span><span class="s1">, u_</span><span class="si">%s</span><span class="s1"> </span><span class="se">\\</span><span class="s1">simeq </span><span class="si">%s</span><span class="s1">)$&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label_weak</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_crop</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crop a number to an interval.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : Number</span>
+<span class="sd">    low : Number</span>
+<span class="sd">    high : Number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Number</span>
+<span class="sd">        `x` in the general case, but `low` if `x` is lower and `high` if `x` is higher.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; _crop(- 0.2)</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; _crop(0.5)</span>
+<span class="sd">        0.5</span>
+<span class="sd">        &gt;&gt;&gt; _crop(1.5)</span>
+<span class="sd">        1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">low</span><span class="p">),</span> <span class="n">high</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

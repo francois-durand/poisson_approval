@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Poisson Approval’s documentation! &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Poisson Approval" href="readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to Poisson Approval’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="welcome-to-poisson-approval-s-documentation">
+<h1>Welcome to Poisson Approval’s documentation!<a class="headerlink" href="#welcome-to-poisson-approval-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Poisson Approval</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_profile_noisy_discrete.html">ProfileNoisyDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_profile_noisy_discrete_more_options.html">ProfileNoisyDiscrete: More Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_tau_vector.html">TauVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_ternary_plots.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_binary_plots.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_probabilities.html">Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_iterables.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_more_classes_of_profiles.html">More Classes of Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorial_asymptotic_developments.html">Asymptotic Developments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/reference_utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authors.html#development-lead">Development Lead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authors.html#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="history.html#analysis-tools">0.27.0 (2020-11-11): Analysis tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#descriptive-statistics-of-the-ballots">0.26.0 (2020-06-26): Descriptive Statistics of the Ballots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#welfare-of-a-candidate">0.25.1 (2020-06-25): Welfare of a Candidate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#plots-for-convergence-frequency">0.24.0 (2020-03-29): Plots for Convergence Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#improve-iterated-voting-and-fictitious-play">0.23.0 (2020-03-29): Improve Iterated Voting and Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#binary-plots">0.22.0 (2020-03-22): Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#iterables-and-random-factories">0.21.0 (2020-03-12): Iterables and Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#symbolic-computation">0.20.0 (2020-03-03): Symbolic Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#mixed-strategies">0.19.0 (2020-02-27): Mixed Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#improved-ternary-plots">0.18.0 (2020-02-26): Improved Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#analyzed-strategies">0.17.0 (2020-02-24): Analyzed Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#more-flexible-initialization-of-profilenoisydiscrete">0.16.1 (2020-02-24): More Flexible Initialization of ProfileNoisyDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#profilenoisydiscrete">0.16.0 (2020-02-22): ProfileNoisyDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#weak-orders">0.15.0 (2020-02-20): Weak Orders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#flexible-initialization-of-iterated-voting-fictitious-play">0.14.0 (2020-02-16): Flexible Initialization of Iterated Voting / Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#ternary-plots">0.13.0 (2020-02-16): Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#generatorprofilehistogramsinglepeakeduniform">0.12.0 (2020-02-09): GeneratorProfileHistogramSinglePeakedUniform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#winning-frequencies-in-iterated-voting-fictitious-play">0.11.0 (2020-02-09): Winning frequencies in iterated voting / fictitious play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#profilediscrete-analyzed-strategies">0.10.0 (2020-02-09): ProfileDiscrete.analyzed_strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#plurality-and-anti-plurality">0.9.0 (2020-02-09): Plurality and Anti-plurality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#better-handling-of-edge-cases-in-bestresponse">0.8.1 (2020-02-04): Better Handling of Edge Cases in BestResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#fanatic-voters">0.8.0 (2020-01-30): Fanatic voters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#profilediscrete">0.7.0 (2020-01-30): ProfileDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#fictitious-play">0.6.0 (2020-01-29): Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#configure-codecov-and-improve-coverage">0.5.1 (2020-01-18): Configure Codecov and Improve Coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#sincere-voting-and-progressive-update-in-iterated-voting">0.5.0 (2020-01-11): Sincere Voting and Progressive Update in Iterated Voting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#add-image-distribution">0.4.0 (2020-01-08): Add <code class="docutils literal notranslate"><span class="pre">image_distribution</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#new-random-generators">0.3.0 (2020-01-08): New Random Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#fix-deployment-on-pypi">0.2.1 (2020-01-05): Fix Deployment on PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#add-tutorials-various-minor-improvements">0.2.0 (2020-01-05): Add Tutorials + Various Minor Improvements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#convert-all-the-documentation-to-numpy-format">0.1.1 (2019-12-24): Convert all the Documentation to NumPy Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#first-release-on-pypi">0.1.0 (2019-12-20): First release on PyPI</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="readme.html" class="btn btn-neutral float-right" title="Poisson Approval" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

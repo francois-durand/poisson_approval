@@ -1,0 +1,846 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>History &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Credits" href="authors.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#analysis-tools">0.27.0 (2020-11-11): Analysis tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#descriptive-statistics-of-the-ballots">0.26.0 (2020-06-26): Descriptive Statistics of the Ballots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#welfare-of-a-candidate">0.25.1 (2020-06-25): Welfare of a Candidate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plots-for-convergence-frequency">0.24.0 (2020-03-29): Plots for Convergence Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#improve-iterated-voting-and-fictitious-play">0.23.0 (2020-03-29): Improve Iterated Voting and Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#binary-plots">0.22.0 (2020-03-22): Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iterables-and-random-factories">0.21.0 (2020-03-12): Iterables and Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symbolic-computation">0.20.0 (2020-03-03): Symbolic Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mixed-strategies">0.19.0 (2020-02-27): Mixed Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#improved-ternary-plots">0.18.0 (2020-02-26): Improved Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analyzed-strategies">0.17.0 (2020-02-24): Analyzed Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#more-flexible-initialization-of-profilenoisydiscrete">0.16.1 (2020-02-24): More Flexible Initialization of ProfileNoisyDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#profilenoisydiscrete">0.16.0 (2020-02-22): ProfileNoisyDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#weak-orders">0.15.0 (2020-02-20): Weak Orders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flexible-initialization-of-iterated-voting-fictitious-play">0.14.0 (2020-02-16): Flexible Initialization of Iterated Voting / Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ternary-plots">0.13.0 (2020-02-16): Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generatorprofilehistogramsinglepeakeduniform">0.12.0 (2020-02-09): GeneratorProfileHistogramSinglePeakedUniform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#winning-frequencies-in-iterated-voting-fictitious-play">0.11.0 (2020-02-09): Winning frequencies in iterated voting / fictitious play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#profilediscrete-analyzed-strategies">0.10.0 (2020-02-09): ProfileDiscrete.analyzed_strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plurality-and-anti-plurality">0.9.0 (2020-02-09): Plurality and Anti-plurality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#better-handling-of-edge-cases-in-bestresponse">0.8.1 (2020-02-04): Better Handling of Edge Cases in BestResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fanatic-voters">0.8.0 (2020-01-30): Fanatic voters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#profilediscrete">0.7.0 (2020-01-30): ProfileDiscrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fictitious-play">0.6.0 (2020-01-29): Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-codecov-and-improve-coverage">0.5.1 (2020-01-18): Configure Codecov and Improve Coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sincere-voting-and-progressive-update-in-iterated-voting">0.5.0 (2020-01-11): Sincere Voting and Progressive Update in Iterated Voting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-image-distribution">0.4.0 (2020-01-08): Add <code class="docutils literal notranslate"><span class="pre">image_distribution</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-random-generators">0.3.0 (2020-01-08): New Random Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fix-deployment-on-pypi">0.2.1 (2020-01-05): Fix Deployment on PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-tutorials-various-minor-improvements">0.2.0 (2020-01-05): Add Tutorials + Various Minor Improvements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convert-all-the-documentation-to-numpy-format">0.1.1 (2019-12-24): Convert all the Documentation to NumPy Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#first-release-on-pypi">0.1.0 (2019-12-20): First release on PyPI</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>History</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/history.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="history">
+<h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis-tools">
+<h2>0.27.0 (2020-11-11): Analysis tools<a class="headerlink" href="#analysis-tools" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plot_distribution_scores</span></code>: CDF of the score of the winner, the challenger and the loser (conditionally
+on the convergence of fictitious play / iterated voting).</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">TernaryAxesSubplotPoisson.f_point_values_</span></code>: when a candidate heatmap has been drawn, this function gives
+access to the computed values.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">TauVector.print_magnitudes_order</span></code>: print the order of the magnitudes of the weak pivots.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">fictitious_play</span></code> and <code class="docutils literal notranslate"><span class="pre">iterated_voting</span></code>, in verbose mode, display also the order of the magnitudes of
+the weak pivots.</p></li>
+</ul>
+</div>
+<div class="section" id="descriptive-statistics-of-the-ballots">
+<h2>0.26.0 (2020-06-26): Descriptive Statistics of the Ballots<a class="headerlink" href="#descriptive-statistics-of-the-ballots" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">TauVector</span></code>:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_single_votes</span></code>: share of single votes, i.e. votes for one candidate only.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_double_votes</span></code>: share of double votes, i.e. votes for two candidates.</p></li>
+</ul>
+</li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">ProfileCardinal</span></code>:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_sincere_among_strategic_voters</span></code>: share of strategic voters that happen to cast a sincere ballot (when
+a strategy is given).</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_sincere_among_fanatic_voters</span></code>: share of fanatic voters that happen to cast a sincere ballot.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_sincere</span></code>: share of voters that happen to cast a sincere ballot (when a strategy is given). This
+takes sincere, fanatic and strategic voters into account.</p></li>
+</ul>
+</li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">Strategy</span></code>:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_single_votes</span></code> and <code class="docutils literal notranslate"><span class="pre">share_double_votes</span></code>: these shortcuts are defined when the strategy
+is defined with an embedded profile.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">share_sincere_among_strategic_voters</span></code> and <code class="docutils literal notranslate"><span class="pre">share_sincere</span></code>: these shortcuts are defined when the strategy
+is defined with an embedded profile, provided the profile is cardinal.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="welfare-of-a-candidate">
+<h2>0.25.1 (2020-06-25): Welfare of a Candidate<a class="headerlink" href="#welfare-of-a-candidate" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ProfileCardinal</span></code> now has attributes <code class="docutils literal notranslate"><span class="pre">d_candidate_welfare</span></code> and <code class="docutils literal notranslate"><span class="pre">d_candidate_relative_welfare</span></code>: for each
+candidate, it gives its welfare, i.e. its total utility. The relative welfare is normalized so that the candidate
+with maximal welfare has 1 and the one with minimal welfare has 0.</p></li>
+<li><p>The function <code class="docutils literal notranslate"><span class="pre">probability</span></code> now accepts a tuple of tests as inputs.</p></li>
+<li><p>Bug fix: the recent versions of the external package <code class="docutils literal notranslate"><span class="pre">scipy</span></code> changed the behavior of <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>.
+Since <code class="docutils literal notranslate"><span class="pre">PivotTrio</span></code> relies on this function, its behavior changed in an unexpected way and it sometimes lead to
+incorrect results, such as a positive magnitude. This version solves the problem: <code class="docutils literal notranslate"><span class="pre">PivotTrio</span></code> has regained its
+former (correct) behavior.</p></li>
+</ul>
+</div>
+<div class="section" id="plots-for-convergence-frequency">
+<h2>0.24.0 (2020-03-29): Plots for Convergence Frequency<a class="headerlink" href="#plots-for-convergence-frequency" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ternary_plot_convergence</span></code> and <code class="docutils literal notranslate"><span class="pre">binary_plot_convergence</span></code>: plot the convergence frequency, which is defined
+as the proportion of initializations where iterated voting or fictitious play lead to convergence within
+<code class="docutils literal notranslate"><span class="pre">n_max_episodes</span></code> iterations.</p></li>
+</ul>
+</div>
+<div class="section" id="improve-iterated-voting-and-fictitious-play">
+<h2>0.23.0 (2020-03-29): Improve Iterated Voting and Fictitious Play<a class="headerlink" href="#improve-iterated-voting-and-fictitious-play" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Random initialization of iterated voting and fictitious play:</p>
+<ul>
+<li><p>Add the option <code class="docutils literal notranslate"><span class="pre">'random_tau'</span></code>: a random tau-vector that is consistent with the voting rule.</p></li>
+<li><p>Add the option <code class="docutils literal notranslate"><span class="pre">'random_tau_undominated'</span></code>: a random tau-vector where each voter randomly uses an undominated
+ballot. Relies on the new method <code class="docutils literal notranslate"><span class="pre">Profile.random_tau_undominated</span></code>.</p></li>
+<li><p>Remove the option <code class="docutils literal notranslate"><span class="pre">'random_strategy'</span></code>: it had an unnatural behavior for Plurality and Anti-Plurality.
+Subsequently, remove also the method <code class="docutils literal notranslate"><span class="pre">Profile.random_strategy</span></code>.</p></li>
+</ul>
+</li>
+<li><p>In iterated voting and fictitious play, winning frequencies are computed from t=1 instead of t=0. The motivation is
+twofold. Firstly, if the result at initialization is essentially arbitrary and, for example, candidate <cite>a</cite> always
+wins afterwards, we consider it more natural to have a winning frequency of 1 for <cite>a</cite>. Secondly, when using the
+arithmetic average, the denominator is the number of steps, rather than the number of steps plus one. As a
+consequence, we updated the helper functions in order to account for this time translation:</p>
+<ul>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">one_over_t_plus_one</span></code> with <code class="docutils literal notranslate"><span class="pre">one_over_t</span></code>.</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">one_over_sqrt_t_plus_one</span></code> with <code class="docutils literal notranslate"><span class="pre">one_over_sqrt_t</span></code>.</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">one_over_log_t_plus_two</span></code> with <code class="docutils literal notranslate"><span class="pre">one_over_log_t_plus_one</span></code>.</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">one_over_log_log_t_plus_fifteen</span></code> with <code class="docutils literal notranslate"><span class="pre">one_over_log_log_t_plus_fourteen</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Fix a rare bug: in some tau-vectors, when computing the trio event, an offset was found greater than 1, whereas theory
+shows that it is lower than 1. This used to cause a collateral error when computing the best response with the
+offset method.</p></li>
+</ul>
+</div>
+<div class="section" id="binary-plots">
+<h2>0.22.0 (2020-03-22): Binary Plots<a class="headerlink" href="#binary-plots" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement <em>binary plots</em>, i.e. plots designed to study profiles based on two ranking with varying utilities. Cf. the
+corresponding tutorial.</p>
+<ul>
+<li><p>Intensity heat maps.</p></li>
+<li><p>Candidate heat maps.</p></li>
+<li><p>Annotate the Condorcet regions.</p></li>
+</ul>
+</li>
+<li><p>Utilities:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">d_candidate_ordinal_utility</span></code>: ordinal utility of a candidate for a given preference order.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">my_range</span></code>: similar to <code class="docutils literal notranslate"><span class="pre">range</span></code>, but works also for fractions.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">my_sign</span></code>: sign of a number. Return an integer in {-1, 0, 1}, unlike <code class="docutils literal notranslate"><span class="pre">np.sign</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="iterables-and-random-factories">
+<h2>0.21.0 (2020-03-12): Iterables and Random Factories<a class="headerlink" href="#iterables-and-random-factories" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add new iterables and random factories for profiles, tau-vectors and strategies. These iterables and random factories
+are very flexible: you can specify that some types have a fixed share, that only some types have a variable share,
+etc. Cf. the corresponding tutorials and the corresponding section in Reference.</p></li>
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">ExploreGridProfilesOrdinal</span></code> and <code class="docutils literal notranslate"><span class="pre">ExploreGridTaus</span></code>: their features are included in the new iterables.</p></li>
+<li><p>Remove all classes whose name began with <code class="docutils literal notranslate"><span class="pre">Generator</span></code>: their features are included in the new random factories.</p></li>
+<li><p>All the methods that had a parameter <code class="docutils literal notranslate"><span class="pre">generator</span></code> now have a parameter <code class="docutils literal notranslate"><span class="pre">factory</span></code> instead. This choice is due to
+the fact that the word “generator” has another meaning in Python, which could be misleading.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SimplexToProfile</span></code> works similarly to the new iterables and random factories. In particular it is now allowed to
+use the same type several times, for example in the fixed shares and in the variable shares.</p></li>
+<li><p>There is a new syntax option to define a <code class="docutils literal notranslate"><span class="pre">ProfileHistogram</span></code>, which is especially convenient for
+iterables and random factories.</p></li>
+<li><p>Utilities:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">iterator_integers_fixed_sum</span></code>: iterate over vectors of integers with a fixed sum.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">iterate_simplex_grid</span></code>: iterate over the points in the simplex, with rational coordinates of a given
+denominator.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">allowed_ballots</span></code>: allowed ballots in a voting rule.</p></li>
+</ul>
+</li>
+<li><p>Complete revision of the tutorials.</p></li>
+</ul>
+</div>
+<div class="section" id="symbolic-computation">
+<h2>0.20.0 (2020-03-03): Symbolic Computation<a class="headerlink" href="#symbolic-computation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Profile</span></code> and its subclasses, <code class="docutils literal notranslate"><span class="pre">TauVector</span></code>, <code class="docutils literal notranslate"><span class="pre">Asymptotic</span></code> and its constructors (such as
+<code class="docutils literal notranslate"><span class="pre">Asymptotic.poisson_value</span></code>, <code class="docutils literal notranslate"><span class="pre">Asymptotic.poisson_eq</span></code>, etc.) accept an optional argument <code class="docutils literal notranslate"><span class="pre">symbolic</span></code>. If False
+(default), then all computations are numeric as before. If True, then almost all computations are symbolic; the
+only exception is when the trio event can be evaluated only via the Dual Magnitude Theorem. Please note that:</p>
+<ul>
+<li><p>This feature relies on the external package <cite>sympy</cite> and works with its current version (1.5.1) but we cannot
+guarantee that it will still work with future versions of <cite>sympy</cite>.</p></li>
+<li><p>When activated, it slows downs the computation considerably. In particular, it is strongly advised not to use
+fictitious play or iterated voting in symbolic mode.</p></li>
+</ul>
+</li>
+<li><p>Equality and closeness tests:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Asymptotic.isclose</span></code> is renamed to <code class="docutils literal notranslate"><span class="pre">look_equal</span></code>: in numeric mode, it is still a closeness test, but in
+symbolic mode, it is an equality test.</p></li>
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">StrategyThreshold.isclose</span></code>: this method was not used anymore.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Event</span></code> and its subclasses take a <code class="docutils literal notranslate"><span class="pre">TauVector</span></code> as input, instead of the dictionary of its coefficients. Firstly, it
+speeds up computation. Secondly, it avoids a minor bug in symbolic mode.</p></li>
+<li><p>Utilities:</p>
+<ul>
+<li><p>Add the classes <code class="docutils literal notranslate"><span class="pre">ComputationEngine</span></code>, <code class="docutils literal notranslate"><span class="pre">ComputationEngineNumeric</span></code> and <code class="docutils literal notranslate"><span class="pre">ComputationEngineSymbolic</span></code>, defining
+how some mathematical operations are performed.</p></li>
+<li><p>Add the function <code class="docutils literal notranslate"><span class="pre">computation_engine</span></code>: choose the computation engine.</p></li>
+<li><p>Remove the utility function <code class="docutils literal notranslate"><span class="pre">barycenter</span></code> and include it as a method in <code class="docutils literal notranslate"><span class="pre">ComputationEngine</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="mixed-strategies">
+<h2>0.19.0 (2020-02-27): Mixed Strategies<a class="headerlink" href="#mixed-strategies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">StrategyThreshold</span></code>: for each ranking, there is a <code class="docutils literal notranslate"><span class="pre">threshold</span></code> (like before) and an optional <code class="docutils literal notranslate"><span class="pre">ratio_optimistic</span></code>.
+Voters whose utility for their second candidate is equal to the threshold of the strategy are split: a share
+<code class="docutils literal notranslate"><span class="pre">ratio_optimistic</span></code> behave as if the threshold was higher (in Approval, they vote only for their top candidate)
+and the rest behave as if the threshold was lower (in Approval, they vote for their two first candidates). Hence the
+strategy is mixed. Note that this only makes a difference when the profile has “atoms” (concentration of voters on a
+single utility point); currently, this is only the case in <code class="docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code>.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code>, fictitious play and iterated voting consider that the responses use a ratio of optimistic
+voters equal to 1/2.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ProfileCardinalContinuous</span></code>: this abstract class is a child of <code class="docutils literal notranslate"><span class="pre">ProfileCardinal</span></code> and a parent class
+of <code class="docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code> and <code class="docutils literal notranslate"><span class="pre">ProfileHistogram</span></code>. In these profiles, the ratios of optimistic voters are not
+important because there is no “atom”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GeneratorStrategyThresholdUniform</span></code>: for each ranking, the ratio of optimistic voters is also chosen uniformly.</p></li>
+<li><p>The utility <code class="docutils literal notranslate"><span class="pre">DictPrintingInOrderIgnoringNone</span></code> now also ignores values that are iterables containing only None.</p></li>
+</ul>
+</div>
+<div class="section" id="improved-ternary-plots">
+<h2>0.18.0 (2020-02-26): Improved Ternary Plots<a class="headerlink" href="#improved-ternary-plots" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Nicer colors than before. For example, an equal mix of candidate <cite>a</cite> (red) and <cite>b</cite> (green) was brownish, whereas it
+is now yellow. Similarly, a mix of the three candidates (red, green, blue) was gray, and it is now white. Etc.</p></li>
+<li><p>Improved ternary plot shortcuts <code class="docutils literal notranslate"><span class="pre">ternary_plot_n_equilibria</span></code>, <code class="docutils literal notranslate"><span class="pre">ternary_plot_winners_at_equilibrium</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ternary_plot_winning_frequencies</span></code>:</p>
+<ul>
+<li><p>New versions of these functions with more options. Cf. the tutorial on ternary plots.</p></li>
+<li><p>Add class <code class="docutils literal notranslate"><span class="pre">SimplexToProfile</span></code> to map a point of the simplex to a profile. This includes the possibility of
+having fixed additional voters.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TernaryAxesSubplotPoisson</span></code>:</p>
+<ul>
+<li><p>Add methods <code class="docutils literal notranslate"><span class="pre">legend_color_patches</span></code> and <code class="docutils literal notranslate"><span class="pre">legend_palette</span></code>: two different styles of legends for candidate
+heat maps.</p></li>
+<li><p>The method <code class="docutils literal notranslate"><span class="pre">heatmap_candidates</span></code> has a new parameter <code class="docutils literal notranslate"><span class="pre">legend_style</span></code>.</p></li>
+<li><p>The method <code class="docutils literal notranslate"><span class="pre">annotate_condorcet</span></code> has a new parameter <code class="docutils literal notranslate"><span class="pre">d_order_fixed_share</span></code> to account for fixed additional
+voters.</p></li>
+<li><p>In several methods, the old parameters <code class="docutils literal notranslate"><span class="pre">color_a</span></code>, <code class="docutils literal notranslate"><span class="pre">color_b</span></code> and <code class="docutils literal notranslate"><span class="pre">color_c</span></code> are suppressed, because
+the colors for <cite>a</cite>, <cite>b</cite>, <cite>c</cite> are not modifiable anymore.</p></li>
+</ul>
+</li>
+<li><p>Random strategies:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">GeneratorStrategyTwelveUniform</span></code>.</p></li>
+<li><p>Add method <code class="docutils literal notranslate"><span class="pre">Profile.random_strategy</span></code>: return a random strategy that is suitable for the profile (e.g. an ordinal
+strategy for an ordinal profile, etc.).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code> and <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code> now accept the parameter
+<code class="docutils literal notranslate"><span class="pre">init='random'</span></code> for an initialization with a random strategy.</p></li>
+</ul>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Profile.order_and_label</span></code>: order and label of a discrete type. This auxiliary function is used for the ternary
+plots.</p></li>
+</ul>
+</div>
+<div class="section" id="analyzed-strategies">
+<h2>0.17.0 (2020-02-24): Analyzed Strategies<a class="headerlink" href="#analyzed-strategies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Profile</span></code> and its subclasses:</p>
+<ul>
+<li><p>The method <code class="docutils literal notranslate"><span class="pre">analyzed_strategies</span></code> now inputs an iterator of strategies: it perform an analysis on all the
+strategies given by this iterator.</p></li>
+<li><p>Add pre-defined iterators of strategies:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">strategies_ordinal</span></code> is defined for any profile.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strategies_pure</span></code> is defined for any discrete profile, such as <code class="docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code> or <code class="docutils literal notranslate"><span class="pre">ProfileTwelve</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strategies_group</span></code> is defined for any profile where a reasonable notion of “group” is defined, such as
+<code class="docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code> or <code class="docutils literal notranslate"><span class="pre">ProfileHistogram</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Add the attributes <code class="docutils literal notranslate"><span class="pre">analyzed_strategies_ordinal</span></code>, <code class="docutils literal notranslate"><span class="pre">analyzed_strategies_pure</span></code>, <code class="docutils literal notranslate"><span class="pre">analyzed_strategies_group</span></code>.
+Not only do they provide shortcuts combining <code class="docutils literal notranslate"><span class="pre">analyzed_strategies</span></code> with the relevant iterator, but they also have
+the added value of being cached properties: if the user accesses the same attribute several times, it is only
+computed once.</p></li>
+<li><p>Remove the attribute <code class="docutils literal notranslate"><span class="pre">winners_at_equilibrium</span></code>. Instead, the corresponding attribute is added to the class
+<code class="docutils literal notranslate"><span class="pre">AnalyzedStrategies</span></code>. This gives more flexibility because it is defined for any <code class="docutils literal notranslate"><span class="pre">AnalyzedStrategies</span></code> object.</p></li>
+</ul>
+</li>
+<li><p>The consequences on ternary plots are temporary and are likely to change in the near future, with a new release
+focusing on improved ternary plots.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ternary_plot_winners_at_equilibrium</span></code> becomes <code class="docutils literal notranslate"><span class="pre">ternary_plot_winners_at_equilibrium_ordinal</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ternary_plot_n_bloc_equilibria</span></code> becomes <code class="docutils literal notranslate"><span class="pre">ternary_plot_n_equilibria_ordinal</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Strategy.deepcopy_with_attached_profile</span></code> now also copies the voting rule of the given profile.</p></li>
+</ul>
+</div>
+<div class="section" id="more-flexible-initialization-of-profilenoisydiscrete">
+<h2>0.16.1 (2020-02-24): More Flexible Initialization of ProfileNoisyDiscrete<a class="headerlink" href="#more-flexible-initialization-of-profilenoisydiscrete" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code>: add a parameter <code class="docutils literal notranslate"><span class="pre">noise</span></code> that enables not to mention explicitly the value of the noise for
+each group of voters. This is especially convenient in the quite common case where all groups of voters have the
+same noise.</p></li>
+</ul>
+</div>
+<div class="section" id="profilenoisydiscrete">
+<h2>0.16.0 (2020-02-22): ProfileNoisyDiscrete<a class="headerlink" href="#profilenoisydiscrete" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code>: a profile with a discrete distribution of voters, with noise.</p></li>
+</ul>
+</div>
+<div class="section" id="weak-orders">
+<h2>0.15.0 (2020-02-20): Weak Orders<a class="headerlink" href="#weak-orders" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement weak orders:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Profile</span></code> now has attributes <code class="docutils literal notranslate"><span class="pre">d_weak_order_share</span></code>, <code class="docutils literal notranslate"><span class="pre">support_in_weak_orders</span></code>, <code class="docutils literal notranslate"><span class="pre">contains_weak_orders</span></code>,
+<code class="docutils literal notranslate"><span class="pre">contains_rankings</span></code>, <code class="docutils literal notranslate"><span class="pre">d_ballot_weak_voters_sincere</span></code>, <code class="docutils literal notranslate"><span class="pre">d_ballot_weak_voters_fanatic</span></code>.</p></li>
+<li><p>Subclasses of Profile have a parameter <code class="docutils literal notranslate"><span class="pre">d_weak_order_share</span></code>.</p></li>
+<li><p>Remove methods <code class="docutils literal notranslate"><span class="pre">ProfileOrdinal.support</span></code> and <code class="docutils literal notranslate"><span class="pre">ProfileOrdinal.is_generic</span></code>: with the presence of weak orders,
+their names had become misleading, whereas <code class="docutils literal notranslate"><span class="pre">support_in_rankings</span></code> and <code class="docutils literal notranslate"><span class="pre">is_generic_in_ranking</span></code> is non-ambiguous.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TernaryAxesSubplotPoisson.annotate_condorcet</span></code> now also works with weak orders. However, it may not work on
+all distributions because it relies on the external package <cite>shapely</cite>. If there are only rankings, it should still
+work anyway.</p></li>
+<li><p>Add utilities <code class="docutils literal notranslate"><span class="pre">is_weak_order</span></code>, <code class="docutils literal notranslate"><span class="pre">is_lover</span></code>, <code class="docutils literal notranslate"><span class="pre">is_hater</span></code>, <code class="docutils literal notranslate"><span class="pre">sort_weak_order</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Add shortcut functions for some common ternary plots:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ternary_plot_n_bloc_equilibria</span></code>: number of bloc equilibria.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ternary_plot_winners_at_equilibrium</span></code>: winners at equilibrium.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ternary_plot_winning_frequencies</span></code>: winning frequencies in fictitious play.</p></li>
+</ul>
+</li>
+<li><p>Methods <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code> and <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code> have a new parameter
+<code class="docutils literal notranslate"><span class="pre">winning_frequency_update_ratio</span></code>, indicating how the winning frequencies are computed in case of non-convergence.
+Note however that in case of convergence to a periodical orbit (for iterated voting), it remains the arithmetic
+average anyway.</p></li>
+<li><p>Add utility <code class="docutils literal notranslate"><span class="pre">my_division</span></code>: division of two numbers, trying to be exact if it is reasonable.</p></li>
+</ul>
+</div>
+<div class="section" id="flexible-initialization-of-iterated-voting-fictitious-play">
+<h2>0.14.0 (2020-02-16): Flexible Initialization of Iterated Voting / Fictitious Play<a class="headerlink" href="#flexible-initialization-of-iterated-voting-fictitious-play" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Instead of a parameter <code class="docutils literal notranslate"><span class="pre">strategy_ini</span></code>, the methods <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code> now have a parameter <code class="docutils literal notranslate"><span class="pre">init</span></code> that can be either a strategy (like before), or a
+tau-vector, or a string <code class="docutils literal notranslate"><span class="pre">'sincere'</span></code> or <code class="docutils literal notranslate"><span class="pre">'fanatic'</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="ternary-plots">
+<h2>0.13.0 (2020-02-16): Ternary Plots<a class="headerlink" href="#ternary-plots" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Draw plots on the simplex where points have 3 coordinates summing to 1. Cf. the corresponding tutorial.</p>
+<ul>
+<li><p>Intensity heat maps.</p></li>
+<li><p>Candidate heat maps.</p></li>
+<li><p>Annotate the Condorcet regions.</p></li>
+</ul>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Profile.winners_at_equilibrium</span></code>: for the classes of profile that have a method <code class="docutils literal notranslate"><span class="pre">analyzed_strategies</span></code>,
+give the set of winners at equilibrium.</p></li>
+</ul>
+</div>
+<div class="section" id="generatorprofilehistogramsinglepeakeduniform">
+<h2>0.12.0 (2020-02-09): GeneratorProfileHistogramSinglePeakedUniform<a class="headerlink" href="#generatorprofilehistogramsinglepeakeduniform" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">GeneratorProfileHistogramSinglePeakedUniform</span></code>: a generator of single-peaked histogram-profiles following
+the uniform distribution.</p></li>
+<li><p>Add examples of functions to be used as update ratios for <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code>:
+<code class="docutils literal notranslate"><span class="pre">one_over_t_plus_one</span></code>, <code class="docutils literal notranslate"><span class="pre">one_over_sqrt_t_plus_one</span></code>, <code class="docutils literal notranslate"><span class="pre">one_over_log_t_plus_two</span></code>,
+<code class="docutils literal notranslate"><span class="pre">one_over_log_log_t_plus_fifteen</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="winning-frequencies-in-iterated-voting-fictitious-play">
+<h2>0.11.0 (2020-02-09): Winning frequencies in iterated voting / fictitious play<a class="headerlink" href="#winning-frequencies-in-iterated-voting-fictitious-play" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code> and <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code> now also output the winning frequency of
+each candidate (limit frequency in case of convergence, frequency over the history otherwise).</p></li>
+<li><p>New utilities:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">candidates_to_d_candidate_probability</span></code>: convert a set of candidates to a dictionary of probabilities (random
+tie-break)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">candidates_to_probabilities</span></code>: convert a set of candidates to an array of probabilities (random tie-break).</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">array_to_d_candidate_value</span></code>: convert an array to a dictionary of candidates and values.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">d_candidate_value_to_array</span></code>: convert a dictionary of candidates and values to an array.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="profilediscrete-analyzed-strategies">
+<h2>0.10.0 (2020-02-09): ProfileDiscrete.analyzed_strategies<a class="headerlink" href="#profilediscrete-analyzed-strategies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement <code class="docutils literal notranslate"><span class="pre">ProfileDiscrete.analyzed_strategies</span></code>: exhaustive analysis of all pure strategies of the profile.</p></li>
+</ul>
+</div>
+<div class="section" id="plurality-and-anti-plurality">
+<h2>0.9.0 (2020-02-09): Plurality and Anti-plurality<a class="headerlink" href="#plurality-and-anti-plurality" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement Plurality and Anti-plurality (cf. the corresponding tutorial).</p></li>
+<li><p>Python 3.5 is not officially supported anymore. However, in practice, the package should still essentially work with
+Python 3.5, the only notable difference being the order in which the dictionaries are printed.</p></li>
+<li><p>New utilities:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ballot_two</span></code>: ballot for the second candidate of a ranking (used for Plurality).</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ballot_one_three</span></code>: ballot against the second candidate of a ranking (used for Anti-plurality).</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ballot_low_u</span></code> and <code class="docutils literal notranslate"><span class="pre">ballot_high_u</span></code>: the ballot chosen by the voters who have a low (resp. high) utility
+for their middle candidate, depending on the voting rule.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">product_dict</span></code>: Cartesian product for a dictionary of iterables.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">DictPrintingInOrderIgnoringNone</span></code>: dictionary that prints in the order of the keys, ignoring value None.</p></li>
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">UtilCache</span></code> module, add <code class="docutils literal notranslate"><span class="pre">property_deleting_cache</span></code>: define a property that deletes the cache when set or
+deleted. This is used for parameters like <code class="docutils literal notranslate"><span class="pre">ratio_sincere</span></code>, <code class="docutils literal notranslate"><span class="pre">voting_rule</span></code>, etc.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="better-handling-of-edge-cases-in-bestresponse">
+<h2>0.8.1 (2020-02-04): Better Handling of Edge Cases in BestResponse<a class="headerlink" href="#better-handling-of-edge-cases-in-bestresponse" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BestResponse</span></code>: the focus of this release is to correct rare bugs that used to happen when some offsets are very
+close to 1.</p>
+<ul>
+<li><p>API change: <code class="docutils literal notranslate"><span class="pre">BestResponse</span></code> now takes as parameters the tau-vector and the ranking, instead of all the events
+that are used for the computation.</p></li>
+<li><p>Exchanged the justifications <code class="docutils literal notranslate"><span class="pre">'Easy</span> <span class="pre">vs</span> <span class="pre">difficult</span> <span class="pre">pivot'</span></code> and <code class="docutils literal notranslate"><span class="pre">'Difficult</span> <span class="pre">vs</span> <span class="pre">easy</span> <span class="pre">pivot'</span></code> (their usages
+were switched, even if the result itself was correct).</p></li>
+<li><p>Use the asymptotic method only when there are two consecutive zeros in the “compass diagram” of the tau-vector
+(instead of: whenever it gives a result). The motivation is that the asymptotic method may rely on events that rely
+more on numerical approximation than the limit pivot theorem approach.</p></li>
+<li><p>To determine whether pivots are easy or difficult, we rely on expected scores in the duo events, instead of the
+pseudo-offsets of the trio. The motivation is that in some cases, the trio is computed with a numerical optimizer
+that relies more on numerical approximation than the duo events, which use only basic operations like addition,
+multiplication, etc. In the rare cases where the two methods differ, the latter is thus more reliable.</p></li>
+<li><p>Add a sub-algorithm of the “Offset method”, called “Offset method with trio
+approximation correction”. This is used in some rare cases where both pivots are difficult, but the numeric
+approximations of the trio event lead to an offset that is equal or even slightly greater than 1 (which is abnormal
+and leads to infinite geometric sums). In those cases, we now consider that the offset is lower and infinitely close
+to 1.</p></li>
+<li><p>Corrected a bug in the asymptotic method that could happen when the two personalized pivots had very close
+magnitudes. This uses the correction of <code class="docutils literal notranslate"><span class="pre">Asymptotic.limit</span></code> mentioned below.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TauVector</span></code>: added the attribute <code class="docutils literal notranslate"><span class="pre">has_two_consecutive_zeros</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Event</span></code>: now computes the pseudo-offsets, e.g. <code class="docutils literal notranslate"><span class="pre">psi_a</span></code>, <code class="docutils literal notranslate"><span class="pre">psi_ab</span></code>, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Asymptotic</span></code>: handles some edge cases more nicely.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">__str__</span></code> displays a coefficient as 0, 1 or -1 only if it is equal to that value. Close is not enough.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code> does not use closeness to 0. It is not its role to decide what coefficients are negligible in the context.
+Only operations like multiplication are allowed to use closeness: for example, if <code class="docutils literal notranslate"><span class="pre">mu_1</span></code> and <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">mu_2</span></code> are
+relatively close, the multiplication operator is allowed to decide that <code class="docutils literal notranslate"><span class="pre">mu_1</span> <span class="pre">+</span> <span class="pre">mu_2</span></code> is equal to 0.</p></li>
+<li><p>In multiplication, when the two magnitudes are close, the resulting magnitude is now always equal to the maximum.
+The same applies for the resulting <cite>nu</cite> when the <cite>nu</cite>’s are also equal.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cached_property</span></code>: corrected a bug. In the case of nested cached properties, the inner one was sometimes not
+recorded in cache. It did not lead to incorrect results but slowed down the program.</p></li>
+</ul>
+</div>
+<div class="section" id="fanatic-voters">
+<h2>0.8.0 (2020-01-30): Fanatic voters<a class="headerlink" href="#fanatic-voters" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement the notion of fanatic voting, a variant of sincere voting: a given ratio of voters vote for their top
+candidate only. This is implemented for all subclasses of <code class="docutils literal notranslate"><span class="pre">Profile</span></code>.</p></li>
+<li><p>The utility <code class="docutils literal notranslate"><span class="pre">barycenter</span></code> now accepts iterables.</p></li>
+<li><p>Corrected bug: <code class="docutils literal notranslate"><span class="pre">Profile.standardized_version</span></code> now takes into account the auxiliary parameters like
+<code class="docutils literal notranslate"><span class="pre">ratio_sincere</span></code>, <code class="docutils literal notranslate"><span class="pre">well_informed_voters</span></code>, etc.</p></li>
+</ul>
+</div>
+<div class="section" id="profilediscrete">
+<h2>0.7.0 (2020-01-30): ProfileDiscrete<a class="headerlink" href="#profilediscrete" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code>: a profile with a discrete distribution of voters.</p></li>
+<li><p>Subclasses of <code class="docutils literal notranslate"><span class="pre">Profile</span></code>: better handling of the additional parameters like <code class="docutils literal notranslate"><span class="pre">well_informed_voters</span></code> or
+<code class="docutils literal notranslate"><span class="pre">ratio_sincere</span></code>. In the conversions to string (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">repr</span></code>), they are now mentioned. They are also used in
+the equality tests between two profiles.</p></li>
+</ul>
+</div>
+<div class="section" id="fictitious-play">
+<h2>0.6.0 (2020-01-29): Fictitious Play<a class="headerlink" href="#fictitious-play" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code>, where the update ratios of the perceived tau-vector and the actual
+tau-vector can be functions of the time. It is also faster that <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code>, but can
+not detect cycles (only convergence).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting_taus</span></code> is renamed to <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code>. It has been generalized
+by implementing a notion of perceived tau-vector, like for <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play</span></code>. The syntax has been
+modified in consequence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting_strategies</span></code> is deprecated and suppressed.</p></li>
+<li><p>Iterated voting and fictitious play do not need a <code class="docutils literal notranslate"><span class="pre">StrategyThreshold</span></code> as initial strategy, but any strategy that is
+consistent with the profile subclass. For example, with <code class="docutils literal notranslate"><span class="pre">ProfileTwelve</span></code>, you can use a <code class="docutils literal notranslate"><span class="pre">StrategyTwelve</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Strategy.profile</span></code> is now a property that can be reassigned after the creation of the object.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Strategy.deepcopy_with_attached_profile</span></code>: make a deep copy and attach a given profile.</p></li>
+<li><p>Add the utility <code class="docutils literal notranslate"><span class="pre">to_callable</span></code>: convert an object to a callable (making it a constant function if it is not
+callable already).</p></li>
+</ul>
+</div>
+<div class="section" id="configure-codecov-and-improve-coverage">
+<h2>0.5.1 (2020-01-18): Configure Codecov and Improve Coverage<a class="headerlink" href="#configure-codecov-and-improve-coverage" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Configure Codecov.</p></li>
+<li><p>Reach 100% coverage for this version.</p></li>
+</ul>
+</div>
+<div class="section" id="sincere-voting-and-progressive-update-in-iterated-voting">
+<h2>0.5.0 (2020-01-11): Sincere Voting and Progressive Update in Iterated Voting<a class="headerlink" href="#sincere-voting-and-progressive-update-in-iterated-voting" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>In iterated voting, implement the possibility to move only <em>progressively</em> towards the best response:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting_taus</span></code>: at each iteration, a given ratio of voters update their ballot.</p></li>
+<li><p>Replace the former method <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting</span></code> by <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting_strategies</span></code>:
+as in former versions, at each iteration, the threshold utility of each ranking’s strategy is moved in the
+direction of the best response’s threshold utility. The method now returns a cycle of tau-vectors and the
+corresponding cycle of best response strategies, in order to be consistent with
+<code class="docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting_taus</span></code>.</p></li>
+<li><p>Add the utility <code class="docutils literal notranslate"><span class="pre">barycenter</span></code>: compute a barycenter while respecting the type of one input if the other input has
+weight 0.</p></li>
+<li><p>Accelerate the algorithm used in iterated voting.</p></li>
+</ul>
+</li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">ProfileCardinal</span></code>, add the possibility of partial sincere voting:</p>
+<ul>
+<li><p>Add parameter <code class="docutils literal notranslate"><span class="pre">ratio_sincere</span></code>: ratio of sincere voters.</p></li>
+<li><p>Add property <code class="docutils literal notranslate"><span class="pre">tau_sincere</span></code>: the tau-vector if all voters vote sincerely.</p></li>
+<li><p>The former method <code class="docutils literal notranslate"><span class="pre">tau</span></code> is renamed <code class="docutils literal notranslate"><span class="pre">tau_strategic</span></code>: the tau_vector if all voters vote strategically.</p></li>
+<li><p>The new method <code class="docutils literal notranslate"><span class="pre">tau</span></code> takes both sincere and strategic voting into account.</p></li>
+<li><p>The method <code class="docutils literal notranslate"><span class="pre">is_equilibrium</span></code> has a new implementation to take this feature into account.</p></li>
+</ul>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">TauVector.isclose</span></code>: whether the tau-vector is close to another tau-vector (in the sense of
+<code class="docutils literal notranslate"><span class="pre">math.isclose</span></code>). This method is used by the new version of <code class="docutils literal notranslate"><span class="pre">ProfileCardinal.is_equilibrium</span></code>.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Profile.best_responses_to_strategy</span></code>: convert a dictionary of best responses to a <code class="docutils literal notranslate"><span class="pre">StrategyThreshold</span></code> that
+mentions only the rankings that are present in the profile.</p></li>
+<li><p>In random generators of profiles (<code class="docutils literal notranslate"><span class="pre">GeneratorProfileOrdinalUniform</span></code>, <code class="docutils literal notranslate"><span class="pre">GeneratorProfileOrdinalGridUniform</span></code>,
+<code class="docutils literal notranslate"><span class="pre">GeneratorProfileOrdinalVariations</span></code>, <code class="docutils literal notranslate"><span class="pre">GeneratorProfileHistogramUniform</span></code>): instead of having explicit arguments
+like <code class="docutils literal notranslate"><span class="pre">well_informed_voters</span></code> or <code class="docutils literal notranslate"><span class="pre">ratio_sincere</span></code>, there are <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> that are directly passed to the
+<code class="docutils literal notranslate"><span class="pre">__init__</span></code> of the relevant Profile subclass.</p></li>
+<li><p>Update the tutorials with these new features.</p></li>
+</ul>
+</div>
+<div class="section" id="add-image-distribution">
+<h2>0.4.0 (2020-01-08): Add <code class="docutils literal notranslate"><span class="pre">image_distribution</span></code><a class="headerlink" href="#add-image-distribution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">image_distribution</span></code>: estimate the distribution of <code class="docutils literal notranslate"><span class="pre">f(something)</span></code> for a random <code class="docutils literal notranslate"><span class="pre">something</span></code>.</p></li>
+<li><p>Update the tutorial on mass simulations with this new feature.</p></li>
+</ul>
+</div>
+<div class="section" id="new-random-generators">
+<h2>0.3.0 (2020-01-08): New Random Generators<a class="headerlink" href="#new-random-generators" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add new random generators:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">GeneratorExamples</span></code>: run another generator until the generated object meets a given test.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GeneratorStrategyOrdinalUniform</span></code>: draw a StrategyOrdinal uniformly.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GeneratorProfileOrdinalGridUniform</span></code>: draw a ProfileOrdinal uniformly on a grid of rational numbers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GeneratorTauVectorGridUniform</span></code>: draw a TauVector uniformly on a grid of rational numbers.</p></li>
+</ul>
+</li>
+<li><p>Utilities:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">rand_integers_fixed_sum</span></code>: draw an array of integers with a given sum.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">rand_simplex_grid</span></code>: draw a random point in the simplex, with rational coordinates of a given denominator.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">probability</span></code>: allow for a tuple of generators.</p></li>
+</ul>
+</li>
+<li><p>Tutorials:</p>
+<ul>
+<li><p>Add a tutorial on asymptotic developments.</p></li>
+<li><p>Update the tutorial on mass simulations with the new features.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="fix-deployment-on-pypi">
+<h2>0.2.1 (2020-01-05): Fix Deployment on PyPI<a class="headerlink" href="#fix-deployment-on-pypi" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Relaunch deployment.</p></li>
+</ul>
+</div>
+<div class="section" id="add-tutorials-various-minor-improvements">
+<h2>0.2.0 (2020-01-05): Add Tutorials + Various Minor Improvements<a class="headerlink" href="#add-tutorials-various-minor-improvements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">GeneratorProfileStrategyThreshold</span></code>.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">ProfileHistogram.plot_cdf</span></code>.</p></li>
+<li><p>Modify <code class="docutils literal notranslate"><span class="pre">masks_distribution</span></code>: remove the trailing zeros. This has the same impact on
+<code class="docutils literal notranslate"><span class="pre">ProfileOrdinal.distribution_equilibria</span></code>.</p></li>
+<li><p>Modify <code class="docutils literal notranslate"><span class="pre">NiceStatsProfileOrdinal.plot_cutoff</span></code>: center the textual indications.</p></li>
+<li><p>Replace all notations <code class="docutils literal notranslate"><span class="pre">r</span></code> with <code class="docutils literal notranslate"><span class="pre">profile</span></code> and <code class="docutils literal notranslate"><span class="pre">sigma</span></code> with <code class="docutils literal notranslate"><span class="pre">strategy</span></code>.</p></li>
+<li><p>Add tutorials.</p></li>
+</ul>
+</div>
+<div class="section" id="convert-all-the-documentation-to-numpy-format">
+<h2>0.1.1 (2019-12-24): Convert all the Documentation to NumPy Format<a class="headerlink" href="#convert-all-the-documentation-to-numpy-format" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Convert all the documentation to NumPy format, making it more readable in plain text.</p></li>
+</ul>
+</div>
+<div class="section" id="first-release-on-pypi">
+<h2>0.1.0 (2019-12-20): First release on PyPI<a class="headerlink" href="#first-release-on-pypi" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>First release on PyPI.</p></li>
+<li><p>Implement only the case of 3 candidates.</p></li>
+<li><p>Deal with ordinal or cardinal profiles.</p></li>
+<li><p>Compute the asymptotic developments of the probability of pivot events when the number of players tends to infinity.</p></li>
+<li><p>Compute the best response to a given tau-vector.</p></li>
+<li><p>Explore automatically a grid of ordinal profiles or a grid of tau-vectors.</p></li>
+<li><p>Perform Monte-Carlo experiments on profiles or tau-vectors.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="authors.html" class="btn btn-neutral float-left" title="Credits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

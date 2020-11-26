@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.best_response.BestResponseApproval &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.best_response.BestResponseApproval</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.best_response.BestResponseApproval</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">poisson_approval.best_response.BestResponse</span> <span class="kn">import</span> <span class="n">BestResponse</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+
+<div class="viewcode-block" id="BestResponseApproval"><a class="viewcode-back" href="../../../reference/reference_best_response/reference_best_response_approval.html#poisson_approval.BestResponseApproval">[docs]</a><span class="k">class</span> <span class="nc">BestResponseApproval</span><span class="p">(</span><span class="n">BestResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Best response for a given ordinal type of voter in Approval voting.</span>
+
+<span class="sd">    The main objective of this class is to compute :attr:`threshold_utility`.</span>
+
+<span class="sd">    It also provides the string :attr:`justification`, indicating which sub-algorithm was used. Nowadays, possible</span>
+<span class="sd">    values are ``&#39;Asymptotic method&#39;``, ``&#39;Simplified asymptotic method&#39;``, ``&#39;Easy vs difficult pivot&#39;``,</span>
+<span class="sd">    ``&#39;Difficult vs easy pivot&#39;``, ``&#39;Offset method&#39;``, ``&#39;Offset method with trio approximation correction&#39;``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Cf. :class:`BestResponse`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Cf. :class:`BestResponse`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ASYMPTOTIC</span> <span class="o">=</span> <span class="s1">&#39;Asymptotic method&#39;</span>
+    <span class="n">ASYMPTOTIC_SIMPLIFIED</span> <span class="o">=</span> <span class="s1">&#39;Simplified asymptotic method&#39;</span>
+    <span class="n">EASY_VS_DIFFICULT</span> <span class="o">=</span> <span class="s1">&#39;Easy vs difficult pivot&#39;</span>
+    <span class="n">DIFFICULT_VS_EASY</span> <span class="o">=</span> <span class="s1">&#39;Difficult vs easy pivot&#39;</span>
+    <span class="n">OFFSET_METHOD</span> <span class="o">=</span> <span class="s1">&#39;Offset method&#39;</span>
+    <span class="n">OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION</span> <span class="o">=</span> <span class="s1">&#39;Offset method with trio approximation correction&#39;</span>
+
+    <span class="n">voting_rule</span> <span class="o">=</span> <span class="n">APPROVAL</span>
+
+    <span class="c1"># =======</span>
+    <span class="c1"># Results</span>
+    <span class="c1"># =======</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">results_asymptotic_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;tuple (threshold_utility, justification) : Results according to the asymptotic method. Cf.</span>
+<span class="sd">        :attr:`threshold_utility` and :attr:`justification`. The threshold utility may be NaN, because this method is</span>
+<span class="sd">        not always sufficient.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(((</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pivot_tij</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio_1t</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio_2t</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pivot_tij</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_tjk</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio_1t</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio_2t</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="p">))</span><span class="o">.</span><span class="n">limit</span><span class="p">)</span>
+        <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ASYMPTOTIC</span>
+        <span class="k">return</span> <span class="n">threshold_utility</span><span class="p">,</span> <span class="n">justification</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">results_limit_pivot_theorem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;tuple (threshold_utility, justification) : Results according to the limit pivot theorem.</span>
+<span class="sd">        Cf. :attr:`threshold_utility` and :attr:`justification`. If the tau-vector has two consecutive zeros, the</span>
+<span class="sd">        theorem does not apply and this method returns ``nan, &#39;&#39;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="o">.</span><span class="n">has_two_consecutive_zeros</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_ij_easy_or_tight</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_jk_easy_or_tight</span><span class="p">:</span>
+            <span class="c1"># Both pivots are easy =&gt; We can forget the trios.</span>
+            <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">(((</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pivot_tij</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pivot_tij</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_tjk</span><span class="o">.</span><span class="n">asymptotic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">))</span><span class="o">.</span><span class="n">limit</span><span class="p">)</span>
+            <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ASYMPTOTIC_SIMPLIFIED</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_ij_easy_or_tight</span><span class="p">:</span>
+            <span class="c1"># ... but pivot jk is difficult.</span>
+            <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">EASY_VS_DIFFICULT</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_jk_easy_or_tight</span><span class="p">:</span>
+            <span class="c1"># ... but pivot ij is difficult.</span>
+            <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFFICULT_VS_EASY</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Both pivots are difficult =&gt; offset method.</span>
+            <span class="c1"># Due to approximations in trio event, psi_k and psi_i may exceptionally be greater than 1 (whereas</span>
+            <span class="c1"># in difficult pivots, we know that they must be strictly lower than 1). In that case, the formulas</span>
+            <span class="c1"># for the offset method will fail, so we must be cautious.</span>
+            <span class="c1"># EDIT: since release 0.23.0, this should not happen, because EventTrio is safer. But the following</span>
+            <span class="c1"># precautions don&#39;t hurt...</span>
+            <span class="n">psi_k_greater_but_close_to_one</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">):</span>
+                    <span class="n">psi_k_greater_but_close_to_one</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Unexpected: self.trio.psi[self.k] = </span><span class="si">%s</span><span class="s1"> &gt; 1&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">])</span>
+            <span class="n">psi_i_greater_but_close_to_one</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">):</span>
+                    <span class="n">psi_i_greater_but_close_to_one</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Unexpected: self.trio.psi[self.i] = </span><span class="si">%s</span><span class="s1"> &gt; 1&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">psi_i_greater_but_close_to_one</span> <span class="ow">and</span> <span class="n">psi_k_greater_but_close_to_one</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Unexpected: both psi_i and psi_k are greater and close to 1.&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">psi_k_greater_but_close_to_one</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="c1"># pij ~= inf, pjk &lt; inf ==&gt; u = 1</span>
+                <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION</span>
+            <span class="k">elif</span> <span class="n">psi_i_greater_but_close_to_one</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="c1"># pij &lt; inf, pjk ~= inf ==&gt; u = 0</span>
+                <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># General case of the offset method (at last!)</span>
+                <span class="n">pij</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ik</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">])</span>
+                <span class="n">pjk</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">p1t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">p2t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ij</span><span class="p">]</span>
+                <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">simplify</span><span class="p">((</span><span class="n">pij</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p1t</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p2t</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
+                                                     <span class="o">/</span> <span class="p">(</span><span class="n">pij</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">pjk</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p1t</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p2t</span> <span class="o">/</span> <span class="mi">3</span><span class="p">))</span>
+                <span class="n">justification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OFFSET_METHOD</span>
+        <span class="k">return</span> <span class="n">threshold_utility</span><span class="p">,</span> <span class="n">justification</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`.</span>
+<span class="sd">        These results use:</span>
+
+<span class="sd">        * :meth:`results_asymptotic_method` if there are two consecutive zeros in the &quot;compass diagram&quot; of the</span>
+<span class="sd">          tau-vector,</span>
+<span class="sd">        * :meth:`results_limit_pivot_theorem` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="o">.</span><span class="n">has_two_consecutive_zeros</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_asymptotic_method</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_limit_pivot_theorem</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

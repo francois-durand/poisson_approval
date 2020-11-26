@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.meta_analysis.ternary_shortcuts &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.meta_analysis.ternary_shortcuts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.meta_analysis.ternary_shortcuts</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.meta_analysis.ternary_plots</span> <span class="kn">import</span> <span class="n">ternary_figure</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileNoisyDiscrete</span> <span class="kn">import</span> <span class="n">ProfileNoisyDiscrete</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">candidates_to_probabilities</span><span class="p">,</span> <span class="n">one_over_log_t_plus_one</span><span class="p">,</span> <span class="n">d_candidate_value_to_array</span>
+
+
+<div class="viewcode-block" id="SimplexToProfile"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_simplex_to_profile.html#poisson_approval.SimplexToProfile">[docs]</a><span class="k">class</span> <span class="nc">SimplexToProfile</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Map a point of the simplex to a profile (for ternary plots).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cls : class</span>
+<span class="sd">        :class:`ProfileDiscrete`, :class:`ProfileNoisyDiscrete`, :class:`ProfileOrdinal` or :class:`ProfileTwelve`.</span>
+<span class="sd">    right_type, top_type, left_type : object</span>
+<span class="sd">        A type that is suitable for the kind of profile used.</span>
+<span class="sd">    d_type_fixed_share : dict</span>
+<span class="sd">        Key: a type that is suitable for the kind of profile used. Value: a share of voters.</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the profile. E.g. ``voting_rule``, ``ratio_fanatic``, etc.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A `SimplexToProfile` object is a callable. When called, it inputs three parameters `right`, `top`, `left`, numbers</span>
+<span class="sd">    that represent a point in the simplex. It outputs the profile defined by:</span>
+
+<span class="sd">    * The class is given by `cls`,</span>
+<span class="sd">    * According to `d_type_fixed_share`, some types are assigned fixed shares of voters.</span>
+<span class="sd">    * The other voters, are distributed between ``left_type``, ``right_type`` and ``top_type``, in respective</span>
+<span class="sd">      proportions that are given by the input tuple (right, top, left).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Typical usage:</span>
+
+<span class="sd">        &gt;&gt;&gt; simplex_to_profile = SimplexToProfile(</span>
+<span class="sd">        ...     ProfileNoisyDiscrete,</span>
+<span class="sd">        ...     left_type=(&#39;abc&#39;, 0.5, 0.01), right_type=(&#39;bac&#39;, 0.5, 0.01), top_type=&#39;c&gt;a~b&#39;,</span>
+<span class="sd">        ...     d_type_fixed_share={(&#39;abc&#39;, 0.1, 0.01): Fraction(1, 10), (&#39;abc&#39;, 0.9, 0.01): Fraction(2, 10)})</span>
+<span class="sd">        &gt;&gt;&gt; profile = simplex_to_profile(left=Fraction(11, 80), top=Fraction(52, 80), right=Fraction(17, 80))</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.1 ± 0.01: 1/10, abc 0.5 ± 0.01: 77/800, abc 0.9 ± 0.01: 1/5, bac 0.5 ± 0.01: 119/800, c&gt;a~b: 91/200&gt; \</span>
+<span class="sd">(Condorcet winner: a)</span>
+
+<span class="sd">    The types with variable share and fixed share may overlap:</span>
+
+<span class="sd">        &gt;&gt;&gt; simplex_to_profile = SimplexToProfile(</span>
+<span class="sd">        ...     ProfileNoisyDiscrete,</span>
+<span class="sd">        ...     left_type=(&#39;abc&#39;, 0.5, 0.01), right_type=(&#39;bac&#39;, 0.5, 0.01), top_type=&#39;c&gt;a~b&#39;,</span>
+<span class="sd">        ...     d_type_fixed_share={(&#39;abc&#39;, 0.5, 0.01): Fraction(93, 100)})</span>
+<span class="sd">        &gt;&gt;&gt; profile = simplex_to_profile(left=Fraction(4, 7), top=Fraction(2, 7), right=Fraction(1, 7))</span>
+<span class="sd">        &gt;&gt;&gt; print(profile)</span>
+<span class="sd">        &lt;abc 0.5 ± 0.01: 97/100, bac 0.5 ± 0.01: 1/100, c&gt;a~b: 1/50&gt; (Condorcet winner: a)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">right_type</span><span class="p">,</span> <span class="n">top_type</span><span class="p">,</span> <span class="n">left_type</span><span class="p">,</span> <span class="n">d_type_fixed_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">d_type_fixed_share</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d_type_fixed_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="bp">cls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_type</span> <span class="o">=</span> <span class="n">right_type</span><span class="p">,</span> <span class="n">top_type</span><span class="p">,</span> <span class="n">left_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span> <span class="o">=</span> <span class="n">d_type_fixed_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_fixed_share</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_r</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label</span><span class="p">(</span><span class="n">right_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_t</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label</span><span class="p">(</span><span class="n">top_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_l</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label</span><span class="p">(</span><span class="n">left_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_order_fixed_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">d_type_fixed_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">order</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">share</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+        <span class="n">d_type_share</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">d_type_share</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_type_fixed_share</span><span class="p">)</span>
+        <span class="n">d_type_share</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_type_share</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">right</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span>
+        <span class="n">d_type_share</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_type_share</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">top</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span>
+        <span class="n">d_type_share</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_type_share</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">left</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_share</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">d_type_share</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ternary_plot_n_equilibria"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_ternary_plot_n_equilibria.html#poisson_approval.ternary_plot_n_equilibria">[docs]</a><span class="k">def</span> <span class="nf">ternary_plot_n_equilibria</span><span class="p">(</span><span class="n">simplex_to_profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Number of equilibria&#39;</span><span class="p">,</span>
+                              <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;analyzed_strategies_ordinal&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: ternary plot for the number of equilibria.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    simplex_to_profile : SimplexToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    scale : Number</span>
+<span class="sd">        Scale of the plot (resolution).</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the :class:`AnalyzedStrategies` property used to count the equilibria.</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_intensity`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">n_equilibria</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">simplex_to_profile</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)</span><span class="o">.</span><span class="n">equilibria</span><span class="p">)</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="n">ternary_figure</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">heatmap_intensity</span><span class="p">(</span><span class="n">n_equilibria</span><span class="p">,</span>
+                          <span class="n">right_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_r</span><span class="p">,</span>
+                          <span class="n">top_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_t</span><span class="p">,</span>
+                          <span class="n">left_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_l</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">right_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_r</span><span class="p">,</span>
+                           <span class="n">top_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_t</span><span class="p">,</span>
+                           <span class="n">left_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_l</span><span class="p">,</span>
+                           <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">set_title_padded</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span></div>
+
+
+<div class="viewcode-block" id="ternary_plot_winners_at_equilibrium"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_ternary_plot_winners_at_equilibrium.html#poisson_approval.ternary_plot_winners_at_equilibrium">[docs]</a><span class="k">def</span> <span class="nf">ternary_plot_winners_at_equilibrium</span><span class="p">(</span><span class="n">simplex_to_profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Winners at equilibrium&#39;</span><span class="p">,</span>
+                                        <span class="n">legend_title</span><span class="o">=</span><span class="s1">&#39;Winners&#39;</span><span class="p">,</span> <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;analyzed_strategies_ordinal&#39;</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: ternary plot for the winners at equilibrium.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    simplex_to_profile : SimplexToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    scale : Number</span>
+<span class="sd">        Scale of the plot (resolution).</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    legend_title : str</span>
+<span class="sd">        Title of the legend of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the :class:`AnalyzedStrategies` property used to study the equilibria.</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_candidates`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">winners_at_equilibrium</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">simplex_to_profile</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">candidates_to_probabilities</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)</span><span class="o">.</span><span class="n">winners_at_equilibrium</span><span class="p">)</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="n">ternary_figure</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">heatmap_candidates</span><span class="p">(</span><span class="n">winners_at_equilibrium</span><span class="p">,</span>
+                           <span class="n">right_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_r</span><span class="p">,</span>
+                           <span class="n">top_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_t</span><span class="p">,</span>
+                           <span class="n">left_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_l</span><span class="p">,</span>
+                           <span class="n">legend_style</span><span class="o">=</span><span class="s1">&#39;color_patches&#39;</span><span class="p">,</span>
+                           <span class="n">legend_title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">,</span>
+                           <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">right_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_r</span><span class="p">,</span>
+                           <span class="n">top_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_t</span><span class="p">,</span>
+                           <span class="n">left_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_l</span><span class="p">,</span>
+                           <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">set_title_padded</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span></div>
+
+
+<div class="viewcode-block" id="ternary_plot_winning_frequencies"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_ternary_plot_winning_frequencies.html#poisson_approval.ternary_plot_winning_frequencies">[docs]</a><span class="k">def</span> <span class="nf">ternary_plot_winning_frequencies</span><span class="p">(</span><span class="n">simplex_to_profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span>
+                                     <span class="n">n_max_episodes</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;sincere&#39;</span><span class="p">,</span> <span class="n">samples_per_point</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                     <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                     <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                     <span class="n">winning_frequency_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                     <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Winning frequencies&#39;</span><span class="p">,</span> <span class="n">legend_title</span><span class="o">=</span><span class="s1">&#39;Winners&#39;</span><span class="p">,</span>
+                                     <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;fictitious_play&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: ternary plot for the winning frequencies in fictitious play / iterated voting.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    simplex_to_profile : SimplexToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    scale : Number</span>
+<span class="sd">        Scale of the plot (resolution).</span>
+<span class="sd">    n_max_episodes : int</span>
+<span class="sd">        Maximum number of episodes for the fictitious play / iterated voting.</span>
+<span class="sd">    init : Strategy or TauVector or str</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    samples_per_point : int</span>
+<span class="sd">        How many trials are made for each point drawn. Useful only when initialization is random.</span>
+<span class="sd">    perception_update_ratio, ballot_update_ratio, winning_frequency_update_ratio : callable or Number</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    legend_title : str</span>
+<span class="sd">        Title of the legend of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the method (``&#39;fictitious_play&#39;`` or ``&#39;iterated_voting&#39;``).</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_candidates`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">winning_frequencies</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">simplex_to_profile</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+        <span class="n">a_candidate_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples_per_point</span><span class="p">):</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">n_max_episodes</span><span class="p">,</span>
+                                             <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">perception_update_ratio</span><span class="p">,</span>
+                                             <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">ballot_update_ratio</span><span class="p">,</span>
+                                             <span class="n">winning_frequency_update_ratio</span><span class="o">=</span><span class="n">winning_frequency_update_ratio</span><span class="p">)</span>
+            <span class="n">a_candidate_value</span> <span class="o">=</span> <span class="n">a_candidate_value</span> <span class="o">+</span> <span class="n">d_candidate_value_to_array</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">a_candidate_value</span> <span class="o">/</span> <span class="n">samples_per_point</span>
+
+    <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="n">ternary_figure</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">heatmap_candidates</span><span class="p">(</span><span class="n">winning_frequencies</span><span class="p">,</span>
+                           <span class="n">right_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_r</span><span class="p">,</span>
+                           <span class="n">top_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_t</span><span class="p">,</span>
+                           <span class="n">left_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_l</span><span class="p">,</span>
+                           <span class="n">legend_style</span><span class="o">=</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span>
+                           <span class="n">legend_title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">,</span>
+                           <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">right_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_r</span><span class="p">,</span>
+                           <span class="n">top_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_t</span><span class="p">,</span>
+                           <span class="n">left_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_l</span><span class="p">,</span>
+                           <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">set_title_padded</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span></div>
+
+
+<div class="viewcode-block" id="ternary_plot_convergence"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_ternary_plot_convergence.html#poisson_approval.ternary_plot_convergence">[docs]</a><span class="k">def</span> <span class="nf">ternary_plot_convergence</span><span class="p">(</span><span class="n">simplex_to_profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span>
+                             <span class="n">n_max_episodes</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;sincere&#39;</span><span class="p">,</span> <span class="n">samples_per_point</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                             <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                             <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Convergence frequency&#39;</span><span class="p">,</span>
+                             <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;fictitious_play&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut: ternary plot for the convergence frequency in fictitious play / iterated voting.</span>
+
+<span class="sd">    Convergence frequency: out of `samples_per_points` trials, in which proportion of the cases did fictitious play or</span>
+<span class="sd">    iterated voting converge within `n_max_episodes` iterations?</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    simplex_to_profile : SimplexToProfile</span>
+<span class="sd">        This is responsible to generate the profiles.</span>
+<span class="sd">    scale : Number</span>
+<span class="sd">        Scale of the plot (resolution).</span>
+<span class="sd">    n_max_episodes : int</span>
+<span class="sd">        Maximum number of episodes for the fictitious play / iterated voting.</span>
+<span class="sd">    init : Strategy or TauVector or str</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    samples_per_point : int</span>
+<span class="sd">        How many trials are made for each point drawn. Useful only when initialization is random.</span>
+<span class="sd">    perception_update_ratio, ballot_update_ratio : callable or Number</span>
+<span class="sd">        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the method (``&#39;fictitious_play&#39;`` or ``&#39;iterated_voting&#39;``).</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments are passed to the function `heatmap_intensity`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">convergence_frequency</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">simplex_to_profile</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+        <span class="n">n_convergences</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples_per_point</span><span class="p">):</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">n_max_episodes</span><span class="p">,</span>
+                                             <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">perception_update_ratio</span><span class="p">,</span>
+                                             <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">ballot_update_ratio</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">n_convergences</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">n_convergences</span> <span class="o">/</span> <span class="n">samples_per_point</span>
+
+    <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="n">ternary_figure</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">heatmap_intensity</span><span class="p">(</span><span class="n">convergence_frequency</span><span class="p">,</span>
+                          <span class="n">right_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_r</span><span class="p">,</span>
+                          <span class="n">top_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_t</span><span class="p">,</span>
+                          <span class="n">left_label</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">label_l</span><span class="p">,</span>
+                          <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">annotate_condorcet</span><span class="p">(</span><span class="n">right_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_r</span><span class="p">,</span>
+                           <span class="n">top_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_t</span><span class="p">,</span>
+                           <span class="n">left_order</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">order_l</span><span class="p">,</span>
+                           <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="n">simplex_to_profile</span><span class="o">.</span><span class="n">d_order_fixed_share</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">set_title_padded</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">tax</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

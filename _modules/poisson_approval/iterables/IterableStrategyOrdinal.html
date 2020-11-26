@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.iterables.IterableStrategyOrdinal &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.iterables.IterableStrategyOrdinal</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.iterables.IterableStrategyOrdinal</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.strategies.Strategy</span> <span class="kn">import</span> <span class="n">Strategy</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyOrdinal</span> <span class="kn">import</span> <span class="n">StrategyOrdinal</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">product_dict</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">ballot_low_u</span><span class="p">,</span> <span class="n">ballot_high_u</span>
+
+
+<div class="viewcode-block" id="IterableStrategyOrdinal"><a class="viewcode-back" href="../../../reference/reference_iterables/reference_iterable_strategy_ordinal.html#poisson_approval.IterableStrategyOrdinal">[docs]</a><span class="k">class</span> <span class="nc">IterableStrategyOrdinal</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Iterate over ordinal strategies (:class:`StrategyOrdinal`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    profile : Profile, optional</span>
+<span class="sd">    voting_rule : str, optional</span>
+<span class="sd">        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same</span>
+<span class="sd">        voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.</span>
+<span class="sd">    d_ranking_fixed_strategy : dict</span>
+<span class="sd">        Key: ranking. Value: fixed strategy. Cf. examples below.</span>
+<span class="sd">    test : callable.</span>
+<span class="sd">        A function ``StrategyOrdinal -&gt; bool``. Only strategies meeting this test are given.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic usage:</span>
+
+<span class="sd">        &gt;&gt;&gt; for strategy in IterableStrategyOrdinal():  # doctest: +ELLIPSIS</span>
+<span class="sd">        ...     print(strategy)</span>
+<span class="sd">        &lt;abc: a, acb: a, bac: b, bca: b, cab: c, cba: c&gt;</span>
+<span class="sd">        &lt;abc: a, acb: a, bac: b, bca: b, cab: c, cba: bc&gt;</span>
+<span class="sd">        ...</span>
+<span class="sd">        &lt;abc: ab, acb: ac, bac: ab, bca: bc, cab: ac, cba: bc&gt;</span>
+
+<span class="sd">    Specify a profile:</span>
+
+<span class="sd">        &gt;&gt;&gt; from poisson_approval import ProfileOrdinal</span>
+<span class="sd">        &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: 0.75, &#39;bac&#39;: 0.25})</span>
+<span class="sd">        &gt;&gt;&gt; for strategy in IterableStrategyOrdinal(profile=profile):</span>
+<span class="sd">        ...     print(strategy)</span>
+<span class="sd">        &lt;abc: a, bac: b&gt; ==&gt; a</span>
+<span class="sd">        &lt;abc: a, bac: ab&gt; ==&gt; a</span>
+<span class="sd">        &lt;abc: ab, bac: b&gt; ==&gt; b</span>
+<span class="sd">        &lt;abc: ab, bac: ab&gt; ==&gt; a, b</span>
+
+<span class="sd">    Specify some fixed strategies:</span>
+
+<span class="sd">        &gt;&gt;&gt; iterable = IterableStrategyOrdinal(</span>
+<span class="sd">        ...     d_ranking_fixed_strategy={&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;, &#39;bca&#39;: &#39;b&#39;})</span>
+<span class="sd">        &gt;&gt;&gt; for strategy in iterable:</span>
+<span class="sd">        ...     print(strategy)</span>
+<span class="sd">        &lt;abc: a, acb: a, bac: b, bca: b, cab: c, cba: c&gt;</span>
+<span class="sd">        &lt;abc: a, acb: a, bac: b, bca: b, cab: c, cba: bc&gt;</span>
+<span class="sd">        &lt;abc: a, acb: a, bac: b, bca: b, cab: ac, cba: c&gt;</span>
+<span class="sd">        &lt;abc: a, acb: a, bac: b, bca: b, cab: ac, cba: bc&gt;</span>
+
+<span class="sd">    Use a condition with the parameter `test`:</span>
+
+<span class="sd">        &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: 0.75, &#39;bac&#39;: 0.25})</span>
+<span class="sd">        &gt;&gt;&gt; def test_a_wins(strategy):</span>
+<span class="sd">        ...     return strategy.winners == {&#39;a&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; for strategy in IterableStrategyOrdinal(profile=profile, test=test_a_wins):</span>
+<span class="sd">        ...     print(strategy)</span>
+<span class="sd">        &lt;abc: a, bac: b&gt; ==&gt; a</span>
+<span class="sd">        &lt;abc: a, bac: ab&gt; ==&gt; a</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_ranking_fixed_strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Default parameters</span>
+        <span class="k">if</span> <span class="n">d_ranking_fixed_strategy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d_ranking_fixed_strategy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="c1"># Parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">profile</span>
+        <span class="c1"># noinspection PyProtectedMember</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">=</span> <span class="n">Strategy</span><span class="o">.</span><span class="n">_get_voting_rule_</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">voting_rule</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_fixed_strategy</span> <span class="o">=</span> <span class="n">d_ranking_fixed_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="n">test</span>
+        <span class="c1"># Computed variables</span>
+
+        <span class="k">def</span> <span class="nf">possible_ballots</span><span class="p">(</span><span class="n">ranking</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_fixed_strategy</span><span class="p">[</span><span class="n">ranking</span><span class="p">]]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">ballot_low_u</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">),</span> <span class="n">ballot_high_u</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_possible_ballots</span> <span class="o">=</span> <span class="p">{</span><span class="n">ranking</span><span class="p">:</span> <span class="n">possible_ballots</span><span class="p">(</span><span class="n">ranking</span><span class="p">)</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">d_ranking_ballot</span> <span class="ow">in</span> <span class="n">product_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_possible_ballots</span><span class="p">):</span>
+            <span class="n">strategy</span> <span class="o">=</span> <span class="n">StrategyOrdinal</span><span class="p">(</span><span class="n">d_ranking_ballot</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">strategy</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

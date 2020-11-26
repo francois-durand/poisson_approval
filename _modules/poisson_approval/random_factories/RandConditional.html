@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.random_factories.RandConditional &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.random_factories.RandConditional</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.random_factories.RandConditional</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">initialize_random_seeds</span>
+
+
+<div class="viewcode-block" id="RandConditional"><a class="viewcode-back" href="../../../reference/reference_random_factories/reference_rand_conditional.html#poisson_approval.RandConditional">[docs]</a><span class="k">class</span> <span class="nc">RandConditional</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A random factory of `something` that meets a given test.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factory : callable or tuple</span>
+<span class="sd">        This can be:</span>
+
+<span class="sd">        * Either a callable that takes no input and that outputs a (random) `something`,</span>
+<span class="sd">        * Or a tuple of such factories (cf. examples below).</span>
+<span class="sd">    test : callable</span>
+<span class="sd">        A function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</span>
+<span class="sd">    n_trials_max : int or None</span>
+<span class="sd">        The maximum number of trials. If None, then attempts will be made until finding an example. The option None</span>
+<span class="sd">        should be used with extreme care since it may lead to an infinite loop.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    object or tuple or None</span>
+<span class="sd">        If there is one factory, then return a `something` that meets the given `test`. If there is a tuple of</span>
+<span class="sd">        factories, then return a tuple of generated objects that meets the given `test`. In both cases, if no example</span>
+<span class="sd">        is found within `n_trials_max` attempts, then return None.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In this basic example with one factory, we generate a random integer between 0 included and 100 excluded that</span>
+<span class="sd">    is divisible by 7:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_integer():</span>
+<span class="sd">        ...     return np.random.randint(0, 100)</span>
+<span class="sd">        &gt;&gt;&gt; def test_divisible_7(n):</span>
+<span class="sd">        ...     return n % 7 == 0</span>
+<span class="sd">        &gt;&gt;&gt; rand_conditional = RandConditional(factory=rand_integer,</span>
+<span class="sd">        ...                                    test=test_divisible_7, n_trials_max=None)</span>
+<span class="sd">        &gt;&gt;&gt; rand_conditional()</span>
+<span class="sd">        21</span>
+
+<span class="sd">    In this example with a tuple of factories, we generate a random 2*2 matrix and a random vector of size 2, both</span>
+<span class="sd">    with integer coefficients between -10 included and 11 excluded, such that their dot product is null, but without</span>
+<span class="sd">    being null themselves:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; initialize_random_seeds()</span>
+<span class="sd">        &gt;&gt;&gt; def rand_matrix():</span>
+<span class="sd">        ...     return np.random.randint(-10, 11, (2, 2))</span>
+<span class="sd">        &gt;&gt;&gt; def rand_vector():</span>
+<span class="sd">        ...     return np.random.randint(-10, 11, 2)</span>
+<span class="sd">        &gt;&gt;&gt; def test_non_trivial_dot_zero(matrix, vector):</span>
+<span class="sd">        ...     return (np.all(np.dot(matrix, vector) == 0)</span>
+<span class="sd">        ...             and not np.all(matrix == 0) and not np.all(vector == 0))</span>
+<span class="sd">        &gt;&gt;&gt; rand_conditional = RandConditional(factory=(rand_matrix, rand_vector),</span>
+<span class="sd">        ...                                    test=test_non_trivial_dot_zero, n_trials_max=None)</span>
+<span class="sd">        &gt;&gt;&gt; matrix, vector = rand_conditional()</span>
+<span class="sd">        &gt;&gt;&gt; matrix</span>
+<span class="sd">        array([[ 2, -8],</span>
+<span class="sd">               [-1,  4]])</span>
+<span class="sd">        &gt;&gt;&gt; vector</span>
+<span class="sd">        array([-4, -1])</span>
+
+<span class="sd">    When no example is found, the factory returns None:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; def rand_integer():</span>
+<span class="sd">        ...     return np.random.randint(0, 100)</span>
+<span class="sd">        &gt;&gt;&gt; def is_negative(n):</span>
+<span class="sd">        ...     return n &lt; 0</span>
+<span class="sd">        &gt;&gt;&gt; rand_conditional = RandConditional(factory=rand_integer,</span>
+<span class="sd">        ...                                    test=is_negative, n_trials_max=100)</span>
+<span class="sd">        &gt;&gt;&gt; n = rand_conditional()</span>
+<span class="sd">        &gt;&gt;&gt; print(n)</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">n_trials_max</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="n">test</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_trials_max</span> <span class="o">=</span> <span class="n">n_trials_max</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_trials_max</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_trials_max</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">somethings</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="o">*</span><span class="n">somethings</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">somethings</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">something</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">something</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">something</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

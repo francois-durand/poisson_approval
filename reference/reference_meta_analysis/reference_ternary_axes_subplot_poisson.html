@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TernaryAxesSubplotPoisson &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ternary_figure" href="reference_ternary_figure.html" />
+    <link rel="prev" title="SimplexToProfile" href="reference_simplex_to_profile.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Meta-Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_nice_stats_profile_ordinal.html">NiceStatsProfileOrdinal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_plot_distribution_scores.html">plot_distribution_scores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_xyy_to_profile.html">XyyToProfile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_binary_axes_subplot_poisson.html">BinaryAxesSubplotPoisson</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_binary_figure.html">binary_figure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_binary_plot_convergence.html">binary_plot_convergence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_binary_plot_n_equilibria.html">binary_plot_n_equilibria</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_binary_plot_winners_at_equilibrium.html">binary_plot_winners_at_equilibrium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_binary_plot_winning_frequencies.html">binary_plot_winning_frequencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_simplex_to_profile.html">SimplexToProfile</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TernaryAxesSubplotPoisson</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_figure.html">ternary_figure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_convergence.html">ternary_plot_convergence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_n_equilibria.html">ternary_plot_n_equilibria</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_winners_at_equilibrium.html">ternary_plot_winners_at_equilibrium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_winning_frequencies.html">ternary_plot_winning_frequencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Meta-Analysis</a> &raquo;</li>
+        
+      <li>TernaryAxesSubplotPoisson</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ternaryaxessubplotpoisson">
+<h1>TernaryAxesSubplotPoisson<a class="headerlink" href="#ternaryaxessubplotpoisson" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson">
+<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">TernaryAxesSubplotPoisson</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size_inches</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass of <cite>TernaryAxesSubplot</cite>, defined in the package python-ternary.</p>
+<p>This class implements some additional methods for Poisson Approval. For some examples, cf. the tutorial
+in section “Meta-Analysis”.</p>
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.annotate_condorcet">
+<code class="sig-name descname">annotate_condorcet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">right_order</span></em>, <em class="sig-param"><span class="n">top_order</span></em>, <em class="sig-param"><span class="n">left_order</span></em>, <em class="sig-param"><span class="n">d_order_fixed_share</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.annotate_condorcet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.annotate_condorcet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate who is the Condorcet winner depending on the region.</p>
+<p>We consider a simplex where:</p>
+<ul class="simple">
+<li><p>Fixed shares of voters have preference orders given by <cite>d_order_fixed_share</cite>.</p></li>
+<li><p>The remaining voters are split between <cite>right_order</cite>, <cite>top_order</cite> and <cite>left_order</cite> in proportions that are
+given by the point in the simplex.</p></li>
+</ul>
+<p>This method annotates the regions according to which candidate is the Condorcet winner, and indicates where no
+one is the Condorcet winner.</p>
+<p>If there are weak orders and/or fixed shares of voters, the method may not work on all distributions because it
+relies on an external package called <cite>shapely</cite>. If there are rankings only and no fixed shares of voters, it is
+supposed to work on all distributions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>right_order</strong> (<em>str</em>) – The order whose share is maximal at the right corner.</p></li>
+<li><p><strong>top_order</strong> (<em>str</em>) – The order whose share is maximal at the top corner.</p></li>
+<li><p><strong>left_order</strong> (<em>str</em>) – The order whose share is maximal at the left corner.</p></li>
+<li><p><strong>d_order_fixed_share</strong> (<em>dict</em><em>, </em><em>optional</em>) – Key: order. Value: a fixed share of voters in [0, 1].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.annotate_simplex">
+<code class="sig-name descname">annotate_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">position</span></em>, <em class="sig-param"><span class="n">horizontalalignment</span><span class="o">=</span><span class="default_value">'center'</span></em>, <em class="sig-param"><span class="n">verticalalignment</span><span class="o">=</span><span class="default_value">'center'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.annotate_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.annotate_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>annotate</cite>.</p>
+<ul class="simple">
+<li><p>The input position is in the simplex (instead of the scaled simplex), i.e. coordinates are in [0, 1].</p></li>
+<li><p>The default horizontal and vertical alignments are centered.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>annotate in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.f_point_values_">
+<code class="sig-name descname">f_point_values_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">right</span></em>, <em class="sig-param"><span class="n">top</span></em>, <em class="sig-param"><span class="n">left</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.f_point_values_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.f_point_values_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data of a candidate heatmap.</p>
+<p>This function can be used only after a candidate heatmap has been drawn. When given a point of the simplex,
+it considers the closest point where f was computed and returns the corresponding value. It does not
+recompute f, and in particular the result may not be the same as a direct application of f to the point given
+as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>right</strong> (<em>Number</em>) – </p></li>
+<li><p><strong>top</strong> (<em>Number</em>) – </p></li>
+<li><p><strong>left</strong> (<em>Number</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The value associated respectively to each candidate a, b, c.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array of size 3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.gridlines_simplex">
+<code class="sig-name descname">gridlines_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">multiple</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">horizontal_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">left_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">right_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.gridlines_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.gridlines_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>gridlines</cite>.</p>
+<ul class="simple">
+<li><p>The argument <cite>multiple</cite> is a grid step in [0, 1] (instead of [0, scale]).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gridlines in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.heatmap_candidates">
+<code class="sig-name descname">heatmap_candidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">right_label</span></em>, <em class="sig-param"><span class="n">top_label</span></em>, <em class="sig-param"><span class="n">left_label</span></em>, <em class="sig-param"><span class="n">legend_title</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">legend_style</span><span class="o">=</span><span class="default_value">'palette'</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">'hexagonal'</span></em>, <em class="sig-param"><span class="n">colorbar</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.heatmap_candidates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.heatmap_candidates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Heatmap of a function from the simplex to 3D vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>callable</em>) – The function to plot. Input: coordinates <cite>right</cite>, <cite>top</cite>, <cite>left</cite> in the simplex, i.e. that sum to 1.
+Output: a list of 3 numbers between 0 and 1.</p></li>
+<li><p><strong>right_label</strong> (<em>str</em>) – Label of the right corner.</p></li>
+<li><p><strong>top_label</strong> (<em>str</em>) – Label of the top corner.</p></li>
+<li><p><strong>left_label</strong> (<em>str</em>) – Label of the left corner.</p></li>
+<li><p><strong>legend_title</strong> (<em>str</em>) – Title of the legend.</p></li>
+<li><p><strong>legend_style</strong> (<em>str</em>) – The style of the legend. The two available options are <code class="docutils literal notranslate"><span class="pre">'palette'</span></code> and <code class="docutils literal notranslate"><span class="pre">'color_patches'</span></code>.
+Cf. <a class="reference internal" href="#poisson_approval.TernaryAxesSubplotPoisson.legend_palette" title="poisson_approval.TernaryAxesSubplotPoisson.legend_palette"><code class="xref py py-meth docutils literal notranslate"><span class="pre">legend_palette()</span></code></a> and <a class="reference internal" href="#poisson_approval.TernaryAxesSubplotPoisson.legend_color_patches" title="poisson_approval.TernaryAxesSubplotPoisson.legend_color_patches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">legend_color_patches()</span></code></a>.</p></li>
+<li><p><strong>style</strong> – Contrarily to default settings in python-ternary, the default is <code class="docutils literal notranslate"><span class="pre">'hexagonal'</span></code>.</p></li>
+<li><p><strong>colorbar</strong> – Contrarily to default settings in python-ternary, the default is False.</p></li>
+<li><p><strong>kwargs</strong> – All other keywords arguments are passed to method <code class="docutils literal notranslate"><span class="pre">heatmap</span></code> of python-ternary.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.heatmap_intensity">
+<code class="sig-name descname">heatmap_intensity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">right_label</span></em>, <em class="sig-param"><span class="n">top_label</span></em>, <em class="sig-param"><span class="n">left_label</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">'hexagonal'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'plasma'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.heatmap_intensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.heatmap_intensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>heatmapf</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>callable</em>) – The function to plot. Input: coordinates <cite>right</cite>, <cite>top</cite>, <cite>left</cite> in the simplex, i.e. that sum to 1.
+Output: a number.</p></li>
+<li><p><strong>right_label</strong> (<em>str</em>) – Label of the right corner.</p></li>
+<li><p><strong>top_label</strong> (<em>str</em>) – Label of the top corner.</p></li>
+<li><p><strong>left_label</strong> (<em>str</em>) – Label of the left corner.</p></li>
+<li><p><strong>style</strong> (<em>str</em>) – Contrarily to default settings in python-ternary, the default is <code class="docutils literal notranslate"><span class="pre">'hexagonal'</span></code>.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) – Colormap. Contrarily to default settings in python-ternary, the default is <code class="docutils literal notranslate"><span class="pre">'plasma'</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – All other keywords arguments are passed to method <code class="docutils literal notranslate"><span class="pre">heatmapf</span></code> of python-ternary.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.horizontal_line_simplex">
+<code class="sig-name descname">horizontal_line_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.horizontal_line_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.horizontal_line_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>horizontal_line</cite>.</p>
+<ul class="simple">
+<li><p>The argument <cite>i</cite> is in [0, 1] (instead of [0, scale]).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>horizontal_line in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.left_parallel_line_simplex">
+<code class="sig-name descname">left_parallel_line_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.left_parallel_line_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.left_parallel_line_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>left_parallel_line</cite>.</p>
+<ul class="simple">
+<li><p>The argument <cite>i</cite> is in [0, 1] (instead of [0, scale]).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>left_parallel_line in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.legend_color_patches">
+<code class="sig-name descname">legend_color_patches</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">all_mixes</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.legend_color_patches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.legend_color_patches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a “color patches” legend to the current figure (for candidates heat maps).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – Title of the legend.</p></li>
+<li><p><strong>all_mixes</strong> (<em>bool</em>) – If True, then all mixes are indicated in the legend: a + b, a + c, b + c and a + b + c.</p></li>
+<li><p><strong>data</strong> (<em>dict</em><em>, </em><em>optional</em>) – Key : anything. Value: a tuple, list, etc giving an RGB or RGBA code. This is used only if <cite>all_mixes</cite>
+is False.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The color patches for single candidates a, b, c are in the legend anyway.</p></li>
+<li><p>If <cite>all_mixes</cite> is True, then all mixes are indicated in the legend.</p></li>
+<li><p>If <cite>all_mixes</cite> is False and <cite>data</cite> is given, then if at least a value is close to a perfect mix (like half
+of <cite>a</cite> and half of <cite>b</cite>), then this mix is added to the legend.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.legend_palette">
+<em class="property">static </em><code class="sig-name descname">legend_palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.legend_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.legend_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a “palette” legend to the current figure (for candidates heat maps).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>title</strong> (<em>str</em>) – Title of the legend.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is rather a hack than a real matplotlib legend. Hence the usual commands to choose the position
+of the legend, for example, are not meant to work here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.line_simplex">
+<code class="sig-name descname">line_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p1</span></em>, <em class="sig-param"><span class="n">p2</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.line_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.line_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>line</cite>.</p>
+<ul class="simple">
+<li><p>The input positions are in the simplex (instead of the scaled simplex), i.e. coordinates are in [0, 1].</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>line in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.right_parallel_line_simplex">
+<code class="sig-name descname">right_parallel_line_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.right_parallel_line_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.right_parallel_line_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>right_parallel_line</cite>.</p>
+<ul class="simple">
+<li><p>The argument <cite>i</cite> is in [0, 1] (instead of [0, scale]).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>right_parallel_line in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.TernaryAxesSubplotPoisson.set_title_padded">
+<code class="sig-name descname">set_title_padded</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#TernaryAxesSubplotPoisson.set_title_padded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.TernaryAxesSubplotPoisson.set_title_padded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptation of <cite>set_title</cite>.</p>
+<p>Adjust the position of the title to avoid collision with the label of the top corner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>set_title in python-ternary.</strong> (<em>Cf.</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_ternary_figure.html" class="btn btn-neutral float-right" title="ternary_figure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reference_simplex_to_profile.html" class="btn btn-neutral float-left" title="SimplexToProfile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

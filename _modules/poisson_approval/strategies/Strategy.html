@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.strategies.Strategy &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.strategies.Strategy</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.strategies.Strategy</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">DeleteCacheMixin</span><span class="p">,</span> <span class="n">property_deleting_cache</span>
+
+
+<div class="viewcode-block" id="Strategy"><a class="viewcode-back" href="../../../reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy">[docs]</a><span class="k">class</span> <span class="nc">Strategy</span><span class="p">(</span><span class="n">DeleteCacheMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A strategy profile (abstract class).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    profile : Profile, optional</span>
+<span class="sd">        The &quot;context&quot; in which the strategy is used.</span>
+<span class="sd">    voting_rule : str</span>
+<span class="sd">        The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same</span>
+<span class="sd">        voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">profile</span>  <span class="c1"># Store the profile (if any)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_voting_rule_</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">voting_rule</span><span class="p">)</span>
+
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">property_deleting_cache</span><span class="p">(</span><span class="s1">&#39;_profile&#39;</span><span class="p">)</span>
+    <span class="n">voting_rule</span> <span class="o">=</span> <span class="n">property_deleting_cache</span><span class="p">(</span><span class="s1">&#39;_voting_rule&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_voting_rule_</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">voting_rule</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">voting_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">profile</span><span class="o">.</span><span class="n">voting_rule</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">APPROVAL</span>
+        <span class="k">return</span> <span class="n">voting_rule</span>
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Strategy.deepcopy_with_attached_profile"><a class="viewcode-back" href="../../../reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy.deepcopy_with_attached_profile">[docs]</a>    <span class="k">def</span> <span class="nf">deepcopy_with_attached_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deep copy with an attached profile.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        profile : Profile</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Strategy</span>
+<span class="sd">            A deep copy of this strategy, with the attached profile `profile`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">strategy</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">profile</span>
+        <span class="n">strategy</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="k">return</span> <span class="n">strategy</span></div>
+
+    <span class="c1"># Additional stuff when a profile is given</span>
+    <span class="c1"># For tests of this, see file ``test_strategy_embed_profile.py``.</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">is_equilibrium</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;EquilibriumStatus : Whether this strategy is an equilibrium (in the context of the given profile). Cf.</span>
+<span class="sd">        :meth:`Profile.is_equilibrium`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_equilibrium</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;TauVector : The tau-vector associated to this strategy (in the context of the given profile). Cf.</span>
+<span class="sd">        :meth:`Profile.tau`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># noinspection NonAsciiCharacters</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">τ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;TauVector : The tau-vector (alternate notation). Cf. :meth:`Profile.τ`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">share_sincere</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number: Share of voters that happen to cast a sincere ballot (in the context of the given profile).</span>
+
+<span class="sd">        Cf. :meth:`ProfileCardinal.share_sincere`. This is defined only for a :class:`ProfileCardinal`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">share_sincere</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">share_sincere_among_strategic_voters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number: Share of strategic voters that happen to cast a sincere ballot (in the context of the given profile).</span>
+
+<span class="sd">        Cf. :meth:`ProfileCardinal.share_sincere_among_strategic_voters`. This is defined only for a</span>
+<span class="sd">        :class:`ProfileCardinal`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">share_sincere_among_strategic_voters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span></div>
+
+
+<span class="k">def</span> <span class="nf">make_method</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">name</span><span class="p">)()</span>
+    <span class="n">_method</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Defined when a profile is given. Cf. :meth:`TauVector.</span><span class="si">%s</span><span class="s2">`.&quot;</span> <span class="o">%</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">_method</span>
+
+
+<span class="k">for</span> <span class="n">my_method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;print_weak_pivots&#39;</span><span class="p">,</span> <span class="s1">&#39;print_all_pivots&#39;</span><span class="p">]:</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">Strategy</span><span class="p">,</span> <span class="n">my_method</span><span class="p">,</span> <span class="n">make_method</span><span class="p">(</span><span class="n">my_method</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">make_property</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_property</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">_property</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Defined when a profile is given. Cf. :attr:`TauVector.</span><span class="si">%s</span><span class="s2">`.&quot;</span> <span class="o">%</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">_property</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">my_property</span><span class="p">,</span> <span class="n">my_doc</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;scores&#39;</span><span class="p">,</span> <span class="s1">&#39;The scores.&#39;</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s1">&#39;winners&#39;</span><span class="p">,</span> <span class="s1">&#39;The winners.&#39;</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s1">&#39;trio&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: trio.&#39;</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s1">&#39;d_ranking_best_response&#39;</span><span class="p">,</span> <span class="s1">&#39;Best response profile.&#39;</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s1">&#39;share_single_votes&#39;</span><span class="p">,</span> <span class="s1">&#39;Share of single votes in tau (incl. fanatic and sincere voters).&#39;</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s1">&#39;share_double_votes&#39;</span><span class="p">,</span> <span class="s1">&#39;Share of double votes in tau (incl. fanatic and sincere voters).&#39;</span><span class="p">)]:</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">Strategy</span><span class="p">,</span> <span class="n">my_property</span><span class="p">,</span> <span class="n">make_property</span><span class="p">(</span><span class="n">my_property</span><span class="p">,</span> <span class="n">my_doc</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">my_property</span><span class="p">,</span> <span class="n">my_doc</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;trio_1t_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: trio of type 1t (this candidate has one point less than the other two.&#39;</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">:</span>
+        <span class="n">my_property_full</span> <span class="o">=</span> <span class="n">my_property</span> <span class="o">+</span> <span class="n">candidate</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">Strategy</span><span class="p">,</span> <span class="n">my_property_full</span><span class="p">,</span> <span class="n">make_property</span><span class="p">(</span><span class="n">my_property_full</span><span class="p">,</span> <span class="n">my_doc</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">my_property</span><span class="p">,</span> <span class="n">my_doc</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;duo_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: duo.&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;pivot_weak_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: weak pivot.&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;pivot_strict_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: strict pivot.&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;trio_2t_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: trio of type 2t (these two candidates have one point less than the other one).&#39;</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">PAIRS_WITH_INVERSIONS</span><span class="p">:</span>
+        <span class="n">my_property_full</span> <span class="o">=</span> <span class="n">my_property</span> <span class="o">+</span> <span class="n">pair</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">Strategy</span><span class="p">,</span> <span class="n">my_property_full</span><span class="p">,</span> <span class="n">make_property</span><span class="p">(</span><span class="n">my_property_full</span><span class="p">,</span> <span class="n">my_doc</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">my_property</span><span class="p">,</span> <span class="n">my_doc</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;pivot_tij_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: `personalized pivot` of type Tij.&#39;</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s1">&#39;pivot_tjk_&#39;</span><span class="p">,</span> <span class="s1">&#39;Event: `personalized pivot` of type Tjk.&#39;</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
+        <span class="n">my_property_full</span> <span class="o">=</span> <span class="n">my_property</span> <span class="o">+</span> <span class="n">ranking</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">Strategy</span><span class="p">,</span> <span class="n">my_property_full</span><span class="p">,</span> <span class="n">make_property</span><span class="p">(</span><span class="n">my_property_full</span><span class="p">,</span> <span class="n">my_doc</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

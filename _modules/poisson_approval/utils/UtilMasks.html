@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>poisson_approval.utils.UtilMasks &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.utils.UtilMasks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.utils.UtilMasks</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">isclose</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span>
+
+
+<div class="viewcode-block" id="masks_area_naive"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.masks_area_naive">[docs]</a><span class="k">def</span> <span class="nf">masks_area_naive</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Area of some masks. Naive implementation (used as a sanity test for the recursive implementation)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Same specifications as :meth:`masks_area`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; area = masks_area_naive(inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...                         masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],</span>
+<span class="sd">        ...                                [(Fraction(3, 10), False), (Fraction(4, 10), True)]])</span>
+<span class="sd">        &gt;&gt;&gt; area</span>
+<span class="sd">        Fraction(47, 50)</span>
+<span class="sd">        &gt;&gt;&gt; Fraction(8, 10) * Fraction(6, 10) + Fraction(3, 10) * Fraction(16, 10) - Fraction(1, 10) * Fraction(2, 10)</span>
+<span class="sd">        Fraction(47, 50)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+    <span class="n">limits</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sorted</span><span class="p">({</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">}</span><span class="o">.</span><span class="n">union</span><span class="p">({</span><span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]}))</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+    <span class="n">medians_and_lengths</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[(</span><span class="n">my_division</span><span class="p">(</span><span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">medians_and_lengths</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="nb">all</span><span class="p">([(</span><span class="n">point</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">]):</span>
+            <span class="n">area</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">point</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">area</span></div>
+
+
+<div class="viewcode-block" id="masks_area"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.masks_area">[docs]</a><span class="k">def</span> <span class="nf">masks_area</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Area of some masks (recursive `divide and conquer` implementation).</span>
+
+<span class="sd">    We denote by `d` the dimension of the Euclidean space under study.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inf : list of Number</span>
+<span class="sd">        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    sup : list of Number</span>
+<span class="sd">        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    masks : list of list of tuple</span>
+<span class="sd">        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit</span>
+<span class="sd">        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask</span>
+<span class="sd">        meet the condition ``x_d &gt;= lim`` (resp. ``x_d &lt;= lim``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The area of ``Intersection(bounding rectangle, Union(masks))``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In the following example, the bounding rectangle is the set of points where ``0 &lt;= x_1 &lt;= 1 and 0 &lt;= x_2 &lt;= 2``.</span>
+<span class="sd">    The first mask is the set of points where ``x_1 &gt;= 0.2 and x_2 &lt;= 0.6``. The second mask is the set of points</span>
+<span class="sd">    where ``x_1 &lt;= 0.3 and x_2 &gt;= 0.4``.</span>
+
+<span class="sd">        &gt;&gt;&gt; area = masks_area(inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...                   masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],</span>
+<span class="sd">        ...                          [(Fraction(3, 10), False), (Fraction(4, 10), True)]])</span>
+<span class="sd">        &gt;&gt;&gt; area</span>
+<span class="sd">        Fraction(47, 50)</span>
+<span class="sd">        &gt;&gt;&gt; Fraction(8, 10) * Fraction(6, 10) + Fraction(3, 10) * Fraction(16, 10) - Fraction(1, 10) * Fraction(2, 10)</span>
+<span class="sd">        Fraction(47, 50)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+    <span class="c1"># Is there a mask covering everything?</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="nb">all</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
+            <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span> <span class="k">for</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">)])</span>
+    <span class="c1"># Eliminate empty masks</span>
+    <span class="n">new_masks</span> <span class="o">=</span> <span class="p">[</span><span class="n">mask</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span>
+                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">new_masks</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">new_masks</span><span class="p">)</span>
+    <span class="n">d_lim</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]])</span>
+    <span class="n">lim</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[</span><span class="n">d_lim</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">masks_area</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="p">[</span><span class="n">lim</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="n">d_lim</span> <span class="k">else</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="n">new_masks</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">masks_area</span><span class="p">([</span><span class="n">lim</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="n">d_lim</span> <span class="k">else</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="n">sup</span><span class="p">,</span> <span class="n">new_masks</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="masks_distribution_naive"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.masks_distribution_naive">[docs]</a><span class="k">def</span> <span class="nf">masks_distribution_naive</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Distribution of the number of masks. Naive implementation (used as a sanity test for the recursive</span>
+<span class="sd">    implementation)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Same specifications as :meth:`mask_distribution`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; histogram = masks_distribution_naive(inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...                                      masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],</span>
+<span class="sd">        ...                                             [(Fraction(3, 10), False), (Fraction(4, 10), True)]])</span>
+<span class="sd">        &gt;&gt;&gt; histogram</span>
+<span class="sd">        array([Fraction(53, 50), Fraction(23, 25), Fraction(1, 50)], dtype=object)</span>
+<span class="sd">        &gt;&gt;&gt; histogram = masks_distribution_naive(inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...                                      masks=[[(0.2, True), (0.6, False)],</span>
+<span class="sd">        ...                                             [(0.3, False), (0.4, True)]])</span>
+<span class="sd">        &gt;&gt;&gt; histogram</span>
+<span class="sd">        array([1.06, 0.92, 0.02])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+    <span class="n">limits</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sorted</span><span class="p">({</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">}</span><span class="o">.</span><span class="n">union</span><span class="p">({</span><span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]}))</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+    <span class="n">medians_and_lengths</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[(</span><span class="n">my_division</span><span class="p">(</span><span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span>
+          <span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">limits</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+    <span class="n">histogram</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">medians_and_lengths</span><span class="p">):</span>
+        <span class="n">n_masks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="nb">all</span><span class="p">([(</span><span class="n">point</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">])</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">point</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
+        <span class="n">histogram</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n_masks</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">area</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">histogram</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="masks_distribution"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.masks_distribution">[docs]</a><span class="k">def</span> <span class="nf">masks_distribution</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks</span><span class="p">,</span> <span class="n">cover_alls</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Distribution of the number of masks (recursive `divide and conquer` implementation).</span>
+
+<span class="sd">    We denote by `d` the dimension of the Euclidean space under study.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inf : list of Number</span>
+<span class="sd">        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    sup : list of Number</span>
+<span class="sd">        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    masks : list of list of tuple</span>
+<span class="sd">        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit</span>
+<span class="sd">        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask</span>
+<span class="sd">        meet the condition ``x_d &gt;= lim`` (resp. ``x_d &lt;= lim``).</span>
+<span class="sd">    cover_alls : int, optional</span>
+<span class="sd">        If specified, then we consider that we have this number of implicit masks (i.e. not given in the argument</span>
+<span class="sd">        `masks`) that cover the whole area.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list. The `i`-th coefficient is the area covered by `i` masks exactly (and in the bounding rectangle).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In the following example, the bounding rectangle is the set of points where ``0 &lt;= x_1 &lt;= 1 and 0 &lt;= x_2 &lt;= 2``.</span>
+<span class="sd">    The first mask is the set of points where ``x_1 &gt;= 0.2 and x_2 &lt;= 0.6``. The second mask is the set of points</span>
+<span class="sd">    where ``x_1 &lt;= 0.3 and x_2 &gt;= 0.4``.</span>
+
+<span class="sd">        &gt;&gt;&gt; histogram = masks_distribution(inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...                                masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],</span>
+<span class="sd">        ...                                       [(Fraction(3, 10), False), (Fraction(4, 10), True)]])</span>
+<span class="sd">        &gt;&gt;&gt; histogram</span>
+<span class="sd">        array([Fraction(53, 50), Fraction(23, 25), Fraction(1, 50)], dtype=object)</span>
+<span class="sd">        &gt;&gt;&gt; histogram = masks_distribution(inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...                                masks=[[(.2, True), (.6, False)],</span>
+<span class="sd">        ...                                       [(.3, False), (.4, True)]])</span>
+<span class="sd">        &gt;&gt;&gt; histogram</span>
+<span class="sd">        array([1.06, 0.92, 0.02])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_masks_distribution_aux</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks</span><span class="p">,</span> <span class="n">histogram</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cover_alls</span><span class="o">=</span><span class="n">cover_alls</span><span class="p">)</span>
+    <span class="n">last_non_zero</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">result</span><span class="p">[</span><span class="n">last_non_zero</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">last_non_zero</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[:</span><span class="n">last_non_zero</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">_masks_distribution_aux</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks</span><span class="p">,</span> <span class="n">histogram</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cover_alls</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Distribution of the number of masks (recursive `divide and conquer` implementation).</span>
+
+<span class="sd">    We denote by `d` the dimension of the Euclidean space under study.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inf : list of Number</span>
+<span class="sd">        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    sup : list of Number</span>
+<span class="sd">        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    masks : list of list of tuple</span>
+<span class="sd">        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit</span>
+<span class="sd">        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask</span>
+<span class="sd">        meet the condition ``x_d &gt;= lim`` (resp. ``x_d &lt;= lim``).</span>
+<span class="sd">    histogram : list, optional</span>
+<span class="sd">        This parameter should only be used for recursive calls. If specified, then instead of creating a new list for</span>
+<span class="sd">        the output, it is added to the given list `histogram`.</span>
+<span class="sd">    cover_alls : int, optional</span>
+<span class="sd">        This parameter should only be used for recursive calls. If specified, then we consider that we have this number</span>
+<span class="sd">        of implicit masks (i.e. not given in the argument `masks`) that cover the whole area.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of length `d + 1`. The `i`-th coefficient is the area covered by `i` masks exactly (and in the bounding</span>
+<span class="sd">        rectangle).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">histogram</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">histogram</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="c1"># Eliminate empty masks</span>
+    <span class="n">new_masks</span> <span class="o">=</span> <span class="p">[</span><span class="n">mask</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span>
+                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])]</span>
+    <span class="c1"># Detect the new cover-alls (masks covering everything)</span>
+    <span class="n">cover_alls</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="nb">all</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
+                          <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">new_masks</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">new_masks</span> <span class="o">=</span> <span class="p">[</span><span class="n">mask</span> <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">new_masks</span>
+                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">new_masks</span><span class="p">:</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span> <span class="k">for</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">)])</span>
+        <span class="n">histogram</span><span class="p">[</span><span class="n">cover_alls</span><span class="p">]</span> <span class="o">+=</span> <span class="n">area</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">new_masks</span><span class="p">)</span>
+        <span class="n">d_lim</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]])</span>
+        <span class="n">lim</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[</span><span class="n">d_lim</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">_masks_distribution_aux</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="p">[</span><span class="n">lim</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="n">d_lim</span> <span class="k">else</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="n">new_masks</span><span class="p">,</span>
+                                <span class="n">histogram</span><span class="p">,</span> <span class="n">cover_alls</span><span class="p">)</span>
+        <span class="n">_masks_distribution_aux</span><span class="p">([</span><span class="n">lim</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="n">d_lim</span> <span class="k">else</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="n">sup</span><span class="p">,</span> <span class="n">new_masks</span><span class="p">,</span>
+                                <span class="n">histogram</span><span class="p">,</span> <span class="n">cover_alls</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">histogram</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="winners_distribution"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.winners_distribution">[docs]</a><span class="k">def</span> <span class="nf">winners_distribution</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">masks_winners</span><span class="p">,</span> <span class="n">histogram</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cover_alls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Distribution of the number of winners (recursive `divide and conquer` implementation).</span>
+
+<span class="sd">    We denote by `d` the dimension of the Euclidean space under study.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inf : list of Number</span>
+<span class="sd">        A list of `d` numbers. The inf limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    sup : list of Number</span>
+<span class="sd">        A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.</span>
+<span class="sd">    masks_winners : list of tuple</span>
+<span class="sd">        A list of pairs ``(mask, winners)``. A mask is defined as usual (cf. :meth:`masks_area` for instance).</span>
+<span class="sd">        A winner is a set of winning candidates in this mask, e.g. ``{&#39;a&#39;, &#39;b&#39;}``.</span>
+<span class="sd">    histogram : list</span>
+<span class="sd">        This parameter should only be used for recursive calls. If specified, then instead of creating a new list for</span>
+<span class="sd">        the output, it is added to the given list `histogram`.</span>
+<span class="sd">    cover_alls : set</span>
+<span class="sd">        E.g. {&#39;a&#39;, &#39;b&#39;}. This parameter should only be used for recursive calls. If specified, then we consider that</span>
+<span class="sd">        we have all these candidates winning in the whole area.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of length 4. The `i`-th coefficient is the area where `i` candidates may win.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In the following example, the bounding rectangle is the set of points where ``0 &lt;= x_1 &lt;= 1 and 0 &lt;= x_2 &lt;= 2``.</span>
+<span class="sd">    The first mask is the set of points where ``x_1 &gt;= 0.2 and x_2 &lt;= 0.6``, where the winner can be ``{&#39;a&#39;}``.</span>
+<span class="sd">    The second mask is the set of points where ``x_1 &lt;= 0.3 and x_2 &gt;= 0.4``, where the winner can be ``{&#39;b&#39;}``.</span>
+
+<span class="sd">        &gt;&gt;&gt; histogram = winners_distribution(</span>
+<span class="sd">        ...     inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...     masks_winners=[([(Fraction(2, 10), True), (Fraction(6, 10), False)], {&#39;a&#39;}),</span>
+<span class="sd">        ...                    ([(Fraction(3, 10), False), (Fraction(4, 10), True)], {&#39;a&#39;, &#39;b&#39;})])</span>
+<span class="sd">        &gt;&gt;&gt; histogram</span>
+<span class="sd">        array([Fraction(53, 50), Fraction(23, 50), Fraction(12, 25), 0],</span>
+<span class="sd">              dtype=object)</span>
+<span class="sd">        &gt;&gt;&gt; histogram = winners_distribution(</span>
+<span class="sd">        ...     inf=[0, 0], sup=[1, 2],</span>
+<span class="sd">        ...     masks_winners=[([(.2, True), (.6, False)], {&#39;a&#39;}),</span>
+<span class="sd">        ...                    ([(.3, False), (.4, True)], {&#39;a&#39;, &#39;b&#39;})])</span>
+<span class="sd">        &gt;&gt;&gt; histogram</span>
+<span class="sd">        array([1.06, 0.46, 0.48, 0.  ])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">histogram</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">histogram</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">cover_alls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cover_alls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="c1"># Eliminate empty masks</span>
+    <span class="n">new_mw</span> <span class="o">=</span> <span class="p">[(</span><span class="n">mask</span><span class="p">,</span> <span class="n">winners</span><span class="p">)</span> <span class="k">for</span> <span class="n">mask</span><span class="p">,</span> <span class="n">winners</span> <span class="ow">in</span> <span class="n">masks_winners</span>
+              <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
+              <span class="ow">and</span> <span class="ow">not</span> <span class="n">winners</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">cover_alls</span><span class="p">)]</span>
+    <span class="c1"># Detect the new cover-alls (masks covering everything)</span>
+    <span class="n">toto</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="nb">set</span><span class="p">()]</span> <span class="o">+</span> <span class="p">[</span>
+        <span class="n">winners</span>
+        <span class="k">for</span> <span class="n">mask</span><span class="p">,</span> <span class="n">winners</span> <span class="ow">in</span> <span class="n">new_mw</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
+    <span class="p">]))</span>
+    <span class="n">cover_alls</span> <span class="o">=</span> <span class="n">cover_alls</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">toto</span><span class="p">)</span>
+    <span class="n">new_mw</span> <span class="o">=</span> <span class="p">[(</span><span class="n">mask</span><span class="p">,</span> <span class="n">winners</span><span class="p">)</span> <span class="k">for</span> <span class="n">mask</span><span class="p">,</span> <span class="n">winners</span> <span class="ow">in</span> <span class="n">new_mw</span>
+              <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">if</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)])]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">new_mw</span><span class="p">:</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span> <span class="k">for</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">)])</span>
+        <span class="n">histogram</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">cover_alls</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">area</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mask</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">new_mw</span><span class="p">)</span>
+        <span class="n">d_lim</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mask</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]])</span>
+        <span class="n">lim</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[</span><span class="n">d_lim</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">winners_distribution</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="p">[</span><span class="n">lim</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="n">d_lim</span> <span class="k">else</span> <span class="n">sup</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="n">new_mw</span><span class="p">,</span> <span class="n">histogram</span><span class="p">,</span> <span class="n">cover_alls</span><span class="p">)</span>
+        <span class="n">winners_distribution</span><span class="p">([</span><span class="n">lim</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="n">d_lim</span> <span class="k">else</span> <span class="n">inf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="n">sup</span><span class="p">,</span> <span class="n">new_mw</span><span class="p">,</span> <span class="n">histogram</span><span class="p">,</span> <span class="n">cover_alls</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">histogram</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="random_mask"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.random_mask">[docs]</a><span class="k">def</span> <span class="nf">random_mask</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Random mask.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim : int</span>
+<span class="sd">        Dimension of the Euclidean space under study.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of tuple</span>
+<span class="sd">        A mask of dimension `dim`, whose limits are in [0, 1]. For the definition of a mask, cf. :meth:`masks_area`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="random_masks"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.random_masks">[docs]</a><span class="k">def</span> <span class="nf">random_masks</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">n_masks</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of random masks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim : int</span>
+<span class="sd">        Dimension of the Euclidean space under study.</span>
+<span class="sd">    n_masks : int</span>
+<span class="sd">        Number of masks.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of tuple</span>
+<span class="sd">        A list of `n_masks` masks of dimension `d`, whose limits are in [0, 1]. For the definition of a mask, cf.</span>
+<span class="sd">        :meth:`masks_area`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; dim = 6</span>
+<span class="sd">        &gt;&gt;&gt; n_masks = 4</span>
+<span class="sd">        &gt;&gt;&gt; masks = random_masks(dim=dim, n_masks=n_masks)</span>
+<span class="sd">        &gt;&gt;&gt; isclose(masks_area(inf=[0]*dim, sup=[1]*dim, masks=masks),</span>
+<span class="sd">        ...         masks_area_naive(inf=[0]*dim, sup=[1]*dim, masks=masks))</span>
+<span class="sd">        True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">random_mask</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_masks</span><span class="p">)]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

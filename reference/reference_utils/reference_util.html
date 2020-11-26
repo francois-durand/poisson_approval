@@ -1,0 +1,1043 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Util Module &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="UtilBallots Module" href="reference_util_ballots.html" />
+    <link rel="prev" title="SetPrintingInOrder" href="reference_set_printing_in_order.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_func.html">computation_engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine.html">ComputationEngine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_numeric.html">ComputationEngineNumeric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_symbolic.html">ComputationEngineSymbolic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order.html">DictPrintingInOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order_ignoring_none.html">DictPrintingInOrderIgnoringNone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_dict_printing_in_order_ignoring_zeros.html">DictPrintingInOrderIgnoringZeros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_set_printing_in_order.html">SetPrintingInOrder</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Util Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_ballots.html">UtilBallots Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_cache.html">UtilCache Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_masks.html">UtilMasks Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_preferences.html">UtilPreferences Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Utils</a> &raquo;</li>
+        
+      <li>Util Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/reference/reference_utils/reference_util.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-poisson_approval.utils.Util">
+<span id="util-module"></span><h1>Util Module<a class="headerlink" href="#module-poisson_approval.utils.Util" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.array_to_d_candidate_value">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">array_to_d_candidate_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#array_to_d_candidate_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.array_to_d_candidate_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an array to a dictionary of candidates and values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<em>ndarray</em>) – An array of size 3.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The corresponding dictionary.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="reference_dict_printing_in_order_ignoring_zeros.html#poisson_approval.DictPrintingInOrderIgnoringZeros" title="poisson_approval.DictPrintingInOrderIgnoringZeros">DictPrintingInOrderIgnoringZeros</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">69</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">array_to_d_candidate_value</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: 42, &#39;b&#39;: 51, &#39;c&#39;: 69}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.candidates_to_d_candidate_probability">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">candidates_to_d_candidate_probability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#candidates_to_d_candidate_probability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.candidates_to_d_candidate_probability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a set of candidates to a dictionary of probabilities (random tie-break).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>candidates</strong> (<em>set</em>) – A subset of <code class="docutils literal notranslate"><span class="pre">{'a',</span> <span class="pre">'b',</span> <span class="pre">'c'}</span></code>. Typically: a set of winners.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Key: <code class="docutils literal notranslate"><span class="pre">'a'</span></code>, <code class="docutils literal notranslate"><span class="pre">'b'</span></code> or <code class="docutils literal notranslate"><span class="pre">'c'</span></code>. Value: the probability of this candidate winning with a uniformly random
+tie-break.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="reference_dict_printing_in_order_ignoring_zeros.html#poisson_approval.DictPrintingInOrderIgnoringZeros" title="poisson_approval.DictPrintingInOrderIgnoringZeros">DictPrintingInOrderIgnoringZeros</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">winners</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">candidates_to_d_candidate_probability</span><span class="p">(</span><span class="n">winners</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: Fraction(1, 2), &#39;b&#39;: Fraction(1, 2)}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.candidates_to_probabilities">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">candidates_to_probabilities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#candidates_to_probabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.candidates_to_probabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a set of candidates to an array of probabilities (random tie-break).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>candidates</strong> (<em>set</em>) – A subset of <code class="docutils literal notranslate"><span class="pre">{'a',</span> <span class="pre">'b',</span> <span class="pre">'c'}</span></code>. Typically: a set of winners.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of size 3. For example, the first coefficient is the probability that candidate <cite>a</cite> win by a random
+tie-break.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">winners</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">candidates_to_probabilities</span><span class="p">(</span><span class="n">winners</span><span class="p">)</span>
+<span class="go">array([Fraction(1, 2), Fraction(1, 2), 0], dtype=object)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.d_candidate_value_to_array">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">d_candidate_value_to_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d_candidate_value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#d_candidate_value_to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.d_candidate_value_to_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a dictionary of candidates and values to an array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_candidate_value</strong> (<em>dict</em>) – Key: <code class="docutils literal notranslate"><span class="pre">'a'</span></code>, <code class="docutils literal notranslate"><span class="pre">'b'</span></code> or <code class="docutils literal notranslate"><span class="pre">'c'</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The corresponding array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_value_to_array</span><span class="p">(</span><span class="n">d_candidate_value</span><span class="p">)</span>
+<span class="go">array([42, 51, 69])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.give_figure">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">give_figure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">singular</span></em>, <em class="sig-param"><span class="n">plural</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#give_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.give_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine a number with a unit, whose word can be singular or plural.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – The number.</p></li>
+<li><p><strong>singular</strong> (<em>str</em>) – The singular word.</p></li>
+<li><p><strong>plural</strong> (<em>str</em>) – The plural word. Default: the singular with a final ‘s’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number and the word.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">give_figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">)</span>
+<span class="go">&#39;1 apple&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">give_figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">)</span>
+<span class="go">&#39;2 apples&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">give_figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;equilibrium&#39;</span><span class="p">,</span> <span class="s1">&#39;equilibria&#39;</span><span class="p">)</span>
+<span class="go">&#39;1 equilibrium&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">give_figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;equilibrium&#39;</span><span class="p">,</span> <span class="s1">&#39;equilibria&#39;</span><span class="p">)</span>
+<span class="go">&#39;2 equilibria&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.image_distribution">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">image_distribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factory</span></em>, <em class="sig-param"><span class="n">n_samples</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">conditional_on</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#image_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.image_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distribution of <code class="docutils literal notranslate"><span class="pre">f(something)</span></code> for a random <cite>something</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>factory</strong> (<em>callable</em><em> or </em><em>tuple</em>) – <p>This can be:</p>
+<ul>
+<li><p>Either a callable that takes no input and that outputs a (random) <cite>something</cite>,</p></li>
+<li><p>Or a tuple of such factories (cf. examples below).</p></li>
+</ul>
+</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples.</p></li>
+<li><p><strong>f</strong> (<em>callable</em>) – A function that take as input(s) the output(s) of the factory(ies).</p></li>
+<li><p><strong>conditional_on</strong> (<em>callable</em>) – A function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.
+Default: always True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Keys: the obtained outputs for <cite>f</cite>. Values: the probability that <cite>f(something)</cite> has this output when <cite>something</cite>
+is generated by <cite>factory</cite>, conditional on the fact that it meets <cite>conditional_on</cite>,
+based on a Monte-Carlo estimation of <cite>n_samples</cite> trials.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>In this basic example with one factory, we compute the distribution of <cite>n</cite> modulo 10, when <cite>n</cite> is drawn uniformly
+at random between 0 included and 100 excluded, conditionally on the fact that <cite>n</cite> is even:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_integer</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">modulo_10</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_distribution</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">rand_integer</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">modulo_10</span><span class="p">,</span> <span class="n">conditional_on</span><span class="o">=</span><span class="n">is_even</span><span class="p">)</span>
+<span class="go">{0: 0.21, 2: 0.21, 4: 0.2, 6: 0.18, 8: 0.2}</span>
+</pre></div>
+</div>
+<p>In this example with a tuple of factories, we compute the distribution of <cite>a mod b</cite>, when <cite>a</cite> is drawn uniformly
+at random between 0 included and 100 excluded, and <cite>b</cite> is drawn uniformly at random between 1 included and 11
+excluded:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_integer</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_divider</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">modulo</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_distribution</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="p">(</span><span class="n">rand_integer</span><span class="p">,</span> <span class="n">rand_divider</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">modulo</span><span class="p">)</span>
+<span class="go">{0: 0.31, 1: 0.16, 2: 0.18, 3: 0.12, 4: 0.07, 5: 0.04, 6: 0.02, 7: 0.08, 9: 0.02}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.initialize_random_seeds">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">initialize_random_seeds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#initialize_random_seeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.initialize_random_seeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the random seeds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – The desired random seed. Default: 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.isnan">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">isnan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isnan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.isnan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is nan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>x</cite> is nan.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This extends the usual numpy function <code class="docutils literal notranslate"><span class="pre">isnan</span></code> to fractions and sympy expressions.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>          <span class="mi">1</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)])</span>
+<span class="go">[nan, nan]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.isneginf">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">isneginf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isneginf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.isneginf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is negative infinity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>x</cite> is negative infinity.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This extends the usual numpy function <code class="docutils literal notranslate"><span class="pre">isneginf</span></code> to fractions and sympy expressions.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>          <span class="mi">1</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">isneginf</span><span class="p">(</span><span class="n">x</span><span class="p">)])</span>
+<span class="go">[-oo, -inf]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.isposinf">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">isposinf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isposinf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.isposinf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is positive infinity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if <cite>x</cite> is positive infinity.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This extends the usual numpy function <code class="docutils literal notranslate"><span class="pre">isposinf</span></code> to fractions and sympy expressions.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>          <span class="mi">1</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">isposinf</span><span class="p">(</span><span class="n">x</span><span class="p">)])</span>
+<span class="go">[oo, inf]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.iterate_simplex_grid">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">iterate_simplex_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">denominator</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#iterate_simplex_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.iterate_simplex_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the points in the simplex, with rational coordinates of a given denominator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> (<em>int</em>) – Number of coordinates. In other words, we consider the simplex of dimension <cite>d - 1</cite>.</p></li>
+<li><p><strong>denominator</strong> (<em>int</em><em> or </em><em>iterable</em>) – The coordinates will be fractions with this denominator. If an iterable is given, we consider each
+denominator given by the iterable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Each tuple of length <cite>d</cite>, whose coordinates are fractions of the given denominator, and whose sum is 1.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">iterate_simplex_grid</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">denominator</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="go">(1, 0, 0)</span>
+<span class="go">(0, 1, 0)</span>
+<span class="go">(0, 0, 1)</span>
+<span class="go">(1, 0, 0)</span>
+<span class="go">(Fraction(1, 2), Fraction(1, 2), 0)</span>
+<span class="go">(Fraction(1, 2), 0, Fraction(1, 2))</span>
+<span class="go">(0, 1, 0)</span>
+<span class="go">(0, Fraction(1, 2), Fraction(1, 2))</span>
+<span class="go">(0, 0, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.iterator_integers_fixed_sum">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">iterator_integers_fixed_sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">fixed_sum</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#iterator_integers_fixed_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.iterator_integers_fixed_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over vectors of integers with a fixed sum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> (<em>int</em>) – The desired number of integers. In other words, we consider a simplex of dimension <cite>d - 1</cite>.</p></li>
+<li><p><strong>fixed_sum</strong> (<em>int</em>) – The fixed sum.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>tuple</em> – Each tuple of <cite>d</cite> integers, whose sum is <cite>fixed_sum</cite>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">iterator_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fixed_sum</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="go">(2, 0, 0)</span>
+<span class="go">(1, 1, 0)</span>
+<span class="go">(1, 0, 1)</span>
+<span class="go">(0, 2, 0)</span>
+<span class="go">(0, 1, 1)</span>
+<span class="go">(0, 0, 2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.my_division">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">my_division</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Division of two numbers, trying to be exact if it is reasonable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Number</em>) – </p></li>
+<li><p><strong>y</strong> (<em>Number</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The division of <cite>x</cite> by <cite>y</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Typical usages:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">Fraction(5, 2)</span>
+</pre></div>
+</div>
+<p>If <cite>x</cite> or <cite>y</cite> is a float, then the result is a float:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="go">25.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">0.04</span>
+</pre></div>
+</div>
+<p>If <cite>x</cite> and <cite>y</cite> are integers, decimals, fractions or sympy expressions, then the result is symbolic:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">Fraction(4, 5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.1&#39;</span><span class="p">),</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">Fraction(1, 25)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">sqrt(3)/2</span>
+</pre></div>
+</div>
+<p>Possible errors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">ZeroDivisionError</span>: <span class="n">division by zero</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">TypeError</span>: <span class="n">unsupported operand type(s) for /: &#39;Fraction&#39; and &#39;str&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.my_range">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">my_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterable <cite>range</cite> adapted for fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>Number</em>) – Start value (included).</p></li>
+<li><p><strong>end</strong> (<em>Number</em>) – End value (excluded).</p></li>
+<li><p><strong>step</strong> (<em>Number</em>) – Increment of the counter.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="go">1/3</span>
+<span class="go">2/3</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="go">2/3</span>
+<span class="go">1/3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.my_sign">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">my_sign</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_sign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sign of x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_sign</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_sign</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_sign</span><span class="p">(</span><span class="o">-</span><span class="mf">4.2</span><span class="p">)</span>
+<span class="go">-1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_log_log_t_plus_fourteen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_log_t_plus_fourteen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function <cite>1 / log(log(t + 14))</cite>.</p>
+<p>This function is provided as an example of update ratio for <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>. The constant
+14 in the denominator is the smallest integer such that <cite>f(t = 1) &lt; 1</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">one_over_log_log_t_plus_fourteen</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.9806022744169713</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.one_over_log_t_plus_one">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_log_t_plus_one</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_t_plus_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_t_plus_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function <cite>1 / log(t + 1)</cite>.</p>
+<p>This function is provided as an example of update ratio for <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>. The constant
+1 in the denominator is the smallest integer such that <cite>f(t = 2) &lt; 1</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">one_over_log_t_plus_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.9102392266268373</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.one_over_sqrt_t">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_sqrt_t</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_sqrt_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_sqrt_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function <cite>1 / sqrt(t)</cite>.</p>
+<p>This function is provided as an example of update ratio for <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">one_over_sqrt_t</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.7071067811865475</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.one_over_t">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_t</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function <cite>1 / t</cite>.</p>
+<p>When used as an update ratio (cf. <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>), this amounts to computing the arithmetic
+mean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">one_over_t</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Fraction(1, 2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.probability">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">probability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factory</span></em>, <em class="sig-param"><span class="n">n_samples</span></em>, <em class="sig-param"><span class="n">test</span></em>, <em class="sig-param"><span class="n">conditional_on</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#probability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.probability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probability that a random <cite>something</cite> meets some given test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>factory</strong> (<em>callable</em><em> or </em><em>tuple</em>) – <p>This can be:</p>
+<ul>
+<li><p>Either a callable that takes no input and that outputs a (random) <cite>something</cite>,</p></li>
+<li><p>Or a tuple of such factories (cf. examples below).</p></li>
+</ul>
+</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples.</p></li>
+<li><p><strong>test</strong> (<em>callable</em><em> or </em><em>tuple</em>) – <p>This can be:</p>
+<ul>
+<li><p>Either a function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</p></li>
+<li><p>Or a tuple of such functions (cf. examples below).</p></li>
+</ul>
+</p></li>
+<li><p><strong>conditional_on</strong> (<em>callable</em>) – A function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.
+Default: always True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>This can be:</p>
+<ul class="simple">
+<li><p>Either the probability that the output(s) generated by <cite>factory</cite> meet(s) <cite>test</cite>, conditional on the fact
+that it meets <cite>conditional_on</cite>, based on a Monte-Carlo estimation of <cite>n_samples</cite> trials.</p></li>
+<li><p>Either a tuple giving this probability for each member of <cite>test</cite>, when <cite>test</cite> is a tuple itself.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>In this basic example with one factory, we estimate the probability that a random float between 0 and 1 is greater
+than .5, conditionally on being greater than .25:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_number</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probability</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">rand_number</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">test</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">conditional_on</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="p">)</span>
+<span class="go">0.661</span>
+</pre></div>
+</div>
+<p>In this example with a tuple of factories, we estimate the probability that a random 2*2 matrix and a random vector
+of size 2, both with integer coefficients between -10 included and 11 excluded, have a dot product that is null,
+conditionally on not being null themselves:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_matrix</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_vector</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">test_dot_zero</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">test_non_trivial</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">matrix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">vector</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probability</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="p">(</span><span class="n">rand_matrix</span><span class="p">,</span> <span class="n">rand_vector</span><span class="p">),</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">test</span><span class="o">=</span><span class="n">test_dot_zero</span><span class="p">,</span> <span class="n">conditional_on</span><span class="o">=</span><span class="n">test_non_trivial</span><span class="p">)</span>
+<span class="go">0.0003</span>
+</pre></div>
+</div>
+<p>In the following example, we estimate the probability that a random float between 0 and 1 is greater than .5,
+and the probability that it is greater than .75, conditionally on being greater than .25:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">rand_number</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probability</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">rand_number</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">test</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">75</span><span class="p">),</span> <span class="n">conditional_on</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">25</span><span class="p">)</span>
+<span class="go">(0.661, 0.332)</span>
+</pre></div>
+</div>
+<p>When using a tuple of tests, the same samples are used to estimate each probability.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.product_dict">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">product_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d_key_possible_values</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#product_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.product_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterable: product of dictionaries.</p>
+<p>Source: <a class="reference external" href="https://stackoverflow.com/questions/5228158/cartesian-product-of-a-dictionary-of-lists">https://stackoverflow.com/questions/5228158/cartesian-product-of-a-dictionary-of-lists</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_key_possible_values</strong> – To each key, associate a list of possible values (cf. example below).</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>dict</em> – A dictionary that, to each key, associates one of its possible values. All elements of the Cartesian product
+are returned this way.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d_key_possible_values</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">d_key_value</span> <span class="ow">in</span> <span class="n">product_dict</span><span class="p">(</span><span class="n">d_key_possible_values</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">d_key_value</span><span class="p">)</span>
+<span class="go">{&#39;foo&#39;: 0, &#39;bar&#39;: &#39;a&#39;}</span>
+<span class="go">{&#39;foo&#39;: 0, &#39;bar&#39;: &#39;b&#39;}</span>
+<span class="go">{&#39;foo&#39;: 0, &#39;bar&#39;: &#39;c&#39;}</span>
+<span class="go">{&#39;foo&#39;: 1, &#39;bar&#39;: &#39;a&#39;}</span>
+<span class="go">{&#39;foo&#39;: 1, &#39;bar&#39;: &#39;b&#39;}</span>
+<span class="go">{&#39;foo&#39;: 1, &#39;bar&#39;: &#39;c&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.rand_integers_fixed_sum">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">rand_integers_fixed_sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">fixed_sum</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_integers_fixed_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_integers_fixed_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate integers with a given sum (uniformly).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> (<em>int</em>) – The desired number of integers. In other words, we consider a simplex of dimension <cite>d - 1</cite>.</p></li>
+<li><p><strong>fixed_sum</strong> (<em>int</em>) – The fixed sum.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A numpy array of <cite>d</cite> integers, whose sum is <cite>fixed_sum</cite>, and drawn uniformly.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rand_integers_fixed_sum</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fixed_sum</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">array([ 2, 23, 34,  0, 22, 19])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.rand_simplex">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">rand_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">6</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_simplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a random point in the simplex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> (<em>int</em>) – Number of coordinates. In other words, we consider the simplex of dimension <cite>d - 1</cite>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A numpy array of length <cite>d</cite>, whose sum is 1.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rand_simplex</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>  
+<span class="go">array([0.4236548 , 0.12122838, 0.00393032, 0.05394987, 0.11242599, 0.28481063])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.rand_simplex_grid">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">rand_simplex_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">denominator</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_simplex_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_simplex_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a random point in the simplex, with rational coordinates of a given denominator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> (<em>int</em>) – Number of coordinates. In other words, we consider the simplex of dimension <cite>d - 1</cite>.</p></li>
+<li><p><strong>denominator</strong> (<em>int</em>) – The coordinates will be fractions with this denominator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A numpy array of length <cite>d</cite>, whose coordinates are fractions of the given denominator, and whose sum is 1.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rand_simplex_grid</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">denominator</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">array([Fraction(13, 50), Fraction(13, 20), Fraction(9, 100)], dtype=object)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="poisson_approval.utils.Util.to_callable">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">to_callable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#to_callable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.to_callable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a callable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>o</strong> (<em>object</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The conversion of <cite>o</cite> to a callable.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>callable</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>If <cite>o</cite> is callable, then return <cite>o</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_function</span> <span class="o">=</span> <span class="n">to_callable</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_function</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">16</span>
+</pre></div>
+</div>
+<p>If <cite>o</cite> is not callable, then return a function <code class="docutils literal notranslate"><span class="pre">*args,</span> <span class="pre">**kwargs</span> <span class="pre">-&gt;</span> <span class="pre">o</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_function</span> <span class="o">=</span> <span class="n">to_callable</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_function</span><span class="p">(</span><span class="s1">&#39;some_argument&#39;</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;some_value&#39;</span><span class="p">)</span>
+<span class="go">42</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_util_ballots.html" class="btn btn-neutral float-right" title="UtilBallots Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reference_set_printing_in_order.html" class="btn btn-neutral float-left" title="SetPrintingInOrder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

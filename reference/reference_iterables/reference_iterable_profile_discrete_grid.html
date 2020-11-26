@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>IterableProfileDiscreteGrid &mdash; Poisson Approval 0.27.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IterableProfileNoisyDiscreteGrid" href="reference_iterable_profile_noisy_discrete_grid.html" />
+    <link rel="prev" title="Iterables" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.27.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Iterables</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">IterableProfileDiscreteGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_profile_noisy_discrete_grid.html">IterableProfileNoisyDiscreteGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_profile_ordinal_grid.html">IterableProfileOrdinalGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_profile_twelve_grid.html">IterableProfileTwelveGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_simplex_grid.html">IterableSimplexGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_strategy_ordinal.html">IterableStrategyOrdinal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_strategy_threshold_grid.html">IterableStrategyThresholdGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_strategy_twelve.html">IterableStrategyTwelve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_iterable_tau_vector_grid.html">IterableTauVectorGrid</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Iterables</a> &raquo;</li>
+        
+      <li>IterableProfileDiscreteGrid</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/reference/reference_iterables/reference_iterable_profile_discrete_grid.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="iterableprofilediscretegrid">
+<h1>IterableProfileDiscreteGrid<a class="headerlink" href="#iterableprofilediscretegrid" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="poisson_approval.IterableProfileDiscreteGrid">
+<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">IterableProfileDiscreteGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">denominator</span></em>, <em class="sig-param"><span class="n">types</span></em>, <em class="sig-param"><span class="n">d_type_fixed_share</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">standardized</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">test</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/iterables/IterableProfileDiscreteGrid.html#IterableProfileDiscreteGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.IterableProfileDiscreteGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over discrete profile (<a class="reference internal" href="../reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete" title="poisson_approval.ProfileDiscrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code></a>) defined on a grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>denominator</strong> (<em>int</em><em> or </em><em>iterable</em>) – The grain(s) of the grid.</p></li>
+<li><p><strong>types</strong> (<em>iterable</em>) – These types will have a variable share. They can be discrete types, e.g. <code class="docutils literal notranslate"><span class="pre">('abc',</span> <span class="pre">0.9)</span></code>,
+or weak orders, e.g. <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code>.</p></li>
+<li><p><strong>d_type_fixed_share</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary. For each entry <code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">fixed_share</span></code>, this type will have at least this fixed share. The total
+must be lower or equal to 1.</p></li>
+<li><p><strong>standardized</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, then only standardized profiles are given. Cf. <a class="reference internal" href="../reference_profiles/reference_profile.html#poisson_approval.Profile.is_standardized" title="poisson_approval.Profile.is_standardized"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Profile.is_standardized()</span></code></a>. You should
+probably use this option if the arguments <cite>types</cite>, <cite>d_type_fixed_share</cite> and <cite>test</cite> treat the candidates
+symmetrically.</p></li>
+<li><p><strong>test</strong> (<em>callable</em><em>, </em><em>optional</em>) – A function <code class="docutils literal notranslate"><span class="pre">ProfileDiscrete</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code>. Only profiles meeting this test are given.</p></li>
+<li><p><strong>kwargs</strong> – Additional parameters are passed to <cite>ProfileDiscrete</cite> when creating the profile.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Basic usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">IterableProfileDiscreteGrid</span><span class="p">(</span><span class="n">denominator</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;bca&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span> <span class="s1">&#39;a~b&gt;c&#39;</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+<span class="go">&lt;abc 0.9: 1&gt; (Condorcet winner: a)</span>
+<span class="go">&lt;abc 0.9: 2/3, bca 0.4: 1/3&gt; (Condorcet winner: a)</span>
+<span class="go">&lt;abc 0.9: 2/3, a~b&gt;c: 1/3&gt; (Condorcet winner: a)</span>
+<span class="go">&lt;abc 0.9: 1/3, bca 0.4: 2/3&gt; (Condorcet winner: b)</span>
+<span class="go">&lt;abc 0.9: 1/3, bca 0.4: 1/3, a~b&gt;c: 1/3&gt; (Condorcet winner: a, b)</span>
+<span class="go">&lt;abc 0.9: 1/3, a~b&gt;c: 2/3&gt; (Condorcet winner: a)</span>
+<span class="go">&lt;bca 0.4: 1&gt; (Condorcet winner: b)</span>
+<span class="go">&lt;bca 0.4: 2/3, a~b&gt;c: 1/3&gt; (Condorcet winner: b)</span>
+<span class="go">&lt;bca 0.4: 1/3, a~b&gt;c: 2/3&gt; (Condorcet winner: b)</span>
+<span class="go">&lt;a~b&gt;c: 1&gt; (Condorcet winner: a, b)</span>
+</pre></div>
+</div>
+<p>For more examples, cf. <a class="reference internal" href="reference_iterable_simplex_grid.html#poisson_approval.IterableSimplexGrid" title="poisson_approval.IterableSimplexGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">IterableSimplexGrid</span></code></a>.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_iterable_profile_noisy_discrete_grid.html" class="btn btn-neutral float-right" title="IterableProfileNoisyDiscreteGrid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Iterables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, François Durand
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
