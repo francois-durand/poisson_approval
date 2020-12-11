@@ -7,6 +7,7 @@ from poisson_approval.iterables.IterableStrategyTwelve import IterableStrategyTw
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.tau_vector.TauVector import TauVector
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.utils.Util import my_division
@@ -342,7 +343,7 @@ class ProfileTwelve(ProfileCardinal):
 
     @cached_property
     def d_candidate_welfare(self):
-        d = {candidate: 0 for candidate in CANDIDATES}
+        d = DictPrintingInOrder({candidate: 0 for candidate in CANDIDATES})
         for ranking in RANKINGS:
             share_i_jk = self.d_type_share[ranking[:1] + '_' + ranking[1:]]  # E.g. a_bc
             share_ij_k = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c

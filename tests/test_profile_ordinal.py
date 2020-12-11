@@ -80,3 +80,22 @@ def test_strategy_weak_order():
         <a: 1/7, ab: 2/7, c: 4/7> ==> c
     """
     pass
+
+
+def test_welfare():
+    """
+        >>> profile = ProfileOrdinal({
+        ...     'bac': Fraction(1, 511), 'abc': Fraction(2, 511), 'cab': Fraction(4, 511),
+        ...     'b>a~c': Fraction(8, 511), 'a>b~c': Fraction(16, 511), 'c>a~b': Fraction(32, 511),
+        ...     'a~b>c': Fraction(64, 511), 'b~c>a': Fraction(128, 511), 'a~c>b': Fraction(256, 511)
+        ... })
+        >>> profile.d_candidate_plurality_welfare
+        {'a': Fraction(338, 511), 'b': Fraction(201, 511), 'c': Fraction(60, 73)}
+        >>> profile.d_candidate_relative_plurality_welfare
+        {'a': Fraction(137, 219), 'b': 0, 'c': 1}
+        >>> profile.d_candidate_anti_plurality_welfare
+        {'a': Fraction(49, 73), 'b': Fraction(29, 73), 'c': Fraction(60, 73)}
+        >>> profile.d_candidate_relative_anti_plurality_welfare
+        {'a': Fraction(20, 31), 'b': 0, 'c': 1}
+    """
+    pass

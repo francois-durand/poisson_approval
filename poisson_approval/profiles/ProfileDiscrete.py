@@ -2,6 +2,7 @@ import warnings
 from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import product_dict, my_division
 from poisson_approval.utils.UtilPreferences import is_weak_order, sort_weak_order, is_hater
@@ -326,7 +327,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
     @cached_property
     def d_candidate_welfare(self):
-        d = {candidate: 0 for candidate in CANDIDATES}
+        d = DictPrintingInOrder({candidate: 0 for candidate in CANDIDATES})
         for ranking, d_utility_share in self.d_ranking_utility_share.items():
             for utility, share in d_utility_share.items():
                 d[ranking[0]] += share
