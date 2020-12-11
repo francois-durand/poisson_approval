@@ -10,8 +10,9 @@ from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.tau_vector.TauVector import TauVector
-from poisson_approval.utils.Util import my_division
-from poisson_approval.utils.UtilPreferences import is_lover
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
+from poisson_approval.utils.Util import my_division, normalize_dict_to_0_1
+from poisson_approval.utils.UtilPreferences import is_lover, d_candidate_ordinal_utility
 from poisson_approval.utils.UtilBallots import sort_ballot, ballot_high_u, ballot_low_u
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
@@ -65,6 +66,54 @@ class Profile(DeleteCacheMixin):
     def is_standardized(self):
         """bool : Whether the profile is standardized. Cf. :meth:`standardized_version`."""
         return self == self.standardized_version
+
+    @cached_property
+    def d_candidate_plurality_welfare(self):
+        """DictPrintingInOrder : plurality welfare of each candidate, i.e. share of voters with utility 1.
+        """
+        return DictPrintingInOrder({candidate: sum([
+            share
+            for ranking, share in self.d_ranking_share.items()
+            if d_candidate_ordinal_utility(ranking)[candidate] == 1
+        ]) + sum([
+            share
+            for weak_order, share in self.d_weak_order_share.items()
+            if d_candidate_ordinal_utility(weak_order)[candidate] == 1
+        ]) for candidate in CANDIDATES})
+
+    @cached_property
+    def d_candidate_anti_plurality_welfare(self):
+        """DictPrintingInOrder : anti-plurality welfare of each candidate, i.e. share of voters with utility > 0.
+        """
+        return DictPrintingInOrder({candidate: sum([
+            share
+            for ranking, share in self.d_ranking_share.items()
+            if d_candidate_ordinal_utility(ranking)[candidate] > 0
+        ]) + sum([
+            share
+            for weak_order, share in self.d_weak_order_share.items()
+            if d_candidate_ordinal_utility(weak_order)[candidate] > 0
+        ]) for candidate in CANDIDATES})
+
+    @cached_property
+    def d_candidate_relative_plurality_welfare(self):
+        """DictPrintingInOrder : relative plurality welfare of each candidate.
+            This is similar to :attr:`d_candidate_plurality_welfare`, but renormalized so that the candidate with best
+            welfare has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
+            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
+            the relative welfare is 1 for all of them.
+        """
+        return normalize_dict_to_0_1(self.d_candidate_plurality_welfare)
+
+    @cached_property
+    def d_candidate_relative_anti_plurality_welfare(self):
+        """DictPrintingInOrder : relative anti-plurality welfare of each candidate.
+            This is similar to :attr:`d_candidate_anti_plurality_welfare`, but renormalized so that the candidate with
+            best welfare has 1 and the one with worst welfare has 0. In math:
+            relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare). In the case where all candidates
+            have the same welfare, by convention, the relative welfare is 1 for all of them.
+        """
+        return normalize_dict_to_0_1(self.d_candidate_anti_plurality_welfare)
 
     # Condorcet stuff
 

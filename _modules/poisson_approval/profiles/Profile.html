@@ -172,8 +172,9 @@
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.computation_engine</span> <span class="kn">import</span> <span class="n">computation_engine</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.SetPrintingInOrder</span> <span class="kn">import</span> <span class="n">SetPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.tau_vector.TauVector</span> <span class="kn">import</span> <span class="n">TauVector</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilPreferences</span> <span class="kn">import</span> <span class="n">is_lover</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span><span class="p">,</span> <span class="n">normalize_dict_to_0_1</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilPreferences</span> <span class="kn">import</span> <span class="n">is_lover</span><span class="p">,</span> <span class="n">d_candidate_ordinal_utility</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">sort_ballot</span><span class="p">,</span> <span class="n">ballot_high_u</span><span class="p">,</span> <span class="n">ballot_low_u</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">DeleteCacheMixin</span><span class="p">,</span> <span class="n">property_deleting_cache</span>
 
@@ -227,6 +228,54 @@
     <span class="k">def</span> <span class="nf">is_standardized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;bool : Whether the profile is standardized. Cf. :meth:`standardized_version`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardized_version</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_candidate_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : plurality welfare of each candidate, i.e. share of voters with utility 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">candidate</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span>
+            <span class="n">share</span>
+            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d_candidate_ordinal_utility</span><span class="p">(</span><span class="n">ranking</span><span class="p">)[</span><span class="n">candidate</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="p">])</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span>
+            <span class="n">share</span>
+            <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d_candidate_ordinal_utility</span><span class="p">(</span><span class="n">weak_order</span><span class="p">)[</span><span class="n">candidate</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="p">])</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">})</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_candidate_anti_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : anti-plurality welfare of each candidate, i.e. share of voters with utility &gt; 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">candidate</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span>
+            <span class="n">share</span>
+            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d_candidate_ordinal_utility</span><span class="p">(</span><span class="n">ranking</span><span class="p">)[</span><span class="n">candidate</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">])</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span>
+            <span class="n">share</span>
+            <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d_candidate_ordinal_utility</span><span class="p">(</span><span class="n">weak_order</span><span class="p">)[</span><span class="n">candidate</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">])</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">})</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_candidate_relative_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : relative plurality welfare of each candidate.</span>
+<span class="sd">            This is similar to :attr:`d_candidate_plurality_welfare`, but renormalized so that the candidate with best</span>
+<span class="sd">            welfare has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /</span>
+<span class="sd">            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,</span>
+<span class="sd">            the relative welfare is 1 for all of them.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_plurality_welfare</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">d_candidate_relative_anti_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : relative anti-plurality welfare of each candidate.</span>
+<span class="sd">            This is similar to :attr:`d_candidate_anti_plurality_welfare`, but renormalized so that the candidate with</span>
+<span class="sd">            best welfare has 1 and the one with worst welfare has 0. In math:</span>
+<span class="sd">            relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare). In the case where all candidates</span>
+<span class="sd">            have the same welfare, by convention, the relative welfare is 1 for all of them.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_anti_plurality_welfare</span><span class="p">)</span>
 
     <span class="c1"># Condorcet stuff</span>
 

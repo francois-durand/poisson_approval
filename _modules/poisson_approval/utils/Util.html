@@ -1024,6 +1024,44 @@
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="normalize_dict_to_0_1"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.normalize_dict_to_0_1">[docs]</a><span class="k">def</span> <span class="nf">normalize_dict_to_0_1</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalize the values of a dictionary to the interval [0, 1].</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : dict</span>
+<span class="sd">        Values must be numbers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DictPrintingInOrder</span>
+<span class="sd">        The same dictionary, but an affine transformation is applied so that the minimum value is 0 and the maximum</span>
+<span class="sd">        value is 1.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Typical usage:</span>
+
+<span class="sd">        &gt;&gt;&gt; d_candidate_welfare = {&#39;a&#39;: 0.1, &#39;b&#39;: 0.2, &#39;c&#39;: 0.5}</span>
+<span class="sd">        &gt;&gt;&gt; d_candidate_relative_welfare = normalize_dict_to_0_1(d_candidate_welfare)</span>
+<span class="sd">        &gt;&gt;&gt; d_candidate_relative_welfare</span>
+<span class="sd">        {&#39;a&#39;: 0.0, &#39;b&#39;: 0.25, &#39;c&#39;: 1.0}</span>
+
+<span class="sd">    If all the values are equal, then conventionally all values are converted to 1:</span>
+
+<span class="sd">        &gt;&gt;&gt; d_candidate_welfare = {&#39;a&#39;: 0.1, &#39;b&#39;: 0.1, &#39;c&#39;: 0.1}</span>
+<span class="sd">        &gt;&gt;&gt; d_candidate_relative_welfare = normalize_dict_to_0_1(d_candidate_welfare)</span>
+<span class="sd">        &gt;&gt;&gt; d_candidate_relative_welfare</span>
+<span class="sd">        {&#39;a&#39;: 1, &#39;b&#39;: 1, &#39;c&#39;: 1}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">min_value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">min_value</span> <span class="o">==</span> <span class="n">max_value</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">my_division</span><span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">-</span> <span class="n">min_value</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span></div>
 </pre></div>
 
            </div>

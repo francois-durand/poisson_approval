@@ -173,9 +173,10 @@
 <span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyThreshold</span> <span class="kn">import</span> <span class="n">StrategyThreshold</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.tau_vector.TauVector</span> <span class="kn">import</span> <span class="n">TauVector</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.ComputationEngineNumeric</span> <span class="kn">import</span> <span class="n">ComputationEngineNumeric</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">candidates_to_probabilities</span><span class="p">,</span> <span class="n">my_division</span><span class="p">,</span> <span class="n">array_to_d_candidate_value</span><span class="p">,</span> \
-    <span class="n">one_over_t</span><span class="p">,</span> <span class="n">to_callable</span><span class="p">,</span> <span class="n">candidates_to_d_candidate_probability</span>
+    <span class="n">one_over_t</span><span class="p">,</span> <span class="n">to_callable</span><span class="p">,</span> <span class="n">candidates_to_d_candidate_probability</span><span class="p">,</span> <span class="n">normalize_dict_to_0_1</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">ballot_one</span><span class="p">,</span> <span class="n">ballot_one_two</span><span class="p">,</span> <span class="n">ballot_low_u</span><span class="p">,</span> <span class="n">ballot_high_u</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">property_deleting_cache</span>
 
@@ -282,7 +283,7 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;dict : welfare of each candidate.</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : welfare of each candidate.</span>
 <span class="sd">            E.g. ``&#39;a&#39;: 0.7`` means that candidate ``&#39;a&#39;`` has a welfare (average utility) equal to 0.7 for the voters.</span>
 <span class="sd">            Since utilities are in [0, 1], so is the welfare.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -290,18 +291,13 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_relative_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;dict : relative welfare of each candidate.</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : relative welfare of each candidate.</span>
 <span class="sd">            This is similar to :attr:`d_candidate_welfare`, but renormalized so that the candidate with best welfare</span>
 <span class="sd">            has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /</span>
 <span class="sd">            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,</span>
 <span class="sd">            the relative welfare is 1 for all of them.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">max_welfare</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_welfare</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">min_welfare</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_welfare</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">min_welfare</span> <span class="o">==</span> <span class="n">max_welfare</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">candidate</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">candidate</span><span class="p">:</span> <span class="p">(</span><span class="n">welfare</span> <span class="o">-</span> <span class="n">min_welfare</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_welfare</span> <span class="o">-</span> <span class="n">min_welfare</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">welfare</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_welfare</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_welfare</span><span class="p">)</span>
 
     <span class="c1"># Tau and strategy-related stuff</span>
 

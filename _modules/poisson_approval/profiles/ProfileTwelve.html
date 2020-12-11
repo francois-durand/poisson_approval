@@ -169,6 +169,7 @@
 <span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileCardinal</span> <span class="kn">import</span> <span class="n">ProfileCardinal</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyTwelve</span> <span class="kn">import</span> <span class="n">StrategyTwelve</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.tau_vector.TauVector</span> <span class="kn">import</span> <span class="n">TauVector</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.SetPrintingInOrder</span> <span class="kn">import</span> <span class="n">SetPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span>
@@ -504,7 +505,7 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">candidate</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">candidate</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">})</span>
         <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">:</span>
             <span class="n">share_i_jk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_type_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">ranking</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>  <span class="c1"># E.g. a_bc</span>
             <span class="n">share_ij_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_type_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">ranking</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>  <span class="c1"># E.g. ab_c</span>

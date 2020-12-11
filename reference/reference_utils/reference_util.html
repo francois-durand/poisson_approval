@@ -674,6 +674,39 @@ denominator given by the iterable.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt id="poisson_approval.utils.Util.normalize_dict_to_0_1">
+<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">normalize_dict_to_0_1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#normalize_dict_to_0_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.normalize_dict_to_0_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize the values of a dictionary to the interval [0, 1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> (<em>dict</em>) – Values must be numbers.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same dictionary, but an affine transformation is applied so that the minimum value is 0 and the maximum
+value is 1.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Typical usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_welfare</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_relative_welfare</span> <span class="o">=</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="n">d_candidate_welfare</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_relative_welfare</span>
+<span class="go">{&#39;a&#39;: 0.0, &#39;b&#39;: 0.25, &#39;c&#39;: 1.0}</span>
+</pre></div>
+</div>
+<p>If all the values are equal, then conventionally all values are converted to 1:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_welfare</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_relative_welfare</span> <span class="o">=</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="n">d_candidate_welfare</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d_candidate_relative_welfare</span>
+<span class="go">{&#39;a&#39;: 1, &#39;b&#39;: 1, &#39;c&#39;: 1}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen">
 <code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_log_log_t_plus_fourteen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_log_t_plus_fourteen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function <cite>1 / log(log(t + 14))</cite>.</p>

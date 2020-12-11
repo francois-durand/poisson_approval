@@ -447,6 +447,58 @@ against <cite>b</cite>).</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="poisson_approval.Profile.d_candidate_anti_plurality_welfare">
+<em class="property">property </em><code class="sig-name descname">d_candidate_anti_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_anti_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>anti-plurality welfare of each candidate, i.e. share of voters with utility &gt; 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.Profile.d_candidate_plurality_welfare">
+<em class="property">property </em><code class="sig-name descname">d_candidate_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>plurality welfare of each candidate, i.e. share of voters with utility 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.Profile.d_candidate_relative_anti_plurality_welfare">
+<em class="property">property </em><code class="sig-name descname">d_candidate_relative_anti_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_relative_anti_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>relative anti-plurality welfare of each candidate.
+This is similar to <a class="reference internal" href="#poisson_approval.Profile.d_candidate_anti_plurality_welfare" title="poisson_approval.Profile.d_candidate_anti_plurality_welfare"><code class="xref py py-attr docutils literal notranslate"><span class="pre">d_candidate_anti_plurality_welfare</span></code></a>, but renormalized so that the candidate with
+best welfare has 1 and the one with worst welfare has 0. In math:
+relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare). In the case where all candidates
+have the same welfare, by convention, the relative welfare is 1 for all of them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.Profile.d_candidate_relative_plurality_welfare">
+<em class="property">property </em><code class="sig-name descname">d_candidate_relative_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_relative_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>relative plurality welfare of each candidate.
+This is similar to <a class="reference internal" href="#poisson_approval.Profile.d_candidate_plurality_welfare" title="poisson_approval.Profile.d_candidate_plurality_welfare"><code class="xref py py-attr docutils literal notranslate"><span class="pre">d_candidate_plurality_welfare</span></code></a>, but renormalized so that the candidate with best
+welfare has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
+(max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
+the relative welfare is 1 for all of them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="poisson_approval.Profile.d_ranking_share">
 <em class="property">property </em><code class="sig-name descname">d_ranking_share</code><a class="headerlink" href="#poisson_approval.Profile.d_ranking_share" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shares of rankings.
