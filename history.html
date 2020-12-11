@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plurality-and-anti-plurality-welfare">0.28.0 (2020-12-11): Plurality and Anti-Plurality Welfare</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-github-actions">0.27.1 (2020-11-26): Use GitHub actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#analysis-tools">0.27.0 (2020-11-11): Analysis tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#descriptive-statistics-of-the-ballots">0.26.0 (2020-06-26): Descriptive Statistics of the Ballots</a></li>
@@ -223,6 +224,25 @@
 </style>
 <div class="section" id="history">
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="plurality-and-anti-plurality-welfare">
+<h2>0.28.0 (2020-12-11): Plurality and Anti-Plurality Welfare<a class="headerlink" href="#plurality-and-anti-plurality-welfare" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">Profile</span></code>:</p>
+<ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">d_candidate_plurality_welfare</span></code>: plurality welfare of each candidate.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">d_candidate_anti_plurality_welfare</span></code>: anti-plurality welfare of each candidate.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">d_candidate_relative_plurality_welfare</span></code>: relative plurality welfare of each candidate.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">d_candidate_relative_anti_plurality_welfare</span></code>: relative anti-plurality welfare of each candidate.</p></li>
+</ul>
+</li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">ProfileCardinal</span></code>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">d_candidate_welfare</span></code> and <code class="docutils literal notranslate"><span class="pre">d_candidate_relative_welfare</span></code> now return a <code class="docutils literal notranslate"><span class="pre">DictPrintingInOrder</span></code> instead of
+a basic <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="use-github-actions">
 <h2>0.27.1 (2020-11-26): Use GitHub actions<a class="headerlink" href="#use-github-actions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
