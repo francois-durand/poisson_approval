@@ -2,6 +2,7 @@ import warnings
 from poisson_approval.constants.constants import *
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import product_dict, my_division
 from poisson_approval.utils.UtilPreferences import is_weak_order, sort_weak_order, is_hater
@@ -374,7 +375,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
     @cached_property
     def d_candidate_welfare(self):
-        d = {candidate: 0 for candidate in CANDIDATES}
+        d = DictPrintingInOrder({candidate: 0 for candidate in CANDIDATES})
         for ranking, d_umin_umax_share in self.d_ranking_umin_umax_share.items():
             for (u_min, u_max), share in d_umin_umax_share.items():
                 d[ranking[0]] += share

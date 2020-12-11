@@ -11,9 +11,10 @@ from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.ComputationEngineNumeric import ComputationEngineNumeric
+from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import candidates_to_probabilities, my_division, array_to_d_candidate_value, \
-    one_over_t, to_callable, candidates_to_d_candidate_probability
+    one_over_t, to_callable, candidates_to_d_candidate_probability, normalize_dict_to_0_1
 from poisson_approval.utils.UtilBallots import ballot_one, ballot_one_two, ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property, property_deleting_cache
 
@@ -120,7 +121,7 @@ class ProfileCardinal(Profile):
 
     @cached_property
     def d_candidate_welfare(self):
-        """dict : welfare of each candidate.
+        """DictPrintingInOrder : welfare of each candidate.
             E.g. ``'a': 0.7`` means that candidate ``'a'`` has a welfare (average utility) equal to 0.7 for the voters.
             Since utilities are in [0, 1], so is the welfare.
         """
@@ -128,18 +129,13 @@ class ProfileCardinal(Profile):
 
     @cached_property
     def d_candidate_relative_welfare(self):
-        """dict : relative welfare of each candidate.
+        """DictPrintingInOrder : relative welfare of each candidate.
             This is similar to :attr:`d_candidate_welfare`, but renormalized so that the candidate with best welfare
             has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
             (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
             the relative welfare is 1 for all of them.
         """
-        max_welfare = max(self.d_candidate_welfare.values())
-        min_welfare = min(self.d_candidate_welfare.values())
-        if min_welfare == max_welfare:
-            return {candidate: 1 for candidate in CANDIDATES}
-        return {candidate: (welfare - min_welfare) / (max_welfare - min_welfare)
-                for candidate, welfare in self.d_candidate_welfare.items()}
+        return normalize_dict_to_0_1(self.d_candidate_welfare)
 
     # Tau and strategy-related stuff
 

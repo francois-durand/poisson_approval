@@ -862,3 +862,41 @@ def my_sign(x):
         return -1
     else:
         return 0
+
+
+def normalize_dict_to_0_1(d):
+    """Normalize the values of a dictionary to the interval [0, 1].
+
+    Parameters
+    ----------
+    d : dict
+        Values must be numbers.
+
+    Returns
+    -------
+    DictPrintingInOrder
+        The same dictionary, but an affine transformation is applied so that the minimum value is 0 and the maximum
+        value is 1.
+
+    Examples
+    --------
+    Typical usage:
+
+        >>> d_candidate_welfare = {'a': 0.1, 'b': 0.2, 'c': 0.5}
+        >>> d_candidate_relative_welfare = normalize_dict_to_0_1(d_candidate_welfare)
+        >>> d_candidate_relative_welfare
+        {'a': 0.0, 'b': 0.25, 'c': 1.0}
+
+    If all the values are equal, then conventionally all values are converted to 1:
+
+        >>> d_candidate_welfare = {'a': 0.1, 'b': 0.1, 'c': 0.1}
+        >>> d_candidate_relative_welfare = normalize_dict_to_0_1(d_candidate_welfare)
+        >>> d_candidate_relative_welfare
+        {'a': 1, 'b': 1, 'c': 1}
+    """
+    max_value = max(d.values())
+    min_value = min(d.values())
+    if min_value == max_value:
+        return {k: 1 for k in d.keys()}
+    return DictPrintingInOrder({k: my_division(value - min_value, max_value - min_value)
+                                for k, value in d.items()})
