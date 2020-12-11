@@ -2,6 +2,22 @@
 History
 =======
 
+---------------------------------------------------------
+0.28.0 (2020-12-11): Plurality and Anti-Plurality Welfare
+---------------------------------------------------------
+
+* In ``Profile``:
+
+  * Add ``d_candidate_plurality_welfare``: plurality welfare of each candidate.
+  * Add ``d_candidate_anti_plurality_welfare``: anti-plurality welfare of each candidate.
+  * Add ``d_candidate_relative_plurality_welfare``: relative plurality welfare of each candidate.
+  * Add ``d_candidate_relative_anti_plurality_welfare``: relative anti-plurality welfare of each candidate.
+
+* In ``ProfileCardinal``:
+
+  * ``d_candidate_welfare`` and ``d_candidate_relative_welfare`` now return a ``DictPrintingInOrder`` instead of
+    a basic ``dict``.
+
 ---------------------------------------
 0.27.1 (2020-11-26): Use GitHub actions
 ---------------------------------------
