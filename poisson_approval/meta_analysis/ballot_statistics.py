@@ -47,14 +47,14 @@ def ballot_statistics(factory, n_samples,
         >>> rand_profile = RandProfileHistogramUniform(n_bins=1)
         >>> results = ballot_statistics(factory=rand_profile, n_samples=10, n_max_episodes=10)
         >>> ratio_single_votes, ratio_double_votes, ratio_sincere_votes, ratio_insincere_votes = results
-        >>> ratio_single_votes
-        0.6832229534288994
-        >>> ratio_double_votes
-        0.3167770465711006
-        >>> ratio_sincere_votes
-        0.5996763226642906
-        >>> ratio_insincere_votes
-        0.4003236773357094
+        >>> ratio_single_votes  # doctest: +ELLIPSIS
+        0.68322...
+        >>> ratio_double_votes  # doctest: +ELLIPSIS
+        0.31677...
+        >>> ratio_sincere_votes  # doctest: +ELLIPSIS
+        0.59967...
+        >>> ratio_insincere_votes  # doctest: +ELLIPSIS
+        0.40032...
     """
     ratio_single_votes = 0
     ratio_sincere_votes = 0
