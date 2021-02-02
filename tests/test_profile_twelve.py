@@ -71,50 +71,75 @@ def test_not_equilibrium(my_profile, my_strategy):
     assert my_profile.is_equilibrium(my_strategy) == EquilibriumStatus.NOT_EQUILIBRIUM
 
 
-def test_iterated_voting_without_convergence():
+def test_iterated_voting_with_cycle():
     """
-        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
+        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
         >>> def share_double_votes_t(tau):
         ...     return tau.ab + tau.ac + tau.bc
         >>> def share_double_votes_s(strategy):
         ...     return strategy.share_double_votes
         >>> result = my_profile.iterated_voting(
-        ...     init=my_strategy, n_max_episodes=1, ballot_update_ratio=1,
+        ...     init=my_strategy, n_max_episodes=10, ballot_update_ratio=1,
+        ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
+        ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
+        >>> result['cycle_taus_actual']
+        [TauVector({'ab': 1}, voting_rule='Anti-plurality'), TauVector({'ac': 1}, voting_rule='Anti-plurality')]
+        >>> result['d_candidate_winning_frequency']
+        {'a': Fraction(1, 2), 'b': Fraction(1, 4), 'c': Fraction(1, 4)}
+        >>> result['share_double_votes_t']
+        1.0
+        >>> result['share_double_votes_s']
+        1.0
+    """
+    pass
+
+
+def test_iterated_voting_without_convergence():
+    """
+        >>> my_profile = ProfileTwelve(
+        ...     d_type_share={'ab_c': Fraction(2, 5), 'c_ba': Fraction(2, 5), 'ca_b': Fraction(1, 5)})
+        >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'a', 'cab': 'ac', 'cba': 'bc'})
+        >>> def share_double_votes_t(tau):
+        ...     return tau.ab + tau.ac + tau.bc
+        >>> def share_double_votes_s(strategy):
+        ...     return strategy.share_double_votes
+        >>> result = my_profile.iterated_voting(
+        ...     init=my_strategy, n_max_episodes=4, ballot_update_ratio=1,
         ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
         ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
         >>> result['cycle_taus_actual']
         []
         >>> result['d_candidate_winning_frequency']
-        {'a': Fraction(1, 1)}
-        >>> result['share_double_votes_t']
-        0
+        {'a': Fraction(1, 8), 'c': Fraction(7, 8)}
+        >>> result['share_double_votes_t']  # doctest: +ELLIPSIS
+        0.4499999...
         >>> result['share_double_votes_s']
-        0
+        Fraction(9, 20)
     """
     pass
 
 
 def test_fictitious_play_without_convergence():
     """
-        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
+        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
         >>> def share_double_votes_t(tau):
         ...     return tau.ab + tau.ac + tau.bc
         >>> def share_double_votes_s(strategy):
         ...     return strategy.share_double_votes
         >>> result = my_profile.fictitious_play(
-        ...     init=my_strategy, n_max_episodes=1,
+        ...     init=my_strategy, n_max_episodes=10,
         ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
         ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
         >>> print(result['tau'])
         None
         >>> result['d_candidate_winning_frequency']
-        {'a': Fraction(1, 1)}
+        {'a': Fraction(1, 2), 'b': Fraction(1, 4), 'c': Fraction(1, 4)}
         >>> result['share_double_votes_t']
-        0
+        Fraction(1, 1)
         >>> result['share_double_votes_s']
-        0
+        Fraction(1, 1)
     """
     pass
 
