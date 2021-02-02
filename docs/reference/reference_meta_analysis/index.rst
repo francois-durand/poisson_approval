@@ -10,6 +10,7 @@ Meta-Analysis
    reference_is_not_condorcet
    reference_nice_stats_profile_ordinal
    reference_plot_distribution_scores
+   reference_plot_distribution_threshold_utilities
    reference_xyy_to_profile
    reference_binary_axes_subplot_poisson
    reference_binary_figure
