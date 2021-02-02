@@ -1,4 +1,5 @@
-from poisson_approval.utils.Util import one_over_log_t_plus_one
+from poisson_approval.random_factories.RandProfileHistogramUniform import RandProfileHistogramUniform
+from poisson_approval.utils.Util import one_over_log_t_plus_one, initialize_random_seeds
 
 
 def ballot_statistics(factory, n_samples,
@@ -39,9 +40,23 @@ def ballot_statistics(factory, n_samples,
         The ratio of sincere votes.
     ratio_insincere_votes : float
         The ratio of insincere votes.
+
+    Examples
+    --------
+        >>> initialize_random_seeds()
+        >>> rand_profile = RandProfileHistogramUniform(n_bins=1)
+        >>> results = ballot_statistics(factory=rand_profile, n_samples=10, n_max_episodes=10)
+        >>> ratio_single_votes, ratio_double_votes, ratio_sincere_votes, ratio_insincere_votes = results
+        >>> ratio_single_votes
+        0.6832229534288994
+        >>> ratio_double_votes
+        0.3167770465711006
+        >>> ratio_sincere_votes
+        0.5996763226642906
+        >>> ratio_insincere_votes
+        0.4003236773357094
     """
     ratio_single_votes = 0
-    ratio_double_votes = 0
     ratio_sincere_votes = 0
     i_samples = 0
     i_failed_trials = 0
@@ -53,7 +68,6 @@ def ballot_statistics(factory, n_samples,
                                          other_statistics_update_ratio=statistics_update_ratio,
                                          other_statistics_strategy={
                                              'share_single_votes': (lambda strategy: strategy.share_single_votes),
-                                             'share_double_votes': (lambda strategy: strategy.share_double_votes),
                                              'share_sincere': (lambda strategy: strategy.share_sincere)
                                          })
         if conditional_on_convergence and not results['converges']:
@@ -64,10 +78,9 @@ def ballot_statistics(factory, n_samples,
                 continue
         i_samples += 1
         ratio_single_votes += results['share_single_votes']
-        ratio_double_votes += results['share_double_votes']
         ratio_sincere_votes += results['share_sincere']
     ratio_single_votes /= n_samples
-    ratio_double_votes /= n_samples
+    ratio_double_votes = 1 - ratio_single_votes
     ratio_sincere_votes /= n_samples
     ratio_insincere_votes = 1 - ratio_sincere_votes
     return ratio_single_votes, ratio_double_votes, ratio_sincere_votes, ratio_insincere_votes

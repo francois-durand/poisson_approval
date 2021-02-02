@@ -12,7 +12,7 @@ def plot_distribution_threshold_utilities(factory, n_samples,
                                           statistics_update_ratio=one_over_log_t_plus_one,
                                           meth='fictitious_play',
                                           conditional_on_convergence=False,
-                                          **kwargs):
+                                          **kwargs):  # pragma: no cover
     """
     Plot the distribution (CDF) of the threshold utility.
 
