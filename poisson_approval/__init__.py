@@ -113,6 +113,8 @@ from poisson_approval.meta_analysis.binary_shortcuts import binary_plot_n_equili
     binary_plot_winners_at_equilibrium, binary_plot_winning_frequencies, binary_plot_convergence, \
     XyyToProfile
 from poisson_approval.meta_analysis.distribution_scores import plot_distribution_scores
+from poisson_approval.meta_analysis.is_condorcet import is_condorcet
+from poisson_approval.meta_analysis.is_not_condorcet import is_not_condorcet
 from poisson_approval.meta_analysis.ternary_plots import TernaryAxesSubplotPoisson, ternary_figure
 from poisson_approval.meta_analysis.ternary_shortcuts import ternary_plot_n_equilibria, \
     ternary_plot_winners_at_equilibrium, ternary_plot_winning_frequencies, ternary_plot_convergence, \
