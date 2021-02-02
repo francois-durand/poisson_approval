@@ -1,6 +1,6 @@
 import pytest
 from poisson_approval import ANTI_PLURALITY, PLURALITY
-from poisson_approval import RandProfileHistogramUniform
+from poisson_approval import ProfileHistogram, RandProfileHistogramUniform
 from poisson_approval import ballot_statistics
 from poisson_approval import initialize_random_seeds
 
@@ -22,9 +22,9 @@ def test_convergence_sometimes():
         def __call__(self):
             if self.never_called:
                 self.never_called = False
-                return RandProfileHistogramUniform(n_bins=1, voting_rule=ANTI_PLURALITY)()
+                return ProfileHistogram({('abc', (1,)): 1}, voting_rule=ANTI_PLURALITY)
             else:
-                return RandProfileHistogramUniform(n_bins=1, voting_rule=PLURALITY)()
+                return ProfileHistogram({('abc', (1,)): 1}, voting_rule=PLURALITY)
 
     initialize_random_seeds()
     results = ballot_statistics(factory=RandProfileWeird(), n_samples=2, n_max_episodes=1000,
