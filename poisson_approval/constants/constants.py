@@ -2,6 +2,24 @@ RANKINGS = ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
 PERMUTATIONS = RANKINGS
 TWELVE_TYPES = ['a_bc', 'ab_c', 'a_cb', 'ac_b', 'b_ac', 'ba_c', 'b_ca', 'bc_a', 'c_ab', 'ca_b', 'c_ba', 'cb_a']
 
+SETS_OF_RANKINGS_UP_TO_RELABELLING = [
+    ('abc', ),
+    ('abc', 'acb'),
+    ('abc', 'bac'),
+    ('abc', 'bca'),
+    ('abc', 'cba'),
+    ('abc', 'bac', 'cab'),
+    ('abc', 'acb', 'bac'),
+    ('abc', 'acb', 'bca'),
+    ('abc', 'bca', 'cab'),
+    ('abc', 'acb', 'bac', 'bca'),
+    ('abc', 'acb', 'bac', 'cab'),
+    ('abc', 'acb', 'bac', 'cba'),
+    ('abc', 'acb', 'bca', 'cba'),
+    ('abc', 'acb', 'bac', 'bca', 'cab'),
+    ('abc', 'acb', 'bac', 'bca', 'cab', 'cba')
+]
+
 WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS = ['a>b~c', 'b>a~c', 'c>a~b']
 WEAK_ORDERS_HATE_WITHOUT_INVERSIONS = ['a~b>c', 'a~c>b', 'b~c>a']
 WEAK_ORDERS_WITHOUT_INVERSIONS = WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS + WEAK_ORDERS_HATE_WITHOUT_INVERSIONS
