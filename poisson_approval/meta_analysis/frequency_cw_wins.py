@@ -7,7 +7,8 @@ def frequency_cw_wins(factory, n_samples,
                       perception_update_ratio=one_over_log_t_plus_one,
                       ballot_update_ratio=one_over_log_t_plus_one,
                       winning_frequency_update_ratio=one_over_log_t_plus_one,
-                      meth='fictitious_play'):
+                      meth='fictitious_play',
+                      conditional_on_convergence=False):
     """
     Frequency of victory for the Condorcet winner.
 
@@ -26,6 +27,8 @@ def frequency_cw_wins(factory, n_samples,
         Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
     meth : str
         The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
+    conditional_on_convergence : bool
+        If True, then profiles that do not converge (within ``n_max_episodes``) are rejected from the sample.
 
     Returns
     -------
@@ -40,14 +43,23 @@ def frequency_cw_wins(factory, n_samples,
         1.0
     """
     total = 0
-    for _ in range(n_samples):
+    i_samples = 0
+    i_failed_trials = 0
+    while i_samples < n_samples:
         profile = factory()
         if len(profile.condorcet_winners) != 1:  # pragma: no cover
             raise ValueError('The profile does not have one Condorcet winner: %s' % profile)
-        condorcet_winner = list(profile.condorcet_winners)[0]
         results = getattr(profile, meth)(init=init, n_max_episodes=n_max_episodes,
                                          perception_update_ratio=perception_update_ratio,
                                          ballot_update_ratio=ballot_update_ratio,
                                          winning_frequency_update_ratio=winning_frequency_update_ratio)
+        if conditional_on_convergence and results['tau'] is None:
+            i_failed_trials += 1
+            if i_failed_trials >= n_samples and i_samples == 0:
+                raise ValueError("Emergency stop: out of %s samples, the process never converged." % n_samples)
+            else:
+                continue
+        i_samples += 1
+        condorcet_winner = list(profile.condorcet_winners)[0]
         total += results['d_candidate_winning_frequency'][condorcet_winner]
     return float(total / n_samples)

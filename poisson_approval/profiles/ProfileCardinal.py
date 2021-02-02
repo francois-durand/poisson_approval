@@ -5,13 +5,11 @@ from fractions import Fraction
 from poisson_approval.constants.constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.profiles.Profile import Profile
-from poisson_approval.random_factories.RandStrategyThresholdUniform import RandStrategyThresholdUniform
 from poisson_approval.random_factories.RandTauVectorUniform import RandTauVectorUniform
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.ComputationEngineNumeric import ComputationEngineNumeric
-from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import candidates_to_probabilities, my_division, array_to_d_candidate_value, \
     one_over_t, to_callable, candidates_to_d_candidate_probability, normalize_dict_to_0_1
