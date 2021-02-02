@@ -3,6 +3,7 @@ Meta-Analysis
 
 .. toctree::
 
+   reference_ballot_statistics
    reference_convergence_test
    reference_frequency_cw_wins
    reference_is_condorcet
