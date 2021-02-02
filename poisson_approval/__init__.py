@@ -24,6 +24,7 @@ from poisson_approval.utils.UtilBallots import ballot_one, ballot_two, ballot_on
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 from poisson_approval.utils.UtilMasks import masks_area_naive, masks_area, masks_distribution_naive, \
     masks_distribution, winners_distribution, random_mask, random_masks
+from poisson_approval.utils.UtilPlot import plt_cdf, plt_step_with_error, plt_plot_with_error
 from poisson_approval.utils.UtilPreferences import is_hater, is_lover, is_weak_order, sort_weak_order
 
 # Constants

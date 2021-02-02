@@ -15,4 +15,5 @@ Utils
    reference_util_ballots
    reference_util_cache
    reference_util_masks
+   reference_util_plot
    reference_util_preferences
