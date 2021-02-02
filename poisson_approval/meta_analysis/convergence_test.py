@@ -39,5 +39,5 @@ def convergence_test(n_max_episodes, init='sincere',
         results = getattr(profile, meth)(init=init, n_max_episodes=n_max_episodes,
                                          perception_update_ratio=perception_update_ratio,
                                          ballot_update_ratio=ballot_update_ratio)
-        return results['tau'] is not None
+        return results['converges']
     return converges

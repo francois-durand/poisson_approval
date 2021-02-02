@@ -485,12 +485,12 @@ class ProfileCardinal(Profile):
         other_statistics_update_ratio : callable or Number
             The coefficient when updating the other statistics (cf. below).
         other_statistics_tau : dict
-            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
+            Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``n_episodes``,
             and ``d_candidate_winning_frequency``). Value: a function whose input is a tau-vector, and whose
             output is a number or a numpy array.
         other_statistics_strategy : dict
-            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
-            and ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a function whose
+            Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``n_episodes``,
+            ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a function whose
             input is a strategy, and whose output is a number or a numpy array.
         verbose : bool
             If True, print all intermediate steps.
@@ -498,6 +498,7 @@ class ProfileCardinal(Profile):
         Returns
         -------
         dict
+            * Key ``converges``: bool. True if the process converges (i.e. cycle of length 1).
             * Key ``cycle_taus_perceived``: list of :class:`TauVector`. The limit cycle of perceived tau-vectors.
               ``cycle_taus_perceived[t]`` is a barycenter of ``cycle_taus_perceived[t - 1]`` with
               ``cycle_taus_actual[t - 1]``, parametrized by `perception_update_ratio`.
@@ -633,7 +634,8 @@ class ProfileCardinal(Profile):
             cycle_taus_perceived = []
             cycle_strategies = []
             d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
-        results= {'cycle_taus_perceived': cycle_taus_perceived,
+        results= {'converges': (len(cycle_taus_actual) == 1),
+                  'cycle_taus_perceived': cycle_taus_perceived,
                   'cycle_strategies': cycle_strategies,
                   'cycle_taus_actual': cycle_taus_actual,
                   'n_episodes': n_episodes,
@@ -692,12 +694,12 @@ class ProfileCardinal(Profile):
         other_statistics_update_ratio : callable or Number
             The coefficient when updating the other statistics (cf. below).
         other_statistics_tau : dict
-            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
+            Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``n_episodes``,
             and ``d_candidate_winning_frequency``). Value: a function whose input is a tau-vector, and whose
             output is a number or a numpy array.
         other_statistics_strategy : dict
-            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
-            and ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a function whose
+            Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``n_episodes``,
+            ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a function whose
             input is a strategy, and whose output is a number or a numpy array.
         verbose : bool
             If True, print all intermediate steps.
@@ -705,6 +707,7 @@ class ProfileCardinal(Profile):
         Returns
         -------
         dict
+            * Key ``converges``: bool. True if the process converges (i.e. cycle of length 1).
             * Key ``tau``: :class:`TauVector` or None. The limit tau-vector. If None, it means that the process did not
               converge.
             * Key ``strategy``: :class:`StrategyThreshold` or None. The limit strategy. If None, it means that the
@@ -803,7 +806,7 @@ class ProfileCardinal(Profile):
                 print('tau_actual: %s' % tau_actual)
             if tau_full_response.isclose(tau_perceived, abs_tol=1E-9) and tau_actual.isclose(
                     tau_full_response, abs_tol=1E-9):
-                results = {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
+                results = {'converges': True, 'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
                            'd_candidate_winning_frequency': candidates_to_d_candidate_probability(tau_actual.winners)}
                 results.update({
                     statistic_name: statistic_f(tau_actual)
@@ -815,7 +818,7 @@ class ProfileCardinal(Profile):
                 })
                 return results
         d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
-        results = {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
+        results = {'converges': False, 'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
                    'd_candidate_winning_frequency': d_candidate_winning_frequency}
         results.update(d_name_statistic_tau_averaged)
         results.update(d_name_statistic_strategy_averaged)

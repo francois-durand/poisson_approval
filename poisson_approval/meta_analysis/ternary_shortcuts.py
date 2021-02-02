@@ -251,7 +251,7 @@ def ternary_plot_convergence(simplex_to_profile, scale,
             results = getattr(profile, meth)(init=init, n_max_episodes=n_max_episodes,
                                              perception_update_ratio=perception_update_ratio,
                                              ballot_update_ratio=ballot_update_ratio)
-            if results['tau'] is not None:
+            if results['converges']:
                 n_convergences += 1
         return n_convergences / samples_per_point
 

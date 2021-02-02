@@ -53,7 +53,7 @@ def frequency_cw_wins(factory, n_samples,
                                          perception_update_ratio=perception_update_ratio,
                                          ballot_update_ratio=ballot_update_ratio,
                                          winning_frequency_update_ratio=winning_frequency_update_ratio)
-        if conditional_on_convergence and results['tau'] is None:
+        if conditional_on_convergence and not results['converges']:
             i_failed_trials += 1
             if i_failed_trials >= n_samples and i_samples == 0:
                 raise ValueError("Emergency stop: out of %s samples, the process never converged." % n_samples)
