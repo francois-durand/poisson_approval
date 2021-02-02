@@ -115,6 +115,7 @@ from poisson_approval.meta_analysis.binary_shortcuts import binary_plot_n_equili
     XyyToProfile
 from poisson_approval.meta_analysis.convergence_test import convergence_test
 from poisson_approval.meta_analysis.distribution_scores import plot_distribution_scores
+from poisson_approval.meta_analysis.frequency_cw_wins import frequency_cw_wins
 from poisson_approval.meta_analysis.is_condorcet import is_condorcet
 from poisson_approval.meta_analysis.is_not_condorcet import is_not_condorcet
 from poisson_approval.meta_analysis.ternary_plots import TernaryAxesSubplotPoisson, ternary_figure
