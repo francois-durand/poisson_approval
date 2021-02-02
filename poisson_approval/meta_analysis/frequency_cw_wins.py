@@ -58,7 +58,7 @@ def frequency_cw_wins(factory, n_samples,
             if i_failed_trials >= n_samples and i_samples == 0:
                 raise ValueError("Emergency stop: out of %s samples, the process never converged." % n_samples)
             else:
-                continue
+                continue  # pragma: no cover
         i_samples += 1
         condorcet_winner = list(profile.condorcet_winners)[0]
         total += results['d_candidate_winning_frequency'][condorcet_winner]
