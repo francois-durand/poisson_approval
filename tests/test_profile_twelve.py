@@ -75,24 +75,46 @@ def test_iterated_voting_without_convergence():
     """
         >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-        >>> result = my_profile.iterated_voting(init=my_strategy, n_max_episodes=1, ballot_update_ratio=1)
+        >>> def share_double_votes_t(tau):
+        ...     return tau.ab + tau.ac + tau.bc
+        >>> def share_double_votes_s(strategy):
+        ...     return strategy.share_double_votes
+        >>> result = my_profile.iterated_voting(
+        ...     init=my_strategy, n_max_episodes=1, ballot_update_ratio=1,
+        ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
+        ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
         >>> result['cycle_taus_actual']
         []
         >>> result['d_candidate_winning_frequency']
         {'a': Fraction(1, 1)}
+        >>> result['share_double_votes_t']
+        0
+        >>> result['share_double_votes_s']
+        0
     """
     pass
 
 
-def test_fictitious_play_without_convergence(my_profile, my_strategy):
+def test_fictitious_play_without_convergence():
     """
         >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-        >>> result = my_profile.fictitious_play(init=my_strategy, n_max_episodes=1)
+        >>> def share_double_votes_t(tau):
+        ...     return tau.ab + tau.ac + tau.bc
+        >>> def share_double_votes_s(strategy):
+        ...     return strategy.share_double_votes
+        >>> result = my_profile.fictitious_play(
+        ...     init=my_strategy, n_max_episodes=1,
+        ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
+        ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
         >>> print(result['tau'])
         None
         >>> result['d_candidate_winning_frequency']
         {'a': Fraction(1, 1)}
+        >>> result['share_double_votes_t']
+        0
+        >>> result['share_double_votes_s']
+        0
     """
     pass
 

@@ -445,8 +445,13 @@ class ProfileCardinal(Profile):
         return strategy, tau
 
     def iterated_voting(self, init, n_max_episodes,
-                        perception_update_ratio=1, ballot_update_ratio=1,
-                        winning_frequency_update_ratio=one_over_t, verbose=False):
+                        perception_update_ratio=1,
+                        ballot_update_ratio=1,
+                        winning_frequency_update_ratio=one_over_t,
+                        other_statistics_update_ratio=one_over_t,
+                        other_statistics_tau=None,
+                        other_statistics_strategy=None,
+                        verbose=False):
         """Seek for convergence by iterated voting.
 
         Parameters
@@ -479,6 +484,16 @@ class ProfileCardinal(Profile):
             + winning_frequency_update_ratio(t) * winning_probability[c]``.
             The default function is :func:`~utils.Util.one_over_t`, which leads to an arithmetic average.
             Note that this parameters has an influence only in case of non-convergence.
+        other_statistics_update_ratio : callable or Number
+            The coefficient when updating the other statistics (cf. below).
+        other_statistics_tau : dict
+            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
+            and ``d_candidate_winning_frequency``). Value: a function whose input is a tau-vector, and whose
+            output is a number or a numpy array.
+        other_statistics_strategy : dict
+            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
+            and ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a function whose
+            input is a strategy, and whose output is a number or a numpy array.
         verbose : bool
             If True, print all intermediate steps.
 
@@ -498,6 +513,8 @@ class ProfileCardinal(Profile):
             * Key ``d_candidate_winning_frequency``: dict. Key: candidate. Value: winning frequency. If the process
               reached a limit or a periodical orbit, the winning frequencies are computed in the limit only. If the
               process did not converge, the frequency is computed on the whole history.
+            * Others keys are those of ``other_statistics_tau`` and ``other_statistics_strategy``. Similarly to
+              ``d_candidate_winning_frequency``, they give the long-run average of the corresponding statistics.
 
             `cycle_taus_perceived`, `cycle_strategies` and `cycle_taus_actual` have the same length. If it is 1, the
             process converges to this limit. If it is greater than 1, the process reaches a periodical orbit. If it
@@ -516,6 +533,12 @@ class ProfileCardinal(Profile):
         that it implies having constant update ratios.
         """
         winning_frequency_update_ratio = to_callable(winning_frequency_update_ratio)
+        other_statistics_update_ratio = to_callable(other_statistics_update_ratio)
+        if other_statistics_tau is None:
+            other_statistics_tau = {}
+        if other_statistics_strategy is None:
+            other_statistics_strategy = {}
+
         strategy, tau_actual = self._initializer(init)
         tau_perceived = None
         if verbose:
@@ -526,6 +549,10 @@ class ProfileCardinal(Profile):
         taus_actual = []
         taus_perceived = []
         array_candidate_winning_frequency = None
+        d_name_statistic_tau_averaged = {name: None for name in other_statistics_tau.keys()}
+        d_name_statistic_strategy_actual = {name: None for name in other_statistics_strategy.keys()}
+        d_name_statistic_strategy_averaged = {name: None for name in other_statistics_strategy.keys()}
+
         n_episodes = n_max_episodes
         for t in range(1, n_max_episodes + 1):
             if t == 1:
@@ -542,7 +569,14 @@ class ProfileCardinal(Profile):
             if t == 1:
                 tau_actual = tau_full_response
                 array_candidate_winning_frequency = candidates_to_probabilities(tau_actual.winners)
+                for statistic_name, statistic_f in other_statistics_tau.items():
+                    d_name_statistic_tau_averaged[statistic_name] = statistic_f(tau_actual)
+                for statistic_name, statistic_f in other_statistics_strategy.items():
+                    d_name_statistic_strategy_actual[statistic_name] = statistic_f(strategy)
+                    d_name_statistic_strategy_averaged[statistic_name] = statistic_f(strategy)
             else:
+                wfur = winning_frequency_update_ratio(t)
+                osur = other_statistics_update_ratio(t)
                 tau_actual = TauVector({
                     ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
                                                                           b=tau_full_response.d_ballot_share[ballot],
@@ -550,8 +584,20 @@ class ProfileCardinal(Profile):
                     for ballot in BALLOTS_WITHOUT_INVERSIONS
                 }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
                 array_candidate_winning_frequency = (
-                    (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
-                    + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
+                    (1 - wfur) * array_candidate_winning_frequency
+                    + wfur * candidates_to_probabilities(tau_actual.winners))
+                for statistic_name, statistic_f in other_statistics_tau.items():
+                    d_name_statistic_tau_averaged[statistic_name] = (
+                        (1 - osur) * d_name_statistic_tau_averaged[statistic_name]
+                        + osur * statistic_f(tau_actual))
+                for statistic_name, statistic_f in other_statistics_strategy.items():
+                    d_name_statistic_strategy_actual[statistic_name] = (
+                        (1 - ballot_update_ratio) * d_name_statistic_strategy_actual[statistic_name]
+                        + ballot_update_ratio * statistic_f(strategy))
+                    d_name_statistic_strategy_averaged[statistic_name] = (
+                        (1 - osur) * d_name_statistic_strategy_averaged[statistic_name]
+                        + osur * d_name_statistic_strategy_actual[statistic_name])
+
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -578,20 +624,34 @@ class ProfileCardinal(Profile):
             cycle_taus_perceived = taus_perceived[begin + 1:end + 1]
             cycle_strategies = strategies[begin + 1:end + 1]
             d_candidate_winning_frequency = _d_candidate_winning_frequency(cycle_taus_actual)
+            for statistic_name, statistic_f in other_statistics_tau.items():
+                d_name_statistic_tau_averaged[statistic_name] = _average_statistic(
+                    statistic_f, cycle_taus_actual)
+            for statistic_name, statistic_f in other_statistics_strategy.items():
+                d_name_statistic_strategy_averaged[statistic_name] = _average_statistic(
+                    statistic_f, cycle_strategies)
         except StopIteration:
             cycle_taus_actual = []
             cycle_taus_perceived = []
             cycle_strategies = []
             d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
-        return {'cycle_taus_perceived': cycle_taus_perceived,
-                'cycle_strategies': cycle_strategies,
-                'cycle_taus_actual': cycle_taus_actual,
-                'n_episodes': n_episodes,
-                'd_candidate_winning_frequency': d_candidate_winning_frequency}
+        results= {'cycle_taus_perceived': cycle_taus_perceived,
+                  'cycle_strategies': cycle_strategies,
+                  'cycle_taus_actual': cycle_taus_actual,
+                  'n_episodes': n_episodes,
+                  'd_candidate_winning_frequency': d_candidate_winning_frequency}
+        results.update(d_name_statistic_tau_averaged)
+        results.update(d_name_statistic_strategy_averaged)
+        return results
 
     def fictitious_play(self, init, n_max_episodes,
-                        perception_update_ratio=one_over_t, ballot_update_ratio=1,
-                        winning_frequency_update_ratio=one_over_t, verbose=False):
+                        perception_update_ratio=one_over_t,
+                        ballot_update_ratio=1,
+                        winning_frequency_update_ratio=one_over_t,
+                        other_statistics_update_ratio=one_over_t,
+                        other_statistics_tau=None,
+                        other_statistics_strategy=None,
+                        verbose=False):
         """Seek for convergence by fictitious play.
 
         Parameters
@@ -614,14 +674,14 @@ class ProfileCardinal(Profile):
         perception_update_ratio : callable or Number
             The coefficient when updating the perceived tau:
             ``tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) *
-            tau_actual``. For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The
+            tau_actual``. For any ``t`` from 2 to `n_max_episodes` included, the update ratio must be in [0, 1]. The
             default function is :func:`~utils.Util.one_over_t`, which leads to an arithmetic average. However,
             the `recommended` function is :func:`~utils.Util.one_over_log_t_plus_one`, which accelerates the
             convergence. If `perception_update_ratio` is a Number, it is considered as a constant function.
         ballot_update_ratio : callable or Number
             The ratio of voters who update their ballot:
             ``tau_actual = (1 - ballot_update_ratio(t)) * tau_actual + ballot_update_ratio(t) * tau_response``.
-            For any ``t`` from 1 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
+            For any ``t`` from 2 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
             is the constant 1, which corresponds to a full update. If `ballot_update_ratio` is a Number, it is
             considered as a constant function.
         winning_frequency_update_ratio : callable or Number
@@ -631,6 +691,16 @@ class ProfileCardinal(Profile):
             + winning_frequency_update_ratio(t) * winning_probability[c]``.
             The default function is :func:`~utils.Util.one_over_t`, which leads to an arithmetic average.
             Note that this parameters has an influence only in case of non-convergence.
+        other_statistics_update_ratio : callable or Number
+            The coefficient when updating the other statistics (cf. below).
+        other_statistics_tau : dict
+            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
+            and ``d_candidate_winning_frequency``). Value: a function whose input is a tau-vector, and whose
+            output is a number or a numpy array.
+        other_statistics_strategy : dict
+            Key: name of the statistic (different from ``tau``, ``strategy``, ``n_episodes``,
+            and ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a function whose
+            input is a strategy, and whose output is a number or a numpy array.
         verbose : bool
             If True, print all intermediate steps.
 
@@ -646,6 +716,8 @@ class ProfileCardinal(Profile):
             * Key ``d_candidate_winning_frequency``: dict. Key: candidate. Value: winning frequency. If the process
               reached a limit, the winning frequencies are computed in the limit only. If the process did not converge,
               the frequency is computed on the whole history.
+            * Others keys are those of ``other_statistics_tau`` and ``other_statistics_strategy``. Similarly to
+              ``d_candidate_winning_frequency``, they give the long-run average of the corresponding statistics.
 
         Notes
         -----
@@ -662,6 +734,11 @@ class ProfileCardinal(Profile):
         perception_update_ratio = to_callable(perception_update_ratio)
         ballot_update_ratio = to_callable(ballot_update_ratio)
         winning_frequency_update_ratio = to_callable(winning_frequency_update_ratio)
+        other_statistics_update_ratio = to_callable(other_statistics_update_ratio)
+        if other_statistics_tau is None:
+            other_statistics_tau = {}
+        if other_statistics_strategy is None:
+            other_statistics_strategy = {}
 
         strategy, tau_actual = self._initializer(init)
         tau_perceived = None
@@ -670,6 +747,9 @@ class ProfileCardinal(Profile):
             print('strategy: %s' % strategy)
             print('tau_actual: %s' % tau_actual)
         array_candidate_winning_frequency = None
+        d_name_statistic_tau_averaged = {name: None for name in other_statistics_tau.keys()}
+        d_name_statistic_strategy_actual = {name: None for name in other_statistics_strategy.keys()}
+        d_name_statistic_strategy_averaged = {name: None for name in other_statistics_strategy.keys()}
 
         for t in range(1, n_max_episodes + 1):
             if t == 1:
@@ -686,16 +766,36 @@ class ProfileCardinal(Profile):
             if t == 1:
                 tau_actual = tau_full_response
                 array_candidate_winning_frequency = candidates_to_probabilities(tau_actual.winners)
+                for statistic_name, statistic_f in other_statistics_tau.items():
+                    d_name_statistic_tau_averaged[statistic_name] = statistic_f(tau_actual)
+                for statistic_name, statistic_f in other_statistics_strategy.items():
+                    d_name_statistic_strategy_actual[statistic_name] = statistic_f(strategy)
+                    d_name_statistic_strategy_averaged[statistic_name] = statistic_f(strategy)
             else:
+                bur = ballot_update_ratio(t)
+                wfur = winning_frequency_update_ratio(t)
+                osur = other_statistics_update_ratio(t)
                 tau_actual = TauVector({
                     ballot: _my_round(ComputationEngineNumeric.barycenter(a=tau_actual.d_ballot_share[ballot],
                                                                           b=tau_full_response.d_ballot_share[ballot],
-                                                                          ratio_b=ballot_update_ratio(t)))
+                                                                          ratio_b=bur))
                     for ballot in BALLOTS_WITHOUT_INVERSIONS
                 }, normalization_warning=False, voting_rule=self.voting_rule, symbolic=self.symbolic)
-            array_candidate_winning_frequency = (
-                (1 - winning_frequency_update_ratio(t)) * array_candidate_winning_frequency
-                + winning_frequency_update_ratio(t) * candidates_to_probabilities(tau_actual.winners))
+                array_candidate_winning_frequency = (
+                    (1 - wfur) * array_candidate_winning_frequency
+                    + wfur * candidates_to_probabilities(tau_actual.winners))
+                for statistic_name, statistic_f in other_statistics_tau.items():
+                    d_name_statistic_tau_averaged[statistic_name] = (
+                        (1 - osur) * d_name_statistic_tau_averaged[statistic_name]
+                        + osur * statistic_f(tau_actual))
+                for statistic_name, statistic_f in other_statistics_strategy.items():
+                    d_name_statistic_strategy_actual[statistic_name] = (
+                        (1 - bur) * d_name_statistic_strategy_actual[statistic_name]
+                        + bur * statistic_f(strategy))
+                    d_name_statistic_strategy_averaged[statistic_name] = (
+                        (1 - osur) * d_name_statistic_strategy_averaged[statistic_name]
+                        + osur * d_name_statistic_strategy_actual[statistic_name])
+
             if verbose:
                 print('t = %s' % t)
                 print('tau_perceived: %s' % tau_perceived)
@@ -705,12 +805,23 @@ class ProfileCardinal(Profile):
                 print('tau_actual: %s' % tau_actual)
             if tau_full_response.isclose(tau_perceived, abs_tol=1E-9) and tau_actual.isclose(
                     tau_full_response, abs_tol=1E-9):
-                return {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
-                        'd_candidate_winning_frequency': candidates_to_d_candidate_probability(tau_actual.winners)}
-        n_taus = n_max_episodes + 1
+                results = {'tau': tau_full_response, 'strategy': strategy, 'n_episodes': t,
+                           'd_candidate_winning_frequency': candidates_to_d_candidate_probability(tau_actual.winners)}
+                results.update({
+                    statistic_name: statistic_f(tau_actual)
+                    for statistic_name, statistic_f in other_statistics_tau.items()
+                })
+                results.update({
+                    statistic_name: statistic_f(strategy)
+                    for statistic_name, statistic_f in other_statistics_strategy.items()
+                })
+                return results
         d_candidate_winning_frequency = array_to_d_candidate_value(array_candidate_winning_frequency)
-        return {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
-                'd_candidate_winning_frequency': d_candidate_winning_frequency}
+        results = {'tau': None, 'strategy': None, 'n_episodes': n_max_episodes,
+                   'd_candidate_winning_frequency': d_candidate_winning_frequency}
+        results.update(d_name_statistic_tau_averaged)
+        results.update(d_name_statistic_strategy_averaged)
+        return results
 
     @classmethod
     def order_and_label(cls, t):
@@ -774,3 +885,43 @@ def _d_candidate_winning_frequency(taus):
     n_taus = len(taus)
     frequencies = np.array([my_division(count, n_taus) for count in counts])
     return array_to_d_candidate_value(frequencies)
+
+
+def _average_statistic(statistic_f, taus_or_strategies):
+    """Average of a statistic over several taus / strategies
+
+    This is used for iterated voting in case of cycle.
+
+    Parameters
+    ----------
+    statistic_f : callable
+        Input: a tau-vector or a strategy. Output: a number or a numpy array.
+    taus_or_strategies : list
+        List of tau-vectors or strategies.
+
+    Returns
+    -------
+    number or numpy array
+        The average of ``statistic_f`` over the cycle.
+
+    Examples
+    --------
+        >>> from fractions import Fraction
+        >>> tau_1 = TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)})
+        >>> tau_2 = TauVector({'a': 0, 'b': 0, 'c': 1})
+        >>> def vote_for_a(tau):
+        ...     return tau.a
+        >>> _average_statistic(vote_for_a, [tau_1, tau_2])
+        Fraction(1, 5)
+        >>> def single_votes(tau):
+        ...     return np.array([tau.a, tau.b, tau.c])
+        >>> _average_statistic(single_votes, [tau_1, tau_2])
+        array([Fraction(1, 5), Fraction(1, 5), Fraction(3, 5)], dtype=object)
+    """
+    result = None
+    for x in taus_or_strategies:
+        if result is None:
+            result = statistic_f(x)
+        else:
+            result += statistic_f(x)
+    return result / len(taus_or_strategies)
