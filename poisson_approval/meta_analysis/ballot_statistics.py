@@ -75,6 +75,7 @@ def ballot_statistics(factory, n_samples,
             if i_failed_trials >= n_samples and i_samples == 0:
                 raise ValueError("Emergency stop: out of %s samples, the process never converged." % n_samples)
             else:
+                test_variable = 42
                 continue
         i_samples += 1
         ratio_single_votes += results['share_single_votes']
