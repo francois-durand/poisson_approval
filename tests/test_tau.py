@@ -82,3 +82,26 @@ def test_backward_focused():
         Focus.BACKWARD_FOCUSED
     """
     pass
+
+
+def test_offset_very_close_to_1():
+    """
+    In version 0.28.0, the following tau-vector revealed a bug. Despite giving a lower bound of 1 + 1e-14,
+    ``scipy.minimize`` returned a value of 1.0. This lead to an impossible division in the computation of the weak
+    pivot: ``self.asymptotic = trio.asymptotic / (1 - psi_z)``. We solved this by setting SAFETY_EPSILON = 1e-12
+    in EventTrio.
+
+        >>> tau = TauVector({
+        ...     'a': 4.137459740542624e-08,
+        ...     'ab': 0.19999999472293928,
+        ...     'ac': 0.19999993095812713,
+        ...     'b': 0.3999999573811137,
+        ...     'bc': 7.462073343933446e-08,
+        ...     'c': 0.200000000942489
+        ... })
+        >>> tau.trio.phi_ab > 1
+        True
+        >>> tau.pivot_weak_ab.phi_ab > 1
+        True
+    """
+    pass
