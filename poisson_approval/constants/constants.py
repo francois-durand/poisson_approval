@@ -38,6 +38,7 @@ INCONCLUSIVE = 'inconclusive'
 APPROVAL = 'Approval'
 PLURALITY = 'Plurality'
 ANTI_PLURALITY = 'Anti-plurality'
+VOTING_RULES = [APPROVAL, PLURALITY, ANTI_PLURALITY]
 
 
 def _f_abc_xyz(my_list):
