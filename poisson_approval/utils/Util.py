@@ -571,7 +571,7 @@ def d_candidate_value_to_array(d_candidate_value):
 def one_over_t(t):
     """Function `1 / t`.
 
-    When used as an update ratio (cf. :meth:`ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic
+    When used as an update ratio (cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic
     mean.
 
     Parameters
@@ -593,7 +593,7 @@ def one_over_t(t):
 def one_over_sqrt_t(t):
     """Function `1 / sqrt(t)`.
 
-    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`.
+    This function is provided as an example of update ratio for :meth:`~poisson_approval.ProfileCardinal.fictitious_play`.
 
     Parameters
     ----------
@@ -614,7 +614,7 @@ def one_over_sqrt_t(t):
 def one_over_log_t_plus_one(t):
     """Function `1 / log(t + 1)`.
 
-    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
+    This function is provided as an example of update ratio for :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. The constant
     1 in the denominator is the smallest integer such that `f(t = 2) < 1`.
 
     Parameters
@@ -636,7 +636,7 @@ def one_over_log_t_plus_one(t):
 def one_over_log_log_t_plus_fourteen(t):
     """Function `1 / log(log(t + 14))`.
 
-    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant
+    This function is provided as an example of update ratio for :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. The constant
     14 in the denominator is the smallest integer such that `f(t = 1) < 1`.
 
     Parameters

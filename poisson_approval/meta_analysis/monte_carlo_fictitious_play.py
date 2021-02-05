@@ -21,7 +21,7 @@ def monte_carlo_fictitious_play(factory, n_samples, n_max_episodes,
     Parameters
     ----------
     factory : callable
-        A factory that returns a (random) profile. Cf. e.g. :class:`RandProfileHistogramUniform`, etc.
+        A factory that returns a (random) profile. Cf. e.g. :class:`~poisson_approval.RandProfileHistogramUniform`, etc.
     n_samples : int
         The number of profiles drawn.
     n_max_episodes : int
@@ -30,9 +30,11 @@ def monte_carlo_fictitious_play(factory, n_samples, n_max_episodes,
         A list of voting rules. Each profile drawn is analyzed with each voting rule. If None, then use the voting
         rule of the profile given by ``factory``.
     init : Strategy or TauVector or str
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     perception_update_ratio, ballot_update_ratio, statistics_update_ratio : callable or Number
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     monte_carlo_settings : list of MonteCarloSetting
         Roughly speaking, this gives the information of which statistics will be computed.
     file_save : str
@@ -131,14 +133,16 @@ class MonteCarloSetting:
     statistics_tau : dict
         Key: name of the statistic. Value: a function whose input is a tau-vector, and whose output is a number or a
         numpy array. This parameter is passed to ``other_statistics_tau`` of
-        :meth:`ProfileCardinal.iterated voting` or :meth:`ProfileCardinal.fictitious_play`. For each voting rule and
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting` or
+        :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. For each voting rule and
         each profile, the long-run average of the statistic is computed, then stored in a list of length ``n_samples``.
         This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]``, where ``meta_results`` denotes
         the results of :func:`monte_carlo_fictitious_play`.
     statistics_strategy : dict
         Key: name of the statistic. Value: a function whose input is a strategy, and whose output is a number or a
         numpy array. This parameter is passed to ``other_statistics_tau`` of
-        :meth:`ProfileCardinal.iterated voting` or :meth:`ProfileCardinal.fictitious_play`. For each voting rule and
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting` or
+        :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. For each voting rule and
         each profile, the long-run average of the statistic is computed, then stored in a list of length ``n_samples``.
         This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]``, where ``meta_results`` denotes
         the results of :func:`monte_carlo_fictitious_play`.
@@ -161,27 +165,35 @@ class MonteCarloSetting:
         self.statistics_final_processing = {} if statistics_final_processing is None else statistics_final_processing
 
 
-MCS_PROFILE = MonteCarloSetting(
-    statistics_post_processing={'profile': (lambda results, profile: profile)}
+MCS_BALLOT_STATISTICS = MonteCarloSetting(
+    statistics_strategy={
+        'share_single_votes': (lambda strategy: strategy.share_single_votes),
+        'share_sincere_votes': (lambda strategy: strategy.share_sincere)
+    },
+    statistics_post_processing={
+        'share_double_votes': (lambda results, profile: 1 - results['share_single_votes']),
+        'share_insincere_votes': (lambda results, profile: 1 - results['share_sincere_votes'])
+    },
+    statistics_final_processing={
+        'mean_share_single_votes': (lambda meta_results: np.mean(meta_results['share_single_votes'])),
+        'mean_share_double_votes': (lambda meta_results: np.mean(meta_results['share_double_votes'])),
+        'mean_share_sincere_votes': (lambda meta_results: np.mean(meta_results['share_sincere_votes'])),
+        'mean_share_insincere_votes': (lambda meta_results: np.mean(meta_results['share_insincere_votes']))
+    }
 )
 """
-Keyword ``'profile'``: the profile.
-"""
+MonteCarloSetting: Ballot statistics.
 
+Keyword ``'share_single_votes'``: share of single votes (for each profile).
 
-MCS_TAU_INIT = MonteCarloSetting(
-    statistics_post_processing={'tau_init': (lambda results, profile: results['tau_init'])}
-)
-"""
-Keyword ``'tau_init'``: the tau-vector used at initialization (for each profile).
-"""
+Keyword ``'share_double_votes'``: share of double votes (for each profile).
 
+Keyword ``'share_sincere_votes'``: share of sincere votes (for each profile).
 
-MCS_N_EPISODES = MonteCarloSetting(
-    statistics_post_processing={'n_episodes': (lambda results, profile: results['n_episodes'])}
-)
-"""
-Keyword ``'n_episodes'``: the number of episodes (for each profile).
+Keyword ``'share_insincere_votes'``: share of insincere votes (for each profile).
+
+Keywords ``'mean_share_single_votes'``, ``'mean_share_double_votes'``, ``'mean_share_sincere_votes'``,
+``'mean_share_insincere_votes'``: corresponding average share (over all profiles).
 """
 
 
@@ -196,10 +208,13 @@ MCS_CANDIDATE_WINNING_FREQUENCY = MonteCarloSetting(
     }
 )
 """
+MonteCarloSetting: Candidates' winning frequencies.
+
 Keyword ``'d_candidate_winning_frequency'``: winning frequency for each candidate (for each profile).
 
 Keyword ``'d_candidate_mean_winning_frequency'``: average winning frequency for each candidate.
 """
+
 
 MCS_CONVERGES = MonteCarloSetting(
     statistics_post_processing={
@@ -210,9 +225,34 @@ MCS_CONVERGES = MonteCarloSetting(
     }
 )
 """
+MonteCarloSetting: Convergence.
+
 Keyword ``'converges'``: whether the procedure converges (for each profile).
 
 Keyword ``'mean_converges'``: rate of convergence.
+"""
+
+
+MCS_DECREASING_SCORES = MonteCarloSetting(
+    statistics_tau={
+        'decreasing_scores': (lambda tau: np.array(sorted(tau.scores.values(), reverse=True)))
+    },
+    statistics_post_processing={
+        'score_winner': (lambda results, profile: results['decreasing_scores'][0]),
+        'score_second': (lambda results, profile: results['decreasing_scores'][1]),
+        'score_loser': (lambda results, profile: results['decreasing_scores'][2])
+    }
+)
+"""
+MonteCarloSetting: Decreasing scores.
+
+Keyword ``'decreasing_scores'``: scores of the candidates, in decreasing order (for each profile).
+
+Keyword ``'score_winner'``: score of the winner (for each profile).
+
+Keyword ``'score_second'``: score of the second candidate (for each profile).
+
+Keyword ``'score_loser'``: score of the loser (for each profile).
 """
 
 
@@ -228,9 +268,81 @@ MCS_FREQUENCY_CW_WINS = MonteCarloSetting(
     }
 )
 """
+MonteCarloSetting: Winning frequency of the Condorcet winner.
+
 Keyword ``'frequency_cw_wins'``: winning frequency of the Condorcet winner (for each profile).
 
 Keyword ``'mean_frequency_cw_wins'``: average winning frequency of the Condorcet winner.
+"""
+
+
+MCS_N_EPISODES = MonteCarloSetting(
+    statistics_post_processing={'n_episodes': (lambda results, profile: results['n_episodes'])}
+)
+"""
+MonteCarloSetting: Number of episodes.
+
+Keyword ``'n_episodes'``: the number of episodes (for each profile).
+"""
+
+
+MCS_PROFILE = MonteCarloSetting(
+    statistics_post_processing={'profile': (lambda results, profile: profile)}
+)
+"""
+MonteCarloSetting: Profile.
+
+Keyword ``'profile'``: the profile.
+"""
+
+
+MCS_TAU_INIT = MonteCarloSetting(
+    statistics_post_processing={'tau_init': (lambda results, profile: results['tau_init'])}
+)
+"""
+MonteCarloSetting: Tau-vector used at initialization.
+
+Keyword ``'tau_init'``: the tau-vector used at initialization (for each profile).
+"""
+
+
+MCS_UTILITY_THRESHOLDS = MonteCarloSetting(
+    statistics_strategy={
+        'threshold_utilities': (lambda strategy: np.array([strategy.d_ranking_threshold[ranking]
+                                                           for ranking in RANKINGS]))
+    },
+    statistics_post_processing={
+        'weights_rankings': (lambda results, profile: [profile.d_ranking_share[ranking] for ranking in RANKINGS])
+    },
+    statistics_final_processing={
+        'p_utility_threshold_0': (lambda meta_results: float(np.tensordot(
+            np.array(meta_results['threshold_utilities']) == 0,
+            np.array(meta_results['weights_rankings']) / meta_results['n_samples']
+        ))),
+        'p_utility_threshold_1': (lambda meta_results: float(np.tensordot(
+            np.array(meta_results['threshold_utilities']) == 1,
+            np.array(meta_results['weights_rankings']) / meta_results['n_samples']
+        ))),
+        'p_utility_threshold_not_0_or_1': (
+            lambda meta_results: 1 - meta_results['p_utility_threshold_0'] - meta_results['p_utility_threshold_1']
+        ),
+    }
+)
+"""
+MonteCarloSetting: Utility thresholds.
+
+Keyword ``'weights_rankings'``: weights of each ranking (for each profile).
+
+Keyword ``'threshold_utilities'``: threshold utility of each ranking (for each profile).
+
+Keyword ``'p_utility_threshold_0'``: probability of having a utility threshold equal to 0 (over all profiles and
+rankings).
+
+Keyword ``'p_utility_threshold_1'``: probability of having a utility threshold equal to 1 (over all profiles and
+rankings).
+
+Keyword ``'p_utility_threshold_not_0_or_1'``: probability of having a utility threshold different from 0 or 1
+(over all profiles and rankings).
 """
 
 
@@ -292,6 +404,8 @@ MCS_WELFARE_LOSSES = MonteCarloSetting(
     }
 )
 """
+MonteCarloSetting: Welfare losses.
+
 Keyword ``'candidate_winning_frequencies'``: winning frequency of each candidate (for each profile).
 
 Keyword ``'utilitarian_welfare_losses'``: utilitarian welfare loss (for each profile).
@@ -305,92 +419,4 @@ Keyword ``'mean_utilitarian_welfare_loss'``: average utilitarian welfare loss.
 Keyword ``'mean_plurality_welfare_loss'``: average plurality welfare loss.
 
 Keyword ``'mean_anti_plurality_welfare_loss'``: average anti-plurality welfare loss.
-"""
-
-
-MCS_UTILITY_THRESHOLDS = MonteCarloSetting(
-    statistics_strategy={
-        'threshold_utilities': (lambda strategy: np.array([strategy.d_ranking_threshold[ranking]
-                                                           for ranking in RANKINGS]))
-    },
-    statistics_post_processing={
-        'weights_rankings': (lambda results, profile: [profile.d_ranking_share[ranking] for ranking in RANKINGS])
-    },
-    statistics_final_processing={
-        'p_utility_threshold_0': (lambda meta_results: float(np.tensordot(
-            np.array(meta_results['threshold_utilities']) == 0,
-            np.array(meta_results['weights_rankings']) / meta_results['n_samples']
-        ))),
-        'p_utility_threshold_1': (lambda meta_results: float(np.tensordot(
-            np.array(meta_results['threshold_utilities']) == 1,
-            np.array(meta_results['weights_rankings']) / meta_results['n_samples']
-        ))),
-        'p_utility_threshold_not_0_or_1': (
-            lambda meta_results: 1 - meta_results['p_utility_threshold_0'] - meta_results['p_utility_threshold_1']
-        ),
-    }
-)
-"""
-Keyword ``'weights_rankings'``: weights of each ranking (for each profile).
-
-Keyword ``'threshold_utilities'``: threshold utility of each ranking (for each profile).
-
-Keyword ``'p_utility_threshold_0'``: probability of having a utility threshold equal to 0 (over all profiles and
-rankings).
-
-Keyword ``'p_utility_threshold_1'``: probability of having a utility threshold equal to 1 (over all profiles and
-rankings).
-
-Keyword ``'p_utility_threshold_not_0_or_1'``: probability of having a utility threshold different from 0 or 1
-(over all profiles and rankings).
-"""
-
-MCS_BALLOT_STATISTICS = MonteCarloSetting(
-    statistics_strategy={
-        'share_single_votes': (lambda strategy: strategy.share_single_votes),
-        'share_sincere_votes': (lambda strategy: strategy.share_sincere)
-    },
-    statistics_post_processing={
-        'share_double_votes': (lambda results, profile: 1 - results['share_single_votes']),
-        'share_insincere_votes': (lambda results, profile: 1 - results['share_sincere_votes'])
-    },
-    statistics_final_processing={
-        'mean_share_single_votes': (lambda meta_results: np.mean(meta_results['share_single_votes'])),
-        'mean_share_double_votes': (lambda meta_results: np.mean(meta_results['share_double_votes'])),
-        'mean_share_sincere_votes': (lambda meta_results: np.mean(meta_results['share_sincere_votes'])),
-        'mean_share_insincere_votes': (lambda meta_results: np.mean(meta_results['share_insincere_votes']))
-    }
-)
-"""
-Keyword ``'share_single_votes'``: share of single votes (for each profile).
-
-Keyword ``'share_double_votes'``: share of double votes (for each profile).
-
-Keyword ``'share_sincere_votes'``: share of sincere votes (for each profile).
-
-Keyword ``'share_insincere_votes'``: share of insincere votes (for each profile).
-
-Keywords ``'mean_share_single_votes'``, ``'mean_share_double_votes'``, ``'mean_share_sincere_votes'``,
-``'mean_share_insincere_votes'``: corresponding average share (over all profiles).
-"""
-
-
-MCS_DECREASING_SCORES = MonteCarloSetting(
-    statistics_tau={
-        'decreasing_scores': (lambda tau: np.array(sorted(tau.scores.values(), reverse=True)))
-    },
-    statistics_post_processing={
-        'score_winner': (lambda results, profile: results['decreasing_scores'][0]),
-        'score_second': (lambda results, profile: results['decreasing_scores'][1]),
-        'score_loser': (lambda results, profile: results['decreasing_scores'][2])
-    }
-)
-"""
-Keyword ``'decreasing_scores'``: scores of the candidates, in decreasing order (for each profile).
-
-Keyword ``'score_winner'``: score of the winner (for each profile).
-
-Keyword ``'score_second'``: score of the second candidate (for each profile).
-
-Keyword ``'score_loser'``: score of the loser (for each profile).
 """

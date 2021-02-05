@@ -10,7 +10,7 @@ def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     We assume that y-values are obtained by a Monte-Carlo method on a random variable that is in [0, 1]. The margin of
     error is then bounded by the one of a repeated Bernouilli of parameter 0.5, which is itself approximated by a
     normal distribution. Hence the 95% confidence interval is approximately ± 1 / sqrt(n_samples). Note that this
-    confidence interval is valid (only overestimated) when the y-value is 0 or 1.
+    confidence interval is also valid (only overestimated) when the y-value is 0 or 1.
 
     Parameters
     ----------
@@ -38,7 +38,7 @@ def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     We assume that y-values are obtained by a Monte-Carlo method on a random variable that is in [0, 1]. The margin of
     error is then bounded by the one of a repeated Bernouilli of parameter 0.5, which is itself approximated by a
     normal distribution. Hence the 95% confidence interval is approximately ± 1 / sqrt(n_samples). Note that this
-    confidence interval is valid (only overestimated) when the y-value is 0 or 1.
+    confidence interval is also valid (only overestimated) when the y-value is 0 or 1.
 
     Parameters
     ----------

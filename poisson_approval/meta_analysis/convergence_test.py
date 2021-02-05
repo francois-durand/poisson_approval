@@ -14,9 +14,9 @@ def convergence_test(n_max_episodes, init='sincere',
     n_max_episodes : int
         Maximum number of episodes for the fictitious play / iterated voting.
     init : Strategy or TauVector or str
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     perception_update_ratio, ballot_update_ratio : callable or Number
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     meth : str
         The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
 
@@ -33,7 +33,8 @@ def convergence_test(n_max_episodes, init='sincere',
         >>> converges(profile)
         False
 
-    This function is especially convenient when a test function is required, for example when using :meth:`probability`.
+    This function is especially convenient when a test function is required, for example when using
+    :func:`~poisson_approval.utils.Util.probability`.
     """
     def converges(profile):
         results = getattr(profile, meth)(init=init, n_max_episodes=n_max_episodes,

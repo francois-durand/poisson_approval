@@ -503,7 +503,7 @@ class Profile(DeleteCacheMixin):
     def random_tau_undominated(self):
         """Random tau based on undominated ballots.
 
-        This is used, for example, in :meth:`ProfileCardinal.iterated_voting`.
+        This is used, for example, in :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
 
         Returns
         -------

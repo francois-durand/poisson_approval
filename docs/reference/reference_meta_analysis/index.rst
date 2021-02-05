@@ -3,14 +3,14 @@ Meta-Analysis
 
 .. toctree::
 
-   reference_ballot_statistics
    reference_convergence_test
-   reference_frequency_cw_wins
    reference_is_condorcet
    reference_is_not_condorcet
    reference_nice_stats_profile_ordinal
+   reference_monte_carlo_fictitious_play
+   reference_plot_welfare_losses
    reference_plot_distribution_scores
-   reference_plot_distribution_threshold_utilities
+   reference_plot_utility_thresholds
    reference_xyy_to_profile
    reference_binary_axes_subplot_poisson
    reference_binary_figure

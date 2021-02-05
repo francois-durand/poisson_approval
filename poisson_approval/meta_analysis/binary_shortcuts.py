@@ -188,11 +188,11 @@ def binary_plot_winning_frequencies(xyy_to_profile, xscale, yscale,
     n_max_episodes : int
         Maximum number of episodes for the fictitious play / iterated voting.
     init : Strategy or TauVector or str
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     samples_per_point : int
         How many trials are made for each point drawn. Useful only when initialization is random.
     perception_update_ratio, ballot_update_ratio, winning_frequency_update_ratio : callable or Number
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     title : str
         Title of the plot.
     legend_title : str
@@ -255,11 +255,11 @@ def binary_plot_convergence(xyy_to_profile, xscale, yscale,
     n_max_episodes : int
         Maximum number of episodes for the fictitious play / iterated voting.
     init : Strategy or TauVector or str
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     samples_per_point : int
         How many trials are made for each point drawn. Useful only when initialization is random.
     perception_update_ratio, ballot_update_ratio : callable or Number
-        Cf. :meth:`Profile.fictitious_play` or :meth:`Profile.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     title : str
         Title of the plot.
     meth : str

@@ -16,9 +16,9 @@ def plot_welfare_losses(results, criterion, **kwargs):
     results : dict
         Results of :func:`monte_carlo_fictitious_play`, with at least the setting ``MCS_WELFARE_LOSSES``.
     criterion : str
-        'utilitarian_welfare_losses', 'plurality_welfare_losses' or 'anti_plurality_welfare_losses'.
+        ``'utilitarian_welfare_losses'``, ``'plurality_welfare_losses'`` or ``'anti_plurality_welfare_losses'``.
     kwargs
-        Other keyword arguments are passed to the function `step` of matplotlib.
+        Other keyword arguments are passed to the function ``step`` of matplotlib.
 
     Examples
     --------

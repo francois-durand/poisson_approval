@@ -27,6 +27,6 @@ def is_condorcet(profile):
         True
 
     The function ``is_condorcet`` is especially convenient when a test function is required, for example when using
-    :meth:`probability`.
+    :func:`~poisson_approval.utils.Util.probability`.
     """
     return profile.is_profile_condorcet == 1.0
