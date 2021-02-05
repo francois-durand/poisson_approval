@@ -1,6 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from poisson_approval.utils.UtilPlot import plt_cdf
+from poisson_approval.random_factories.RandProfileHistogramUniform import RandProfileHistogramUniform
+from poisson_approval.meta_analysis.monte_carlo_fictitious_play import monte_carlo_fictitious_play, \
+    MCS_DECREASING_SCORES
 
 
 def plot_distribution_scores(results, voting_rule=None, **kwargs):
@@ -15,6 +18,16 @@ def plot_distribution_scores(results, voting_rule=None, **kwargs):
         The voting rule (or None if this parameter was not given to :func:`monte_carlo_fictitious_play`).
     kwargs
         Other keyword arguments are passed to the function `step` of matplotlib.
+
+    Examples
+    --------
+        >>> meta_results = monte_carlo_fictitious_play(
+        ...     factory=RandProfileHistogramUniform(n_bins=1),
+        ...     n_samples=1,
+        ...     n_max_episodes=10,
+        ...     monte_carlo_settings=[MCS_DECREASING_SCORES],
+        ... )
+        >>> plot_distribution_scores(meta_results)
     """
     if voting_rule is None:
         voting_rule = ''

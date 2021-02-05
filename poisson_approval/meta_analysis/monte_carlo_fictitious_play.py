@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 from copy import deepcopy
 from poisson_approval.constants.constants import *
+from poisson_approval.random_factories.RandProfileHistogramUniform import RandProfileHistogramUniform
 from poisson_approval.utils.Util import one_over_log_t_plus_one
 
 
@@ -44,6 +45,27 @@ def monte_carlo_fictitious_play(factory, n_samples, n_max_episodes,
     dict
         Key: voting rule (or ``''`` if ``voting_rule`` is None). Value: a dictionary whose keys are keywords for the
         computed statistics, and whose values are the corresponding outputs. Cf. :class:`MonteCarloSetting`.
+
+    Examples
+    --------
+        >>> meta_results = monte_carlo_fictitious_play(
+        ...     factory=RandProfileHistogramUniform(n_bins=1),
+        ...     n_samples=1,
+        ...     n_max_episodes=10,
+        ...     voting_rules=VOTING_RULES,
+        ...     monte_carlo_settings=[
+        ...         MCS_PROFILE,
+        ...         MCS_TAU_INIT,
+        ...         MCS_N_EPISODES,
+        ...         MCS_CANDIDATE_WINNING_FREQUENCY,
+        ...         MCS_CONVERGES,
+        ...         MCS_FREQUENCY_CW_WINS,
+        ...         MCS_WELFARE_LOSSES,
+        ...         MCS_UTILITY_THRESHOLDS,
+        ...         MCS_BALLOT_STATISTICS,
+        ...         MCS_DECREASING_SCORES,
+        ...     ],
+        ... )
     """
     if voting_rules is None:
         voting_rules = ['']
