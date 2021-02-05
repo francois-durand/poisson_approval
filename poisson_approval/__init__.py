@@ -120,6 +120,13 @@ from poisson_approval.meta_analysis.distribution_threshold_utilities import plot
 from poisson_approval.meta_analysis.frequency_cw_wins import frequency_cw_wins
 from poisson_approval.meta_analysis.is_condorcet import is_condorcet
 from poisson_approval.meta_analysis.is_not_condorcet import is_not_condorcet
+from poisson_approval.meta_analysis.monte_carlo_fictitious_play import monte_carlo_fictitious_play, \
+    MCS_BALLOT_STATISTICS, MCS_CONVERGES, MCS_DECREASING_SCORES, \
+    MCS_FREQUENCY_CW_WINS, MCS_PROFILE, MCS_TAU_INIT, MCS_WELFARE_LOSSES, \
+    MCS_UTILITY_THRESHOLDS, MCS_CANDIDATE_WINNING_FREQUENCY, MCS_N_EPISODES
+from poisson_approval.meta_analysis.plot_welfare_losses import plot_welfare_losses
+from poisson_approval.meta_analysis.plot_distribution_scores import plot_distribution_scores
+from poisson_approval.meta_analysis.plot_utility_thresholds import plot_utility_thresholds
 from poisson_approval.meta_analysis.ternary_plots import TernaryAxesSubplotPoisson, ternary_figure
 from poisson_approval.meta_analysis.ternary_shortcuts import ternary_plot_n_equilibria, \
     ternary_plot_winners_at_equilibrium, ternary_plot_winning_frequencies, ternary_plot_convergence, \
