@@ -5,7 +5,9 @@ PERMUTATIONS = RANKINGS
 """List of str: Alias for ``RANKINGS``."""
 
 TWELVE_TYPES = ['a_bc', 'ab_c', 'a_cb', 'ac_b', 'b_ac', 'ba_c', 'b_ca', 'bc_a', 'c_ab', 'ca_b', 'c_ba', 'cb_a']
-"""List of str: All possible twelve-types, such as ``'a_bc'`` or ``'ab_c'``."""
+"""
+List of str: All possible twelve-types, such as ``'a_bc'`` or ``'ab_c'``. Cf. :class:`~poisson_approval.ProfileTwelve`.
+"""
 
 SETS_OF_RANKINGS_UP_TO_RELABELLING = [
     ('abc', ),
@@ -24,7 +26,7 @@ SETS_OF_RANKINGS_UP_TO_RELABELLING = [
     ('abc', 'acb', 'bac', 'bca', 'cab'),
     ('abc', 'acb', 'bac', 'bca', 'cab', 'cba')
 ]
-"""List of tuple: All possible sets of rankings, up to relabelling the candidates."""
+"""List of tuple of str: All possible sets of rankings, up to relabelling the candidates."""
 
 WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS = ['a>b~c', 'b>a~c', 'c>a~b']
 """

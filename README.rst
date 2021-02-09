@@ -23,7 +23,7 @@ Poisson Approval
 Poisson Approval studies the Poisson Game of Approval Voting.
 
 
-* Free software: GNU General Public License v3
+* Free software: GNU General Public License v3.
 * Documentation: https://francois-durand.github.io/poisson_approval/.
 
 --------
