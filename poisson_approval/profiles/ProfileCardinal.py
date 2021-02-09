@@ -224,7 +224,7 @@ class ProfileCardinal(Profile):
         ----------
         strategy : StrategyThreshold
             A strategy that specifies at least all the rankings that are present in the profile. If some voters
-            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            have a utility for their second candidate that is equal to the utility threshold of the strategy, then the
             ratio of optimistic voters must be specified.
 
         Returns
@@ -302,7 +302,7 @@ class ProfileCardinal(Profile):
         ----------
         strategy : StrategyThreshold
             A strategy that specifies at least all the rankings that are present in the profile. If some voters
-            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            have a utility for their second candidate that is equal to the utility threshold of the strategy, then the
             ratio of optimistic voters must be specified.
 
         Returns
@@ -360,7 +360,7 @@ class ProfileCardinal(Profile):
         ----------
         strategy : StrategyThreshold
             A strategy that specifies at least all the rankings that are present in the profile. If some voters
-            have a utility for their second candidate that is equal to the threshold utility of the strategy, then the
+            have a utility for their second candidate that is equal to the utility threshold of the strategy, then the
             ratio of optimistic voters must be specified.
 
         Returns
@@ -379,7 +379,7 @@ class ProfileCardinal(Profile):
             if share == 0:
                 continue
             actual_threshold = strategy.d_ranking_threshold[ranking]
-            br_threshold = d_ranking_best_response[ranking].threshold_utility
+            br_threshold = d_ranking_best_response[ranking].utility_threshold
             test = (self.ce.look_equal(self.have_ranking_with_utility_below_u(ranking, actual_threshold),
                                        self.have_ranking_with_utility_below_u(ranking, br_threshold), abs_tol=1E-9)
                     and self.ce.look_equal(self.have_ranking_with_utility_above_u(ranking, actual_threshold),

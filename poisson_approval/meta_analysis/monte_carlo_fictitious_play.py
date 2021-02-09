@@ -308,7 +308,7 @@ Keyword ``'tau_init'``: the tau-vector used at initialization (for each profile)
 
 MCS_UTILITY_THRESHOLDS = MonteCarloSetting(
     statistics_strategy={
-        'threshold_utilities': (lambda strategy: np.array([strategy.d_ranking_threshold[ranking]
+        'utility_thresholds': (lambda strategy: np.array([strategy.d_ranking_threshold[ranking]
                                                            for ranking in RANKINGS]))
     },
     statistics_post_processing={
@@ -316,11 +316,11 @@ MCS_UTILITY_THRESHOLDS = MonteCarloSetting(
     },
     statistics_final_processing={
         'p_utility_threshold_0': (lambda meta_results: float(np.tensordot(
-            np.array(meta_results['threshold_utilities']) == 0,
+            np.array(meta_results['utility_thresholds']) == 0,
             np.array(meta_results['weights_rankings']) / meta_results['n_samples']
         ))),
         'p_utility_threshold_1': (lambda meta_results: float(np.tensordot(
-            np.array(meta_results['threshold_utilities']) == 1,
+            np.array(meta_results['utility_thresholds']) == 1,
             np.array(meta_results['weights_rankings']) / meta_results['n_samples']
         ))),
         'p_utility_threshold_not_0_or_1': (
@@ -333,7 +333,7 @@ MonteCarloSetting: Utility thresholds.
 
 Keyword ``'weights_rankings'``: weights of each ranking (for each profile).
 
-Keyword ``'threshold_utilities'``: threshold utility of each ranking (for each profile).
+Keyword ``'utility_thresholds'``: utility threshold of each ranking (for each profile).
 
 Keyword ``'p_utility_threshold_0'``: probability of having a utility threshold equal to 0 (over all profiles and
 rankings).

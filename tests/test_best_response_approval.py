@@ -59,7 +59,7 @@ def test_best_response_approval():
         pivot_ki_easy_or_tight = False
         pivot_jk_easy_or_tight = False
         pivot_kj_easy_or_tight = False
-        threshold_utility = 1
+        utility_threshold = 1
         justification = Easy vs difficult pivot
         ballot = a
     """
@@ -69,8 +69,8 @@ def test_best_response_approval():
 def test_results_limit_pivot_theorem_when_two_consecutive_zeros():
     tau = TauVector({'a': 3 / 5, 'b': 2 / 5})
     best_response = BestResponseApproval(tau, 'abc')
-    threshold_utility, justification = best_response.results_limit_pivot_theorem
-    assert isnan(threshold_utility)
+    utility_threshold, justification = best_response.results_limit_pivot_theorem
+    assert isnan(utility_threshold)
     assert justification == ''
 
 
@@ -80,7 +80,7 @@ def test_correct_identification_of_easy_easy_edge_case():
                      'bc': 0.24379357320990255, 'c': 0.001123158271724989})
     for ranking in RANKINGS:
         # Especially cab
-        assert 0 <= tau.d_ranking_best_response[ranking].threshold_utility <= 1
+        assert 0 <= tau.d_ranking_best_response[ranking].utility_threshold <= 1
 
 
 def test_offset_method_with_trio_approximation():
@@ -91,4 +91,4 @@ def test_offset_method_with_trio_approximation():
     })
     for ranking in RANKINGS:
         # Especially acb
-        assert 0 <= tau.d_ranking_best_response[ranking].threshold_utility <= 1
+        assert 0 <= tau.d_ranking_best_response[ranking].utility_threshold <= 1

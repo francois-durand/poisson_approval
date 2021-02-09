@@ -36,7 +36,7 @@ class ProfileCardinalContinuous(ProfileCardinal):
         """
         # The only difference with parent class is that ratio_optimistic is not specified because we don't care.
         return StrategyThreshold({
-            ranking: best_response.threshold_utility
+            ranking: best_response.utility_threshold
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0
         }, profile=self, voting_rule=self.voting_rule)

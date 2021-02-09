@@ -6,7 +6,7 @@ from poisson_approval.utils.UtilCache import cached_property
 class BestResponseAntiPlurality(BestResponse):
     """Best response for a given ordinal type of voter in Anti-plurality.
 
-    The main objective of this class is to compute :attr:`threshold_utility`.
+    The main objective of this class is to compute :attr:`utility_threshold`.
 
     For the sake of consistency with :class:`BestResponseApproval`, it provides the string :attr:`justification`,
     indicating which sub-algorithm was used. But since there are no actual sub-algorithms for anti-plurality, the
@@ -32,10 +32,10 @@ class BestResponseAntiPlurality(BestResponse):
         tau_minus_k = self.tau_ij
         if tau_minus_k > tau_minus_i and tau_minus_k > tau_minus_j:
             # The best response is `- j`, i.e. `ik`
-            threshold_utility = self.ce.S(1)
+            utility_threshold = self.ce.S(1)
         elif tau_minus_i == tau_minus_k > tau_minus_j:
-            threshold_utility = self.ce.Rational(1, 2)
+            utility_threshold = self.ce.Rational(1, 2)
         else:
             # The best response is `- k`, i.e. `ij`
-            threshold_utility = self.ce.S(0)
-        return threshold_utility, self.ANTI_PLURALITY_ANALYSIS
+            utility_threshold = self.ce.S(0)
+        return utility_threshold, self.ANTI_PLURALITY_ANALYSIS

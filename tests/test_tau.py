@@ -39,12 +39,12 @@ def test_tau_plurality():
         >>> tau
         TauVector({'a': Fraction(2, 5), 'b': Fraction(2, 5), 'c': Fraction(1, 5)}, voting_rule='Plurality')
         >>> tau.d_ranking_best_response
-        {'abc': <ballot = a, threshold_utility = 1, justification = Plurality analysis>, \
-'acb': <ballot = a, threshold_utility = 1, justification = Plurality analysis>, \
-'bac': <ballot = b, threshold_utility = 1, justification = Plurality analysis>, \
-'bca': <ballot = b, threshold_utility = 1, justification = Plurality analysis>, \
-'cab': <ballot = a, threshold_utility = 0, justification = Plurality analysis>, \
-'cba': <ballot = b, threshold_utility = 0, justification = Plurality analysis>}
+        {'abc': <ballot = a, utility_threshold = 1, justification = Plurality analysis>, \
+'acb': <ballot = a, utility_threshold = 1, justification = Plurality analysis>, \
+'bac': <ballot = b, utility_threshold = 1, justification = Plurality analysis>, \
+'bca': <ballot = b, utility_threshold = 1, justification = Plurality analysis>, \
+'cab': <ballot = a, utility_threshold = 0, justification = Plurality analysis>, \
+'cba': <ballot = b, utility_threshold = 0, justification = Plurality analysis>}
     """
     pass
 
@@ -56,12 +56,12 @@ def test_tau_anti_plurality():
         >>> tau
         TauVector({'ab': Fraction(2, 5), 'ac': Fraction(2, 5), 'bc': Fraction(1, 5)}, voting_rule='Anti-plurality')
         >>> tau.d_ranking_best_response
-        {'abc': <ballot = ab, threshold_utility = 0, justification = Anti-plurality analysis>, \
-'acb': <ballot = ac, threshold_utility = 0, justification = Anti-plurality analysis>, \
-'bac': <ballot = utility-dependent, threshold_utility = 0.5, justification = Anti-plurality analysis>, \
-'bca': <ballot = bc, threshold_utility = 0, justification = Anti-plurality analysis>, \
-'cab': <ballot = utility-dependent, threshold_utility = 0.5, justification = Anti-plurality analysis>, \
-'cba': <ballot = bc, threshold_utility = 0, justification = Anti-plurality analysis>}
+        {'abc': <ballot = ab, utility_threshold = 0, justification = Anti-plurality analysis>, \
+'acb': <ballot = ac, utility_threshold = 0, justification = Anti-plurality analysis>, \
+'bac': <ballot = utility-dependent, utility_threshold = 0.5, justification = Anti-plurality analysis>, \
+'bca': <ballot = bc, utility_threshold = 0, justification = Anti-plurality analysis>, \
+'cab': <ballot = utility-dependent, utility_threshold = 0.5, justification = Anti-plurality analysis>, \
+'cba': <ballot = bc, utility_threshold = 0, justification = Anti-plurality analysis>}
     """
     pass
 

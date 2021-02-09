@@ -40,7 +40,14 @@ def plot_welfare_losses(results, criterion, **kwargs):
         plt_cdf(welfare_losses, weights, n_samples, label=voting_rule, **kwargs)
     ax.grid(True)
     ax.legend()
-    ax.set_xlabel('Loss of absolute welfare')
+    if criterion == 'utilitarian_welfare_losses':
+        ax.set_xlabel('Loss of utilitarian welfare')
+    elif criterion == 'plurality_welfare_losses':
+        ax.set_xlabel('Loss of anti-Rawlsian welfare')
+    elif criterion == 'anti_plurality_welfare_losses':
+        ax.set_xlabel('Loss of Rawlsian welfare')
+    else:
+        ax.set_xlabel('Loss of welfare')
     ax.set_ylabel('Cumulative likelihood of occurrence')
     plt.xlim(0, 1)
     plt.xticks(np.arange(0, 1.1, 0.1))

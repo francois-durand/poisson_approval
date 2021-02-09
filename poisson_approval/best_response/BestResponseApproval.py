@@ -6,7 +6,7 @@ from poisson_approval.utils.UtilCache import cached_property
 class BestResponseApproval(BestResponse):
     """Best response for a given ordinal type of voter in Approval voting.
 
-    The main objective of this class is to compute :attr:`threshold_utility`.
+    The main objective of this class is to compute :attr:`utility_threshold`.
 
     It also provides the string :attr:`justification`, indicating which sub-algorithm was used. Nowadays, possible
     values are ``'Asymptotic method'``, ``'Simplified asymptotic method'``, ``'Easy vs difficult pivot'``,
@@ -36,11 +36,11 @@ class BestResponseApproval(BestResponse):
 
     @cached_property
     def results_asymptotic_method(self):
-        """tuple (threshold_utility, justification) : Results according to the asymptotic method. Cf.
-        :attr:`threshold_utility` and :attr:`justification`. The threshold utility may be NaN, because this method is
+        """tuple (utility_threshold, justification) : Results according to the asymptotic method. Cf.
+        :attr:`utility_threshold` and :attr:`justification`. The utility threshold may be NaN, because this method is
         not always sufficient.
         """
-        threshold_utility = self.ce.simplify(((
+        utility_threshold = self.ce.simplify(((
             self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
             + self.trio_1t.asymptotic * self.ce.Rational(1, 3)
             + self.trio_2t.asymptotic * self.ce.Rational(1, 6)
@@ -51,19 +51,19 @@ class BestResponseApproval(BestResponse):
             + self.trio_2t.asymptotic * self.ce.Rational(1, 3)
         )).limit)
         justification = self.ASYMPTOTIC
-        return threshold_utility, justification
+        return utility_threshold, justification
 
     @cached_property
     def results_limit_pivot_theorem(self):
-        """tuple (threshold_utility, justification) : Results according to the limit pivot theorem.
-        Cf. :attr:`threshold_utility` and :attr:`justification`. If the tau-vector has two consecutive zeros, the
+        """tuple (utility_threshold, justification) : Results according to the limit pivot theorem.
+        Cf. :attr:`utility_threshold` and :attr:`justification`. If the tau-vector has two consecutive zeros, the
         theorem does not apply and this method returns ``nan, ''``.
         """
         if self.tau.has_two_consecutive_zeros:
             return self.ce.nan, ''
         if self.pivot_ij_easy_or_tight and self.pivot_jk_easy_or_tight:
             # Both pivots are easy => We can forget the trios.
-            threshold_utility = self.ce.simplify(((
+            utility_threshold = self.ce.simplify(((
                 self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
             ) / (
                 self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
@@ -72,11 +72,11 @@ class BestResponseApproval(BestResponse):
             justification = self.ASYMPTOTIC_SIMPLIFIED
         elif self.pivot_ij_easy_or_tight:
             # ... but pivot jk is difficult.
-            threshold_utility = self.ce.S(1)
+            utility_threshold = self.ce.S(1)
             justification = self.EASY_VS_DIFFICULT
         elif self.pivot_jk_easy_or_tight:
             # ... but pivot ij is difficult.
-            threshold_utility = self.ce.S(0)
+            utility_threshold = self.ce.S(0)
             justification = self.DIFFICULT_VS_EASY
         else:
             # Both pivots are difficult => offset method.
@@ -101,11 +101,11 @@ class BestResponseApproval(BestResponse):
                 raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
             elif psi_k_greater_but_close_to_one:  # pragma: no cover
                 # pij ~= inf, pjk < inf ==> u = 1
-                threshold_utility = self.ce.S(1)
+                utility_threshold = self.ce.S(1)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
             elif psi_i_greater_but_close_to_one:  # pragma: no cover
                 # pij < inf, pjk ~= inf ==> u = 0
-                threshold_utility = self.ce.S(0)
+                utility_threshold = self.ce.S(0)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
             else:
                 # General case of the offset method (at last!)
@@ -113,14 +113,14 @@ class BestResponseApproval(BestResponse):
                 pjk = (1 + self.trio.psi[self.j]) * self.trio.psi[self.i] ** 2 / (1 - self.trio.psi[self.i])
                 p1t = self.trio.psi[self.i]
                 p2t = self.trio.psi[self.ij]
-                threshold_utility = self.ce.simplify((pij / 2 + p1t / 3 + p2t / 6)
+                utility_threshold = self.ce.simplify((pij / 2 + p1t / 3 + p2t / 6)
                                                      / (pij / 2 + pjk / 2 + p1t * 2 / 3 + p2t / 3))
                 justification = self.OFFSET_METHOD
-        return threshold_utility, justification
+        return utility_threshold, justification
 
     @cached_property
     def results(self):
-        """tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`.
+        """tuple (utility_threshold, justification) : Cf. :attr:`utility_threshold` and :attr:`justification`.
         These results use:
 
         * :meth:`results_asymptotic_method` if there are two consecutive zeros in the "compass diagram" of the

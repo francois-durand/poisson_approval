@@ -8,7 +8,7 @@ from poisson_approval.meta_analysis.monte_carlo_fictitious_play import monte_car
 
 def plot_utility_thresholds(results, voting_rule=None, **kwargs):
     """
-    Plot the distribution (CDF) of the threshold utility.
+    Plot the distribution (CDF) of the utility threshold.
 
     Parameters
     ----------
@@ -32,13 +32,13 @@ def plot_utility_thresholds(results, voting_rule=None, **kwargs):
     if voting_rule is None:
         voting_rule = ''
     n_samples = results[voting_rule]['n_samples']
-    threshold_utilities = np.array(results[voting_rule]['threshold_utilities']).flatten()
+    utility_thresholds = np.array(results[voting_rule]['utility_thresholds']).flatten()
     weights = np.array(results[voting_rule]['weights_rankings']).flatten() / n_samples
     fig, ax = plt.subplots(figsize=(8, 4))
-    plt_cdf(threshold_utilities, weights, n_samples, label='Utility', **kwargs)
+    plt_cdf(utility_thresholds, weights, n_samples, label='Utility', **kwargs)
     ax.grid(True)
-    # ax.set_title('Threshold utility')
-    ax.set_xlabel('Threshold utility')
+    # ax.set_title('Utility threshold')
+    ax.set_xlabel('Utility threshold')
     ax.set_ylabel('Cumulative likelihood of occurrence')
     plt.xlim(0, 1)
     plt.xticks(np.arange(0, 1.1, 0.1))

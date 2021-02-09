@@ -337,7 +337,7 @@ class Profile(DeleteCacheMixin):
             mentioned in the strategy.
         """
         return StrategyThreshold({
-            ranking: best_response.threshold_utility
+            ranking: best_response.utility_threshold
             for ranking, best_response in d_ranking_best_response.items()
             if self.d_ranking_share[ranking] > 0
         }, ratio_optimistic=Fraction(1, 2), profile=self, voting_rule=self.voting_rule)

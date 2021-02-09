@@ -523,7 +523,7 @@ phi_ab = 0.707107>
             >>> from fractions import Fraction
             >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
             >>> tau.d_ranking_best_response['abc']
-            <ballot = a, threshold_utility = 1, justification = Asymptotic method>
+            <ballot = a, utility_threshold = 1, justification = Asymptotic method>
         """
         if self.voting_rule == APPROVAL:
             return DictPrintingInOrder({

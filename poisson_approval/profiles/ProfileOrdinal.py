@@ -423,7 +423,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
-            [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
+            [(strategy.d_ranking_best_response[ranking].utility_threshold, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
@@ -461,7 +461,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
-            [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
+            [(strategy.d_ranking_best_response[ranking].utility_threshold, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
@@ -506,7 +506,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         dim = len(support)
         masks_winners = [
             (
-                [(strategy.d_ranking_best_response[ranking].threshold_utility,
+                [(strategy.d_ranking_best_response[ranking].utility_threshold,
                   len(strategy.d_ranking_ballot[ranking]) == 2)
                  for ranking in support],
                 strategy.winners

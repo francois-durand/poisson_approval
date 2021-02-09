@@ -7,7 +7,7 @@ from poisson_approval.utils.UtilCache import cached_property
 class BestResponse:
     """Best response for a given ordinal type of voter (abstract class).
 
-    The main objective of this class is to compute :attr:`threshold_utility`. The subclasses implement the
+    The main objective of this class is to compute :attr:`utility_threshold`. The subclasses implement the
     best response in a specific voting rule.
 
     Parameters
@@ -349,11 +349,11 @@ class BestResponse:
 
     @cached_property
     def results(self):
-        """tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`."""
+        """tuple (utility_threshold, justification) : Cf. :attr:`utility_threshold` and :attr:`justification`."""
         raise NotImplementedError
 
     @cached_property
-    def threshold_utility(self):
+    def utility_threshold(self):
         """Number : The threshold value of the utility for the second candidate (where the optimal ballot changes)."""
         return self.results[0]
 
@@ -366,20 +366,20 @@ class BestResponse:
     def ballot(self):
         """str : This can be a valid ballot or ``'utility-dependent'``.
         """
-        if isnan(self.threshold_utility):
-            raise AssertionError('Unable to compute threshold utility')  # pragma: no cover
-        elif self.ce.look_equal(self.threshold_utility, 1):
+        if isnan(self.utility_threshold):
+            raise AssertionError('Unable to compute utility threshold')  # pragma: no cover
+        elif self.ce.look_equal(self.utility_threshold, 1):
             return ballot_low_u(self.ranking, self.voting_rule)
-        elif self.ce.look_equal(self.threshold_utility, 0, abs_tol=1E-9):
+        elif self.ce.look_equal(self.utility_threshold, 0, abs_tol=1E-9):
             return ballot_high_u(self.ranking, self.voting_rule)
         else:
-            assert 0 <= self.threshold_utility <= 1
+            assert 0 <= self.utility_threshold <= 1
             return UTILITY_DEPENDENT
 
     def __repr__(self):
         return '<' + ', '.join([
             'ballot = %s' % self.ballot,
-            'threshold_utility = {:.6g}'.format(float(self.threshold_utility)),
+            'utility_threshold = {:.6g}'.format(float(self.utility_threshold)),
             'justification = %s' % self.justification,
         ]) + '>'
 
@@ -447,7 +447,7 @@ class BestResponse:
         s += 'pivot_ki_easy_or_tight = %s\n' % self.pivot_ki_easy_or_tight
         s += 'pivot_jk_easy_or_tight = %s\n' % self.pivot_jk_easy_or_tight
         s += 'pivot_kj_easy_or_tight = %s\n' % self.pivot_kj_easy_or_tight
-        s += 'threshold_utility = %s\n' % self.threshold_utility
+        s += 'utility_threshold = %s\n' % self.utility_threshold
         s += 'justification = %s\n' % self.justification
         s += 'ballot = %s' % self.ballot
         return s
