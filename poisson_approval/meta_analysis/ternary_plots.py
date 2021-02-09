@@ -1,3 +1,4 @@
+import pickle
 import ternary
 from math import floor, ceil
 from fractions import Fraction
@@ -246,7 +247,8 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
             plt.gcf().set_size_inches(7, 5)
 
     def heatmap_candidates(self, func, right_label, top_label, left_label, legend_title='',
-                           legend_style='palette', style='hexagonal', colorbar=False, **kwargs):
+                           legend_style='palette', style='hexagonal', colorbar=False, file_save_data = None,
+                           **kwargs):
         """Heatmap of a function from the simplex to 3D vectors.
 
         Parameters
@@ -269,10 +271,15 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
             Contrarily to default settings in python-ternary, the default is ``'hexagonal'``.
         colorbar
             Contrarily to default settings in python-ternary, the default is False.
+        file_save_data : str
+            File where the computed data will be saved (using ``pickle``).
         kwargs
             All other keywords arguments are passed to method ``heatmap`` of python-ternary.
         """
         d_scaled_point_color, self.d_point_values_ = _generate_heatmap_data(func, self.get_scale())
+        if file_save_data is not None:
+            with open(file_save_data, "wb") as f:
+                pickle.dump([d_scaled_point_color, self.d_point_values_], f)
         self.heatmap(d_scaled_point_color, style=style, colorbar=colorbar, use_rgba=True, **kwargs)
         self.right_corner_label(right_label)
         self.top_corner_label(top_label)

@@ -115,6 +115,7 @@ def ternary_plot_n_equilibria(simplex_to_profile, scale, title='Number of equili
 
 def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winners at equilibrium',
                                         legend_title='Winners', meth='analyzed_strategies_ordinal',
+                                        file_save_data=None,
                                         **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the winners at equilibrium.
 
@@ -130,6 +131,8 @@ def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winner
         Title of the legend of the plot.
     meth : str
         The name of the :class:`AnalyzedStrategies` property used to study the equilibria.
+    file_save_data : str
+        File where the computed data will be saved (using ``pickle``).
     kwargs
         Other keyword arguments are passed to the function `heatmap_candidates`.
     """
@@ -144,6 +147,7 @@ def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winner
                            left_label=simplex_to_profile.label_l,
                            legend_style='color_patches',
                            legend_title=legend_title,
+                           file_save_data=file_save_data,
                            **kwargs)
     tax.annotate_condorcet(right_order=simplex_to_profile.order_r,
                            top_order=simplex_to_profile.order_t,
@@ -159,7 +163,8 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
                                      ballot_update_ratio=one_over_log_t_plus_one,
                                      winning_frequency_update_ratio=one_over_log_t_plus_one,
                                      title='Winning frequencies', legend_title='Winners',
-                                     meth='fictitious_play', **kwargs):  # pragma: no cover
+                                     meth='fictitious_play', file_save_data=None,
+                                     **kwargs):  # pragma: no cover
     """Shortcut: ternary plot for the winning frequencies in fictitious play / iterated voting.
 
     Parameters
@@ -182,6 +187,8 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
         Title of the legend of the plot.
     meth : str
         The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
+    file_save_data : str
+        File where the computed data will be saved (using ``pickle``).
     kwargs
         Other keyword arguments are passed to the function `heatmap_candidates`.
     """
@@ -203,6 +210,7 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
                            left_label=simplex_to_profile.label_l,
                            legend_style='palette',
                            legend_title=legend_title,
+                           file_save_data=file_save_data,
                            **kwargs)
     tax.annotate_condorcet(right_order=simplex_to_profile.order_r,
                            top_order=simplex_to_profile.order_t,
