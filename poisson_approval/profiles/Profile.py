@@ -517,6 +517,25 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
             r = random.random()
             d[ballot_low_u(ranking, self.voting_rule)] += r * share
             d[ballot_high_u(ranking, self.voting_rule)] += (1 - r) * share
+        for weak_order, share in self.d_weak_order_share.items():
+            if is_lover(weak_order):
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    d[weak_order[0]] += share
+                elif self.voting_rule == ANTI_PLURALITY:
+                    r = random.random()
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += r * share
+                    d[sort_ballot(weak_order[0] + weak_order[4])] += (1 - r) * share
+                else:
+                    raise NotImplementedError
+            else:  # is_hater(weak_order)
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    r = random.random()
+                    d[weak_order[0]] += r * share
+                    d[weak_order[2]] += (1 - r) * share
+                elif self.voting_rule == ANTI_PLURALITY:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                else:
+                    raise NotImplementedError
         return TauVector(d, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
 
