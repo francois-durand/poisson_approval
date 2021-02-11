@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.random_factories.RandSimplexGridUniform import RandSimplexGridUniform
 from poisson_approval.utils.Util import initialize_random_seeds
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
@@ -14,10 +14,10 @@ class RandProfileOrdinalGridUniform(RandSimplexGridUniform):
     orders : list, optional
         These orders will have a variable share. They can be rankings, e.g. ``'abc'``, or weak orders, e.g.
         ``'a~b>c'``. Default: all rankings.
-    d_order_fixed_share : dict, optional.
+    d_order_fixed_share : dict, optional
         A dictionary. For each entry ``order: fixed_share``, this order will have at least this fixed share. The total
         must be lower or equal to 1.
-    kwargs : keyword arguments
+    kwargs
         These additional arguments will be passed directly to :class:`ProfileOrdinal`.
 
     Examples

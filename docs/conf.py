@@ -77,6 +77,26 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
+# Missing links to ignore in "nitpicky" mode
+nitpick_ignore = [
+    ('py:class', 'array-like'),
+    ('py:class', 'callable'),
+    ('py:class', 'class'),
+    ('py:class', 'dict of dict'),
+    ('py:class', 'infinity'),
+    ('py:class', 'iterable'),
+    ('py:class', 'list of list of tuple'),
+    ('py:class', 'list of Number'),
+    ('py:class', 'list of str'),
+    ('py:class', 'list of tuple'),
+    ('py:class', 'list of tuple of str'),
+    ('py:class', 'nan'),
+    ('py:class', 'Number'),
+    ('py:class', 'numpy.ndarray'),
+    ('py:class', 'optional'),
+    ('py:class', 'tuple of callable'),
+    ('py:class', 'tuple of float'),
+]
 
 # -- Options for HTML output -------------------------------------------
 

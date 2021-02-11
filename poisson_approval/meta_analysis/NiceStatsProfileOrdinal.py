@@ -12,29 +12,30 @@ class NiceStatsProfileOrdinal:
     Parameters
     ----------
     tests_profile : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``ProfileOrdinal -> bool``. ``name`` is a
+        A list of pairs `(test, name)`, where `test` is a function :class:`ProfileOrdinal` -> `bool`, and `name` is a
         string.
     tests_strategy : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
-        For these tests, we compute only the probability that a equilibrium meeting the test exists.
+        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -> `bool`, and `name` is a
+        string. For these tests, we compute only the probability that a equilibrium meeting the test exists.
     tests_strategy_dist : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
-        For these tests, we compute the distribution of numbers of equilibria meeting the test.
+        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -> `bool`, and `name` is a
+        string. For these tests, we compute the distribution of numbers of equilibria meeting the test.
     tests_strategy_winners : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
-        For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.
+        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -> `bool`, and `name` is a
+        string. For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.
     conditional_on : callable
-        A function ``ProfileOrdinal -> bool``.
+        A function :class:`ProfileOrdinal` -> `bool`.
     factory_profiles : callable
-        A callable that inputs nothing and outputs a profile. Default: ``RandProfileOrdinalUniform()``.
+        A callable that inputs nothing and outputs a profile. Default: :class:`RandProfileOrdinalUniform`, with its
+        default parameters.
 
     Notes
     -----
-    The tests in `tests_profile` concern the profile: what proportions of profiles meet the condition?
+    The tests in `tests_profile` concern the profile: what proportion of profiles meet the condition?
 
     The tests in `tests_strategy` concern the strategies, in the cases where they are equilibrium. For each
     ordinal profile, we compute the probability (for a uniform distribution of utilities) that at least one strategy
-    is an equilibrium and meet the given condition. This is used to draw plots `à la Antonin`.
+    is an equilibrium and meets the given condition.
 
     The tests in `tests_strategy_dist` or `tests_strategy_winners` concern also the strategies, in the cases where
     they are equilibrium.
@@ -135,7 +136,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         replacement_name : str, optional
             If specified, it will be used instead of the test name in the plot.
         style : str
-            Cf. :meth:`matplotlib.pyplot.plot`.
+            Cf. the function ``plot`` of `matplotlib`.
         """
         if isinstance(test, str):
             i = [name for _, name in self.tests_strategy].index(test)
@@ -166,7 +167,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         right : str
             Text to be written on the right.
         style : str
-            Cf. :meth:`matplotlib.pyplot.plot`.
+            Cf. the function ``plot`` of `matplotlib`.
         """
         if isinstance(test, str):
             i = [name for _, name in self.tests_profile].index(test)

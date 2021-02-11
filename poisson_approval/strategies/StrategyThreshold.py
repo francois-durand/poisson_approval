@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.StrategyTwelve import StrategyTwelve
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.DictPrintingInOrderIgnoringNone import DictPrintingInOrderIgnoringNone
@@ -19,7 +19,7 @@ class StrategyThreshold(StrategyTwelve):
       `a` (they behave as if the pivot `ab` was very likely); and a ratio 0.8 are pessimistic, they vote for `ab`
       (they behave as if the pivot `bc` was very likely).
 
-    For a given ranking, the threshold and / or the ratio may be None, which means that they are not specified for
+    For a given ranking, the threshold and/or the ratio may be None, which means that they are not specified for
     this strategy.
 
     Parameters

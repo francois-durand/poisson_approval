@@ -11,8 +11,9 @@ class SimplexToProfile:
     Parameters
     ----------
     cls : class
-        :class:`ProfileDiscrete`, :class:`ProfileNoisyDiscrete`, :class:`ProfileOrdinal` or :class:`ProfileTwelve`.
-    right_type, top_type, left_type : object
+        :class:`ProfileDiscrete`, :class:`ProfileHistogram`, :class:`ProfileNoisyDiscrete`, :class:`ProfileOrdinal` or
+        :class:`ProfileTwelve`.
+    right_type,top_type,left_type : object
         A type that is suitable for the kind of profile used.
     d_type_fixed_share : dict
         Key: a type that is suitable for the kind of profile used. Value: a share of voters.
@@ -21,13 +22,13 @@ class SimplexToProfile:
 
     Notes
     -----
-    A `SimplexToProfile` object is a callable. When called, it inputs three parameters `right`, `top`, `left`, numbers
+    A `SimplexToProfile` object is a callable. When called, it takes three parameters `right`, `top`, `left`, numbers
     that represent a point in the simplex. It outputs the profile defined by:
 
     * The class is given by `cls`,
     * According to `d_type_fixed_share`, some types are assigned fixed shares of voters.
-    * The other voters, are distributed between ``left_type``, ``right_type`` and ``top_type``, in respective
-      proportions that are given by the input tuple (right, top, left).
+    * The other voters, are distributed between `left_type`, `right_type` and `top_type`, in respective
+      proportions that are given by the input tuple `(right, top, left)`.
 
     Examples
     --------
@@ -86,15 +87,15 @@ def ternary_plot_n_equilibria(simplex_to_profile, scale, title='Number of equili
     Parameters
     ----------
     simplex_to_profile : SimplexToProfile
-        This is responsible to generate the profiles.
+        This is responsible for generating the profiles.
     scale : Number
         Scale of the plot (resolution).
     title : str
         Title of the plot.
     meth : str
-        The name of the :class:`AnalyzedStrategies` property used to count the equilibria.
+        The name of the :class:`AnalyzedStrategies` property used to count the equilibria. Cf. :class:`Profile`.
     kwargs
-        Other keyword arguments are passed to the function `heatmap_intensity`.
+        Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_intensity`.
     """
     def n_equilibria(right, top, left):
         profile = simplex_to_profile(right, top, left)
@@ -122,7 +123,7 @@ def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winner
     Parameters
     ----------
     simplex_to_profile : SimplexToProfile
-        This is responsible to generate the profiles.
+        This is responsible for generating the profiles.
     scale : Number
         Scale of the plot (resolution).
     title : str
@@ -130,11 +131,11 @@ def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winner
     legend_title : str
         Title of the legend of the plot.
     meth : str
-        The name of the :class:`AnalyzedStrategies` property used to study the equilibria.
+        The name of the :class:`AnalyzedStrategies` property used to study the equilibria. Cf. :class:`Profile`.
     file_save_data : str
         File where the computed data will be saved (using ``pickle``).
     kwargs
-        Other keyword arguments are passed to the function `heatmap_candidates`.
+        Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_candidates`.
     """
 
     def winners_at_equilibrium(right, top, left):
@@ -170,17 +171,19 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
     Parameters
     ----------
     simplex_to_profile : SimplexToProfile
-        This is responsible to generate the profiles.
+        This is responsible for generating the profiles.
     scale : Number
         Scale of the plot (resolution).
     n_max_episodes : int
         Maximum number of episodes for the fictitious play / iterated voting.
     init : Strategy or TauVector or str
-        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     samples_per_point : int
         How many trials are made for each point drawn. Useful only when initialization is random.
-    perception_update_ratio, ballot_update_ratio, winning_frequency_update_ratio : callable or Number
-        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
+    perception_update_ratio,ballot_update_ratio,winning_frequency_update_ratio : callable or Number
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     title : str
         Title of the plot.
     legend_title : str
@@ -190,7 +193,7 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
     file_save_data : str
         File where the computed data will be saved (using ``pickle``).
     kwargs
-        Other keyword arguments are passed to the function `heatmap_candidates`.
+        Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_candidates`.
     """
     def winning_frequencies(right, top, left):
         profile = simplex_to_profile(right, top, left)
@@ -234,23 +237,25 @@ def ternary_plot_convergence(simplex_to_profile, scale,
     Parameters
     ----------
     simplex_to_profile : SimplexToProfile
-        This is responsible to generate the profiles.
+        This is responsible for generating the profiles.
     scale : Number
         Scale of the plot (resolution).
     n_max_episodes : int
         Maximum number of episodes for the fictitious play / iterated voting.
     init : Strategy or TauVector or str
-        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     samples_per_point : int
         How many trials are made for each point drawn. Useful only when initialization is random.
-    perception_update_ratio, ballot_update_ratio : callable or Number
-        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
+    perception_update_ratio,ballot_update_ratio : callable or Number
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
+        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     title : str
         Title of the plot.
     meth : str
         The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
     kwargs
-        Other keyword arguments are passed to the function `heatmap_intensity`.
+        Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_intensity`.
     """
     def convergence_frequency(right, top, left):
         profile = simplex_to_profile(right, top, left)

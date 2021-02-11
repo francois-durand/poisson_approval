@@ -1,7 +1,7 @@
 import warnings
 import itertools
 import numpy as np
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.random_factories.RandStrategyOrdinalUniform import RandStrategyOrdinalUniform
@@ -30,7 +30,7 @@ class ProfileOrdinal(Profile):
         candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
-    well_informed_voters : bool.
+    well_informed_voters : bool
         If True (default), it is the usual model. If False, voters "see" only the candidates' expected scores and
         believe that the scores follow independent Poisson distributions. This option has an effect only for Approval
         (neither for Plurality nor Anti-plurality).
@@ -44,7 +44,7 @@ class ProfileOrdinal(Profile):
     Notes
     -----
     If the input distribution `d_ranking_share` is not normalized, the profile will be normalized anyway and a
-    warning is issued (unless `normalization_warning` is False).
+    warning will be issued (unless `normalization_warning` is False).
 
     Examples
     --------
@@ -198,7 +198,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -259,15 +259,16 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Parameters
         ----------
-        strategy : an argument accepted by :meth:`tau_strategic`
+        strategy
+            An argument accepted by :meth:`tau_strategic`.
 
         Returns
         -------
         TauVector
-            A share :attr:`ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters
+            A share `ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters
             vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
-            is the barycenter of ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective
-            weights ``self.ratio_fanatic`` and ``1 - self.ratio_fanatic``.
+            is the barycenter of `tau_fanatic` and `tau_strategic(strategy)`, with respective
+            weights `self.ratio_fanatic` and `1 - self.ratio_fanatic`.
 
         Examples
         --------

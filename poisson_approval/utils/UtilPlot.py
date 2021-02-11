@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     """
-    Adaptation of ``plt.plot`` with error area for Monte-Carlo experiments.
+    Adaptation of ``plt.plot`` for Monte-Carlo experiments, with error area.
 
     We assume that y-values are obtained by a Monte-Carlo method on a random variable that is in [0, 1]. The margin of
     error is then bounded by the one of a repeated Bernouilli of parameter 0.5, which is itself approximated by a
@@ -21,7 +21,7 @@ def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     n_samples : int
         Number of samples used for Monte-Carlo.
     kwargs
-        Other keyword arguments are passed to the function `plot` of matplotlib.
+        Other keyword arguments are passed to the function ``plot`` of `matplotlib`.
     """
     error = 1 / sqrt(n_samples)
     plt.fill_between(x,
@@ -33,7 +33,7 @@ def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
 
 def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     """
-    Adaptation of ``plt.step`` with error area for Monte-Carlo experiments.
+    Adaptation of ``plt.step`` for Monte-Carlo experiments, with error area.
 
     We assume that y-values are obtained by a Monte-Carlo method on a random variable that is in [0, 1]. The margin of
     error is then bounded by the one of a repeated Bernouilli of parameter 0.5, which is itself approximated by a
@@ -49,7 +49,7 @@ def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     n_samples : int
         Number of samples used for Monte-Carlo.
     kwargs
-        Other keyword arguments are passed to the function `step` of matplotlib.
+        Other keyword arguments are passed to the function ``step`` of `matplotlib`.
     """
     error = 1 / sqrt(n_samples)
     plt.fill_between(x,
@@ -61,10 +61,10 @@ def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
 
 def plt_cdf(data, weights, n_samples, data_min=0, data_max=1, **kwargs):  # pragma: no cover
     """
-    Plot a cumulative distribution function with error area from Monte-Carlo experiments.
+    Plot a cumulative distribution function from Monte-Carlo experiments, with error area.
 
-    We assume that the values in ``data`` are obtained by a Monte-Carlo method on a random variable that is in
-    [``data_min``, ``data_max``]. For the confidence interval, cf. :meth:`plt_step_with_error`.
+    We assume that the values in `data` are obtained by a Monte-Carlo method on a random variable that is in
+    `[data_min, data_max]`. For the confidence interval, cf. :meth:`plt_step_with_error`.
 
     Parameters
     ----------
@@ -74,12 +74,12 @@ def plt_cdf(data, weights, n_samples, data_min=0, data_max=1, **kwargs):  # prag
         The weight (probability) with which the value was encountered.
     n_samples : int
         Number of samples used for Monte-Carlo.
-    data_min : number
-        Minimum possible value of ``data``. Default: 0.
-    data_max : number
-        Maximum possible value of ``data``. Default: 1.
+    data_min : Number
+        Minimum possible value of `data`. Default: 0.
+    data_max : Number
+        Maximum possible value of `data`. Default: 1.
     kwargs
-        Other keyword arguments are passed to the function `step` of matplotlib.
+        Other keyword arguments are passed to the function ``step`` of `matplotlib`.
     """
     data_weights_sorted = sorted(zip(data, weights))
     data_sorted = [d for d, _ in data_weights_sorted]

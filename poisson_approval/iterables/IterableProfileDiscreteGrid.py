@@ -1,10 +1,10 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.profiles.ProfileDiscrete import ProfileDiscrete
 
 
 class IterableProfileDiscreteGrid:
-    """Iterate over discrete profile (:class:`ProfileDiscrete`) defined on a grid.
+    """Iterate over discrete profiles (:class:`ProfileDiscrete`) defined on a grid.
 
     Parameters
     ----------
@@ -23,7 +23,7 @@ class IterableProfileDiscreteGrid:
     test : callable, optional
         A function ``ProfileDiscrete -> bool``. Only profiles meeting this test are given.
     kwargs
-        Additional parameters are passed to `ProfileDiscrete` when creating the profile.
+        Additional parameters are passed to :class:`ProfileDiscrete` when creating the profile.
 
     Examples
     --------

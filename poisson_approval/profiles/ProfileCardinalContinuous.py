@@ -6,15 +6,16 @@ from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 class ProfileCardinalContinuous(ProfileCardinal):
     """A cardinal profile of preference with no atom (abstract class).
 
-    Parameters
-    ----------
-    Cf. :class:`ProfileCardinal`.
+    Notes
+    -----
+    For parameters and attributes, cf. :class:`ProfileCardinal`.
     """
 
     is_continuous = True
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """Share of voters who have a given ranking and a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is equal to a given
+        value.
 
         Since it is a continuous profile, this method always returns 0.
         """

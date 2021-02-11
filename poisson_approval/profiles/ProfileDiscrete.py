@@ -1,5 +1,5 @@
 import warnings
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
@@ -42,7 +42,7 @@ class ProfileDiscrete(ProfileCardinal):
 
     Notes
     -----
-    If the input distribution is not normalized, the profile will be normalized anyway and a warning is
+    If the input distribution is not normalized, the profile will be normalized anyway and a warning will be
     issued (unless `normalization_warning` is False).
 
     Examples
@@ -256,7 +256,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -345,7 +345,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
         Yields
         ------
-        StrategyThreshold
+        :class:`StrategyThreshold`
             All possible pure strategies of the profile.
         """
         def possible_thresholds(ranking):

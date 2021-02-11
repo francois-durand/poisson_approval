@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import APPROVAL, PLURALITY, ANTI_PLURALITY, \
+from poisson_approval.constants.basic_constants import APPROVAL, PLURALITY, ANTI_PLURALITY, \
     CANDIDATES, PAIRS_WITHOUT_INVERSIONS, BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL
 
 

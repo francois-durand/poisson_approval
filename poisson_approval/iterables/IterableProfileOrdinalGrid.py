@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.profiles.ProfileOrdinal import ProfileOrdinal
 
@@ -23,7 +23,7 @@ class IterableProfileOrdinalGrid:
     test : callable, optional
         A function ``ProfileOrdinal -> bool``. Only profiles meeting this test are given.
     kwargs
-        Additional parameters are passed to `ProfileOrdinal` when creating the profile.
+        Additional parameters are passed to :class:`ProfileOrdinal` when creating the profile.
 
     Examples
     --------

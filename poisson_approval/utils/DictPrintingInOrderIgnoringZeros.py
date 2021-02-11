@@ -7,7 +7,7 @@ class DictPrintingInOrderIgnoringZeros(dict):
     Notes
     -----
     All values whose boolean conversion is False are ignored when converting to string: 0, None, [], all empty
-    containers, etc. Empty numpy arrays are also ignored.
+    containers, etc. Empty `numpy` arrays are also ignored.
 
     Examples
     --------

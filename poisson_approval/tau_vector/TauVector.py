@@ -4,7 +4,7 @@ from functools import partial
 from poisson_approval.best_response.BestResponseAntiPlurality import BestResponseAntiPlurality
 from poisson_approval.best_response.BestResponseApproval import BestResponseApproval
 from poisson_approval.best_response.BestResponsePlurality import BestResponsePlurality
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.Focus import Focus
 from poisson_approval.containers.Scores import Scores
 from poisson_approval.events.EventDuo import EventDuo
@@ -25,7 +25,7 @@ from poisson_approval.utils.UtilCache import cached_property
 
 # noinspection PyUnresolvedReferences
 class TauVector:
-    """A vector 'tau' (ballot distribution)
+    """A vector `tau` (ballot distribution).
 
     Parameters
     ----------
@@ -41,7 +41,7 @@ class TauVector:
     Notes
     -----
     If the input distribution `d_ballot_share` is not normalized, the tau vector will be normalized anyway and a
-    warning is issued (unless `normalization_warning` is False).
+    warning will be issued (unless `normalization_warning` is False).
 
     Examples
     --------
@@ -239,7 +239,7 @@ phi_ab = 0.707107>
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -273,11 +273,11 @@ phi_ab = 0.707107>
 
         Parameters
         ----------
-        other : Object
+        other : object
         *args
-            Cf. :func:`math.isclose`.
+            Cf. ``math.isclose``.
         **kwargs
-            Cf. :func:`math.isclose`.
+            Cf. ``math.isclose``.
 
         Returns
         -------
@@ -301,7 +301,7 @@ phi_ab = 0.707107>
 
         Notes
         -----
-        It returns the same profile, up to a permutation of the candidates. how the permutation is chosen in
+        It returns the same profile, up to a permutation of the candidates. How the permutation is chosen in
         practice does not really matter: the important point is that the `standardized version` is the same for all the
         profile that are identical up to a permutation of the candidates.
 
@@ -370,7 +370,7 @@ phi_ab = 0.707107>
 
     @cached_property
     def trio(self):
-        """Event: trio."""
+        """Event: Trio."""
         return EventTrio(candidate_x='a', candidate_y='b', candidate_z='c', tau=self)
 
     @property
@@ -516,7 +516,7 @@ phi_ab = 0.707107>
         """dict : Best response profile.
 
         * Key: a ranking (e.g. ``'abc'``).
-        * Value: a :class:`BestResponse` (whose subclass depends on :attr:`voting_rule`).
+        * Value: a :class:`BestResponse` (whose subclass depends on `voting_rule`).
 
         Examples
         --------
@@ -670,13 +670,15 @@ def _f_duo(self, candidate_x, candidate_y, candidate_z, cls, stub):
 
 
 for event_class, event_stub, event_doc in [
-        (EventDuo, 'duo', 'EventDuo : These two candidates have the same score.'),
+        (EventDuo, 'duo', 'EventDuo : Event where these two candidates have the same score.'),
         (EventPivotWeak, 'pivot_weak',
-            'EventPivotWeak : These two candidates have the same score, at least as high as the other.'),
+            'EventPivotWeak : Event where these two candidates have the same score, at least as high as the remaining '
+            'candidate.'),
         (EventPivotStrict, 'pivot_strict',
-            'EventPivotStrict : These two candidates have the same score, strictly higher than the other.'),
+            'EventPivotStrict : Event where these two candidates have the same score, strictly higher than the '
+            'remaining candidate.'),
         (EventTrio2t, 'trio_2t',
-            'EventTrio1t : These candidates have one vote less than the other.')]:
+            'EventTrio1t : Event where these candidates have one vote less than the remaining candidate.')]:
     for x, y, z in RANKINGS:
         name = event_stub + '_%s%s' % (x, y)
         setattr(TauVector, name, partial(_f_duo, candidate_x=x, candidate_y=y, candidate_z=z,
@@ -713,7 +715,7 @@ for event_class, event_stub, event_doc in [
 
 
 for event_class, event_stub, event_doc in [
-        (EventTrio1t, 'trio_1t', 'EventTrio1t : This candidate has one vote less than the two others.')]:
+        (EventTrio1t, 'trio_1t', 'EventTrio1t : Event where this candidate has one vote less than the two others.')]:
     for x, y, z in RANKINGS:
         if y > z:
             continue

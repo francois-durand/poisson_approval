@@ -1,7 +1,7 @@
 import warnings
 import itertools
 from fractions import Fraction
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.iterables.IterableStrategyTwelve import IterableStrategyTwelve
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
@@ -46,7 +46,7 @@ class ProfileTwelve(ProfileCardinal):
     Notes
     -----
     If the input distribution `d_type_share` is not normalized, the profile will be normalized anyway and a
-    warning is issued (unless `normalization_warning` is False).
+    warning will be issued (unless `normalization_warning` is False).
 
     Examples
     --------
@@ -162,7 +162,8 @@ class ProfileTwelve(ProfileCardinal):
         return self._d_weak_order_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly above a
+        given value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_above_u`.
 
@@ -187,7 +188,8 @@ class ProfileTwelve(ProfileCardinal):
         return high_u
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """Share of voters who have a given ranking and a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is equal to a given
+        value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.
 
@@ -202,7 +204,8 @@ class ProfileTwelve(ProfileCardinal):
         return 0
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly below a
+        given value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_below_u`.
 
@@ -282,7 +285,7 @@ class ProfileTwelve(ProfileCardinal):
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -368,7 +371,7 @@ class ProfileTwelve(ProfileCardinal):
             >>> profile.has_majority_type
             True
 
-        This does NOT include weak orders:
+        This does **not** include weak orders:
 
             >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10)}, d_weak_order_share={'b>a~c': Fraction(9, 10)})
             >>> profile.has_majority_type
@@ -552,7 +555,7 @@ class ProfileTwelve(ProfileCardinal):
 
         Yields
         ------
-        StrategyTwelve
+        :class:`StrategyTwelve`
             All possible pure strategies of the profile.
         """
         return IterableStrategyTwelve(profile=self)

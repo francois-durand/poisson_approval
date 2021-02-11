@@ -1,9 +1,10 @@
 from poisson_approval.utils.computation_engine import computation_engine
+from poisson_approval.utils.SuperclassMeta import SuperclassMeta
 from poisson_approval.utils.Util import isnan
 from poisson_approval.utils.UtilBallots import sort_ballot
 
 
-class Event:
+class Event(metaclass=SuperclassMeta):
     """An event with all its attributes: magnitudes, offsets, asymptotic if possible (abstract class).
 
     Parameters

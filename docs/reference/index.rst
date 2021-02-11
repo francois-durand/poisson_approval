@@ -13,5 +13,8 @@ Reference
    reference_profiles/index
    reference_iterables/index
    reference_random_factories/index
-   reference_meta_analysis/index
+   reference_meta_monte_carlo_fictitious_play/index
+   reference_meta_binary_plots/index
+   reference_meta_ternary_plots/index
+   reference_meta_misc/index
    reference_utils/index

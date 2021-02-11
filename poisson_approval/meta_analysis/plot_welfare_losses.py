@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from poisson_approval.constants.constants import VOTING_RULES
+from poisson_approval.constants.basic_constants import VOTING_RULES
 from poisson_approval.utils.UtilPlot import plt_cdf
 from poisson_approval.random_factories.RandProfileHistogramUniform import RandProfileHistogramUniform
 from poisson_approval.meta_analysis.monte_carlo_fictitious_play import monte_carlo_fictitious_play, \
@@ -14,11 +14,13 @@ def plot_welfare_losses(results, criterion, **kwargs):
     Parameters
     ----------
     results : dict
-        Results of :func:`monte_carlo_fictitious_play`, with at least the setting ``MCS_WELFARE_LOSSES``.
+        Results of :func:`~poisson_approval.meta_analysis.monte_carlo_fictitious_play.monte_carlo_fictitious_play`,
+        with at least the setting
+        :const:`~poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_WELFARE_LOSSES`.
     criterion : str
         ``'utilitarian_welfare_losses'``, ``'plurality_welfare_losses'`` or ``'anti_plurality_welfare_losses'``.
     kwargs
-        Other keyword arguments are passed to the function ``step`` of matplotlib.
+        Other keyword arguments are passed to the function ``step`` of `matplotlib`.
 
     Examples
     --------

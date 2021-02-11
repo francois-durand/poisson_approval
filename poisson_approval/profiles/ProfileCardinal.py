@@ -2,7 +2,7 @@ import warnings
 import math
 import numpy as np
 from fractions import Fraction
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.random_factories.RandTauVectorUniform import RandTauVectorUniform
@@ -45,7 +45,8 @@ class ProfileCardinal(Profile):
     is_continuous = False
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly above a
+        given value.
 
         Parameters
         ----------
@@ -58,12 +59,13 @@ class ProfileCardinal(Profile):
         -------
         Number
             The share of voters who have ranking `ranking` and a utility for their middle candidate strictly greater
-            than `u`. This does NOT include the voters who have a weak order of preference.
+            than `u`. This does **not** include the voters who have a weak order of preference.
         """
         raise NotImplementedError
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """Share of voters who have a given ranking and a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is equal to a given
+        value.
 
         Parameters
         ----------
@@ -76,13 +78,14 @@ class ProfileCardinal(Profile):
         -------
         Number
             The share of voters who have ranking `ranking` and a utility for their middle candidate equal to `u`.
-            This does NOT include the voters who have a weak order of preference. I.e. if `u`=0 or `u=1`, then the
+            This does **not** include the voters who have a weak order of preference. I.e. if `u=0` or `u=1`, then the
             share is 0.
         """
         raise NotImplementedError
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly below a
+        given value.
 
         Parameters
         ----------
@@ -95,7 +98,7 @@ class ProfileCardinal(Profile):
         -------
         Number
             The share of voters who have ranking `ranking` and a utility for their middle candidate strictly lower
-            than `u`. This does NOT include the voters who have a weak order of preference.
+            than `u`. This does **not** include the voters who have a weak order of preference.
         """
         raise NotImplementedError
 
@@ -115,11 +118,12 @@ class ProfileCardinal(Profile):
 
     @cached_property
     def standardized_version(self):
+        """Profile : Standardized version of the profile (makes it unique, up to permutations of the candidates)."""
         raise NotImplementedError
 
     @cached_property
     def d_candidate_welfare(self):
-        """DictPrintingInOrder : welfare of each candidate.
+        """DictPrintingInOrder : Welfare of each candidate.
             E.g. ``'a': 0.7`` means that candidate ``'a'`` has a welfare (average utility) equal to 0.7 for the voters.
             Since utilities are in [0, 1], so is the welfare.
         """
@@ -127,11 +131,11 @@ class ProfileCardinal(Profile):
 
     @cached_property
     def d_candidate_relative_welfare(self):
-        """DictPrintingInOrder : relative welfare of each candidate.
+        """DictPrintingInOrder : Relative welfare of each candidate.
             This is similar to :attr:`d_candidate_welfare`, but renormalized so that the candidate with best welfare
-            has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
-            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
-            the relative welfare is 1 for all of them.
+            has 1 and the one with worst welfare has 0. In math:
+            `relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)`. In the case where all
+            candidates have the same welfare, by convention, the relative welfare is 1 for all of them.
         """
         return normalize_dict_to_0_1(self.d_candidate_welfare)
 
@@ -142,16 +146,17 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy : an argument accepted by :meth:`tau_strategic`
+        strategy
+            An argument accepted by :meth:`tau_strategic`.
 
         Returns
         -------
         TauVector
-            A share :attr:`ratio_sincere` of the voters vote sincerely (in the sense of :attr:`tau_sincere`),
-            a share :attr:`ratio_fanatic` vote only for their top candidate, and the rest of the voters
-            vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
-            is the barycenter of ``tau_sincere``, ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective
-            weights ``self.ratio_sincere``, ``self.ratio_fanatic`` and ``1 - self.ratio_sincere - self.ratio_fanatic``.
+            A share `ratio_sincere` of the voters vote sincerely (in the sense of :attr:`tau_sincere`),
+            a share `ratio_fanatic` vote only for their top candidate (cf. :attr:`tau_fanatic`), and the rest of the
+            voters vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
+            is the barycenter of `tau_sincere`, `tau_fanatic` and `tau_strategic(strategy)`, with
+            respective weights `ratio_sincere`, `ratio_fanatic` and `1 - ratio_sincere - ratio_fanatic`.
         """
         tau_sincere = self.tau_sincere
         tau_fanatic = self.tau_fanatic
@@ -200,7 +205,7 @@ class ProfileCardinal(Profile):
         Returns
         -------
         TauVector
-            * In Approval or Plurality, all voters approve of their top candidate only.,
+            * In Approval or Plurality, all voters approve of their top candidate only,
             * In Anti-plurality, all voters vote against their bottom candidate (i.e. for the other two).
 
         Notes
@@ -253,7 +258,8 @@ class ProfileCardinal(Profile):
 
         Parameters
         ----------
-        strategy : an argument accepted by :meth:`share_sincere_among_strategic_voters`
+        strategy
+            An argument accepted by :meth:`share_sincere_among_strategic_voters`.
 
         Returns
         -------
@@ -277,7 +283,7 @@ class ProfileCardinal(Profile):
         for their second candidate is lower or equal to 0.5.
 
         Note that this share is relative to the share of fanatic voters: therefore, it is independent of
-        :attr:`ratio_fanatic` and can be defined conventionally even if :attr:`ratio_fanatic` is 0, with the same
+        `ratio_fanatic` and can be defined conventionally even if `ratio_fanatic` is 0, with the same
         computation.
         """
         if self.voting_rule == APPROVAL:
@@ -368,9 +374,9 @@ class ProfileCardinal(Profile):
         EquilibriumStatus
             Whether `strategy` is an equilibrium in this profile. This is based on the assumption that:
 
-            * A proportion :attr:`ratio_sincere` of voters cast their ballot sincerely (in the sense of
+            * A proportion `ratio_sincere` of voters cast their ballot sincerely (in the sense of
               :attr:`tau_sincere`),
-            * A proportion :attr:`ratio_fanatic` of voters vote for their top candidate only,
+            * A proportion `ratio_fanatic` of voters vote for their top candidate only,
             * And the rest of the voters use `strategy`.
         """
         this_tau = self.tau(strategy)
@@ -469,17 +475,17 @@ class ProfileCardinal(Profile):
 
         n_max_episodes : int
             Maximal number of iterations.
-        perception_update_ratio : Number in [0, 1]
-            The coefficient when updating the perceived tau:
-            ``tau_perceived = (1 - perception_update_ratio) * tau_perceived + perception_update_ratio * tau_actual``.
-        ballot_update_ratio : Number in [0, 1]
-            The ratio of voters who update their ballot:
-            ``tau_actual = (1 - ballot_update_ratio) * tau_actual + ballot_update_ratio * tau_response``.
+        perception_update_ratio : Number
+            Number in [0, 1]. The coefficient when updating the perceived tau:
+            `tau_perceived = (1 - perception_update_ratio) * tau_perceived + perception_update_ratio * tau_actual`.
+        ballot_update_ratio : Number
+            Number in [0, 1]. The ratio of voters who update their ballot:
+            `tau_actual = (1 - ballot_update_ratio) * tau_actual + ballot_update_ratio * tau_response`.
         winning_frequency_update_ratio : callable or Number
             The coefficient when updating the winning frequency of each candidate:
-            ``d_candidate_winning_frequency[c] =
+            `d_candidate_winning_frequency[c] =
             (1 - winning_frequency_update_ratio(t)) * d_candidate_winning_frequency[c]
-            + winning_frequency_update_ratio(t) * winning_probability[c]``.
+            + winning_frequency_update_ratio(t) * winning_probability[c]`.
             The default function is :func:`~utils.Util.one_over_t`, which leads to an arithmetic average.
             Note that this parameters has an influence only in case of non-convergence.
         other_statistics_update_ratio : callable or Number
@@ -487,11 +493,11 @@ class ProfileCardinal(Profile):
         other_statistics_tau : dict
             Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``tau_init``,
             ``n_episodes``, and ``d_candidate_winning_frequency``). Value: a function whose input is a tau-vector, and
-            whose output is a number or a numpy array.
+            whose output is a number or a `numpy` array.
         other_statistics_strategy : dict
             Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``tau_init``,
             ``n_episodes``, ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a
-            function whose input is a strategy, and whose output is a number or a numpy array.
+            function whose input is a strategy, and whose output is a number or a `numpy` array.
         verbose : bool
             If True, print all intermediate steps.
 
@@ -500,13 +506,13 @@ class ProfileCardinal(Profile):
         dict
             * Key ``converges``: bool. True if the process converges (i.e. cycle of length 1).
             * Key ``cycle_taus_perceived``: list of :class:`TauVector`. The limit cycle of perceived tau-vectors.
-              ``cycle_taus_perceived[t]`` is a barycenter of ``cycle_taus_perceived[t - 1]`` with
-              ``cycle_taus_actual[t - 1]``, parametrized by `perception_update_ratio`.
+              `cycle_taus_perceived[t]` is a barycenter of `cycle_taus_perceived[t - 1]` with
+              `cycle_taus_actual[t - 1]`, parametrized by `perception_update_ratio`.
             * Key ``cycle_strategies``: list of :class:`StrategyThreshold`. The limit cycle of strategies.
-              ``cycle_strategies[t]`` is the best response to ``cycle_taus_perceived[t]``.
+              `cycle_strategies[t]` is the best response to `cycle_taus_perceived[t]`.
             * Key ``cycle_taus_actual``: list of :class:`TauVector`. The limit cycle of actual tau-vectors.
-              ``cycle_taus_actual[t]`` is a barycenter of ``cycle_taus_actual[t - 1]`` and the tau-vector resulting
-              from ``strategies[t]``, parametrized by `ballot_update_ratio`.
+              `cycle_taus_actual[t]` is a barycenter of `cycle_taus_actual[t - 1]` and the tau-vector resulting
+              from `strategies[t]`, parametrized by `ballot_update_ratio`.
             * Key ``tau_init``: the tau-vector at initialization.
             * Key ``n_episodes``: the number of episodes until convergence. If the process did not converge, by
               convention, this value is `n_max_episodes`.
@@ -516,9 +522,10 @@ class ProfileCardinal(Profile):
             * Others keys are those of ``other_statistics_tau`` and ``other_statistics_strategy``. Similarly to
               ``d_candidate_winning_frequency``, they give the long-run average of the corresponding statistics.
 
-            `cycle_taus_perceived`, `cycle_strategies` and `cycle_taus_actual` have the same length. If it is 1, the
-            process converges to this limit. If it is greater than 1, the process reaches a periodical orbit. If it
-            is 0, by convention, it means that the process does not converge and does not reach a periodical orbit.
+            The return values `cycle_taus_perceived`, `cycle_strategies` and `cycle_taus_actual` are lists of the same
+            length. If the length is 1, the process converges to this limit. If it is greater than 1, the process
+            reaches a periodical orbit. If it is 0, by convention, it means that the process does not converge and does
+            not reach a periodical orbit.
 
         Notes
         -----
@@ -676,22 +683,22 @@ class ProfileCardinal(Profile):
             Maximal number of iterations.
         perception_update_ratio : callable or Number
             The coefficient when updating the perceived tau:
-            ``tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) *
-            tau_actual``. For any ``t`` from 2 to `n_max_episodes` included, the update ratio must be in [0, 1]. The
+            `tau_perceived = (1 - perception_update_ratio(t)) * tau_perceived + perception_update_ratio(t) *
+            tau_actual`. For any `t` from 2 to `n_max_episodes` included, the update ratio must be in [0, 1]. The
             default function is :func:`~utils.Util.one_over_t`, which leads to an arithmetic average. However,
             the `recommended` function is :func:`~utils.Util.one_over_log_t_plus_one`, which accelerates the
             convergence. If `perception_update_ratio` is a Number, it is considered as a constant function.
         ballot_update_ratio : callable or Number
             The ratio of voters who update their ballot:
-            ``tau_actual = (1 - ballot_update_ratio(t)) * tau_actual + ballot_update_ratio(t) * tau_response``.
-            For any ``t`` from 2 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
+            `tau_actual = (1 - ballot_update_ratio(t)) * tau_actual + ballot_update_ratio(t) * tau_response`.
+            For any `t` from 2 to `n_max_episodes` included, the update ratio must be in [0, 1]. The default function
             is the constant 1, which corresponds to a full update. If `ballot_update_ratio` is a Number, it is
             considered as a constant function.
         winning_frequency_update_ratio : callable or Number
             The coefficient when updating the winning frequency of each candidate:
-            ``d_candidate_winning_frequency[c] =
+            `d_candidate_winning_frequency[c] =
             (1 - winning_frequency_update_ratio(t)) * d_candidate_winning_frequency[c]
-            + winning_frequency_update_ratio(t) * winning_probability[c]``.
+            + winning_frequency_update_ratio(t) * winning_probability[c]`.
             The default function is :func:`~utils.Util.one_over_t`, which leads to an arithmetic average.
             Note that this parameters has an influence only in case of non-convergence.
         other_statistics_update_ratio : callable or Number
@@ -699,18 +706,18 @@ class ProfileCardinal(Profile):
         other_statistics_tau : dict
             Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``tau_init``,
             ``n_episodes``, and ``d_candidate_winning_frequency``). Value: a function whose input is a tau-vector, and
-            whose output is a number or a numpy array.
+            whose output is a number or a `numpy` array.
         other_statistics_strategy : dict
             Key: name of the statistic (different from ``converges``, ``tau``, ``strategy``, ``tau_init``,
             ``n_episodes``, ``d_candidate_winning_frequency`` and the names in ``other_statistics_tau``). Value: a
-            function whose input is a strategy, and whose output is a number or a numpy array.
+            function whose input is a strategy, and whose output is a number or a `numpy` array.
         verbose : bool
             If True, print all intermediate steps.
 
         Returns
         -------
         dict
-            * Key ``converges``: bool. True if the process converges (i.e. cycle of length 1).
+            * Key ``converges``: bool. True if the process converges.
             * Key ``tau``: :class:`TauVector` or None. The limit tau-vector. If None, it means that the process did not
               converge.
             * Key ``strategy``: :class:`StrategyThreshold` or None. The limit strategy. If None, it means that the
@@ -903,13 +910,13 @@ def _average_statistic(statistic_f, taus_or_strategies):
     Parameters
     ----------
     statistic_f : callable
-        Input: a tau-vector or a strategy. Output: a number or a numpy array.
+        Input: a tau-vector or a strategy. Output: a number or a `numpy` array.
     taus_or_strategies : list
         List of tau-vectors or strategies.
 
     Returns
     -------
-    number or numpy array
+    number or numpy.ndarray
         The average of ``statistic_f`` over the cycle.
 
     Examples

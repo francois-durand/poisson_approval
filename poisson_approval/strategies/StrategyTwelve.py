@@ -1,5 +1,5 @@
 from poisson_approval.utils.UtilBallots import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 
@@ -123,8 +123,8 @@ def make_property_ranking_ballot(ranking, doc):
 
 
 for my_ranking in RANKINGS:
-    setattr(StrategyTwelve, my_ranking, make_property_ranking_ballot(my_ranking,
-                                                                     'str : Ballot of ranking ``%s``.' % my_ranking))
+    setattr(StrategyTwelve, my_ranking, make_property_ranking_ballot(
+        my_ranking, 'str : Strategy of voters with ranking ``%s``.' % my_ranking))
 
 
 def make_property_ranking_low_u_ballot(ranking, doc):
@@ -143,8 +143,9 @@ def make_property_ranking_low_u_ballot(ranking, doc):
 
 for my_ranking in RANKINGS:
     my_t = my_ranking[0] + '_' + my_ranking[1:]
-    setattr(StrategyTwelve, my_t, make_property_ranking_low_u_ballot(my_ranking,
-                                                                     'str : Ballot of type ``%s``.' % my_t))
+    setattr(StrategyTwelve, my_t, make_property_ranking_low_u_ballot(
+        my_ranking, 'str : Strategy of voters with type ``%s``.' % my_t
+    ))
 
 
 def make_property_ranking_high_u_ballot(ranking, doc):
@@ -163,5 +164,6 @@ def make_property_ranking_high_u_ballot(ranking, doc):
 
 for my_ranking in RANKINGS:
     my_t = my_ranking[:2] + '_' + my_ranking[2]
-    setattr(StrategyTwelve, my_t, make_property_ranking_high_u_ballot(my_ranking,
-                                                                      'str : Ballot of type ``%s``.' % my_t))
+    setattr(StrategyTwelve, my_t, make_property_ranking_high_u_ballot(
+        my_ranking, 'str : Strategy of voters with type ``%s``.' % my_t
+    ))

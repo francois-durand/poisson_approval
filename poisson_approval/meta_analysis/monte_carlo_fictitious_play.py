@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 from copy import deepcopy
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.random_factories.RandProfileHistogramUniform import RandProfileHistogramUniform
 from poisson_approval.utils.Util import one_over_log_t_plus_one
 
@@ -28,15 +28,16 @@ def monte_carlo_fictitious_play(factory, n_samples, n_max_episodes,
         Maximum number of episodes for the fictitious play / iterated voting.
     voting_rules : list
         A list of voting rules. Each profile drawn is analyzed with each voting rule. If None, then use the voting
-        rule of the profile given by ``factory``.
+        rule of the profile returned by `factory`.
     init : Strategy or TauVector or str
         Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
         :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
-    perception_update_ratio, ballot_update_ratio, statistics_update_ratio : callable or Number
+    perception_update_ratio,ballot_update_ratio,statistics_update_ratio : callable or Number
         Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or
         :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
-    monte_carlo_settings : list of MonteCarloSetting
-        Roughly speaking, this gives the information of which statistics will be computed.
+    monte_carlo_settings : list of :class:`MonteCarloSetting`
+        Roughly speaking, this gives the information of which statistics will be computed. Cf.
+        :class:`MonteCarloSetting` for more details.
     file_save : str
         Name of the file where the results will be stored (using ``pickle``).
     meth : str
@@ -45,7 +46,7 @@ def monte_carlo_fictitious_play(factory, n_samples, n_max_episodes,
     Returns
     -------
     dict
-        Key: voting rule (or ``''`` if ``voting_rule`` is None). Value: a dictionary whose keys are keywords for the
+        Key: voting rule (or ``''`` if `voting_rule` is None). Value: a dictionary whose keys are keywords for the
         computed statistics, and whose values are the corresponding outputs. Cf. :class:`MonteCarloSetting`.
 
     Examples
@@ -132,28 +133,27 @@ class MonteCarloSetting:
     ----------
     statistics_tau : dict
         Key: name of the statistic. Value: a function whose input is a tau-vector, and whose output is a number or a
-        numpy array. This parameter is passed to ``other_statistics_tau`` of
+        `numpy` array. This parameter is passed to the argument `other_statistics_tau` of
         :meth:`~poisson_approval.ProfileCardinal.iterated_voting` or
         :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. For each voting rule and
         each profile, the long-run average of the statistic is computed, then stored in a list of length ``n_samples``.
-        This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]``, where ``meta_results`` denotes
-        the results of :func:`monte_carlo_fictitious_play`.
+        This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]`` (where ``meta_results`` denotes
+        the results of :func:`monte_carlo_fictitious_play`).
     statistics_strategy : dict
         Key: name of the statistic. Value: a function whose input is a strategy, and whose output is a number or a
-        numpy array. This parameter is passed to ``other_statistics_tau`` of
+        `numpy` array. This parameter is passed to the argument `other_statistics_strategy` of
         :meth:`~poisson_approval.ProfileCardinal.iterated_voting` or
         :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. For each voting rule and
         each profile, the long-run average of the statistic is computed, then stored in a list of length ``n_samples``.
-        This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]``, where ``meta_results`` denotes
-        the results of :func:`monte_carlo_fictitious_play`.
+        This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]``.
     statistics_post_processing : dict
         Key: name of the statistic. Value: a function whose input is a pair ``(results, profile)``. Such a statistic
-        is computed only once for each voting rule and each profile, once iterated voting or fictitious play has ended.
+        is computed only once for each voting rule and each profile, after iterated voting or fictitious play has ended.
         Results are stored in a list of length ``n_samples``, which is accessible by
         ``meta_results[voting_rule][name_of_the_statistic]``.
     statistics_final_processing : dict
         Key: name of the statistic. Value: a function whose input is the ``meta_result`` already computed so far.
-        Such a statistic is computed only once for each voting rule, once the whole process is finished. It is
+        Such a statistic is computed only once for each voting rule, after the whole process is finished. It is
         accessible by ``meta_results[voting_rule][name_of_the_statistic]``.
     """
 
@@ -193,7 +193,7 @@ Keyword ``'share_sincere_votes'``: share of sincere votes (for each profile).
 Keyword ``'share_insincere_votes'``: share of insincere votes (for each profile).
 
 Keywords ``'mean_share_single_votes'``, ``'mean_share_double_votes'``, ``'mean_share_sincere_votes'``,
-``'mean_share_insincere_votes'``: corresponding average share (over all profiles).
+``'mean_share_insincere_votes'``: corresponding average shares (over all profiles).
 """
 
 
@@ -212,7 +212,7 @@ MonteCarloSetting: Candidates' winning frequencies.
 
 Keyword ``'d_candidate_winning_frequency'``: winning frequency for each candidate (for each profile).
 
-Keyword ``'d_candidate_mean_winning_frequency'``: average winning frequency for each candidate.
+Keyword ``'d_candidate_mean_winning_frequency'``: average winning frequency for each candidate (over all profiles).
 """
 
 
@@ -229,7 +229,7 @@ MonteCarloSetting: Convergence.
 
 Keyword ``'converges'``: whether the procedure converges (for each profile).
 
-Keyword ``'mean_converges'``: rate of convergence.
+Keyword ``'mean_converges'``: rate of convergence (over all profiles).
 """
 
 
@@ -272,7 +272,7 @@ MonteCarloSetting: Winning frequency of the Condorcet winner.
 
 Keyword ``'frequency_cw_wins'``: winning frequency of the Condorcet winner (for each profile).
 
-Keyword ``'mean_frequency_cw_wins'``: average winning frequency of the Condorcet winner.
+Keyword ``'mean_frequency_cw_wins'``: average winning frequency of the Condorcet winner (over all profiles).
 """
 
 
@@ -292,7 +292,7 @@ MCS_PROFILE = MonteCarloSetting(
 """
 MonteCarloSetting: Profile.
 
-Keyword ``'profile'``: the profile.
+Keyword ``'profile'``: the profile (for each profile).
 """
 
 
@@ -414,9 +414,9 @@ Keyword ``'plurality_welfare_losses'``: plurality welfare loss (for each profile
 
 Keyword ``'anti_plurality_welfare_losses'``: anti-plurality welfare loss (for each profile).
 
-Keyword ``'mean_utilitarian_welfare_loss'``: average utilitarian welfare loss.
+Keyword ``'mean_utilitarian_welfare_loss'``: average utilitarian welfare loss (over all profiles).
 
-Keyword ``'mean_plurality_welfare_loss'``: average plurality welfare loss.
+Keyword ``'mean_plurality_welfare_loss'``: average plurality welfare loss (over all profiles).
 
-Keyword ``'mean_anti_plurality_welfare_loss'``: average anti-plurality welfare loss.
+Keyword ``'mean_anti_plurality_welfare_loss'``: average anti-plurality welfare loss (over all profiles).
 """

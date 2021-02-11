@@ -28,7 +28,7 @@ from poisson_approval.utils.UtilPlot import plt_cdf, plt_step_with_error, plt_pl
 from poisson_approval.utils.UtilPreferences import is_hater, is_lover, is_weak_order, sort_weak_order
 
 # Constants
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.constants.Focus import Focus
 

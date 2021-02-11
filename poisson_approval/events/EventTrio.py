@@ -77,7 +77,7 @@ class EventTrio(Event):
             self._phi_xz = ce.S(1) if tau_xz > 0 else ce.nan
             self._phi_yz = ce.S(1) if tau_yz > 0 else ce.nan
         else:
-            # Generic case: we work with floats, not sympy expressions.
+            # Generic case: we work with floats, not `sympy` expressions.
             tau_x_f, tau_y_f, tau_z_f = float(tau_x), float(tau_y), float(tau_z)
             tau_xy_f, tau_xz_f, tau_yz_f = float(tau_xy), float(tau_xz), float(tau_yz)
             inf, sup, start = self._get_bounds_and_start(tau_x_f, tau_y_f, tau_z_f,

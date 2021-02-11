@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyOrdinal import StrategyOrdinal
 from poisson_approval.utils.Util import product_dict
@@ -11,12 +11,13 @@ class IterableStrategyOrdinal:
     Parameters
     ----------
     profile : Profile, optional
+        The attached profile.
     voting_rule : str, optional
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same
         voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.
     d_ranking_fixed_strategy : dict
         Key: ranking. Value: fixed strategy. Cf. examples below.
-    test : callable.
+    test : callable
         A function ``StrategyOrdinal -> bool``. Only strategies meeting this test are given.
 
     Examples

@@ -13,7 +13,9 @@ class AnalyzedStrategies:
     utility_dependent : list of :class:`Strategy`
         List of the strategies where the equilibrium depends on the exact utilities.
     inconclusive : list of :class:`Strategy`
-        List of the strategies where we are not able to decide whether it is an equilibrium or not.
+        List of the strategies where we are not able to decide whether it is an equilibrium or not. In the current
+        version of the package, this argument is not used anymore, because we are always able to decide whether
+        a strategy is an equilibrium or not.
     non_equilibria : list of :class:`Strategy`
         List of the strategies where the program certifies there is no equilibrium.
 

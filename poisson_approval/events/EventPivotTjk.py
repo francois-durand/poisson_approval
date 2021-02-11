@@ -9,7 +9,7 @@ class EventPivotTjk(Event):
     Notes
     -----
     We consider the personalized pivot for the two least-liked candidates of a voter ``zyx``, i.e. situations
-    where, if the voter add a reasonable ballot (``z`` or ``yz``), it become a strict pivot for ``xy``. In other words,
+    where, if the voter add a reasonable ballot (``z`` or ``yz``), it becomes a strict pivot for ``xy``. In other words,
     situations where ``S_x = S_y > S_z + 1`` or ``S_x = S_y + 1 > S_z + 1``.
 
     For parameters and attributes, cf. :class:`Event`.

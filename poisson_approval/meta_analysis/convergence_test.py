@@ -14,17 +14,19 @@ def convergence_test(n_max_episodes, init='sincere',
     n_max_episodes : int
         Maximum number of episodes for the fictitious play / iterated voting.
     init : Strategy or TauVector or str
-        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
-    perception_update_ratio, ballot_update_ratio : callable or Number
-        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play`
+        or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
+    perception_update_ratio,ballot_update_ratio : callable or Number
+        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play`
+        or :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
     meth : str
         The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
 
     Returns
     -------
     callable
-        Input: a profile. Output: a bool, which is True if the fictitious play / iterated
-        voting converges (within the specified number of steps).
+        A callable. Input: a profile. Output: a bool, which is True if the fictitious play / iterated
+        voting converges (within the specified number of episodes).
 
     Examples
     --------

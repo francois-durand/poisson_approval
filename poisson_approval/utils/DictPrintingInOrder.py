@@ -1,4 +1,7 @@
-class DictPrintingInOrder(dict):
+from poisson_approval.utils.SuperclassMeta import SuperclassMeta
+
+
+class DictPrintingInOrder(dict, metaclass=SuperclassMeta):
     """A dictionary that prints in the order of the keys.
 
     Examples

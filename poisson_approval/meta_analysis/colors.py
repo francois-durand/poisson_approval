@@ -10,13 +10,13 @@ def abc_to_rgb(abc):
 
     Parameters
     ----------
-    abc : tuple, list or ndarray
+    abc : tuple, list or numpy.ndarray
         Array of size 3. Each coefficient is associated to a candidate a, b, c. Typically the coefficients sum to 1
         or less than 1.
 
     Returns
     -------
-    ndarray
+    numpy.ndarray
         Array of size 3. RGB color. Roughly speaking, candidate `a` is associated to red, `b` to green and `c` to blue,
         but we try to mix colors more reasonably than just an average in RGB space.
 
@@ -53,14 +53,14 @@ def _uni_mix(color_1, color_2, weight_1, weight_2):
 
     Parameters
     ----------
-    color_1, color_2 : tuple, list or ndarray
+    color_1, color_2 : tuple, list or numpy.ndarray
         Arrays of size 3 in format RGB.
     weight_1, weight_2 : Number
         Respective weights of the two colors.
 
     Returns
     -------
-    ndarray
+    numpy.ndarray
         Array of size 3 in format RGB. The mix is not linear. Currently, the resulting color is a barycenter
         with respective weights ``weight_1**n`` and ``weight_2**n``, with ``n = 2.5``. This makes a "sharper"
         transition, so that we see more of the base colors and less of the mixes.
@@ -89,7 +89,7 @@ def _palette(x, y):
 
     Returns
     -------
-    ndarray
+    numpy.ndarray
         Array of size 3 in format RGB. The resulting figure consists of:
 
         * A nice color palette in the unit disk,

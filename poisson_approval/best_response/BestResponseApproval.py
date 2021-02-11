@@ -1,5 +1,5 @@
 from poisson_approval.best_response.BestResponse import BestResponse
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.utils.UtilCache import cached_property
 
 
@@ -14,11 +14,19 @@ class BestResponseApproval(BestResponse):
 
     Parameters
     ----------
-    Cf. :class:`BestResponse`.
+    tau : TauVector
+        A tau-vector.
+    ranking : str
+        Voter's ranking, e.g. ``'abc'``.
 
     Attributes
     ----------
-    Cf. :class:`BestResponse`
+    i, j, k : str
+        The first (resp. second, third) candidate in `ranking`. E.g. ``a``.
+    ij, ik, jk : str
+        The ballots with two candidates. E.g. ``ab``.
+    tau_i, tau_j, tau_k, tau_ij, tau_ik, tau_jk : Number
+        The values of the tau-vector.
     """
 
     ASYMPTOTIC = 'Asymptotic method'
@@ -36,9 +44,9 @@ class BestResponseApproval(BestResponse):
 
     @cached_property
     def results_asymptotic_method(self):
-        """tuple (utility_threshold, justification) : Results according to the asymptotic method. Cf.
-        :attr:`utility_threshold` and :attr:`justification`. The utility threshold may be NaN, because this method is
-        not always sufficient.
+        """tuple : Tuple `(utility_threshold, justification)`. Results according to the asymptotic method. Cf.
+        :attr:`utility_threshold` and :attr:`justification`. The utility threshold may be `nan`, because this method
+        is not always sufficient.
         """
         utility_threshold = self.ce.simplify(((
             self.pivot_tij.asymptotic * self.ce.Rational(1, 2)
@@ -55,9 +63,9 @@ class BestResponseApproval(BestResponse):
 
     @cached_property
     def results_limit_pivot_theorem(self):
-        """tuple (utility_threshold, justification) : Results according to the limit pivot theorem.
+        """tuple : Tuple `(utility_threshold, justification)`. Results according to the limit pivot theorem.
         Cf. :attr:`utility_threshold` and :attr:`justification`. If the tau-vector has two consecutive zeros, the
-        theorem does not apply and this method returns ``nan, ''``.
+        theorem does not apply and this method returns `nan`, ``''``.
         """
         if self.tau.has_two_consecutive_zeros:
             return self.ce.nan, ''
@@ -120,7 +128,7 @@ class BestResponseApproval(BestResponse):
 
     @cached_property
     def results(self):
-        """tuple (utility_threshold, justification) : Cf. :attr:`utility_threshold` and :attr:`justification`.
+        """tuple : Tuple `(utility_threshold, justification)`. Cf. :attr:`utility_threshold` and :attr:`justification`.
         These results use:
 
         * :meth:`results_asymptotic_method` if there are two consecutive zeros in the "compass diagram" of the

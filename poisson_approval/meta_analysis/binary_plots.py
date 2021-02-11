@@ -16,12 +16,12 @@ def binary_figure(xscale, yscale, size_inches='auto'):  # pragma: no cover
     yscale : Number
         The y-scale of the figure. The higher it is, the higher the resolution of the heatmap on y-axis.
     size_inches : tuple or str
-        The horizontal and vertical sizes of the figure, in inches. If 'auto', we will try to do our best.
+        The horizontal and vertical sizes of the figure, in inches. If ``'auto'``, we will try to do our best.
 
     Returns
     -------
     figure : matplotlib.figure.Figure
-    binary_ax : BinaryAxesSubplotPoisson
+    binary_ax : :class:`BinaryAxesSubplotPoisson`
     """
     binary_ax = BinaryAxesSubplotPoisson(xscale=xscale, yscale=yscale, size_inches=size_inches)
     figure = plt.gcf()
@@ -35,7 +35,7 @@ def binary_figure(xscale, yscale, size_inches='auto'):  # pragma: no cover
 class BinaryAxesSubplotPoisson:  # pragma: no cover
     """Wrapper for binary plots.
 
-    For some examples, cf. the tutorial in section "Meta-Analysis".
+    For some examples, cf. the tutorial on binary plots.
     """
     def __init__(self, xscale=None, yscale=None, size_inches='auto'):
         self.xscale = xscale
@@ -46,9 +46,9 @@ class BinaryAxesSubplotPoisson:  # pragma: no cover
     def set_title(title, **kwargs):
         """Title of the plot.
 
-        Parameters
-        ----------
-        Cf. `set_title` in matplotlib.
+        Notes
+        -----
+        For the parameters, cf. ``set_title`` in `matplotlib`.
         """
         plt.gca().set_title(title, **kwargs)
 
@@ -74,7 +74,7 @@ class BinaryAxesSubplotPoisson:  # pragma: no cover
         cmap : str
             Colormap. Default: ``'plasma'``.
         kwargs
-            All other keywords arguments are passed to method ``imshow`` of matplotlib.
+            All other keywords arguments are passed to method ``imshow`` of `matplotlib`.
         """
         if reverse_right:
             m = np.array([
@@ -139,7 +139,7 @@ class BinaryAxesSubplotPoisson:  # pragma: no cover
             The style of the legend. The two available options are ``'palette'`` and ``'color_patches'``.
             Cf. :meth:`legend_palette` and :meth:`legend_color_patches`.
         kwargs
-            All other keywords arguments are passed to method ``imshow`` of matplotlib.
+            All other keywords arguments are passed to method ``imshow`` of `matplotlib`.
         """
         if reverse_right:
             m = np.array([
@@ -216,13 +216,13 @@ class BinaryAxesSubplotPoisson:  # pragma: no cover
         title : str
             Title of the legend.
         all_mixes : bool
-            If True, then all mixes are indicated in the legend: a + b, a + c, b + c and a + b + c.
-        data : ndarray, optional
+            If True, then all mixes are indicated in the legend: `a + b`, `a + c`, `b + c` and `a + b + c`.
+        data : numpy.ndarray, optional
             Array m * n * 3. This is used only if `all_mixes` is False.
 
         Notes
         -----
-        * The color patches for single candidates a, b, c are in the legend anyway.
+        * The color patches for single candidates `a`, `b`, `c` are in the legend anyway.
         * If `all_mixes` is True, then all mixes are indicated in the legend.
         * If `all_mixes` is False and `data` is given, then if at least a value is close to a perfect mix (like half
           of `a` and half of `b`), then this mix is added to the legend.
@@ -261,7 +261,7 @@ class BinaryAxesSubplotPoisson:  # pragma: no cover
 
         Notes
         -----
-        This is rather a hack than a real matplotlib legend. Hence the usual commands to choose the position
+        This is more a hack than a real `matplotlib` legend. Hence the usual commands to choose the position
         of the legend, for example, are not meant to work here.
         """
         old_ax = plt.gca()
