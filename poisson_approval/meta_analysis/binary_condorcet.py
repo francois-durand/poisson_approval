@@ -206,7 +206,7 @@ def _interval_condorcet(candidate, order_x, order_y, d_order_fixed_share=None):
     return interval
 
 
-def _draw_interval(ax, interval, name):  # pragma: no cover
+def _draw_interval(ax, interval, name):
     """Draw a multi-interval in a binary plot.
 
     Parameters
@@ -230,7 +230,7 @@ def _draw_interval(ax, interval, name):  # pragma: no cover
             ax.annotate(name, ((inf + sup) / 2, 0.5), verticalalignment='center', horizontalalignment='center')
 
 
-def draw_condorcet_intervals(ax, left_ranking, right_ranking, d_order_fixed_share=None):  # pragma: no cover
+def draw_condorcet_intervals(ax, left_ranking, right_ranking, d_order_fixed_share=None):
     """Draw and annotate the Condorcet intervals.
 
     Cf. :meth:`BinaryAxesSubplotPoisson.annotate_condorcet`.

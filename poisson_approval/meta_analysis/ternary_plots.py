@@ -56,7 +56,7 @@ def _generate_heatmap_data(f, scale):
     return d_scaled_point_color, d_point_values
 
 
-def ternary_figure(size_inches='auto', scale=None, boundary_width=1.0, **kwargs):  # pragma: no cover
+def ternary_figure(size_inches='auto', scale=None, boundary_width=1.0, **kwargs):
     """Create a ternary plot (adaptation of ``figure`` from the package `python-ternary`).
 
     Parameters
@@ -74,6 +74,26 @@ def ternary_figure(size_inches='auto', scale=None, boundary_width=1.0, **kwargs)
     -------
     figure : matplotlib.figure.Figure
     ternary_ax : :class:`TernaryAxesSubplotPoisson`
+
+    Examples
+    --------
+    Grid and lines:
+
+        >>> figure, tax = ternary_figure()
+        >>> tax.gridlines_simplex(multiple=0.1)
+        >>> tax.horizontal_line_simplex(0.1)
+        >>> tax.left_parallel_line_simplex(0.2)
+        >>> tax.right_parallel_line_simplex(0.3)
+        >>> tax.line_simplex((1, 0, 0), (0.2, 0.5, 0.3))
+
+    Titles and annotations:
+
+        >>> figure, tax = ternary_figure()
+        >>> tax.set_title_padded('The title of the figure')
+        >>> tax.right_corner_label('The right label')
+        >>> tax.top_corner_label('The top label')
+        >>> tax.left_corner_label('The left label')
+        >>> tax.annotate_simplex('An annotation', (0.33, 0.33, 0.33))
     """
     ternary_ax = TernaryAxesSubplotPoisson(scale=scale, size_inches=size_inches, **kwargs)
     figure = ternary_ax.get_figure()
@@ -86,7 +106,7 @@ def ternary_figure(size_inches='auto', scale=None, boundary_width=1.0, **kwargs)
     return figure, ternary_ax
 
 
-class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
+class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):
     """Subclass of ``TernaryAxesSubplot``, defined in the package `python-ternary`.
 
     This class implements some additional methods for Poisson Approval. For some examples, cf. the corresponding
@@ -233,6 +253,17 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
             Colormap. Contrarily to default settings in `python-ternary`, the default is ``'plasma'``.
         kwargs
             All other keywords arguments are passed to method ``heatmapf`` of `python-ternary`.
+
+        Examples
+        --------
+            >>> def f(right, top, left):
+            ...     return (right**2 + top) / (left + 1)
+            >>> figure, tax = ternary_figure(scale=10)
+            >>> tax.heatmap_intensity(f,
+            ...                       left_label='left',
+            ...                       right_label='right',
+            ...                       top_label='top')
+            >>> tax.set_title_padded('An intensity heat map')
         """
         default_pad = 0.15
         if 'cb_kwargs' not in kwargs.keys():
@@ -275,6 +306,22 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
             File where the computed data will be saved (using ``pickle``).
         kwargs
             All other keywords arguments are passed to method ``heatmap`` of `python-ternary`.
+
+        Examples
+        --------
+            >>> def g(right, top, left):
+            ...     a = top**.5
+            ...     b = left**2
+            ...     c = 1 - a - b
+            ...     return [a, b, c]
+            >>> figure, tax = ternary_figure(scale=5)
+            >>> tax.heatmap_candidates(g,
+            ...                        left_label='left',
+            ...                        right_label='right',
+            ...                        top_label='top',
+            ...                        legend_title='Candidates',
+            ...                        legend_style='palette')
+            >>> tax.set_title_padded('A candidate heat map')
         """
         d_scaled_point_color, self.d_point_values_ = _generate_heatmap_data(func, self.get_scale())
         if file_save_data is not None:
@@ -358,7 +405,7 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):  # pragma: no cover
 
     def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking, d_order_fixed_share):
         """Old version, for rankings only"""
-        if d_order_fixed_share is not None:
+        if d_order_fixed_share:
             raise NotImplementedError
         count_candidate_tops = dict(Counter([
             ranking[0] for ranking in [right_ranking, top_ranking, left_ranking]]))

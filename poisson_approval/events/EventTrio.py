@@ -182,7 +182,7 @@ class EventTrio(Event):
 
         # Conclude
         assert inf <= sup
-        if inf == 0 and np.isposinf(sup):  # pragma: no cover
+        if inf == 0 and np.isposinf(sup):  # pragma: no cover - I found no example of this case.
             start = 1
         elif inf == 0:
             start = sup / 2

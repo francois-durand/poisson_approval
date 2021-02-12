@@ -63,6 +63,16 @@ class NiceStatsProfileOrdinal:
         ...     conditional_on=lambda profile: profile.is_profile_condorcet == 1.
         ... )
         >>> nice_stats.run(n_samples=10)
+
+    In order to display an overview of all the results, you can use :meth:`display_results`.
+
+    Plot a `test_strategy` and insert a cutoff according to a `test_profile`:
+
+        >>> nice_stats.plot_test_strategy(test='There exists an equilibrium that elects the CW')
+        >>> nice_stats.plot_cutoff(test='There exists a true equilibrium electing the CW')
+
+    Find a particular example or counter-example:
+
         >>> profile = nice_stats.find_example('There exists a true equilibrium electing the CW', False)
         >>> print(profile)
         <abc: 0.4236547993389047, acb: 0.12122838365799216, bac: 0.0039303209304278885, bca: 0.05394987214431912, \
@@ -105,7 +115,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
             if self.conditional_on(profile):
                 i_sample += 1
             else:
-                continue  # pragma: no cover - I do not understand why it pretends not to be covered, whereas it is...
+                continue  # pragma: no cover - Cannot be covered because of "peephole" optimization
             self.profiles.append(profile.d_ranking_share)
             for i, (test, _) in enumerate(self.tests_profile):
                 self.results_profile[i].append(test(profile))
@@ -122,7 +132,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         for histogram in self.results_strategy_winners:
             histogram /= n_samples
 
-    def plot_test_strategy(self, test, ylabel=True, legend=False, replacement_name=None, style=''):  # pragma: no cover
+    def plot_test_strategy(self, test, ylabel=True, legend=False, replacement_name=None, style=''):
         """Plot a test on strategy.
 
         Parameters
@@ -155,7 +165,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         if legend:
             plt.legend()
 
-    def plot_cutoff(self, test, left='', right='', style=''):  # pragma: no cover
+    def plot_cutoff(self, test, left='', right='', style=''):
         """Plot the cutoff of a test on the profile.
 
         Parameters
@@ -179,7 +189,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         plt.text((1 - x) / 2, 0.1, left, horizontalalignment='center', verticalalignment='center')
         plt.text(1 - x / 2, 0.1, right, horizontalalignment='center', verticalalignment='center')
 
-    def display_results(self):  # pragma: no cover
+    def display_results(self):  # pragma: no cover - Annoying to test because plt.show() opens plot windows.
         """Display the results."""
         for i, (_, name) in enumerate(self.tests_profile):
             print('P(%s) = %s' % (name, np.sum(self.results_profile[i]) / self.n_samples))

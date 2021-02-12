@@ -1,3 +1,4 @@
+import pytest
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, EquilibriumStatus, \
@@ -212,7 +213,10 @@ TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
         >>> profile._initializer('random_tau_undominated')
         (None, TauVector({'a': 0.8444218515250481, 'ab': 0.15557814847495188}))
     """
-    pass
+    with pytest.warns(Warning):
+        ProfileTwelve({'a_bc': 1}, symbolic=True)._initializer(init='random_tau')
+    with pytest.raises(ValueError):
+        ProfileTwelve({'a_bc': 1})._initializer(init='unexpected argument')
 
 
 def test_random_tau_undominated_with_weak_orders():

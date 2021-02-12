@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
+def plt_plot_with_error(x, y, n_samples, **kwargs):
     """
     Adaptation of ``plt.plot`` for Monte-Carlo experiments, with error area.
 
@@ -22,6 +22,12 @@ def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
         Number of samples used for Monte-Carlo.
     kwargs
         Other keyword arguments are passed to the function ``plot`` of `matplotlib`.
+
+    Examples
+    --------
+        >>> x = np.arange(0, 1, .1)
+        >>> y = np.random.random(10)
+        >>> plt_plot_with_error(x, y, n_samples=100)
     """
     error = 1 / sqrt(n_samples)
     plt.fill_between(x,
@@ -31,7 +37,7 @@ def plt_plot_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     plt.plot(x, y, **kwargs)
 
 
-def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
+def plt_step_with_error(x, y, n_samples, **kwargs):
     """
     Adaptation of ``plt.step`` for Monte-Carlo experiments, with error area.
 
@@ -50,6 +56,12 @@ def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
         Number of samples used for Monte-Carlo.
     kwargs
         Other keyword arguments are passed to the function ``step`` of `matplotlib`.
+
+    Examples
+    --------
+        >>> x = np.arange(0, 1, .1)
+        >>> y = np.random.random(10)
+        >>> plt_step_with_error(x, y, n_samples=100)
     """
     error = 1 / sqrt(n_samples)
     plt.fill_between(x,
@@ -59,7 +71,7 @@ def plt_step_with_error(x, y, n_samples, **kwargs):  # pragma: no cover
     plt.step(x, y, **kwargs)
 
 
-def plt_cdf(data, weights, n_samples, data_min=0, data_max=1, **kwargs):  # pragma: no cover
+def plt_cdf(data, weights, n_samples, data_min=0, data_max=1, **kwargs):
     """
     Plot a cumulative distribution function from Monte-Carlo experiments, with error area.
 
@@ -80,6 +92,12 @@ def plt_cdf(data, weights, n_samples, data_min=0, data_max=1, **kwargs):  # prag
         Maximum possible value of `data`. Default: 1.
     kwargs
         Other keyword arguments are passed to the function ``step`` of `matplotlib`.
+
+    Examples
+    --------
+        >>> data = np.random.random(100)
+        >>> weights = np.ones(100) / 100
+        >>> plt_cdf(data, weights, n_samples=100)
     """
     data_weights_sorted = sorted(zip(data, weights))
     data_sorted = [d for d, _ in data_weights_sorted]

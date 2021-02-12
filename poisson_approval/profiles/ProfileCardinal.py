@@ -426,7 +426,7 @@ class ProfileCardinal(Profile):
         tau : TauVector
             The initial tau-vector.
         """
-        if self.symbolic:  # pragma: no cover
+        if self.symbolic:
             warnings.warn('Using fictitious play or iterated voting with symbolic=True is strongly discouraged. '
                           'Consider defining the profile with symbolic=False.')
         if isinstance(init, Strategy):
@@ -444,7 +444,7 @@ class ProfileCardinal(Profile):
                 tau = RandTauVectorUniform(voting_rule=self.voting_rule)()
             elif init == 'random_tau_undominated':
                 tau = self.random_tau_undominated()
-            else:  # pragma: no cover
+            else:
                 raise ValueError
         return strategy, tau
 

@@ -84,7 +84,7 @@ class XyyToProfile:
 
 
 def binary_plot_n_equilibria(xyy_to_profile, xscale, yscale, title='Number of equilibria',
-                             meth='analyzed_strategies_ordinal', reverse_right=False, **kwargs):  # pragma: no cover
+                             meth='analyzed_strategies_ordinal', reverse_right=False, **kwargs):
     """Shortcut: binary plot for the number of equilibria.
 
     Parameters
@@ -104,6 +104,11 @@ def binary_plot_n_equilibria(xyy_to_profile, xscale, yscale, title='Number of eq
         increasing from 0 to 1).
     kwargs
         Other keyword arguments are passed to the function :meth:`BinaryAxesSubplotPoisson.heatmap_intensity`.
+
+    Examples
+    --------
+        >>> xyy_to_profile = XyyToProfile(ProfileNoisyDiscrete, left_ranking='bca', right_ranking='cab', noise=0.01)
+        >>> figure, ax = binary_plot_n_equilibria(xyy_to_profile, xscale=5, yscale=5)
     """
     def n_equilibria(x, y1, y2):
         profile = xyy_to_profile(x, y1, y2)
@@ -125,7 +130,7 @@ def binary_plot_n_equilibria(xyy_to_profile, xscale, yscale, title='Number of eq
 
 def binary_plot_winners_at_equilibrium(xyy_to_profile, xscale, yscale, title='Winners at equilibrium',
                                        legend_title='Winners', meth='analyzed_strategies_ordinal',
-                                       reverse_right=False, **kwargs):  # pragma: no cover
+                                       reverse_right=False, **kwargs):
     """Shortcut: binary plot for the winners at equilibrium.
 
     Parameters
@@ -147,6 +152,11 @@ def binary_plot_winners_at_equilibrium(xyy_to_profile, xscale, yscale, title='Wi
         increasing from 0 to 1).
     kwargs
         Other keyword arguments are passed to the function :meth:`BinaryAxesSubplotPoisson.heatmap_candidates`.
+
+    Examples
+    --------
+        >>> xyy_to_profile = XyyToProfile(ProfileNoisyDiscrete, left_ranking='bca', right_ranking='cab', noise=0.01)
+        >>> figure, ax = binary_plot_winners_at_equilibrium(xyy_to_profile, xscale=5, yscale=5)
     """
     def winners_at_equilibrium(x, y1, y2):
         profile = xyy_to_profile(x, y1, y2)
@@ -174,7 +184,7 @@ def binary_plot_winning_frequencies(xyy_to_profile, xscale, yscale,
                                     ballot_update_ratio=one_over_log_t_plus_one,
                                     winning_frequency_update_ratio=one_over_log_t_plus_one,
                                     title='Winning frequencies', legend_title='Winners',
-                                    meth='fictitious_play', reverse_right=False, **kwargs):  # pragma: no cover
+                                    meth='fictitious_play', reverse_right=False, **kwargs):
     """Shortcut: binary plot for the winning frequencies in fictitious play / iterated voting.
 
     Parameters
@@ -205,6 +215,11 @@ def binary_plot_winning_frequencies(xyy_to_profile, xscale, yscale,
         increasing from 0 to 1).
     kwargs
         Other keyword arguments are passed to the function :meth:`BinaryAxesSubplotPoisson.heatmap_candidates`.
+
+    Examples
+    --------
+        >>> xyy_to_profile = XyyToProfile(ProfileNoisyDiscrete, left_ranking='bca', right_ranking='cab', noise=0.01)
+        >>> figure, ax = binary_plot_winning_frequencies(xyy_to_profile, xscale=5, yscale=5, n_max_episodes=10)
     """
     def winning_frequencies(x, y1, y2):
         profile = xyy_to_profile(x, y1, y2)
@@ -239,7 +254,7 @@ def binary_plot_convergence(xyy_to_profile, xscale, yscale,
                             perception_update_ratio=one_over_log_t_plus_one,
                             ballot_update_ratio=one_over_log_t_plus_one,
                             title='Convergence frequency',
-                            meth='fictitious_play', reverse_right=False, **kwargs):  # pragma: no cover
+                            meth='fictitious_play', reverse_right=False, **kwargs):
     """Shortcut: binary plot for the convergence frequency in fictitious play / iterated voting.
 
     Convergence frequency: out of `samples_per_points` trials, in which proportion of the cases did fictitious play or
@@ -271,6 +286,11 @@ def binary_plot_convergence(xyy_to_profile, xscale, yscale,
         increasing from 0 to 1).
     kwargs
         Other keyword arguments are passed to the function :meth:`BinaryAxesSubplotPoisson.heatmap_intensity`.
+
+    Examples
+    --------
+        >>> xyy_to_profile = XyyToProfile(ProfileNoisyDiscrete, left_ranking='bca', right_ranking='cab', noise=0.01)
+        >>> figure, ax = binary_plot_convergence(xyy_to_profile, xscale=5, yscale=5, n_max_episodes=10)
     """
     def convergence_frequency(x, y1, y2):
         profile = xyy_to_profile(x, y1, y2)

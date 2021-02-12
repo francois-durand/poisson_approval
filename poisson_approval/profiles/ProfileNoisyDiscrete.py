@@ -166,7 +166,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             # Ranking r, utility u, share s, noise epsilon
             if s == 0:
                 return
-            elif epsilon == 0:  # pragma: no cover
+            elif epsilon == 0:
                 raise ValueError('Noise should be > 0')
             else:
                 self.d_ranking_utility_noise_share[r][(u, epsilon)] = (

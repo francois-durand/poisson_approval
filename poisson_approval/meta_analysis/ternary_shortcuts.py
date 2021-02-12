@@ -81,7 +81,7 @@ class SimplexToProfile:
 
 
 def ternary_plot_n_equilibria(simplex_to_profile, scale, title='Number of equilibria',
-                              meth='analyzed_strategies_ordinal', **kwargs):  # pragma: no cover
+                              meth='analyzed_strategies_ordinal', **kwargs):
     """Shortcut: ternary plot for the number of equilibria.
 
     Parameters
@@ -96,6 +96,13 @@ def ternary_plot_n_equilibria(simplex_to_profile, scale, title='Number of equili
         The name of the :class:`AnalyzedStrategies` property used to count the equilibria. Cf. :class:`Profile`.
     kwargs
         Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_intensity`.
+
+    Examples
+    --------
+        >>> simplex_to_profile = SimplexToProfile(
+        ...     ProfileNoisyDiscrete,
+        ...     left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type=('cab', 0.5, 0.01))
+        >>> figure, tax = ternary_plot_n_equilibria(simplex_to_profile, scale=10)
     """
     def n_equilibria(right, top, left):
         profile = simplex_to_profile(right, top, left)
@@ -117,7 +124,7 @@ def ternary_plot_n_equilibria(simplex_to_profile, scale, title='Number of equili
 def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winners at equilibrium',
                                         legend_title='Winners', meth='analyzed_strategies_ordinal',
                                         file_save_data=None,
-                                        **kwargs):  # pragma: no cover
+                                        **kwargs):
     """Shortcut: ternary plot for the winners at equilibrium.
 
     Parameters
@@ -136,6 +143,13 @@ def ternary_plot_winners_at_equilibrium(simplex_to_profile, scale, title='Winner
         File where the computed data will be saved (using ``pickle``).
     kwargs
         Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_candidates`.
+
+    Examples
+    --------
+        >>> simplex_to_profile = SimplexToProfile(
+        ...     ProfileNoisyDiscrete,
+        ...     left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type=('cab', 0.5, 0.01))
+        >>> figure, tax = ternary_plot_winners_at_equilibrium(simplex_to_profile, scale=10)
     """
 
     def winners_at_equilibrium(right, top, left):
@@ -165,7 +179,7 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
                                      winning_frequency_update_ratio=one_over_log_t_plus_one,
                                      title='Winning frequencies', legend_title='Winners',
                                      meth='fictitious_play', file_save_data=None,
-                                     **kwargs):  # pragma: no cover
+                                     **kwargs):
     """Shortcut: ternary plot for the winning frequencies in fictitious play / iterated voting.
 
     Parameters
@@ -194,6 +208,13 @@ def ternary_plot_winning_frequencies(simplex_to_profile, scale,
         File where the computed data will be saved (using ``pickle``).
     kwargs
         Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_candidates`.
+
+    Examples
+    --------
+        >>> simplex_to_profile = SimplexToProfile(
+        ...     ProfileNoisyDiscrete,
+        ...     left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type=('cab', 0.5, 0.01))
+        >>> figure, tax = ternary_plot_winning_frequencies(simplex_to_profile, scale=10, n_max_episodes=10)
     """
     def winning_frequencies(right, top, left):
         profile = simplex_to_profile(right, top, left)
@@ -228,7 +249,7 @@ def ternary_plot_convergence(simplex_to_profile, scale,
                              perception_update_ratio=one_over_log_t_plus_one,
                              ballot_update_ratio=one_over_log_t_plus_one,
                              title='Convergence frequency',
-                             meth='fictitious_play', **kwargs):  # pragma: no cover
+                             meth='fictitious_play', **kwargs):
     """Shortcut: ternary plot for the convergence frequency in fictitious play / iterated voting.
 
     Convergence frequency: out of `samples_per_points` trials, in which proportion of the cases did fictitious play or
@@ -256,6 +277,13 @@ def ternary_plot_convergence(simplex_to_profile, scale,
         The name of the method (``'fictitious_play'`` or ``'iterated_voting'``).
     kwargs
         Other keyword arguments are passed to the function :meth:`TernaryAxesSubplotPoisson.heatmap_intensity`.
+
+    Examples
+    --------
+        >>> simplex_to_profile = SimplexToProfile(
+        ...     ProfileNoisyDiscrete,
+        ...     left_type=('abc', 0.5, 0.01), right_type=('bac', 0.5, 0.01), top_type=('cab', 0.5, 0.01))
+        >>> figure, tax = ternary_plot_convergence(simplex_to_profile, scale=10, n_max_episodes=10)
     """
     def convergence_frequency(right, top, left):
         profile = simplex_to_profile(right, top, left)

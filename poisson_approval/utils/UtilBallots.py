@@ -30,8 +30,9 @@ def allowed_ballots(voting_rule=APPROVAL):
         return CANDIDATES
     elif voting_rule == ANTI_PLURALITY:
         return PAIRS_WITHOUT_INVERSIONS
-    else:  # pragma: no cover
+    else:
         raise NotImplementedError
+
 
 def ballot_one(ranking):
     """Ballot for the voter's preferred candidate.
