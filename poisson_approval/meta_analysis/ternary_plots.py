@@ -311,7 +311,7 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):
         --------
             >>> def g(right, top, left):
             ...     a = top**.5
-            ...     b = left**2
+            ...     b = left**2.
             ...     c = 1 - a - b
             ...     return [a, b, c]
             >>> figure, tax = ternary_figure(scale=5)
@@ -322,6 +322,11 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):
             ...                        legend_title='Candidates',
             ...                        legend_style='palette')
             >>> tax.set_title_padded('A candidate heat map')
+
+        To retrieve the computed value that is closest to a given point:
+
+            >>> tax.f_point_values_(right=0.5, top=0.3, left=0.2)
+            [0.4472135954999579, 0.04000000000000001, 0.5127864045000421]
         """
         d_scaled_point_color, self.d_point_values_ = _generate_heatmap_data(func, self.get_scale())
         if file_save_data is not None:
@@ -403,7 +408,7 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):
         except NameError:
             self._annotate_condorcet_old(right_order, top_order, left_order, d_order_fixed_share)
 
-    def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking, d_order_fixed_share):
+    def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking, d_order_fixed_share=None):
         """Old version, for rankings only"""
         if d_order_fixed_share:
             raise NotImplementedError
