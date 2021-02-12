@@ -157,6 +157,6 @@ class Event(metaclass=SuperclassMeta):
                     s += ', phi_' + label + ' = {:.6g}'.format(float(val))
         return '<%s>' % s
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')

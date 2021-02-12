@@ -369,7 +369,7 @@ class BestResponse(metaclass=SuperclassMeta):
         """str : This can be a valid ballot or ``'utility-dependent'``.
         """
         if isnan(self.utility_threshold):
-            raise AssertionError('Unable to compute utility threshold')  # pragma: no cover
+            raise AssertionError('Unable to compute utility threshold')  # pragma: no cover - Should never happen
         elif self.ce.look_equal(self.utility_threshold, 1):
             return ballot_low_u(self.ranking, self.voting_rule)
         elif self.ce.look_equal(self.utility_threshold, 0, abs_tol=1E-9):

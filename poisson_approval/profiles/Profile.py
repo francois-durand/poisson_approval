@@ -37,7 +37,7 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
 
     voting_rule = property_deleting_cache('_voting_rule')
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -420,7 +420,7 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
                 equilibria.append(strategy)
             elif status == EquilibriumStatus.UTILITY_DEPENDENT:
                 utility_dependent.append(strategy)
-            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
+            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover - Should never happen
                 inconclusive.append(strategy)
                 raise AssertionError('Met an inconclusive case: \nprofile = %r\nstrategy = %r' % (self, strategy))
             else:

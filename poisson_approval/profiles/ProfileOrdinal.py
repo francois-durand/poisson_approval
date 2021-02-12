@@ -189,7 +189,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -384,7 +384,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                 continue
             best_response = d_ranking_best_response[ranking]
             if best_response.ballot == INCONCLUSIVE:
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)  # pragma: no cover
+                status = min(status, EquilibriumStatus.INCONCLUSIVE)  # pragma: no cover - Should never happen
             elif best_response.ballot == UTILITY_DEPENDENT:
                 status = min(status, EquilibriumStatus.UTILITY_DEPENDENT)
             elif strategy.d_ranking_ballot[ranking] != best_response.ballot:

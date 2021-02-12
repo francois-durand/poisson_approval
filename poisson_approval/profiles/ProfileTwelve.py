@@ -276,7 +276,7 @@ class ProfileTwelve(ProfileCardinal):
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -526,7 +526,7 @@ class ProfileTwelve(ProfileCardinal):
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover
+            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover - Should never happen
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             else:
                 type_1 = ranking[:1] + '_' + ranking[1:]  # E.g. a_bc

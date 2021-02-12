@@ -32,7 +32,7 @@ class Strategy(DeleteCacheMixin, metaclass=SuperclassMeta):
                 return APPROVAL
         return voting_rule
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 

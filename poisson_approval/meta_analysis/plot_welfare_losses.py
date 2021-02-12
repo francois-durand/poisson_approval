@@ -50,7 +50,7 @@ def plot_welfare_losses(results, criterion, **kwargs):
         ax.set_xlabel('Loss of anti-Rawlsian welfare')
     elif criterion == 'anti_plurality_welfare_losses':
         ax.set_xlabel('Loss of Rawlsian welfare')
-    else:  # pragma: no cover
+    else:  # pragma: no cover - Should never happen
         ax.set_xlabel('Loss of welfare')
     ax.set_ylabel('Cumulative likelihood of occurrence')
     plt.xlim(0, 1)

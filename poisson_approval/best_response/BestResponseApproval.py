@@ -94,27 +94,30 @@ class BestResponseApproval(BestResponse):
             # EDIT: since release 0.23.0, this should not happen, because EventTrio is safer. But the following
             # precautions don't hurt...
             psi_k_greater_but_close_to_one = False
-            if self.trio.psi[self.k] >= 1:  # pragma: no cover
+            if self.trio.psi[self.k] >= 1:  # pragma: no cover - Should never happen
                 if self.ce.look_equal(self.trio.psi[self.k], 1, rel_tol=1e-1):
                     psi_k_greater_but_close_to_one = True
-                else:  # pragma: no cover
+                else:
                     raise AssertionError('Unexpected: self.trio.psi[self.k] = %s > 1' % self.trio.psi[self.k])
             psi_i_greater_but_close_to_one = False
-            if self.trio.psi[self.i] >= 1:  # pragma: no cover
+            if self.trio.psi[self.i] >= 1:  # pragma: no cover - Should never happen
                 if self.ce.look_equal(self.trio.psi[self.i], 1, rel_tol=1e-1):
                     psi_i_greater_but_close_to_one = True
-                else:  # pragma: no cover
+                else:
                     raise AssertionError('Unexpected: self.trio.psi[self.i] = %s > 1' % self.trio.psi[self.i])
-            if psi_i_greater_but_close_to_one and psi_k_greater_but_close_to_one:  # pragma: no cover
+            if (psi_i_greater_but_close_to_one
+                    and psi_k_greater_but_close_to_one):  # pragma: no cover - Should never happen
                 raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
-            elif psi_k_greater_but_close_to_one:  # pragma: no cover
+            elif psi_k_greater_but_close_to_one:  # pragma: no cover - Should never happen
                 # pij ~= inf, pjk < inf ==> u = 1
                 utility_threshold = self.ce.S(1)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
-            elif psi_i_greater_but_close_to_one:  # pragma: no cover
+                raise AssertionError
+            elif psi_i_greater_but_close_to_one:  # pragma: no cover - Should never happen
                 # pij < inf, pjk ~= inf ==> u = 0
                 utility_threshold = self.ce.S(0)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
+                raise AssertionError
             else:
                 # General case of the offset method (at last!)
                 pij = (1 + self.trio.psi[self.ik]) / (1 - self.trio.psi[self.k])
