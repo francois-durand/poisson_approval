@@ -405,7 +405,7 @@ class TernaryAxesSubplotPoisson(ternary.TernaryAxesSubplot):
         """
         try:
             draw_condorcet_zones(self, right_order, top_order, left_order, d_order_fixed_share)
-        except NameError:
+        except NameError:  # pragma: no cover
             self._annotate_condorcet_old(right_order, top_order, left_order, d_order_fixed_share)
 
     def _annotate_condorcet_old(self, right_ranking, top_ranking, left_ranking, d_order_fixed_share=None):
