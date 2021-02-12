@@ -81,6 +81,7 @@ The list is sorted alphabetically.
 """
 
 UTILITY_DEPENDENT = 'utility-dependent'
+SPLIT = 'Split'  # For 'haters' in Plurality or 'lovers' in Anti-Plurality
 INCONCLUSIVE = 'inconclusive'
 
 APPROVAL = 'Approval'

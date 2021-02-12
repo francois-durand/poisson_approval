@@ -434,7 +434,7 @@ class ProfileTwelve(ProfileCardinal):
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         """
         assert self.voting_rule == strategy.voting_rule
-        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
+        t = self.d_ballot_share_weak_voters_strategic(strategy)
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] == 0:
                 continue

@@ -238,7 +238,7 @@ class ProfileCardinal(Profile):
             Tau-vector associated to this profile and strategy `strategy`.
         """
         assert self.voting_rule == strategy.voting_rule
-        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
+        t = self.d_ballot_share_weak_voters_strategic(strategy)
         for ranking, threshold in strategy.d_ranking_threshold.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
@@ -572,7 +572,7 @@ class ProfileCardinal(Profile):
                                                                           ratio_b=perception_update_ratio))
                     for ballot in BALLOTS_WITHOUT_INVERSIONS
                 }, voting_rule=self.voting_rule, symbolic=self.symbolic)
-            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
+            strategy = self.best_responses_to_strategy(tau_perceived)
             tau_full_response = strategy.tau
             if t == 1:
                 tau_actual = tau_full_response
@@ -774,7 +774,7 @@ class ProfileCardinal(Profile):
                                                                           ratio_b=perception_update_ratio(t)))
                     for ballot in BALLOTS_WITHOUT_INVERSIONS
                 }, voting_rule=self.voting_rule, symbolic=self.symbolic)
-            strategy = self.best_responses_to_strategy(tau_perceived.d_ranking_best_response)
+            strategy = self.best_responses_to_strategy(tau_perceived)
             tau_full_response = strategy.tau
             if t == 1:
                 tau_actual = tau_full_response

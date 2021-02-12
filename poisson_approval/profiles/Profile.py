@@ -257,22 +257,23 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
         """
         d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for weak_order, share in self.d_weak_order_share.items():
-            if is_lover(weak_order):
-                if self.voting_rule in {APPROVAL, PLURALITY}:
-                    d[weak_order[0]] += share
-                elif self.voting_rule == ANTI_PLURALITY:
-                    d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
-                    d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
-                else:
-                    raise NotImplementedError
-            else:  # is_hater(weak_order)
-                if self.voting_rule in {APPROVAL, PLURALITY}:
-                    d[weak_order[0]] += my_division(share, 2)
-                    d[weak_order[2]] += my_division(share, 2)
-                elif self.voting_rule == ANTI_PLURALITY:
-                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
-                else:
-                    raise NotImplementedError
+            if share > 0:
+                if is_lover(weak_order):
+                    if self.voting_rule in {APPROVAL, PLURALITY}:
+                        d[weak_order[0]] += share
+                    elif self.voting_rule == ANTI_PLURALITY:
+                        d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
+                        d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
+                    else:
+                        raise NotImplementedError
+                else:  # is_hater(weak_order)
+                    if self.voting_rule in {APPROVAL, PLURALITY}:
+                        d[weak_order[0]] += my_division(share, 2)
+                        d[weak_order[2]] += my_division(share, 2)
+                    elif self.voting_rule == ANTI_PLURALITY:
+                        d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                    else:
+                        raise NotImplementedError
         return d
 
     @cached_property
@@ -292,22 +293,61 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
         """
         d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
         for weak_order, share in self.d_weak_order_share.items():
-            if is_lover(weak_order):
-                if self.voting_rule in {APPROVAL, PLURALITY}:
-                    d[weak_order[0]] += share
-                elif self.voting_rule == ANTI_PLURALITY:
-                    d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
-                    d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
-                else:
-                    raise NotImplementedError
-            else:  # is_hater(weak_order)
-                if self.voting_rule == PLURALITY:
-                    d[weak_order[0]] += my_division(share, 2)
-                    d[weak_order[2]] += my_division(share, 2)
-                elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
-                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
-                else:
-                    raise NotImplementedError
+            if share > 0:
+                if is_lover(weak_order):
+                    if self.voting_rule in {APPROVAL, PLURALITY}:
+                        d[weak_order[0]] += share
+                    elif self.voting_rule == ANTI_PLURALITY:
+                        d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
+                        d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
+                    else:
+                        raise NotImplementedError
+                else:  # is_hater(weak_order)
+                    if self.voting_rule == PLURALITY:
+                        d[weak_order[0]] += my_division(share, 2)
+                        d[weak_order[2]] += my_division(share, 2)
+                    elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                        d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                    else:
+                        raise NotImplementedError
+        return d
+
+    def d_ballot_share_weak_voters_strategic(self, strategy):
+        """dict : Ballot shares due to the weak orders if they vote strategically.
+
+        For voters with a weak order, strategic voting is the same as sincere voting, except in two cases:
+
+        * For voters of type ``'a~b>c'`` (`haters`)`in Plurality, who have two dominant strategies: vote for `a` or `b`.
+        * For voters of type ``'a>b~c'`` (`lovers`) in Anti-Plurality, who have two dominant strategies: vote
+          against `b` or `c` (i.e. respectively for `ac` or `ab`).
+        """
+        d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for weak_order, share in self.d_weak_order_share.items():
+            if share > 0:
+                if is_lover(weak_order):
+                    if self.voting_rule in {APPROVAL, PLURALITY}:
+                        d[weak_order[0]] += share
+                    elif self.voting_rule == ANTI_PLURALITY:
+                        ballot = strategy.d_weak_order_ballot[weak_order]
+                        if ballot == SPLIT:
+                            d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
+                            d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
+                        else:
+                            d[ballot] += share
+                    else:
+                        raise NotImplementedError
+                else:  # is_hater(weak_order)
+                    if self.voting_rule == PLURALITY:
+                        ballot = strategy.d_weak_order_ballot[weak_order]
+                        if ballot == SPLIT:
+                            d[weak_order[0]] += my_division(share, 2)
+                            d[weak_order[2]] += my_division(share, 2)
+                        else:
+                            d[ballot] += share
+                    elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                        d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                    else:
+                        raise NotImplementedError
         return d
 
     def is_equilibrium(self, strategy):
@@ -325,13 +365,15 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
         """
         raise NotImplementedError
 
-    def best_responses_to_strategy(self, d_ranking_best_response):
+    def best_responses_to_strategy(self, tau, ratio_optimistic=Fraction(1, 2)):
         """Convert best responses to a :class:`StrategyThreshold`.
 
         Parameters
         ----------
-        d_ranking_best_response : dict
-            Key: ranking. Value: :class:`BestResponse`.
+        tau : TauVector
+            Tau-vector.
+        ratio_optimistic
+            The value of `ratio_optimistic` to use. Default: 1/2.
 
         Returns
         -------
@@ -339,11 +381,40 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
             The conversion of the best responses into a strategy. Only the rankings present in this profile are
             mentioned in the strategy.
         """
-        return StrategyThreshold({
-            ranking: best_response.utility_threshold
-            for ranking, best_response in d_ranking_best_response.items()
-            if self.d_ranking_share[ranking] > 0
-        }, ratio_optimistic=Fraction(1, 2), profile=self, voting_rule=self.voting_rule)
+        # Deal with weak orders
+        d_weak_order_ballot = {}
+        if self.voting_rule == APPROVAL:
+            pass
+        elif self.voting_rule == PLURALITY:
+            for weak_order in WEAK_ORDERS_HATE_WITHOUT_INVERSIONS:  # i~j>k
+                if self.d_weak_order_share[weak_order] > 0:
+                    i, j = weak_order[0], weak_order[2]
+                    if tau.scores[i] > tau.scores[j]:
+                        d_weak_order_ballot[weak_order] = i
+                    elif tau.scores[i] < tau.scores[j]:
+                        d_weak_order_ballot[weak_order] = j
+                    else:
+                        d_weak_order_ballot[weak_order] = SPLIT
+        elif self.voting_rule == ANTI_PLURALITY:
+            for weak_order in WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS:  # i>j~k
+                if self.d_weak_order_share[weak_order] > 0:
+                    i, j, k = weak_order[0], weak_order[2], weak_order[4]
+                    if tau.scores[j] > tau.scores[k]:  # Then vote against `j`
+                        d_weak_order_ballot[weak_order] = sort_ballot('i' + 'k')
+                    elif tau.scores[j] < tau.scores[k]:  # Then vote against `k`
+                        d_weak_order_ballot[weak_order] = sort_ballot('i' + 'j')
+                    else:
+                        d_weak_order_ballot[weak_order] = SPLIT
+        # Finish the job
+        return StrategyThreshold(
+            {
+                ranking: best_response.utility_threshold
+                for ranking, best_response in tau.d_ranking_best_response.items()
+                if self.d_ranking_share[ranking] > 0
+            },
+            d_weak_order_ballot=d_weak_order_ballot, ratio_optimistic=ratio_optimistic,
+            profile=self, voting_rule=self.voting_rule
+        )
 
     @property
     def strategies_ordinal(self):

@@ -24,10 +24,10 @@ class AnalyzedStrategies:
         >>> from poisson_approval import StrategyOrdinal, ProfileOrdinal
         >>> profile = ProfileOrdinal({'abc': 0.2, 'acb': 0.3, 'bac': 0.5})
         >>> analyzed_strategies = AnalyzedStrategies(
-        ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile)],
-        ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile)],
-        ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile)],
-        ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile)]
+        ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile=profile)],
+        ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile=profile)],
+        ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile=profile)],
+        ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile=profile)]
         ... )
         >>> print(analyzed_strategies.winners_at_equilibrium)
         a, b
@@ -48,14 +48,14 @@ class AnalyzedStrategies:
             >>> from poisson_approval import StrategyOrdinal, ProfileOrdinal
             >>> profile = ProfileOrdinal({'abc': Fraction(2, 10), 'acb': Fraction(3, 10), 'bac': Fraction(5, 10)})
             >>> analyzed_strategies = AnalyzedStrategies(
-            ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile),
-            ...                 StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'ab'}, profile)],
-            ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile),
-            ...                        StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'ab'}, profile)],
-            ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile),
-            ...                     StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'ab'}, profile)],
-            ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile),
-            ...                   StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'ab'}, profile)]
+            ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile=profile),
+            ...                 StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'ab'}, profile=profile)],
+            ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile=profile),
+            ...                        StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'ab'}, profile=profile)],
+            ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile=profile),
+            ...                     StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'ab'}, profile=profile)],
+            ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile=profile),
+            ...                   StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'ab'}, profile=profile)]
             ... )
             >>> analyzed_strategies
             Equilibria:
@@ -77,10 +77,10 @@ class AnalyzedStrategies:
         With singulars ("equilibrium"):
 
             >>> analyzed_strategies = AnalyzedStrategies(
-            ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile)],
-            ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile)],
-            ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile)],
-            ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile)]
+            ...     equilibria=[StrategyOrdinal({'abc': 'a', 'acb': 'a', 'bac': 'b'}, profile=profile)],
+            ...     utility_dependent=[StrategyOrdinal({'abc': 'a', 'acb': 'ac', 'bac': 'b'}, profile=profile)],
+            ...     non_equilibria=[StrategyOrdinal({'abc': 'ab', 'acb': 'a', 'bac': 'b'}, profile=profile)],
+            ...     inconclusive=[StrategyOrdinal({'abc': 'ab', 'acb': 'ac', 'bac': 'b'}, profile=profile)]
             ... )
             >>> analyzed_strategies
             Equilibrium:
