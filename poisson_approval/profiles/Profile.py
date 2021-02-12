@@ -528,11 +528,11 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
                 else:
                     raise NotImplementedError
             else:  # is_hater(weak_order)
-                if self.voting_rule in {APPROVAL, PLURALITY}:
+                if self.voting_rule == PLURALITY:
                     r = random.random()
                     d[weak_order[0]] += r * share
                     d[weak_order[2]] += (1 - r) * share
-                elif self.voting_rule == ANTI_PLURALITY:
+                elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
                     d[sort_ballot(weak_order[0] + weak_order[2])] += share
                 else:
                     raise NotImplementedError

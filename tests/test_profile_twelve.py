@@ -1,7 +1,7 @@
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, EquilibriumStatus, \
-    PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT
+    APPROVAL, PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT
 
 
 def test_iterative_voting_verbose():
@@ -211,6 +211,22 @@ TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
         >>> initialize_random_seeds()
         >>> profile._initializer('random_tau_undominated')
         (None, TauVector({'a': 0.8444218515250481, 'ab': 0.15557814847495188}))
+    """
+    pass
+
+
+def test_random_tau_undominated_with_weak_orders():
+    """
+        >>> initialize_random_seeds()
+        >>> profile = ProfileTwelve({'a>b~c': Fraction(9, 10), 'b~c>a': Fraction(1, 10)}, voting_rule=APPROVAL)
+        >>> profile.random_tau_undominated()
+        TauVector({'a': 0.9, 'bc': 0.1})
+        >>> profile = ProfileTwelve({'a>b~c': Fraction(9, 10), 'b~c>a': Fraction(1, 10)}, voting_rule=PLURALITY)
+        >>> profile.random_tau_undominated()
+        TauVector({'a': 0.9, 'b': 0.06183689966753317, 'c': 0.03816310033246684}, voting_rule='Plurality')
+        >>> profile = ProfileTwelve({'a>b~c': Fraction(9, 10), 'b~c>a': Fraction(1, 10)}, voting_rule=ANTI_PLURALITY)
+        >>> profile.random_tau_undominated()
+        TauVector({'ab': 0.6568485734341158, 'ac': 0.24315142656588423, 'bc': 0.1}, voting_rule='Anti-plurality')
     """
     pass
 

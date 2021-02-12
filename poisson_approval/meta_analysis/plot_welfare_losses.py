@@ -32,6 +32,8 @@ def plot_welfare_losses(results, criterion, **kwargs):
         ...     monte_carlo_settings=[MCS_WELFARE_LOSSES],
         ... )
         >>> plot_welfare_losses(meta_results, 'utilitarian_welfare_losses')
+        >>> plot_welfare_losses(meta_results, 'plurality_welfare_losses')
+        >>> plot_welfare_losses(meta_results, 'anti_plurality_welfare_losses')
     """
     fig, ax = plt.subplots(figsize=(8, 4))
     voting_rules = results.keys()
@@ -48,7 +50,7 @@ def plot_welfare_losses(results, criterion, **kwargs):
         ax.set_xlabel('Loss of anti-Rawlsian welfare')
     elif criterion == 'anti_plurality_welfare_losses':
         ax.set_xlabel('Loss of Rawlsian welfare')
-    else:
+    else:  # pragma: no cover
         ax.set_xlabel('Loss of welfare')
     ax.set_ylabel('Cumulative likelihood of occurrence')
     plt.xlim(0, 1)
