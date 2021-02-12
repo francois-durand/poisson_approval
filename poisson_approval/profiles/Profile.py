@@ -400,9 +400,9 @@ class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
                 if self.d_weak_order_share[weak_order] > 0:
                     i, j, k = weak_order[0], weak_order[2], weak_order[4]
                     if tau.scores[j] > tau.scores[k]:  # Then vote against `j`
-                        d_weak_order_ballot[weak_order] = sort_ballot('i' + 'k')
+                        d_weak_order_ballot[weak_order] = sort_ballot(i + k)
                     elif tau.scores[j] < tau.scores[k]:  # Then vote against `k`
-                        d_weak_order_ballot[weak_order] = sort_ballot('i' + 'j')
+                        d_weak_order_ballot[weak_order] = sort_ballot(i + j)
                     else:
                         d_weak_order_ballot[weak_order] = SPLIT
         # Finish the job

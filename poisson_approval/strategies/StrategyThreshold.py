@@ -156,6 +156,14 @@ class StrategyThreshold(StrategyTwelve):
                 and self.voting_rule == other.voting_rule)
 
     def __repr__(self):
+        """
+        Examples
+        --------
+            >>> strategy = StrategyThreshold({'abc': (0.4, 0.2)}, d_weak_order_ballot={'a~b>c': 'a'},
+            ...                              voting_rule=PLURALITY)
+            >>> repr(strategy)
+            "StrategyThreshold({'abc': (0.4, 0.2)}, d_weak_order_ballot={'a~b>c': 'a'}, voting_rule='Plurality')"
+        """
         d = DictPrintingInOrderIgnoringNone({
             k: t[0] if t[1] is None else t
             for k, t in self.d_ranking_t_threshold_ratio_optimistic.items()})
@@ -168,6 +176,14 @@ class StrategyThreshold(StrategyTwelve):
         return 'StrategyThreshold(%s)' % arguments
 
     def __str__(self):
+        """
+        Examples
+        --------
+            >>> strategy = StrategyThreshold({'abc': (0.4, 0.2)}, d_weak_order_ballot={'a~b>c': 'a'},
+            ...                              voting_rule=PLURALITY)
+            >>> str(strategy)
+            '<abc: utility-dependent (0.4, 0.2), a~b>c: a> (Plurality)'
+        """
         def t_threshold_ratio_to_string(t):
             return str(t[0]) if t[1] is None else '%s, %s' % t
 

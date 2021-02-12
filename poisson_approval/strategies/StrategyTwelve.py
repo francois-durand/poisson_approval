@@ -1,4 +1,5 @@
 from poisson_approval.utils.UtilBallots import sort_ballot, ballot_one, ballot_two, ballot_one_two, ballot_one_three
+from poisson_approval.utils.UtilPreferences import is_hater, is_lover, is_weak_order, sort_weak_order
 from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
@@ -86,29 +87,32 @@ class StrategyTwelve(Strategy):
                         raise ValueError('In Approval, you should not specify ballots for weak orders.')
             elif voting_rule == PLURALITY:
                 for weak_order, ballot in d_weak_order_ballot.items():
-                    if is_hater(weak_order):
+                    if not is_weak_order(weak_order):
+                        raise ValueError('Unknown key: ' + weak_order)
+                    elif is_hater(weak_order):
                         possible_ballots = {weak_order[0], weak_order[2], SPLIT}
                         if ballot not in possible_ballots:
                             raise ValueError('Unknown strategy: ' + ballot)
-                        self.d_weak_order_ballot[weak_order] = ballot
-                    elif is_lover(weak_order):
+                        self.d_weak_order_ballot[sort_weak_order(weak_order)] = ballot
+                    else:  # is_lover(weak_order)
                         if ballot != '':
                             raise ValueError('In Plurality, you should not specify ballots for "lovers" (e.g. a>b~c).')
-                    else:
-                        raise ValueError('Unknown key: ' + weak_order)
             elif voting_rule == ANTI_PLURALITY:
                 for weak_order, ballot in d_weak_order_ballot.items():
-                    if is_lover(weak_order):
-                        possible_ballots = {weak_order[0] + weak_order[2], weak_order[0] + weak_order[4], SPLIT}
+                    if not is_weak_order(weak_order):
+                        raise ValueError('Unknown key: ' + weak_order)
+                    elif is_lover(weak_order):
+                        possible_ballots = {sort_ballot(weak_order[0] + weak_order[2]),
+                                            sort_ballot(weak_order[0] + weak_order[4]), SPLIT}
+                        if ballot != SPLIT:
+                            ballot = sort_ballot(ballot)
                         if ballot not in possible_ballots:
-                            raise ValueError('Unknown strategy: ' + ballot)
-                        self.d_weak_order_ballot[weak_order] = ballot
-                    elif is_hater(weak_order):
+                            raise ValueError('Unknown strategy: ' + ballot + ' for ' + weak_order)
+                        self.d_weak_order_ballot[sort_weak_order(weak_order)] = ballot
+                    else:  # is_hater(weak_order)
                         if ballot != '':
                             raise ValueError('In Anti-Plurality, you should not specify ballots '
                                              'for "haters" (e.g. a~b>c).')
-                    else:
-                        raise ValueError('Unknown key: ' + weak_order)
             else:
                 raise NotImplementedError
         # Call parent class
@@ -140,6 +144,14 @@ class StrategyTwelve(Strategy):
     # Representation
 
     def __repr__(self):
+        """
+        Examples
+        --------
+            >>> strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'},
+            ...                           d_weak_order_ballot={'a~b>c': SPLIT}, voting_rule=PLURALITY)
+            >>> repr(strategy)
+            "StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'}, d_weak_order_ballot={'a~b>c': 'Split'}, voting_rule='Plurality')"
+        """
         arguments = repr(self.d_ranking_ballot)
         arguments_weak_orders = repr(self.d_weak_order_ballot)
         if len(arguments_weak_orders) > 2:
@@ -149,6 +161,14 @@ class StrategyTwelve(Strategy):
         return 'StrategyTwelve(%s)' % arguments
 
     def __str__(self):
+        """
+        Examples
+        --------
+            >>> strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'},
+            ...                           d_weak_order_ballot={'a~b>c': SPLIT}, voting_rule=PLURALITY)
+            >>> str(strategy)
+            '<abc: utility-dependent, bac: b, a~b>c: Split> (Plurality)'
+        """
         arguments = str(self.d_ranking_ballot)[1:-1]
         arguments_weak_orders = str(self.d_weak_order_ballot)[1:-1]
         if len(arguments_weak_orders) > 0:
@@ -175,18 +195,6 @@ def make_property_ranking_ballot(ranking, doc):
 for my_ranking in RANKINGS:
     setattr(StrategyTwelve, my_ranking, make_property_ranking_ballot(
         my_ranking, 'str : Strategy of voters with ranking ``%s``.' % my_ranking))
-
-
-def make_property_weak_order_ballot(weak_order, doc):
-    def _f(self):
-        return self.d_weak_order_ballot[weak_order]
-    _f.__doc__ = doc
-    return property(_f)
-
-
-for my_weak_order in WEAK_ORDERS_WITHOUT_INVERSIONS:
-    setattr(StrategyTwelve, my_weak_order, make_property_weak_order_ballot(
-        my_weak_order, 'str : Strategy of voters with weak order ``%s``.' % my_weak_order))
 
 
 def make_property_ranking_low_u_ballot(ranking, doc):

@@ -2,7 +2,7 @@ import pytest
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, EquilibriumStatus, \
-    APPROVAL, PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT
+    APPROVAL, PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT, SPLIT
 
 
 def test_iterative_voting_verbose():
@@ -298,5 +298,39 @@ def test_share_sincere_among_strategic_voters_anti_plurality():
         >>> strategy = StrategyTwelve({'abc': 'ac'}, profile=profile)
         >>> profile.share_sincere_among_strategic_voters(strategy)
         0
+    """
+    pass
+
+
+def test_d_ballot_share_weak_voters_strategic():
+    """
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a~b>c': 0.5, 'a~c>b': 0.3, 'b>a~c': 0.2},
+        ...                                                 voting_rule=PLURALITY)
+        >>> strategy = StrategyTwelve({}, d_weak_order_ballot={'a~b>c': 'a', 'a~c>b': SPLIT}, profile=profile)
+        >>> profile.d_ballot_share_weak_voters_strategic(strategy)
+        {'a': 0.65, 'b': 0.2, 'c': 0.15, 'ab': 0, 'ac': 0, 'bc': 0}
+
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a>b~c': 0.5, 'b>a~c': 0.3, 'a~c>b': 0.2},
+        ...                                                 voting_rule=ANTI_PLURALITY)
+        >>> strategy = StrategyTwelve({}, d_weak_order_ballot={'a>b~c': 'ab', 'b>a~c': SPLIT}, profile=profile)
+        >>> profile.d_ballot_share_weak_voters_strategic(strategy)
+        {'a': 0, 'b': 0, 'c': 0, 'ab': 0.65, 'ac': 0.2, 'bc': 0.15}
+    """
+    pass
+
+
+def test_best_responses_to_strategy():
+    """
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a~b>c': 0.5, 'a~c>b': 0.3, 'b~c>a': 0.2},
+        ...                                                 voting_rule=PLURALITY)
+        >>> tau = TauVector({'a': 0.4, 'b': 0.2, 'c': 0.4}, voting_rule=PLURALITY)
+        >>> profile.best_responses_to_strategy(tau)
+        StrategyThreshold({}, d_weak_order_ballot={'a~b>c': 'a', 'a~c>b': 'Split', 'b~c>a': 'c'}, voting_rule='Plurality')
+
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a>b~c': 0.5, 'b>a~c': 0.3, 'c>a~b': 0.2},
+        ...                                                 voting_rule=ANTI_PLURALITY)
+        >>> tau = TauVector({'ab': 0.2, 'ac': 0.6, 'bc': 0.2}, voting_rule=ANTI_PLURALITY)
+        >>> profile.best_responses_to_strategy(tau)
+        StrategyThreshold({}, d_weak_order_ballot={'a>b~c': 'ab', 'b>a~c': 'Split', 'c>a~b': 'bc'}, voting_rule='Anti-plurality')
     """
     pass

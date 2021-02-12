@@ -94,6 +94,13 @@ class StrategyOrdinal(StrategyThreshold):
                 and self.voting_rule == other.voting_rule)
 
     def __repr__(self):
+        """
+        Examples
+        --------
+            >>> strategy = StrategyOrdinal({'abc': 'a'}, d_weak_order_ballot={'a~b>c': 'a'}, voting_rule=PLURALITY)
+            >>> repr(strategy)
+            "StrategyOrdinal({'abc': 'a'}, d_weak_order_ballot={'a~b>c': 'a'}, voting_rule='Plurality')"
+        """
         arguments = repr(self.d_ranking_ballot)
         arguments_weak_orders = repr(self.d_weak_order_ballot)
         if len(arguments_weak_orders) > 2:
