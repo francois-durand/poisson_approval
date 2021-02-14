@@ -108,16 +108,14 @@ class BestResponseApproval(BestResponse):
             if (psi_i_greater_but_close_to_one
                     and psi_k_greater_but_close_to_one):  # pragma: no cover - Should never happen
                 raise AssertionError('Unexpected: both psi_i and psi_k are greater and close to 1.')
-            elif psi_k_greater_but_close_to_one:  # pragma: no cover - Should never happen
+            elif psi_k_greater_but_close_to_one:  # pragma: no cover
                 # pij ~= inf, pjk < inf ==> u = 1
                 utility_threshold = self.ce.S(1)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
-                raise AssertionError
-            elif psi_i_greater_but_close_to_one:  # pragma: no cover - Should never happen
+            elif psi_i_greater_but_close_to_one:  # pragma: no cover
                 # pij < inf, pjk ~= inf ==> u = 0
                 utility_threshold = self.ce.S(0)
                 justification = self.OFFSET_METHOD_WITH_TRIO_APPROXIMATION_CORRECTION
-                raise AssertionError
             else:
                 # General case of the offset method (at last!)
                 pij = (1 + self.trio.psi[self.ik]) / (1 - self.trio.psi[self.k])
