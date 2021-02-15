@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Probabilities &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,17 +32,14 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Iterables" href="tutorial_iterables.html" />
+    <link rel="next" title="Monte-Carlo Fictitious Play" href="tutorial_monte_carlo_fictitious_play.html" />
     <link rel="prev" title="Binary Plots" href="tutorial_binary_plots.html" /> 
 </head>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -106,11 +106,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#Image-Distribution-Estimation">Image Distribution Estimation</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_monte_carlo_fictitious_play.html">Monte-Carlo Fictitious Play</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_iterables.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_more_classes_of_profiles.html">More Classes of Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_asymptotic_developments.html">Asymptotic Developments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
@@ -155,6 +157,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -168,7 +172,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/tutorials/tutorial_probabilities.ipynb.txt" rel="nofollow"> View page source</a>
           
         
@@ -494,7 +498,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;a: 0.024332511082036157, ab: 0.0526900161849142, ac: 0.37096567320141516, b: 0.06740187034718637, bc: 0.21656797025148677, c: 0.26804195893296134&gt; ==&gt; c
+&lt;a: 0.01026179823073825, ab: 0.15335471082695618, ac: 0.18428374829679528, b: 0.10894428401103218, bc: 0.535560376132927, c: 0.007595082501551165&gt; ==&gt; b
 </pre></div></div>
 </div>
 <p>Most random factories of the package also have a “grid” counterpart where the coefficients are fractions of a given denominator. This is convenient to generate less “messy” examples:</p>
@@ -515,7 +519,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;ab: 11/100, ac: 1/20, b: 9/20, bc: 1/4, c: 7/50&gt; ==&gt; b
+&lt;a: 1/4, ab: 2/25, ac: 1/100, b: 1/20, bc: 19/50, c: 23/100&gt; ==&gt; c
 </pre></div></div>
 </div>
 <p>Also, most random factories have options that enable to finely tune the distribution:</p>
@@ -540,20 +544,20 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;a: 0.3591982549714359, b: 0.540801745028564, c: 0.1&gt; ==&gt; b (Plurality)
+&lt;a: 0.7678442160616922, b: 0.13215578393830785, c: 0.1&gt; ==&gt; a (Plurality)
 </pre></div></div>
 </div>
-<p>For more information, cf. the Reference section on random factories.</p>
+<p>For more information, cf. the <em>Reference</em> section on random factories.</p>
 </div>
 <div class="section" id="Conditional-Random-Factory">
 <h2>Conditional Random Factory<a class="headerlink" href="#Conditional-Random-Factory" title="Permalink to this headline">¶</a></h2>
-<p>RandConditional is a random factory implementing rejection sampling. It needs:</p>
+<p><em>RandConditional</em> is a random factory implementing rejection sampling. It needs:</p>
 <ul class="simple">
-<li><p>Another random factory that is responsible to generate the objects,</p></li>
+<li><p>Another random factory that is responsible for generating the objects,</p></li>
 <li><p>A test that the objects must meet,</p></li>
-<li><p>A maximum number of trials before renouncing (which can be None if you want to draw objects forever, until finding one that meets the test).</p></li>
+<li><p>A maximum number of trials before renouncing (which can be <em>None</em> if you want to draw objects forever, until finding one that meets the test).</p></li>
 </ul>
-<p>Here, we use a conditional random factory to generate an example of TauVector with a direct focus:</p>
+<p>Here, we use a conditional random factory to generate an example of <em>TauVector</em> with a direct focus:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -585,10 +589,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;a: 1/25, ab: 7/20, ac: 4/25, b: 13/100, bc: 6/25, c: 2/25&gt; ==&gt; b
+&lt;a: 19/100, ab: 8/25, ac: 1/100, b: 19/100, bc: 17/100, c: 3/25&gt; ==&gt; b
 </pre></div></div>
 </div>
-<p>Alternatively, RandConditional accepts a tuple of factories, and a test on the tuple of the results. Here is an example of a ProfileNoisyDiscrete and a StrategyOrdinal, such that the strategy is an equilibrium for the profile:</p>
+<p>Alternatively, <em>RandConditional</em> accepts a tuple of factories, and a test on the tuple of the results. Here is an example of a <em>ProfileNoisyDiscrete</em> and a <em>StrategyOrdinal</em>, such that the strategy is an equilibrium for the profile:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -627,15 +631,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;abc 0.4 ± 0.01: 7/20, bac 0.2 ± 0.01: 4/25, cab 0.7 ± 0.01: 49/100&gt; (Condorcet winner: a)
-&lt;abc: a, acb: ac, bac: b, bca: bc, cab: ac, cba: bc&gt;
+&lt;abc 0.4 ± 0.01: 9/20, bac 0.2 ± 0.01: 41/100, cab 0.7 ± 0.01: 7/50&gt; (Condorcet winner: a)
+&lt;abc: a, acb: a, bac: ab, bca: bc, cab: c, cba: c&gt;
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Probability-Estimation">
 <h2>Probability Estimation<a class="headerlink" href="#Probability-Estimation" title="Permalink to this headline">¶</a></h2>
-<p>To compute a probability, use the function <code class="docutils literal notranslate"><span class="pre">probability</span></code>.</p>
-<p>For example, estimate the probability that a TauVector drawn uniformly at random has a direct focus:</p>
+<p>To compute a probability, use the function <em>probability</em>.</p>
+<p>For example, estimate the probability that a <em>TauVector</em> drawn uniformly at random has a direct focus:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -665,10 +669,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.53
+0.43
 </pre></div></div>
 </div>
-<p>To avoid the definition of an auxiliary function, you can use a “lambda”. For example:</p>
+<p>To avoid the definition of an auxiliary function, you can use a <em>lambda</em>. For example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -688,10 +692,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.5
+0.52
 </pre></div></div>
 </div>
-<p>You can also compute a conditional probability. For example, the probability that a ProfileNoisyDiscrete (generated by the random factory defined below) has an ordinal equilibrium, conditionally on having a strict Condorcet winner:</p>
+<p>You can also compute a conditional probability. For example, the probability that a <em>ProfileNoisyDiscrete</em> (generated by the random factory defined below) has an ordinal equilibrium, conditionally on having a strict Condorcet winner:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
@@ -732,7 +736,7 @@ div.rendered_html tbody tr:hover {
 1.0
 </pre></div></div>
 </div>
-<p>You can also use a tuple of random factories, and tests on the tuple of the results. For example, estimate the probability that a random StrategyOrdinal is an equilibrium for a random ProfileNoisyDiscrete (generated by the random factory defined below), conditionally on the fact that the profile has a strict Condorcet winner and that the initial strategy elects the Condorcet winner:</p>
+<p>You can also use a tuple of random factories, and tests on the tuple of the results. For example, estimate the probability that a random <em>StrategyOrdinal</em> is an equilibrium for a random <em>ProfileNoisyDiscrete</em> (generated by the random factory defined below), conditionally on the fact that the profile has a strict Condorcet winner and that the initial strategy elects the Condorcet winner:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -772,10 +776,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.35
+0.36
 </pre></div></div>
 </div>
-<p>Finally, you can also use a tuple of tests in order to estimate several probabilities with the same sample. For example, estimate the probability that a TauVector drawn uniformly at random has is direct, forward-focused, backward-focused, or unfocused:</p>
+<p>Finally, you can also use a tuple of tests in order to estimate several probabilities with the same sample. For example, estimate the probability that a <em>TauVector</em> drawn uniformly at random is direct, forward-focused, backward-focused, or unfocused:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -798,14 +802,14 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.51, 0.49, 0.0, 0.0)
+(0.52, 0.48, 0.0, 0.0)
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Image-Distribution-Estimation">
 <h2>Image Distribution Estimation<a class="headerlink" href="#Image-Distribution-Estimation" title="Permalink to this headline">¶</a></h2>
-<p>To compute an image distribution, use the function <code class="docutils literal notranslate"><span class="pre">image_distribution</span></code>.</p>
-<p>For example, when drawing a ProfileNoisyDiscrete (with the random factory defined below) and an initial StrategyOrdinal at random, and when applying iterated voting, let us estimate the distribution of the length of the cycle to which it converges:</p>
+<p>To compute an image distribution, use the function <em>image_distribution</em>.</p>
+<p>For example, when drawing a <em>ProfileNoisyDiscrete</em> (with the random factory defined below) and an initial <em>StrategyOrdinal</em> at random, and when applying iterated voting, let us estimate the distribution of the length of the cycle to which it converges:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -849,7 +853,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{1: 0.2, 2: 0.02, 3: 0.78}
+{1: 0.21, 2: 0.02, 3: 0.77}
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -885,37 +889,29 @@ div.rendered_html tbody tr:hover {
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="tutorial_iterables.html" class="btn btn-neutral float-right" title="Iterables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="tutorial_binary_plots.html" class="btn btn-neutral float-left" title="Binary Plots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="tutorial_monte_carlo_fictitious_play.html" class="btn btn-neutral float-right" title="Monte-Carlo Fictitious Play" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial_binary_plots.html" class="btn btn-neutral float-left" title="Binary Plots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

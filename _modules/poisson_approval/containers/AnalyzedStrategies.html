@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.containers.AnalyzedStrategies &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -121,6 +122,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -175,7 +178,9 @@
 <span class="sd">    utility_dependent : list of :class:`Strategy`</span>
 <span class="sd">        List of the strategies where the equilibrium depends on the exact utilities.</span>
 <span class="sd">    inconclusive : list of :class:`Strategy`</span>
-<span class="sd">        List of the strategies where we are not able to decide whether it is an equilibrium or not.</span>
+<span class="sd">        List of the strategies where we are not able to decide whether it is an equilibrium or not. In the current</span>
+<span class="sd">        version of the package, this argument is not used anymore, because we are always able to decide whether</span>
+<span class="sd">        a strategy is an equilibrium or not.</span>
 <span class="sd">    non_equilibria : list of :class:`Strategy`</span>
 <span class="sd">        List of the strategies where the program certifies there is no equilibrium.</span>
 
@@ -184,10 +189,10 @@
 <span class="sd">        &gt;&gt;&gt; from poisson_approval import StrategyOrdinal, ProfileOrdinal</span>
 <span class="sd">        &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: 0.2, &#39;acb&#39;: 0.3, &#39;bac&#39;: 0.5})</span>
 <span class="sd">        &gt;&gt;&gt; analyzed_strategies = AnalyzedStrategies(</span>
-<span class="sd">        ...     equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)],</span>
-<span class="sd">        ...     utility_dependent=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)],</span>
-<span class="sd">        ...     non_equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)],</span>
-<span class="sd">        ...     inconclusive=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)]</span>
+<span class="sd">        ...     equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)],</span>
+<span class="sd">        ...     utility_dependent=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)],</span>
+<span class="sd">        ...     non_equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)],</span>
+<span class="sd">        ...     inconclusive=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)]</span>
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; print(analyzed_strategies.winners_at_equilibrium)</span>
 <span class="sd">        a, b</span>
@@ -208,14 +213,14 @@
 <span class="sd">            &gt;&gt;&gt; from poisson_approval import StrategyOrdinal, ProfileOrdinal</span>
 <span class="sd">            &gt;&gt;&gt; profile = ProfileOrdinal({&#39;abc&#39;: Fraction(2, 10), &#39;acb&#39;: Fraction(3, 10), &#39;bac&#39;: Fraction(5, 10)})</span>
 <span class="sd">            &gt;&gt;&gt; analyzed_strategies = AnalyzedStrategies(</span>
-<span class="sd">            ...     equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile),</span>
-<span class="sd">            ...                 StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile)],</span>
-<span class="sd">            ...     utility_dependent=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile),</span>
-<span class="sd">            ...                        StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile)],</span>
-<span class="sd">            ...     non_equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile),</span>
-<span class="sd">            ...                     StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile)],</span>
-<span class="sd">            ...     inconclusive=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile),</span>
-<span class="sd">            ...                   StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile)]</span>
+<span class="sd">            ...     equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile),</span>
+<span class="sd">            ...                 StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile=profile)],</span>
+<span class="sd">            ...     utility_dependent=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile),</span>
+<span class="sd">            ...                        StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile=profile)],</span>
+<span class="sd">            ...     non_equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile),</span>
+<span class="sd">            ...                     StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile=profile)],</span>
+<span class="sd">            ...     inconclusive=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile),</span>
+<span class="sd">            ...                   StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;ab&#39;}, profile=profile)]</span>
 <span class="sd">            ... )</span>
 <span class="sd">            &gt;&gt;&gt; analyzed_strategies</span>
 <span class="sd">            Equilibria:</span>
@@ -237,10 +242,10 @@
 <span class="sd">        With singulars (&quot;equilibrium&quot;):</span>
 
 <span class="sd">            &gt;&gt;&gt; analyzed_strategies = AnalyzedStrategies(</span>
-<span class="sd">            ...     equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)],</span>
-<span class="sd">            ...     utility_dependent=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)],</span>
-<span class="sd">            ...     non_equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)],</span>
-<span class="sd">            ...     inconclusive=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile)]</span>
+<span class="sd">            ...     equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)],</span>
+<span class="sd">            ...     utility_dependent=[StrategyOrdinal({&#39;abc&#39;: &#39;a&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)],</span>
+<span class="sd">            ...     non_equilibria=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;a&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)],</span>
+<span class="sd">            ...     inconclusive=[StrategyOrdinal({&#39;abc&#39;: &#39;ab&#39;, &#39;acb&#39;: &#39;ac&#39;, &#39;bac&#39;: &#39;b&#39;}, profile=profile)]</span>
 <span class="sd">            ... )</span>
 <span class="sd">            &gt;&gt;&gt; analyzed_strategies</span>
 <span class="sd">            Equilibrium:</span>
@@ -321,28 +326,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

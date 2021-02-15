@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Profile &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
@@ -114,7 +115,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
 </ul>
 </li>
@@ -161,6 +165,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -176,7 +182,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/reference/reference_profiles/reference_profile.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -218,7 +224,7 @@
 <h1>Profile<a class="headerlink" href="#profile" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="poisson_approval.Profile">
-<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">Profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">voting_rule</span><span class="o">=</span><span class="default_value">'Approval'</span></em>, <em class="sig-param"><span class="n">symbolic</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">poisson_approval.</span></code><code class="sig-name descname"><span class="pre">Profile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voting_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Approval'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>A profile of preference (abstract class).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -230,7 +236,7 @@
 </dl>
 <dl class="py method">
 <dt id="poisson_approval.Profile.abc">
-<em class="property">property </em><code class="sig-name descname">abc</code><a class="headerlink" href="#poisson_approval.Profile.abc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">abc</span></code><a class="headerlink" href="#poisson_approval.Profile.abc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters with this ranking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -241,7 +247,7 @@
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.acb">
-<em class="property">property </em><code class="sig-name descname">acb</code><a class="headerlink" href="#poisson_approval.Profile.acb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">acb</span></code><a class="headerlink" href="#poisson_approval.Profile.acb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters with this ranking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -252,7 +258,7 @@
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.analyzed_strategies">
-<code class="sig-name descname">analyzed_strategies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strategies</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.analyzed_strategies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">analyzed_strategies</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.analyzed_strategies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyze a list of strategies for the profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,7 +277,7 @@
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.analyzed_strategies_group">
-<em class="property">property </em><code class="sig-name descname">analyzed_strategies_group</code><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies_group" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">analyzed_strategies_group</span></code><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzed group strategies.</p>
 <p>Cf. <a class="reference internal" href="#poisson_approval.Profile.analyzed_strategies" title="poisson_approval.Profile.analyzed_strategies"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyzed_strategies()</span></code></a> and <a class="reference internal" href="#poisson_approval.Profile.strategies_group" title="poisson_approval.Profile.strategies_group"><code class="xref py py-attr docutils literal notranslate"><span class="pre">strategies_group</span></code></a>. This is implemented only for profiles where we
 consider that there is a natural notion of group, such as <a class="reference internal" href="reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete" title="poisson_approval.ProfileNoisyDiscrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code></a>.</p>
@@ -284,7 +290,7 @@ consider that there is a natural notion of group, such as <a class="reference in
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.analyzed_strategies_ordinal">
-<em class="property">property </em><code class="sig-name descname">analyzed_strategies_ordinal</code><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies_ordinal" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">analyzed_strategies_ordinal</span></code><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies_ordinal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzed ordinal strategies.</p>
 <p>Cf. <a class="reference internal" href="#poisson_approval.Profile.analyzed_strategies" title="poisson_approval.Profile.analyzed_strategies"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyzed_strategies()</span></code></a> and <a class="reference internal" href="#poisson_approval.Profile.strategies_ordinal" title="poisson_approval.Profile.strategies_ordinal"><code class="xref py py-attr docutils literal notranslate"><span class="pre">strategies_ordinal</span></code></a>.</p>
 <dl class="field-list simple">
@@ -296,7 +302,7 @@ consider that there is a natural notion of group, such as <a class="reference in
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.analyzed_strategies_pure">
-<em class="property">property </em><code class="sig-name descname">analyzed_strategies_pure</code><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies_pure" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">analyzed_strategies_pure</span></code><a class="headerlink" href="#poisson_approval.Profile.analyzed_strategies_pure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzed pure strategies.</p>
 <p>Cf. <a class="reference internal" href="#poisson_approval.Profile.analyzed_strategies" title="poisson_approval.Profile.analyzed_strategies"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyzed_strategies()</span></code></a> and <a class="reference internal" href="#poisson_approval.Profile.strategies_pure" title="poisson_approval.Profile.strategies_pure"><code class="xref py py-attr docutils literal notranslate"><span class="pre">strategies_pure</span></code></a>. This is implemented only for discrete profiles such
 as <a class="reference internal" href="reference_profile_twelve.html#poisson_approval.ProfileTwelve" title="poisson_approval.ProfileTwelve"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileTwelve</span></code></a> or <a class="reference internal" href="reference_profile_discrete.html#poisson_approval.ProfileDiscrete" title="poisson_approval.ProfileDiscrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code></a>.</p>
@@ -309,7 +315,7 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.bac">
-<em class="property">property </em><code class="sig-name descname">bac</code><a class="headerlink" href="#poisson_approval.Profile.bac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bac</span></code><a class="headerlink" href="#poisson_approval.Profile.bac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters with this ranking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -320,7 +326,7 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.bca">
-<em class="property">property </em><code class="sig-name descname">bca</code><a class="headerlink" href="#poisson_approval.Profile.bca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bca</span></code><a class="headerlink" href="#poisson_approval.Profile.bca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters with this ranking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -331,11 +337,14 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.best_responses_to_strategy">
-<code class="sig-name descname">best_responses_to_strategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d_ranking_best_response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.best_responses_to_strategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.best_responses_to_strategy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">best_responses_to_strategy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_optimistic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Fraction(1,</span> <span class="pre">2)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.best_responses_to_strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.best_responses_to_strategy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert best responses to a <a class="reference internal" href="../reference_strategies/reference_strategy_threshold.html#poisson_approval.StrategyThreshold" title="poisson_approval.StrategyThreshold"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrategyThreshold</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d_ranking_best_response</strong> (<em>dict</em>) – Key: ranking. Value: <a class="reference internal" href="../reference_best_response/reference_best_response.html#poisson_approval.BestResponse" title="poisson_approval.BestResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BestResponse</span></code></a>.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tau</strong> (<a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector" title="poisson_approval.TauVector"><em>TauVector</em></a>) – Tau-vector.</p></li>
+<li><p><strong>ratio_optimistic</strong> – The value of <cite>ratio_optimistic</cite> to use. Default: 1/2.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The conversion of the best responses into a strategy. Only the rankings present in this profile are
@@ -349,7 +358,7 @@ mentioned in the strategy.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.cab">
-<em class="property">property </em><code class="sig-name descname">cab</code><a class="headerlink" href="#poisson_approval.Profile.cab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cab</span></code><a class="headerlink" href="#poisson_approval.Profile.cab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters with this ranking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -360,7 +369,7 @@ mentioned in the strategy.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.cba">
-<em class="property">property </em><code class="sig-name descname">cba</code><a class="headerlink" href="#poisson_approval.Profile.cba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cba</span></code><a class="headerlink" href="#poisson_approval.Profile.cba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters with this ranking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -371,7 +380,7 @@ mentioned in the strategy.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.condorcet_winners">
-<em class="property">property </em><code class="sig-name descname">condorcet_winners</code><a class="headerlink" href="#poisson_approval.Profile.condorcet_winners" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">condorcet_winners</span></code><a class="headerlink" href="#poisson_approval.Profile.condorcet_winners" title="Permalink to this definition">¶</a></dt>
 <dd><p>Condorcet winner(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -382,7 +391,7 @@ mentioned in the strategy.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.contains_rankings">
-<em class="property">property </em><code class="sig-name descname">contains_rankings</code><a class="headerlink" href="#poisson_approval.Profile.contains_rankings" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">contains_rankings</span></code><a class="headerlink" href="#poisson_approval.Profile.contains_rankings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the profile contains some rankings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -393,7 +402,7 @@ mentioned in the strategy.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.contains_weak_orders">
-<em class="property">property </em><code class="sig-name descname">contains_weak_orders</code><a class="headerlink" href="#poisson_approval.Profile.contains_weak_orders" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">contains_weak_orders</span></code><a class="headerlink" href="#poisson_approval.Profile.contains_weak_orders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the profile contains some weak orders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -404,15 +413,15 @@ mentioned in the strategy.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_ballot_share_weak_voters_fanatic">
-<em class="property">property </em><code class="sig-name descname">d_ballot_share_weak_voters_fanatic</code><a class="headerlink" href="#poisson_approval.Profile.d_ballot_share_weak_voters_fanatic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ballot shares due to the weak orders if they vote fanatically</p>
-<p>Voters of the type <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code>:</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_ballot_share_weak_voters_fanatic</span></code><a class="headerlink" href="#poisson_approval.Profile.d_ballot_share_weak_voters_fanatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ballot shares due to the weak orders if they vote fanatically.</p>
+<p>Voters of type <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code> (<cite>lovers</cite>):</p>
 <ul class="simple">
 <li><p>In Approval or Plurality, they vote for <cite>a</cite>.</p></li>
 <li><p>In Anti-plurality, half of them vote for <cite>ab</cite> (i.e. against <cite>c</cite>) and half of them vote for <cite>ac</cite> (i.e.
 against <cite>b</cite>).</p></li>
 </ul>
-<p>Voters of the type <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code>:</p>
+<p>Voters of type <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code> (<cite>haters</cite>):</p>
 <ul class="simple">
 <li><p>In Approval or Plurality, half of them vote for <cite>a</cite> and half of them vote for <cite>b</cite>.</p></li>
 <li><p>In Anti-plurality, they vote for <cite>ab</cite> (i.e. against <cite>c</cite>).</p></li>
@@ -426,15 +435,15 @@ against <cite>b</cite>).</p></li>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_ballot_share_weak_voters_sincere">
-<em class="property">property </em><code class="sig-name descname">d_ballot_share_weak_voters_sincere</code><a class="headerlink" href="#poisson_approval.Profile.d_ballot_share_weak_voters_sincere" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ballot shares due to the weak orders if they vote sincerely</p>
-<p>Voters of the type <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code>:</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_ballot_share_weak_voters_sincere</span></code><a class="headerlink" href="#poisson_approval.Profile.d_ballot_share_weak_voters_sincere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ballot shares due to the weak orders if they vote sincerely.</p>
+<p>Voters of type <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code> (<cite>lovers</cite>):</p>
 <ul class="simple">
 <li><p>In Approval or Plurality, they vote for <cite>a</cite>.</p></li>
 <li><p>In Anti-plurality, half of them vote for <cite>ab</cite> (i.e. against <cite>c</cite>) and half of them vote for <cite>ac</cite> (i.e.
 against <cite>b</cite>).</p></li>
 </ul>
-<p>Voters of the type <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code>:</p>
+<p>Voters of type <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code> (<cite>haters</cite>):</p>
 <ul class="simple">
 <li><p>In Approval or Anti-plurality, they vote for <cite>ab</cite> (i.e. against <cite>c</cite>).</p></li>
 <li><p>In Plurality, half of them vote for <cite>a</cite> and half of them vote for <cite>b</cite>.</p></li>
@@ -447,9 +456,21 @@ against <cite>b</cite>).</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="poisson_approval.Profile.d_ballot_share_weak_voters_strategic">
+<code class="sig-name descname"><span class="pre">d_ballot_share_weak_voters_strategic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.d_ballot_share_weak_voters_strategic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.d_ballot_share_weak_voters_strategic" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict : Ballot shares due to the weak orders if they vote strategically.</p>
+<p>For voters with a weak order, strategic voting is the same as sincere voting, except in two cases:</p>
+<ul class="simple">
+<li><p>For voters of type <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code> (<cite>haters</cite>)`in Plurality, who have two dominant strategies: vote for <cite>a</cite> or <cite>b</cite>.</p></li>
+<li><p>For voters of type <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code> (<cite>lovers</cite>) in Anti-Plurality, who have two dominant strategies: vote
+against <cite>b</cite> or <cite>c</cite> (i.e. respectively for <cite>ac</cite> or <cite>ab</cite>).</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
 <dt id="poisson_approval.Profile.d_candidate_anti_plurality_welfare">
-<em class="property">property </em><code class="sig-name descname">d_candidate_anti_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_anti_plurality_welfare" title="Permalink to this definition">¶</a></dt>
-<dd><p>anti-plurality welfare of each candidate, i.e. share of voters with utility &gt; 0.</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_candidate_anti_plurality_welfare</span></code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_anti_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Anti-plurality welfare of each candidate, i.e. share of voters with utility &gt; 0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
@@ -459,8 +480,8 @@ against <cite>b</cite>).</p></li>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_candidate_plurality_welfare">
-<em class="property">property </em><code class="sig-name descname">d_candidate_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_plurality_welfare" title="Permalink to this definition">¶</a></dt>
-<dd><p>plurality welfare of each candidate, i.e. share of voters with utility 1.</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_candidate_plurality_welfare</span></code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plurality welfare of each candidate, i.e. share of voters with utility 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
@@ -470,12 +491,13 @@ against <cite>b</cite>).</p></li>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_candidate_relative_anti_plurality_welfare">
-<em class="property">property </em><code class="sig-name descname">d_candidate_relative_anti_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_relative_anti_plurality_welfare" title="Permalink to this definition">¶</a></dt>
-<dd><p>relative anti-plurality welfare of each candidate.
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_candidate_relative_anti_plurality_welfare</span></code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_relative_anti_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative anti-plurality welfare of each candidate.
 This is similar to <a class="reference internal" href="#poisson_approval.Profile.d_candidate_anti_plurality_welfare" title="poisson_approval.Profile.d_candidate_anti_plurality_welfare"><code class="xref py py-attr docutils literal notranslate"><span class="pre">d_candidate_anti_plurality_welfare</span></code></a>, but renormalized so that the candidate with
 best welfare has 1 and the one with worst welfare has 0. In math:
-relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare). In the case where all candidates
-have the same welfare, by convention, the relative welfare is 1 for all of them.</p>
+<cite>relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)</cite>.
+In the case where all candidates have the same welfare, by convention, the relative welfare is 1 for all
+of them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
@@ -485,12 +507,13 @@ have the same welfare, by convention, the relative welfare is 1 for all of them.
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_candidate_relative_plurality_welfare">
-<em class="property">property </em><code class="sig-name descname">d_candidate_relative_plurality_welfare</code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_relative_plurality_welfare" title="Permalink to this definition">¶</a></dt>
-<dd><p>relative plurality welfare of each candidate.
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_candidate_relative_plurality_welfare</span></code><a class="headerlink" href="#poisson_approval.Profile.d_candidate_relative_plurality_welfare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative plurality welfare of each candidate.
 This is similar to <a class="reference internal" href="#poisson_approval.Profile.d_candidate_plurality_welfare" title="poisson_approval.Profile.d_candidate_plurality_welfare"><code class="xref py py-attr docutils literal notranslate"><span class="pre">d_candidate_plurality_welfare</span></code></a>, but renormalized so that the candidate with best
-welfare has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
-(max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
-the relative welfare is 1 for all of them.</p>
+welfare has 1 and the one with worst welfare has 0. In math:
+<cite>relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)</cite>.
+In the case where all candidates have the same welfare, by convention, the relative welfare is 1 for all
+of them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../reference_utils/reference_dict_printing_in_order.html#poisson_approval.DictPrintingInOrder" title="poisson_approval.DictPrintingInOrder">DictPrintingInOrder</a></p>
@@ -500,7 +523,7 @@ the relative welfare is 1 for all of them.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_ranking_share">
-<em class="property">property </em><code class="sig-name descname">d_ranking_share</code><a class="headerlink" href="#poisson_approval.Profile.d_ranking_share" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_ranking_share</span></code><a class="headerlink" href="#poisson_approval.Profile.d_ranking_share" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shares of rankings.
 E.g. <code class="docutils literal notranslate"><span class="pre">'abc':</span> <span class="pre">0.3</span></code> means that a ratio 0.3 of the voters have ranking <code class="docutils literal notranslate"><span class="pre">'abc'</span></code>.</p>
 <dl class="field-list simple">
@@ -512,7 +535,7 @@ E.g. <code class="docutils literal notranslate"><span class="pre">'abc':</span> 
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.d_weak_order_share">
-<em class="property">property </em><code class="sig-name descname">d_weak_order_share</code><a class="headerlink" href="#poisson_approval.Profile.d_weak_order_share" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_weak_order_share</span></code><a class="headerlink" href="#poisson_approval.Profile.d_weak_order_share" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shares of weak orders.
 E.g. <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c':</span> <span class="pre">0.3</span></code> means that a ratio 0.3 of the voters have weak order <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code>.</p>
 <dl class="field-list simple">
@@ -524,7 +547,7 @@ E.g. <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c':</s
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.has_majority_favorite">
-<em class="property">property </em><code class="sig-name descname">has_majority_favorite</code><a class="headerlink" href="#poisson_approval.Profile.has_majority_favorite" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">has_majority_favorite</span></code><a class="headerlink" href="#poisson_approval.Profile.has_majority_favorite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether there is a <cite>majority favorite</cite> (a candidate ranked first by strictly more than half of the
 voters).</p>
 <dl class="field-list simple">
@@ -536,7 +559,7 @@ voters).</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.has_majority_ranking">
-<em class="property">property </em><code class="sig-name descname">has_majority_ranking</code><a class="headerlink" href="#poisson_approval.Profile.has_majority_ranking" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">has_majority_ranking</span></code><a class="headerlink" href="#poisson_approval.Profile.has_majority_ranking" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether there is a majority ranking (a ranking shared by strictly more than half of the voters).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -547,7 +570,7 @@ voters).</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.is_equilibrium">
-<code class="sig-name descname">is_equilibrium</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strategy</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.is_equilibrium"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.is_equilibrium" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">is_equilibrium</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.is_equilibrium"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.is_equilibrium" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether a strategy is an equilibrium in this profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -564,7 +587,7 @@ voters).</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.is_generic_in_rankings">
-<em class="property">property </em><code class="sig-name descname">is_generic_in_rankings</code><a class="headerlink" href="#poisson_approval.Profile.is_generic_in_rankings" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">is_generic_in_rankings</span></code><a class="headerlink" href="#poisson_approval.Profile.is_generic_in_rankings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the profile is generic in rankings (contains all rankings).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -575,9 +598,9 @@ voters).</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.is_profile_condorcet">
-<em class="property">property </em><code class="sig-name descname">is_profile_condorcet</code><a class="headerlink" href="#poisson_approval.Profile.is_profile_condorcet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the profile is Condorcet. 1. means there is a strict Condorcet winner, 0.5 means there are
-one or more weak Condorcet winner(s), 0. means there is no Condorcet winner.</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">is_profile_condorcet</span></code><a class="headerlink" href="#poisson_approval.Profile.is_profile_condorcet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the profile is Condorcet. By convention, <code class="docutils literal notranslate"><span class="pre">1.</span></code> means there is a strict Condorcet winner,
+<code class="docutils literal notranslate"><span class="pre">0.5</span></code> means there are one or more weak Condorcet winner(s), <code class="docutils literal notranslate"><span class="pre">0.</span></code> means there is no Condorcet winner.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>float</p>
@@ -587,7 +610,7 @@ one or more weak Condorcet winner(s), 0. means there is no Condorcet winner.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.is_single_peaked">
-<em class="property">property </em><code class="sig-name descname">is_single_peaked</code><a class="headerlink" href="#poisson_approval.Profile.is_single_peaked" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">is_single_peaked</span></code><a class="headerlink" href="#poisson_approval.Profile.is_single_peaked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the profile is single-peaked.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -598,7 +621,7 @@ one or more weak Condorcet winner(s), 0. means there is no Condorcet winner.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.is_standardized">
-<em class="property">property </em><code class="sig-name descname">is_standardized</code><a class="headerlink" href="#poisson_approval.Profile.is_standardized" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">is_standardized</span></code><a class="headerlink" href="#poisson_approval.Profile.is_standardized" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the profile is standardized. Cf. <a class="reference internal" href="#poisson_approval.Profile.standardized_version" title="poisson_approval.Profile.standardized_version"><code class="xref py py-meth docutils literal notranslate"><span class="pre">standardized_version()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -609,15 +632,12 @@ one or more weak Condorcet winner(s), 0. means there is no Condorcet winner.</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.order_and_label">
-<em class="property">classmethod </em><code class="sig-name descname">order_and_label</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.order_and_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.order_and_label" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">order_and_label</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.order_and_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.order_and_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Order and label of a discrete type.</p>
-<p>Helper method for the ternary plots. Implemented only for subclasses of Profile where the initialization
-is made with a dictionary that maps types to voter share, such as <a class="reference internal" href="reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete" title="poisson_approval.ProfileNoisyDiscrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code></a> or
-<a class="reference internal" href="reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileOrdinal</span></code></a>, but unlike <a class="reference internal" href="reference_profile_histogram.html#poisson_approval.ProfileHistogram" title="poisson_approval.ProfileHistogram"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileHistogram</span></code></a> (where a second dictionary is needed for the
-histograms).</p>
+<p>Helper method for the ternary plots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>t</strong> (<em>object</em>) – A type. Any type that is accepted at a key in the initialization dictionary.</p>
+<dd class="field-odd"><p><strong>t</strong> (<em>object</em>) – A type. Any type that is accepted as a key in the initialization dictionary.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
@@ -633,7 +653,7 @@ histograms).</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.order_and_label_weak">
-<em class="property">classmethod </em><code class="sig-name descname">order_and_label_weak</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.order_and_label_weak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.order_and_label_weak" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">order_and_label_weak</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.order_and_label_weak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.order_and_label_weak" title="Permalink to this definition">¶</a></dt>
 <dd><p>Auxiliary function for <a class="reference internal" href="#poisson_approval.Profile.order_and_label" title="poisson_approval.Profile.order_and_label"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_and_label()</span></code></a>, specialized for weak orders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -656,9 +676,9 @@ histograms).</p>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.random_tau_undominated">
-<code class="sig-name descname">random_tau_undominated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.random_tau_undominated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.random_tau_undominated" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">random_tau_undominated</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.random_tau_undominated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.random_tau_undominated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Random tau based on undominated ballots.</p>
-<p>This is used, for example, in <a class="reference internal" href="reference_profile_cardinal.html#poisson_approval.ProfileCardinal.iterated_voting" title="poisson_approval.ProfileCardinal.iterated_voting"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.iterated_voting()</span></code></a>.</p>
+<p>This is used, for example, in <a class="reference internal" href="reference_profile_cardinal.html#poisson_approval.ProfileCardinal.iterated_voting" title="poisson_approval.ProfileCardinal.iterated_voting"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterated_voting()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A random tau-vector. Independently for each ranking, a proportion uniformly drawn in [0, 1] of voters
@@ -673,7 +693,7 @@ voters with ranking <cite>abc</cite> are randomly split between ballots <cite>a<
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.standardized_version">
-<em class="property">property </em><code class="sig-name descname">standardized_version</code><a class="headerlink" href="#poisson_approval.Profile.standardized_version" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">standardized_version</span></code><a class="headerlink" href="#poisson_approval.Profile.standardized_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standardized version of the profile (makes it unique, up to permutations of the candidates).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -684,11 +704,11 @@ voters with ranking <cite>abc</cite> are randomly split between ballots <cite>a<
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.strategies_group">
-<em class="property">property </em><code class="sig-name descname">strategies_group</code><a class="headerlink" href="#poisson_approval.Profile.strategies_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>group strategies of the profile.</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">strategies_group</span></code><a class="headerlink" href="#poisson_approval.Profile.strategies_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group strategies of the profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields</dt>
-<dd class="field-odd"><p><em>Strategy</em> – All possible group strategies of the profile. This is implemented only for profiles where we consider
+<dd class="field-odd"><p><a class="reference internal" href="../reference_strategies/reference_strategy.html#poisson_approval.Strategy" title="poisson_approval.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strategy</span></code></a> – All possible group strategies of the profile. This is implemented only for profiles where we consider
 that there is a natural notion of group, such as <a class="reference internal" href="reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete" title="poisson_approval.ProfileNoisyDiscrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileNoisyDiscrete</span></code></a>.</p>
 </dd>
 </dl>
@@ -703,11 +723,11 @@ that there is a natural notion of group, such as <a class="reference internal" h
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.strategies_ordinal">
-<em class="property">property </em><code class="sig-name descname">strategies_ordinal</code><a class="headerlink" href="#poisson_approval.Profile.strategies_ordinal" title="Permalink to this definition">¶</a></dt>
-<dd><p>ordinal strategies of the profile.</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">strategies_ordinal</span></code><a class="headerlink" href="#poisson_approval.Profile.strategies_ordinal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ordinal strategies of the profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields</dt>
-<dd class="field-odd"><p><em>StrategyOrdinal</em> – All possible ordinal strategies for this profile.</p>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_strategies/reference_strategy_ordinal.html#poisson_approval.StrategyOrdinal" title="poisson_approval.StrategyOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrategyOrdinal</span></code></a> – All possible ordinal strategies for this profile.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -721,11 +741,11 @@ that there is a natural notion of group, such as <a class="reference internal" h
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.strategies_pure">
-<em class="property">property </em><code class="sig-name descname">strategies_pure</code><a class="headerlink" href="#poisson_approval.Profile.strategies_pure" title="Permalink to this definition">¶</a></dt>
-<dd><p>pure strategies of the profile.</p>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">strategies_pure</span></code><a class="headerlink" href="#poisson_approval.Profile.strategies_pure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pure strategies of the profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields</dt>
-<dd class="field-odd"><p><em>Strategy</em> – All possible pure strategies of the profile. This is implemented only for discrete profiles such
+<dd class="field-odd"><p><a class="reference internal" href="../reference_strategies/reference_strategy.html#poisson_approval.Strategy" title="poisson_approval.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strategy</span></code></a> – All possible pure strategies of the profile. This is implemented only for discrete profiles such
 as <a class="reference internal" href="reference_profile_twelve.html#poisson_approval.ProfileTwelve" title="poisson_approval.ProfileTwelve"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileTwelve</span></code></a> or <a class="reference internal" href="reference_profile_discrete.html#poisson_approval.ProfileDiscrete" title="poisson_approval.ProfileDiscrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileDiscrete</span></code></a>.</p>
 </dd>
 </dl>
@@ -740,7 +760,7 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.support_in_rankings">
-<em class="property">property </em><code class="sig-name descname">support_in_rankings</code><a class="headerlink" href="#poisson_approval.Profile.support_in_rankings" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">support_in_rankings</span></code><a class="headerlink" href="#poisson_approval.Profile.support_in_rankings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Support of the profile (in terms of rankings).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -751,7 +771,7 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.support_in_weak_orders">
-<em class="property">property </em><code class="sig-name descname">support_in_weak_orders</code><a class="headerlink" href="#poisson_approval.Profile.support_in_weak_orders" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">support_in_weak_orders</span></code><a class="headerlink" href="#poisson_approval.Profile.support_in_weak_orders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Support of the profile (in terms of weak orders).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -762,7 +782,7 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.tau">
-<code class="sig-name descname">tau</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strategy</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.tau"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile.tau" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">tau</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.tau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile.tau" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tau-vector associated to this profile and a given strategy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -779,18 +799,18 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.weighted_maj_graph">
-<em class="property">property </em><code class="sig-name descname">weighted_maj_graph</code><a class="headerlink" href="#poisson_approval.Profile.weighted_maj_graph" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">weighted_maj_graph</span></code><a class="headerlink" href="#poisson_approval.Profile.weighted_maj_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Weighted majority graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Profile.">
-<code class="sig-name descname">τ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strategy</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.τ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Profile." title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">τ</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/Profile.html#Profile.τ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Profile." title="Permalink to this definition">¶</a></dt>
 <dd><p>Tau-vector (alternate notation).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -814,37 +834,29 @@ as <a class="reference internal" href="reference_profile_twelve.html#poisson_app
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="reference_profile_ordinal.html" class="btn btn-neutral float-right" title="ProfileOrdinal" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="Profiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="reference_profile_ordinal.html" class="btn btn-neutral float-right" title="ProfileOrdinal" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Profiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

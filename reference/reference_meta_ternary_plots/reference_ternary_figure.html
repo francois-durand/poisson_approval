@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>ternary_figure &mdash; Poisson Approval 0.28.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ternary_plot_convergence" href="reference_ternary_plot_convergence.html" />
+    <link rel="prev" title="TernaryAxesSubplotPoisson" href="reference_ternary_axes_subplot_poisson.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.28.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Ternary Plots</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_simplex_to_profile.html">SimplexToProfile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_axes_subplot_poisson.html">TernaryAxesSubplotPoisson</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ternary_figure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_convergence.html">ternary_plot_convergence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_n_equilibria.html">ternary_plot_n_equilibria</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_winners_at_equilibrium.html">ternary_plot_winners_at_equilibrium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_ternary_plot_winning_frequencies.html">ternary_plot_winning_frequencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Ternary Plots</a> &raquo;</li>
+        
+      <li>ternary_figure</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/reference_meta_ternary_plots/reference_ternary_figure.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ternary-figure">
+<h1>ternary_figure<a class="headerlink" href="#ternary-figure" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="poisson_approval.ternary_figure">
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.</span></code><code class="sig-name descname"><span class="pre">ternary_figure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size_inches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/ternary_plots.html#ternary_figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.ternary_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a ternary plot (adaptation of <code class="docutils literal notranslate"><span class="pre">figure</span></code> from the package <cite>python-ternary</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size_inches</strong> (<em>tuple</em><em> or </em><em>str</em>) – The horizontal and vertical sizes of the figure, in inches. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, we will try to do our best.</p></li>
+<li><p><strong>scale</strong> (<em>Number</em>) – The scale of the figure. The higher it is, the higher the resolution of the heatmap for example.</p></li>
+<li><p><strong>boundary_width</strong> – Width of the line representing the boundary of the triangle.</p></li>
+<li><p><strong>kwargs</strong> – Other keyword arguments are passed to the function <code class="docutils literal notranslate"><span class="pre">figure</span></code> of the package <cite>python-ternary</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>figure</strong> (<em>matplotlib.figure.Figure</em>)</p></li>
+<li><p><strong>ternary_ax</strong> (<a class="reference internal" href="reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson" title="poisson_approval.TernaryAxesSubplotPoisson"><code class="xref py py-class docutils literal notranslate"><span class="pre">TernaryAxesSubplotPoisson</span></code></a>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Grid and lines:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">figure</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="n">ternary_figure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">gridlines_simplex</span><span class="p">(</span><span class="n">multiple</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">horizontal_line_simplex</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">left_parallel_line_simplex</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">right_parallel_line_simplex</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">line_simplex</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Titles and annotations:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">figure</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="n">ternary_figure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">set_title_padded</span><span class="p">(</span><span class="s1">&#39;The title of the figure&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">right_corner_label</span><span class="p">(</span><span class="s1">&#39;The right label&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">top_corner_label</span><span class="p">(</span><span class="s1">&#39;The top label&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">left_corner_label</span><span class="p">(</span><span class="s1">&#39;The left label&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tax</span><span class="o">.</span><span class="n">annotate_simplex</span><span class="p">(</span><span class="s1">&#39;An annotation&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="reference_ternary_plot_convergence.html" class="btn btn-neutral float-right" title="ternary_plot_convergence" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference_ternary_axes_subplot_poisson.html" class="btn btn-neutral float-left" title="TernaryAxesSubplotPoisson" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, François Durand.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

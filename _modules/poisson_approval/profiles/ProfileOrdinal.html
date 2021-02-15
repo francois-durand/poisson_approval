@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.profiles.ProfileOrdinal &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -136,6 +137,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -163,7 +166,7 @@
 <span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.constants.EquilibriumStatus</span> <span class="kn">import</span> <span class="n">EquilibriumStatus</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.profiles.Profile</span> <span class="kn">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.random_factories.RandStrategyOrdinalUniform</span> <span class="kn">import</span> <span class="n">RandStrategyOrdinalUniform</span>
@@ -192,7 +195,7 @@
 <span class="sd">        candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.</span>
 <span class="sd">    normalization_warning : bool</span>
 <span class="sd">        Whether a warning should be issued if the input distribution is not normalized.</span>
-<span class="sd">    well_informed_voters : bool.</span>
+<span class="sd">    well_informed_voters : bool</span>
 <span class="sd">        If True (default), it is the usual model. If False, voters &quot;see&quot; only the candidates&#39; expected scores and</span>
 <span class="sd">        believe that the scores follow independent Poisson distributions. This option has an effect only for Approval</span>
 <span class="sd">        (neither for Plurality nor Anti-plurality).</span>
@@ -206,7 +209,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    If the input distribution `d_ranking_share` is not normalized, the profile will be normalized anyway and a</span>
-<span class="sd">    warning is issued (unless `normalization_warning` is False).</span>
+<span class="sd">    warning will be issued (unless `normalization_warning` is False).</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -351,7 +354,7 @@
             <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover - Only for notebooks</span>
         <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
         <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
 
@@ -360,7 +363,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        other : Object</span>
+<span class="sd">        other : object</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -421,15 +424,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        strategy : an argument accepted by :meth:`tau_strategic`</span>
+<span class="sd">        strategy</span>
+<span class="sd">            An argument accepted by :meth:`tau_strategic`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        TauVector</span>
-<span class="sd">            A share :attr:`ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters</span>
+<span class="sd">            A share `ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters</span>
 <span class="sd">            vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector</span>
-<span class="sd">            is the barycenter of ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective</span>
-<span class="sd">            weights ``self.ratio_fanatic`` and ``1 - self.ratio_fanatic``.</span>
+<span class="sd">            is the barycenter of `tau_fanatic` and `tau_strategic(strategy)`, with respective</span>
+<span class="sd">            weights `self.ratio_fanatic` and `1 - self.ratio_fanatic`.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -506,7 +510,7 @@
 <span class="sd">            &lt;a: 7/16, b: 3/8, c: 3/16&gt; ==&gt; a</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">voting_rule</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share_weak_voters_sincere</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># For weak orders, strategic = sincere</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share_weak_voters_strategic</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">t</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
@@ -545,7 +549,7 @@
                 <span class="k">continue</span>
             <span class="n">best_response</span> <span class="o">=</span> <span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span> <span class="o">==</span> <span class="n">INCONCLUSIVE</span><span class="p">:</span>
-                <span class="n">status</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">INCONCLUSIVE</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">INCONCLUSIVE</span><span class="p">)</span>  <span class="c1"># pragma: no cover - Should never happen</span>
             <span class="k">elif</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span> <span class="o">==</span> <span class="n">UTILITY_DEPENDENT</span><span class="p">:</span>
                 <span class="n">status</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">UTILITY_DEPENDENT</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">!=</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span><span class="p">:</span>
@@ -585,7 +589,7 @@
         <span class="n">support</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">support_in_rankings</span><span class="p">)</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>
         <span class="n">masks</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
              <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">support</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">utility_dependent</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
         <span class="p">]</span>
@@ -623,7 +627,7 @@
         <span class="n">support</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">support_in_rankings</span><span class="p">)</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>
         <span class="n">masks</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
              <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">support</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">utility_dependent</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
         <span class="p">]</span>
@@ -668,7 +672,7 @@
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>
         <span class="n">masks_winners</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span>
-                <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span>
+                <span class="p">[(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">,</span>
                   <span class="nb">len</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="p">[</span><span class="n">ranking</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
                  <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">support</span><span class="p">],</span>
                 <span class="n">strategy</span><span class="o">.</span><span class="n">winners</span>
@@ -711,28 +715,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

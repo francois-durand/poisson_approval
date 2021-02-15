@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.best_response.BestResponse &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -136,6 +137,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -160,16 +163,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for poisson_approval.best_response.BestResponse</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.SuperclassMeta</span> <span class="kn">import</span> <span class="n">SuperclassMeta</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">isnan</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">ballot_low_u</span><span class="p">,</span> <span class="n">ballot_high_u</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
 
-<div class="viewcode-block" id="BestResponse"><a class="viewcode-back" href="../../../reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse">[docs]</a><span class="k">class</span> <span class="nc">BestResponse</span><span class="p">:</span>
+<div class="viewcode-block" id="BestResponse"><a class="viewcode-back" href="../../../reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse">[docs]</a><span class="k">class</span> <span class="nc">BestResponse</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">SuperclassMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Best response for a given ordinal type of voter (abstract class).</span>
 
-<span class="sd">    The main objective of this class is to compute :attr:`threshold_utility`. The subclasses implement the</span>
+<span class="sd">    The main objective of this class is to compute :attr:`utility_threshold`. The subclasses implement the</span>
 <span class="sd">    best response in a specific voting rule.</span>
 
 <span class="sd">    Parameters</span>
@@ -223,32 +227,32 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">duo_ij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventDuo : The duo ij.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventDuo : The duo `ij`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;duo_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ij</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">duo_ik</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventDuo : The duo ik.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventDuo : The duo `ik`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;duo_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">duo_ji</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventDuo : The duo ji.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventDuo : The duo `ji`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;duo_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ji</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">duo_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventDuo : The duo jk.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventDuo : The duo `jk`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;duo_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">jk</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">duo_ki</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventDuo : The duo ki.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventDuo : The duo `ki`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;duo_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ki</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">duo_kj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventDuo : The duo kj.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventDuo : The duo `kj`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;duo_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">kj</span><span class="p">)</span>
 
     <span class="c1"># Weak pivots</span>
@@ -256,32 +260,32 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_weak_ij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot ij.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot `ij`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ij</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_weak_ik</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot ik.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot `ik`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_weak_ji</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot ji.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot `ji`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ji</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_weak_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot jk.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot `jk`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">jk</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_weak_ki</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot ki.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot `ki`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ki</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_weak_kj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot kj.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotWeak : The weak pivot `kj`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_weak_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">kj</span><span class="p">)</span>
 
     <span class="c1"># Strict pivots</span>
@@ -289,32 +293,32 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_strict_ij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot ij.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot `ij`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ij</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_strict_ik</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot ik.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot `ik`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_strict_ji</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot ji.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot `ji`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ji</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_strict_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot jk.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot `jk`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">jk</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_strict_ki</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot ki.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot `ki`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ki</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_strict_kj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot kj.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotStrict: The strict pivot `kj`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_strict_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">kj</span><span class="p">)</span>
 
     <span class="c1"># Personalized pivots tij</span>
@@ -322,32 +326,32 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij_ijk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters ijk.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters `ijk`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij_ikj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters ikj.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters `ikj`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij_jik</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters jik.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters `jik`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij_jki</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters jki.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters `jki`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij_kij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters kij.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters `kij`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij_kji</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters kji.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij: The first personalized pivot for voters `kji`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
 
     <span class="c1"># Personalized pivots tjk</span>
@@ -355,32 +359,32 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk_ijk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters ijk.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters `ijk`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk_ikj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters ikj.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters `ikj`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk_jik</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters jik.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters `jik`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk_jki</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters jki.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters `jki`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk_kij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters kij.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters `kij`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk_kji</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters kji.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk: The second personalized pivot for voters `kji`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
 
     <span class="c1"># Shortcuts for the personalized pivots for voters ijk</span>
@@ -388,14 +392,14 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTij : The `personalized pivot` between candidates i and j. This is just another notation for</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTij : The `personalized pivot` between candidates `i` and `j`. This is just another notation for</span>
 <span class="sd">        :attr:`pivot_tij_ijk`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tij_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">pivot_tjk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventPivotTjk : The `personalized pivot` between candidates j and k. This is just another notation for</span>
+        <span class="sd">&quot;&quot;&quot;EventPivotTjk : The `personalized pivot` between candidates `j` and `k`. This is just another notation for</span>
 <span class="sd">        :attr:`pivot_tjk_ijk`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;pivot_tjk_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking</span><span class="p">)</span>
@@ -431,32 +435,32 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">trio_2t_ij</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates i and j have one vote less).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates `i` and `j` have one vote less).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;trio_2t_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ij</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">trio_2t_ik</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates i and k have one vote less).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates `i` and `k` have one vote less).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;trio_2t_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">trio_2t_ji</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates j and i have one vote less).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates `j` and `i` have one vote less).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;trio_2t_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ji</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">trio_2t_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates j and k have one vote less).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates `j` and `k` have one vote less).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;trio_2t_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">jk</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">trio_2t_ki</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates k and i have one vote less).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates `k` and `i` have one vote less).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;trio_2t_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ki</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">trio_2t_kj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates k and j have one vote less).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;EventTrio2t: The second `personalized trio` (where candidates `k` and `j` have one vote less).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;trio_2t_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">kj</span><span class="p">)</span>
 
     <span class="c1"># Shortcuts for the personalized trios for voters ijk</span>
@@ -511,11 +515,12 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;tuple : Tuple `(utility_threshold, justification)`. Cf. :attr:`utility_threshold` and :attr:`justification`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@cached_property</span>
-    <span class="k">def</span> <span class="nf">threshold_utility</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">utility_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Number : The threshold value of the utility for the second candidate (where the optimal ballot changes).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -528,20 +533,20 @@
     <span class="k">def</span> <span class="nf">ballot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str : This can be a valid ballot or ``&#39;utility-dependent&#39;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Unable to compute threshold utility&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Unable to compute utility threshold&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover - Should never happen</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">ballot_low_u</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1E-9</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">look_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1E-9</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">ballot_high_u</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_utility</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utility_threshold</span> <span class="o">&lt;=</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="n">UTILITY_DEPENDENT</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
             <span class="s1">&#39;ballot = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span>
-            <span class="s1">&#39;threshold_utility = </span><span class="si">{:.6g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threshold_utility</span><span class="p">)),</span>
+            <span class="s1">&#39;utility_threshold = </span><span class="si">{:.6g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utility_threshold</span><span class="p">)),</span>
             <span class="s1">&#39;justification = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">justification</span><span class="p">,</span>
         <span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span>
 
@@ -609,7 +614,7 @@
         <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;pivot_ki_easy_or_tight = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_ki_easy_or_tight</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;pivot_jk_easy_or_tight = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_jk_easy_or_tight</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;pivot_kj_easy_or_tight = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_kj_easy_or_tight</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;threshold_utility = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_utility</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;utility_threshold = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">utility_threshold</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;justification = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">justification</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;ballot = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span>
         <span class="k">return</span> <span class="n">s</span></div>
@@ -619,28 +624,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

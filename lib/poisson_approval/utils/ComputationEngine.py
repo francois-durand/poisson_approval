@@ -66,16 +66,16 @@ class ComputationEngine(ABC):
 
         Parameters
         ----------
-        x, y : Number
+        x,y : Number
         *args
-            Cf. :func:`math.isclose`.
+            Cf. ``math.isclose``.
         **kwargs
-            Cf. :func:`math.isclose`.
+            Cf. ``math.isclose``.
 
         Returns
         -------
         bool
-            If `x` or `y` is a float or numpy float (but not a sympy float), then return
+            If `x` or `y` is a float or `numpy` float (but not a `sympy` float), then return
             ``math.isclose(x, y, *args, **kwargs)``. In all other cases, return True iff `x` is equal to `y`.
         """
         if isinstance(x, float) or isinstance(y, float):
@@ -89,12 +89,12 @@ class ComputationEngine(ABC):
 
         Parameters
         ----------
-        x, y : Number
+        x,y : Number
 
         Returns
         -------
         Number
-            If `x` or `y` is 0, then 0 (even if the other input is ``nan``). Otherwise, the product
+            If `x` or `y` is 0, then 0 (even if the other input is `nan`). Otherwise, the product
             of `x` and `y`.
         """
         x = cls.simplify(x)

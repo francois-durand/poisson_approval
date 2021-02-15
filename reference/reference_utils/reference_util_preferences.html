@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>UtilPreferences Module &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Contributing" href="../../contributing.html" />
-    <link rel="prev" title="UtilMasks Module" href="reference_util_masks.html" /> 
+    <link rel="prev" title="UtilPlot Module" href="reference_util_plot.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
@@ -104,7 +105,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_func.html">computation_engine</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_computation_engine.html">ComputationEngine</a></li>
@@ -118,6 +122,7 @@
 <li class="toctree-l3"><a class="reference internal" href="reference_util_ballots.html">UtilBallots Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_cache.html">UtilCache Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_masks.html">UtilMasks Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_plot.html">UtilPlot Module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">UtilPreferences Module</a></li>
 </ul>
 </li>
@@ -166,6 +171,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -181,7 +188,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/reference/reference_utils/reference_util_preferences.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -223,11 +230,11 @@
 <span id="utilpreferences-module"></span><h1>UtilPreferences Module<a class="headerlink" href="#module-poisson_approval.utils.UtilPreferences" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilPreferences.d_candidate_ordinal_utility">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilPreferences.</code><code class="sig-name descname">d_candidate_ordinal_utility</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#d_candidate_ordinal_utility"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.d_candidate_ordinal_utility" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilPreferences.</span></code><code class="sig-name descname"><span class="pre">d_candidate_ordinal_utility</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#d_candidate_ordinal_utility"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.d_candidate_ordinal_utility" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ordinal utilities of the candidates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>order</strong> (<em>str</em>) – For example ‘abc’ (ranking) or ‘a~b&gt;c’ (weak order).</p>
+<dd class="field-odd"><p><strong>order</strong> (<em>str</em>) – For example <code class="docutils literal notranslate"><span class="pre">'abc'</span></code> (ranking) or <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code> (weak order).</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Key: candidate. Value: an ordinal utility.</p>
@@ -249,7 +256,7 @@
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilPreferences.is_hater">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilPreferences.</code><code class="sig-name descname">is_hater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weak_order</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#is_hater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.is_hater" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilPreferences.</span></code><code class="sig-name descname"><span class="pre">is_hater</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weak_order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#is_hater"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.is_hater" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether a weak order represents a “hater”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,7 +278,7 @@
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilPreferences.is_lover">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilPreferences.</code><code class="sig-name descname">is_lover</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weak_order</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#is_lover"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.is_lover" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilPreferences.</span></code><code class="sig-name descname"><span class="pre">is_lover</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weak_order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#is_lover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.is_lover" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether a weak order represents a “lover”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -293,14 +300,15 @@
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilPreferences.is_weak_order">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilPreferences.</code><code class="sig-name descname">is_weak_order</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#is_weak_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.is_weak_order" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilPreferences.</span></code><code class="sig-name descname"><span class="pre">is_weak_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#is_weak_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.is_weak_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether an object is a weak order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>o</strong> (<em>object</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True iff <cite>o</cite> is a string that represent a weak order, i.e. of the form ‘a&gt;b~c’ (lover) or ‘a~b&gt;c’ (hater).</p>
+<dd class="field-even"><p>True iff <cite>o</cite> is a string that represent a weak order, i.e. of the form <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code> (lover) or <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code>
+(hater).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -319,7 +327,7 @@
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilPreferences.sort_weak_order">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilPreferences.</code><code class="sig-name descname">sort_weak_order</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weak_order</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#sort_weak_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.sort_weak_order" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilPreferences.</span></code><code class="sig-name descname"><span class="pre">sort_weak_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weak_order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilPreferences.html#sort_weak_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilPreferences.sort_weak_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Put a weak order in normalized format (with the indifferent candidates sorted alphabetically).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -348,37 +356,29 @@
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../../contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="reference_util_masks.html" class="btn btn-neutral float-left" title="UtilMasks Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="../../contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference_util_plot.html" class="btn btn-neutral float-left" title="UtilPlot Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

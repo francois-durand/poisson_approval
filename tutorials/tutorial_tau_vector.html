@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>TauVector &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -107,11 +109,13 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorial_ternary_plots.html">Ternary Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_binary_plots.html">Binary Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_probabilities.html">Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_monte_carlo_fictitious_play.html">Monte-Carlo Fictitious Play</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_iterables.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_more_classes_of_profiles.html">More Classes of Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_asymptotic_developments.html">Asymptotic Developments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
@@ -156,6 +160,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -169,7 +175,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/tutorials/tutorial_tau_vector.ipynb.txt" rel="nofollow"> View page source</a>
           
         
@@ -467,7 +473,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="A-Tau-Vector-and-its-Basic-Properties">
 <h2>A Tau-Vector and its Basic Properties<a class="headerlink" href="#A-Tau-Vector-and-its-Basic-Properties" title="Permalink to this headline">¶</a></h2>
-<p>The most usual way to define a tau-vector (ballot shares) is to deduce it from applying a given strategy in a given profile, like in the tutorial on ProfileNoisyDiscrete. That being said, a tau-vector can also be defined directly:</p>
+<p>The most usual way to define a tau-vector (ballot shares) is to deduce it from applying a given strategy in a given profile, like in the tutorial on <em>ProfileNoisyDiscrete</em>. That being said, a tau-vector can also be defined directly:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -496,13 +502,13 @@ div.rendered_html tbody tr:hover {
 Fraction(3, 5)
 </pre></div></div>
 </div>
-<p>Scores:</p>
+<p>Share of single / double votes:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">tau</span><span class="o">.</span><span class="n">scores</span>
+<span></span><span class="n">tau</span><span class="o">.</span><span class="n">share_single_votes</span>
 </pre></div>
 </div>
 </div>
@@ -512,12 +518,49 @@ Fraction(3, 5)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
+Fraction(2, 5)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tau</span><span class="o">.</span><span class="n">share_double_votes</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Fraction(3, 5)
+</pre></div></div>
+</div>
+<p>Scores:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tau</span><span class="o">.</span><span class="n">scores</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 {a: 7/10, b: 3/5, c: 3/10}
 </pre></div></div>
 </div>
 <p>Winners:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -526,7 +569,7 @@ Fraction(3, 5)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -537,11 +580,11 @@ Fraction(3, 5)
 </div>
 <div class="section" id="Events:-Duos,-Pivots-and-Trios">
 <h2>Events: Duos, Pivots and Trios<a class="headerlink" href="#Events:-Duos,-Pivots-and-Trios" title="Permalink to this headline">¶</a></h2>
-<p>An Event provides the asymptotic development of the limit probability when the expected number of voters <span class="math notranslate nohighlight">\(n\)</span> tend to infinity, as well as the offsets for each type of ballot.</p>
+<p>An <em>Event</em> provides the asymptotic development of the probability when the expected number of voters <span class="math notranslate nohighlight">\(n\)</span> tend to infinity, as well as the offsets for each type of ballot.</p>
 <p>Duo between <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>:</p>
 <p>(<span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> have the same score, but not necessarily higher than <span class="math notranslate nohighlight">\(c\)</span>.)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -550,7 +593,7 @@ Fraction(3, 5)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -560,7 +603,7 @@ Fraction(3, 5)
 </div>
 <p>Access the asymptotic development and the offsets:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -569,7 +612,7 @@ Fraction(3, 5)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -578,7 +621,7 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -587,7 +630,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -596,9 +639,9 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <p>Pivots between <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>:</p>
-<p>(For the definition of each variant, cf. Reference section.)</p>
+<p>(For the definition of each variant, cf. the <em>Reference</em> section.)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -607,7 +650,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -616,7 +659,7 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -625,7 +668,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -634,7 +677,7 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -643,7 +686,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -652,7 +695,7 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -661,7 +704,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -670,9 +713,9 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <p>Trios:</p>
-<p>(For the definition of each variant, cf. Reference section.)</p>
+<p>(For the definition of each variant, cf. the <em>Reference</em> section.)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -681,7 +724,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -690,7 +733,7 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -699,7 +742,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -708,7 +751,7 @@ exp(- 0.1 n + o(1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -717,7 +760,7 @@ exp(- 0.1 n + o(1))
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -725,9 +768,27 @@ exp(- 0.1 n + o(1))
 &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 1.18339 + o(1)), phi_a = 0, phi_c = 1.41421, phi_ab = 0.707107&gt;
 </pre></div></div>
 </div>
+<p>Print the order of the magnitudes of the pivots:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tau</span><span class="o">.</span><span class="n">print_magnitudes_order</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+mu_ac &gt; mu_ab &gt; mu_bc
+</pre></div></div>
+</div>
 <p>Print all the weak pivots:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -748,7 +809,7 @@ trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a =
 </div>
 <p>Print all the pivots:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -802,7 +863,7 @@ duo_bc:  &lt;asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_
 <li><p><em>Unfocused</em>: the three magnitudes are equal.</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -811,7 +872,7 @@ duo_bc:  &lt;asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -821,7 +882,7 @@ Focus.DIRECT
 </div>
 <p>Best response for each ranking:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -830,17 +891,17 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{abc: &lt;ballot = a, threshold_utility = 1, justification = Asymptotic method&gt;, acb: &lt;ballot = a, threshold_utility = 1, justification = Asymptotic method&gt;, bac: &lt;ballot = ab, threshold_utility = 0, justification = Asymptotic method&gt;, bca: &lt;ballot = bc, threshold_utility = 0, justification = Asymptotic method&gt;, cab: &lt;ballot = c, threshold_utility = 1, justification = Asymptotic method&gt;, cba: &lt;ballot = bc, threshold_utility = 0, justification = Asymptotic method&gt;}
+{abc: &lt;ballot = a, utility_threshold = 1, justification = Asymptotic method&gt;, acb: &lt;ballot = a, utility_threshold = 1, justification = Asymptotic method&gt;, bac: &lt;ballot = ab, utility_threshold = 0, justification = Asymptotic method&gt;, bca: &lt;ballot = bc, utility_threshold = 0, justification = Asymptotic method&gt;, cab: &lt;ballot = c, utility_threshold = 1, justification = Asymptotic method&gt;, cba: &lt;ballot = bc, utility_threshold = 0, justification = Asymptotic method&gt;}
 </pre></div></div>
 </div>
 <p>Characteristics of the best response for voters with ranking <span class="math notranslate nohighlight">\(abc\)</span>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -849,16 +910,16 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;ballot = a, threshold_utility = 1, justification = Asymptotic method&gt;
+&lt;ballot = a, utility_threshold = 1, justification = Asymptotic method&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -867,7 +928,7 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -876,16 +937,16 @@ Focus.DIRECT
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">tau</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">threshold_utility</span>
+<span></span><span class="n">tau</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">utility_threshold</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -894,7 +955,7 @@ Focus.DIRECT
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -903,7 +964,7 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -912,7 +973,7 @@ Focus.DIRECT
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -921,7 +982,7 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -932,9 +993,9 @@ Focus.DIRECT
 </div>
 <div class="section" id="Strategy-with-Attached-Profile-and-Implicit-Tau">
 <h2>Strategy with Attached Profile and Implicit Tau<a class="headerlink" href="#Strategy-with-Attached-Profile-and-Implicit-Tau" title="Permalink to this headline">¶</a></h2>
-<p>As mentioned in the tutorial on ProfileNoisyDiscrete, you can define a strategy with an attached profile:</p>
+<p>As mentioned in the tutorial on <em>ProfileNoisyDiscrete</em>, you can define a strategy with an attached profile:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -949,7 +1010,7 @@ Focus.DIRECT
 </div>
 <p>This defines a tau vector:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -958,7 +1019,7 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -968,7 +1029,7 @@ Focus.DIRECT
 </div>
 <p>In that case, the strategy has shortcuts for all the properties of the tau vector. Thus for example, instead of writing:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -977,7 +1038,7 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -987,7 +1048,7 @@ Focus.DIRECT
 </div>
 <p>You can simply write:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -996,7 +1057,7 @@ Focus.DIRECT
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1006,7 +1067,7 @@ Focus.DIRECT
 </div>
 <p>Similarly, instead of writing:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1027,7 +1088,7 @@ trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a =
 </div>
 <p>You can write:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1051,7 +1112,7 @@ trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a =
 <h2>Symbolic Computation<a class="headerlink" href="#Symbolic-Computation" title="Permalink to this headline">¶</a></h2>
 <p>Up to now, all the computations we made were numeric. When defining a profile or a tau-vector, you can use the option <code class="docutils literal notranslate"><span class="pre">symbolic=True</span></code>. In that case, all computations will be symbolic if possible. Note, however, that this option is much slower than numeric computation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1065,7 +1126,7 @@ trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a =
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1092,37 +1153,29 @@ trio:  &lt;asymptotic = exp(n*(-1 + 3*sqrt(2)/5) - log(n)/2 - log(6*sqrt(2)*pi/5
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="tutorial_ternary_plots.html" class="btn btn-neutral float-right" title="Ternary Plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="tutorial_profile_noisy_discrete_more_options.html" class="btn btn-neutral float-left" title="ProfileNoisyDiscrete: More Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="tutorial_ternary_plots.html" class="btn btn-neutral float-right" title="Ternary Plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial_profile_noisy_discrete_more_options.html" class="btn btn-neutral float-left" title="ProfileNoisyDiscrete: More Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

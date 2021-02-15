@@ -7,7 +7,7 @@ class EventDuo(Event):
 
     Notes
     -----
-    We consider the situations where ``S_x = S_y``. It is not necessary a pivot, because ``z`` can
+    We consider the situations where ``S_x = S_y``. It is not necessarily a pivot, because ``z`` can
     have a greater score.
 
     For parameters and attributes, cf. :class:`Event`.

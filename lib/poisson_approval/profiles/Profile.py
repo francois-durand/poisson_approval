@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from fractions import Fraction
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.containers.AnalyzedStrategies import AnalyzedStrategies
 from poisson_approval.containers.Winners import Winners
@@ -11,6 +11,7 @@ from poisson_approval.utils.computation_engine import computation_engine
 from poisson_approval.utils.SetPrintingInOrder import SetPrintingInOrder
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
+from poisson_approval.utils.SuperclassMeta import SuperclassMeta
 from poisson_approval.utils.Util import my_division, normalize_dict_to_0_1
 from poisson_approval.utils.UtilPreferences import is_lover, d_candidate_ordinal_utility
 from poisson_approval.utils.UtilBallots import sort_ballot, ballot_high_u, ballot_low_u
@@ -18,7 +19,7 @@ from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, 
 
 
 # noinspection PyUnresolvedReferences
-class Profile(DeleteCacheMixin):
+class Profile(DeleteCacheMixin, metaclass=SuperclassMeta):
     """A profile of preference (abstract class).
 
     Parameters
@@ -36,7 +37,7 @@ class Profile(DeleteCacheMixin):
 
     voting_rule = property_deleting_cache('_voting_rule')
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -69,7 +70,7 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def d_candidate_plurality_welfare(self):
-        """DictPrintingInOrder : plurality welfare of each candidate, i.e. share of voters with utility 1.
+        """DictPrintingInOrder : Plurality welfare of each candidate, i.e. share of voters with utility 1.
         """
         return DictPrintingInOrder({candidate: sum([
             share
@@ -83,7 +84,7 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def d_candidate_anti_plurality_welfare(self):
-        """DictPrintingInOrder : anti-plurality welfare of each candidate, i.e. share of voters with utility > 0.
+        """DictPrintingInOrder : Anti-plurality welfare of each candidate, i.e. share of voters with utility > 0.
         """
         return DictPrintingInOrder({candidate: sum([
             share
@@ -97,21 +98,23 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def d_candidate_relative_plurality_welfare(self):
-        """DictPrintingInOrder : relative plurality welfare of each candidate.
+        """DictPrintingInOrder : Relative plurality welfare of each candidate.
             This is similar to :attr:`d_candidate_plurality_welfare`, but renormalized so that the candidate with best
-            welfare has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /
-            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,
-            the relative welfare is 1 for all of them.
+            welfare has 1 and the one with worst welfare has 0. In math:
+            `relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)`.
+            In the case where all candidates have the same welfare, by convention, the relative welfare is 1 for all
+            of them.
         """
         return normalize_dict_to_0_1(self.d_candidate_plurality_welfare)
 
     @cached_property
     def d_candidate_relative_anti_plurality_welfare(self):
-        """DictPrintingInOrder : relative anti-plurality welfare of each candidate.
+        """DictPrintingInOrder : Relative anti-plurality welfare of each candidate.
             This is similar to :attr:`d_candidate_anti_plurality_welfare`, but renormalized so that the candidate with
             best welfare has 1 and the one with worst welfare has 0. In math:
-            relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare). In the case where all candidates
-            have the same welfare, by convention, the relative welfare is 1 for all of them.
+            `relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)`.
+            In the case where all candidates have the same welfare, by convention, the relative welfare is 1 for all
+            of them.
         """
         return normalize_dict_to_0_1(self.d_candidate_anti_plurality_welfare)
 
@@ -119,7 +122,7 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def weighted_maj_graph(self):
-        """np.ndarray : Weighted majority graph."""
+        """numpy.ndarray : Weighted majority graph."""
         ab = (self.abc + self.acb + self.cab - self.bac - self.bca - self.cba
               + self.d_weak_order_share['a>b~c'] - self.d_weak_order_share['b~c>a']
               + self.d_weak_order_share['a~c>b'] - self.d_weak_order_share['b>a~c'])
@@ -140,8 +143,8 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def is_profile_condorcet(self):
-        """float : Whether the profile is Condorcet. 1. means there is a strict Condorcet winner, 0.5 means there are
-        one or more weak Condorcet winner(s), 0. means there is no Condorcet winner.
+        """float : Whether the profile is Condorcet. By convention, ``1.`` means there is a strict Condorcet winner,
+        ``0.5`` means there are one or more weak Condorcet winner(s), ``0.`` means there is no Condorcet winner.
         """
         m = self.weighted_maj_graph
         min_score = [min(m[0, 1], m[0, 2]), min(m[1, 0], m[1, 2]), min(m[2, 0], m[2, 1])]
@@ -239,21 +242,22 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def d_ballot_share_weak_voters_fanatic(self):
-        """dict : Ballot shares due to the weak orders if they vote fanatically
+        """dict : Ballot shares due to the weak orders if they vote fanatically.
 
-        Voters of the type ``'a>b~c'``:
+        Voters of type ``'a>b~c'`` (`lovers`):
 
         * In Approval or Plurality, they vote for `a`.
         * In Anti-plurality, half of them vote for `ab` (i.e. against `c`) and half of them vote for `ac` (i.e.
           against `b`).
 
-        Voters of the type ``'a~b>c'``:
+        Voters of type ``'a~b>c'`` (`haters`):
 
         * In Approval or Plurality, half of them vote for `a` and half of them vote for `b`.
         * In Anti-plurality, they vote for `ab` (i.e. against `c`).
         """
         d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        for weak_order, share in self.d_weak_order_share.items():
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
             if is_lover(weak_order):
                 if self.voting_rule in {APPROVAL, PLURALITY}:
                     d[weak_order[0]] += share
@@ -274,21 +278,22 @@ class Profile(DeleteCacheMixin):
 
     @cached_property
     def d_ballot_share_weak_voters_sincere(self):
-        """dict : Ballot shares due to the weak orders if they vote sincerely
+        """dict : Ballot shares due to the weak orders if they vote sincerely.
 
-        Voters of the type ``'a>b~c'``:
+        Voters of type ``'a>b~c'`` (`lovers`):
 
         * In Approval or Plurality, they vote for `a`.
         * In Anti-plurality, half of them vote for `ab` (i.e. against `c`) and half of them vote for `ac` (i.e.
           against `b`).
 
-        Voters of the type ``'a~b>c'``:
+        Voters of type ``'a~b>c'`` (`haters`):
 
         * In Approval or Anti-plurality, they vote for `ab` (i.e. against `c`).
         * In Plurality, half of them vote for `a` and half of them vote for `b`.
         """
         d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
-        for weak_order, share in self.d_weak_order_share.items():
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
             if is_lover(weak_order):
                 if self.voting_rule in {APPROVAL, PLURALITY}:
                     d[weak_order[0]] += share
@@ -301,6 +306,44 @@ class Profile(DeleteCacheMixin):
                 if self.voting_rule == PLURALITY:
                     d[weak_order[0]] += my_division(share, 2)
                     d[weak_order[2]] += my_division(share, 2)
+                elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                else:
+                    raise NotImplementedError
+        return d
+
+    def d_ballot_share_weak_voters_strategic(self, strategy):
+        """dict : Ballot shares due to the weak orders if they vote strategically.
+
+        For voters with a weak order, strategic voting is the same as sincere voting, except in two cases:
+
+        * For voters of type ``'a~b>c'`` (`haters`)`in Plurality, who have two dominant strategies: vote for `a` or `b`.
+        * For voters of type ``'a>b~c'`` (`lovers`) in Anti-Plurality, who have two dominant strategies: vote
+          against `b` or `c` (i.e. respectively for `ac` or `ab`).
+        """
+        d = {ballot: 0 for ballot in BALLOTS_WITHOUT_INVERSIONS}
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            if is_lover(weak_order):
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    d[weak_order[0]] += share
+                elif self.voting_rule == ANTI_PLURALITY:
+                    ballot = strategy.d_weak_order_ballot[weak_order]
+                    if ballot == SPLIT:
+                        d[sort_ballot(weak_order[0] + weak_order[2])] += my_division(share, 2)
+                        d[sort_ballot(weak_order[0] + weak_order[4])] += my_division(share, 2)
+                    else:
+                        d[ballot] += share
+                else:
+                    raise NotImplementedError
+            else:  # is_hater(weak_order)
+                if self.voting_rule == PLURALITY:
+                    ballot = strategy.d_weak_order_ballot[weak_order]
+                    if ballot == SPLIT:
+                        d[weak_order[0]] += my_division(share, 2)
+                        d[weak_order[2]] += my_division(share, 2)
+                    else:
+                        d[ballot] += share
                 elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
                     d[sort_ballot(weak_order[0] + weak_order[2])] += share
                 else:
@@ -322,13 +365,15 @@ class Profile(DeleteCacheMixin):
         """
         raise NotImplementedError
 
-    def best_responses_to_strategy(self, d_ranking_best_response):
+    def best_responses_to_strategy(self, tau, ratio_optimistic=Fraction(1, 2)):
         """Convert best responses to a :class:`StrategyThreshold`.
 
         Parameters
         ----------
-        d_ranking_best_response : dict
-            Key: ranking. Value: :class:`BestResponse`.
+        tau : TauVector
+            Tau-vector.
+        ratio_optimistic
+            The value of `ratio_optimistic` to use. Default: 1/2.
 
         Returns
         -------
@@ -336,19 +381,48 @@ class Profile(DeleteCacheMixin):
             The conversion of the best responses into a strategy. Only the rankings present in this profile are
             mentioned in the strategy.
         """
-        return StrategyThreshold({
-            ranking: best_response.threshold_utility
-            for ranking, best_response in d_ranking_best_response.items()
-            if self.d_ranking_share[ranking] > 0
-        }, ratio_optimistic=Fraction(1, 2), profile=self, voting_rule=self.voting_rule)
+        # Deal with weak orders
+        d_weak_order_ballot = {}
+        if self.voting_rule == APPROVAL:
+            pass
+        elif self.voting_rule == PLURALITY:
+            for weak_order in WEAK_ORDERS_HATE_WITHOUT_INVERSIONS:  # i~j>k
+                if self.d_weak_order_share[weak_order] > 0:
+                    i, j = weak_order[0], weak_order[2]
+                    if tau.scores[i] > tau.scores[j]:
+                        d_weak_order_ballot[weak_order] = i
+                    elif tau.scores[i] < tau.scores[j]:
+                        d_weak_order_ballot[weak_order] = j
+                    else:
+                        d_weak_order_ballot[weak_order] = SPLIT
+        elif self.voting_rule == ANTI_PLURALITY:
+            for weak_order in WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS:  # i>j~k
+                if self.d_weak_order_share[weak_order] > 0:
+                    i, j, k = weak_order[0], weak_order[2], weak_order[4]
+                    if tau.scores[j] > tau.scores[k]:  # Then vote against `j`
+                        d_weak_order_ballot[weak_order] = sort_ballot(i + k)
+                    elif tau.scores[j] < tau.scores[k]:  # Then vote against `k`
+                        d_weak_order_ballot[weak_order] = sort_ballot(i + j)
+                    else:
+                        d_weak_order_ballot[weak_order] = SPLIT
+        # Finish the job
+        return StrategyThreshold(
+            {
+                ranking: best_response.utility_threshold
+                for ranking, best_response in tau.d_ranking_best_response.items()
+                if self.d_ranking_share[ranking] > 0
+            },
+            d_weak_order_ballot=d_weak_order_ballot, ratio_optimistic=ratio_optimistic,
+            profile=self, voting_rule=self.voting_rule
+        )
 
     @property
     def strategies_ordinal(self):
-        """Iterator: ordinal strategies of the profile.
+        """Iterator: Ordinal strategies of the profile.
 
         Yields
         ------
-        StrategyOrdinal
+        :class:`StrategyOrdinal`
             All possible ordinal strategies for this profile.
 
         Examples
@@ -359,11 +433,11 @@ class Profile(DeleteCacheMixin):
 
     @property
     def strategies_pure(self):
-        """Iterator: pure strategies of the profile.
+        """Iterator: Pure strategies of the profile.
 
         Yields
         ------
-        Strategy
+        :class:`Strategy`
             All possible pure strategies of the profile. This is implemented only for discrete profiles such
             as :class:`ProfileTwelve` or :class:`ProfileDiscrete`.
 
@@ -375,11 +449,11 @@ class Profile(DeleteCacheMixin):
 
     @property
     def strategies_group(self):
-        """Iterator: group strategies of the profile.
+        """Iterator: Group strategies of the profile.
 
         Yields
         ------
-        Strategy
+        :class:`Strategy`
             All possible group strategies of the profile. This is implemented only for profiles where we consider
             that there is a natural notion of group, such as :class:`ProfileNoisyDiscrete`.
 
@@ -417,7 +491,7 @@ class Profile(DeleteCacheMixin):
                 equilibria.append(strategy)
             elif status == EquilibriumStatus.UTILITY_DEPENDENT:
                 utility_dependent.append(strategy)
-            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover
+            elif status == EquilibriumStatus.INCONCLUSIVE:  # pragma: no cover - Should never happen
                 inconclusive.append(strategy)
                 raise AssertionError('Met an inconclusive case: \nprofile = %r\nstrategy = %r' % (self, strategy))
             else:
@@ -454,15 +528,12 @@ class Profile(DeleteCacheMixin):
     def order_and_label(cls, t):
         """Order and label of a discrete type.
 
-        Helper method for the ternary plots. Implemented only for subclasses of Profile where the initialization
-        is made with a dictionary that maps types to voter share, such as :class:`ProfileNoisyDiscrete` or
-        :class:`ProfileOrdinal`, but unlike :class:`ProfileHistogram` (where a second dictionary is needed for the
-        histograms).
+        Helper method for the ternary plots.
 
         Parameters
         ----------
         t : object
-            A type. Any type that is accepted at a key in the initialization dictionary.
+            A type. Any type that is accepted as a key in the initialization dictionary.
 
         Returns
         -------
@@ -503,7 +574,7 @@ class Profile(DeleteCacheMixin):
     def random_tau_undominated(self):
         """Random tau based on undominated ballots.
 
-        This is used, for example, in :meth:`ProfileCardinal.iterated_voting`.
+        This is used, for example, in :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.
 
         Returns
         -------
@@ -517,6 +588,25 @@ class Profile(DeleteCacheMixin):
             r = random.random()
             d[ballot_low_u(ranking, self.voting_rule)] += r * share
             d[ballot_high_u(ranking, self.voting_rule)] += (1 - r) * share
+        for weak_order, share in self.d_weak_order_share.items():
+            if is_lover(weak_order):
+                if self.voting_rule in {APPROVAL, PLURALITY}:
+                    d[weak_order[0]] += share
+                elif self.voting_rule == ANTI_PLURALITY:
+                    r = random.random()
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += r * share
+                    d[sort_ballot(weak_order[0] + weak_order[4])] += (1 - r) * share
+                else:
+                    raise NotImplementedError
+            else:  # is_hater(weak_order)
+                if self.voting_rule == PLURALITY:
+                    r = random.random()
+                    d[weak_order[0]] += r * share
+                    d[weak_order[2]] += (1 - r) * share
+                elif self.voting_rule in {APPROVAL, ANTI_PLURALITY}:
+                    d[sort_ballot(weak_order[0] + weak_order[2])] += share
+                else:
+                    raise NotImplementedError
         return TauVector(d, voting_rule=self.voting_rule, symbolic=self.symbolic)
 
 

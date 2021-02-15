@@ -168,7 +168,7 @@ phi_ab = 0.654654>
     duo_bc:  <asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_a = 1, phi_c = 1.41421, \
 phi_ab = 0.707107>
     >>> strategy.d_ranking_best_response['abc']
-    <ballot = a, threshold_utility = 1, justification = Asymptotic method>
+    <ballot = a, utility_threshold = 1, justification = Asymptotic method>
     >>> strategy.is_equilibrium
     EquilibriumStatus.EQUILIBRIUM
     """

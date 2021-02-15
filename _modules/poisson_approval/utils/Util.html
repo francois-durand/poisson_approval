@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.utils.Util &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -121,6 +122,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -167,7 +170,7 @@
 <span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
 <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
 
@@ -195,7 +198,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
-<span class="sd">        A numpy array of length `d`, whose sum is 1.</span>
+<span class="sd">        A `numpy` array of length `d`, whose sum is 1.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -220,7 +223,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
-<span class="sd">        A numpy array of `d` integers, whose sum is `fixed_sum`, and drawn uniformly.</span>
+<span class="sd">        A `numpy` array of `d` integers, whose sum is `fixed_sum`, and drawn uniformly.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -249,7 +252,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
-<span class="sd">        A numpy array of length `d`, whose coordinates are fractions of the given denominator, and whose sum is 1.</span>
+<span class="sd">        A `numpy` array of length `d`, whose coordinates are fractions of the given denominator, and whose sum is 1.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -267,14 +270,14 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    factory : callable or tuple</span>
+<span class="sd">    factory : callable or tuple of callable</span>
 <span class="sd">        This can be:</span>
 
 <span class="sd">        * Either a callable that takes no input and that outputs a (random) `something`,</span>
 <span class="sd">        * Or a tuple of such factories (cf. examples below).</span>
 <span class="sd">    n_samples : int</span>
 <span class="sd">        Number of samples.</span>
-<span class="sd">    test : callable or tuple</span>
+<span class="sd">    test : callable or tuple of callable</span>
 <span class="sd">        This can be:</span>
 
 <span class="sd">        * Either a function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</span>
@@ -285,12 +288,12 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    float or tuple</span>
+<span class="sd">    float or tuple of float</span>
 <span class="sd">        This can be:</span>
 
 <span class="sd">        * Either the probability that the output(s) generated by `factory` meet(s) `test`, conditional on the fact</span>
 <span class="sd">          that it meets `conditional_on`, based on a Monte-Carlo estimation of `n_samples` trials.</span>
-<span class="sd">        * Either a tuple giving this probability for each member of `test`, when `test` is a tuple itself.</span>
+<span class="sd">        * Or a tuple giving this probability for each member of `test`, when `test` is a tuple itself.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -331,7 +334,7 @@
 <span class="sd">        ...             test=(lambda x: x &gt; .5, lambda x: x &gt; .75), conditional_on=lambda x: x &gt; .25)</span>
 <span class="sd">        (0.661, 0.332)</span>
 
-<span class="sd">    When using a tuple of tests, the same samples are used to estimate each probability.</span>
+<span class="sd">    When using a tuple of tests, the same sample is used to estimate each probability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">factory</span> <span class="o">=</span> <span class="p">(</span><span class="n">factory</span><span class="p">,)</span>
@@ -355,7 +358,7 @@
 
 
 <div class="viewcode-block" id="image_distribution"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.image_distribution">[docs]</a><span class="k">def</span> <span class="nf">image_distribution</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">conditional_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Distribution of ``f(something)`` for a random `something`.</span>
+    <span class="sd">&quot;&quot;&quot;Distribution of `f(something)` for a random `something`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -448,7 +451,7 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This extends the usual numpy function ``isnan`` to fractions and sympy expressions.</span>
+<span class="sd">    This extends the usual `numpy` function ``isnan`` to fractions and `sympy` expressions.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -480,7 +483,7 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This extends the usual numpy function ``isposinf`` to fractions and sympy expressions.</span>
+<span class="sd">    This extends the usual `numpy` function ``isposinf`` to fractions and `sympy` expressions.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -512,7 +515,7 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This extends the usual numpy function ``isneginf`` to fractions and sympy expressions.</span>
+<span class="sd">    This extends the usual `numpy` function ``isneginf`` to fractions and `sympy` expressions.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -539,7 +542,7 @@
 <span class="sd">    singular : str</span>
 <span class="sd">        The singular word.</span>
 <span class="sd">    plural : str</span>
-<span class="sd">        The plural word. Default: the singular with a final &#39;s&#39;.</span>
+<span class="sd">        The plural word. Default: the singular with a final &quot;s&quot;.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -672,8 +675,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    ndarray</span>
-<span class="sd">        Array of size 3. For example, the first coefficient is the probability that candidate `a` win by a random</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Array of size 3. For example, the first coefficient is the probability that candidate `a` wins by a random</span>
 <span class="sd">        tie-break.</span>
 
 <span class="sd">    Examples</span>
@@ -691,7 +694,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    values : ndarray</span>
+<span class="sd">    values : numpy.ndarray</span>
 <span class="sd">        An array of size 3.</span>
 
 <span class="sd">    Returns</span>
@@ -718,7 +721,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    ndarray</span>
+<span class="sd">    numpy.ndarray</span>
 <span class="sd">        The corresponding array.</span>
 
 <span class="sd">    Examples</span>
@@ -733,7 +736,7 @@
 <div class="viewcode-block" id="one_over_t"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_t">[docs]</a><span class="k">def</span> <span class="nf">one_over_t</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Function `1 / t`.</span>
 
-<span class="sd">    When used as an update ratio (cf. :meth:`ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic</span>
+<span class="sd">    When used as an update ratio (cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play`), this amounts to computing the arithmetic</span>
 <span class="sd">    mean.</span>
 
 <span class="sd">    Parameters</span>
@@ -743,6 +746,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Number</span>
+<span class="sd">        `1 / t`.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -755,7 +759,7 @@
 <div class="viewcode-block" id="one_over_sqrt_t"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_sqrt_t">[docs]</a><span class="k">def</span> <span class="nf">one_over_sqrt_t</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Function `1 / sqrt(t)`.</span>
 
-<span class="sd">    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`.</span>
+<span class="sd">    This function is provided as an example of update ratio for :meth:`~poisson_approval.ProfileCardinal.fictitious_play`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -764,6 +768,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Number</span>
+<span class="sd">        `1 / sqrt(t)`.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -776,8 +781,9 @@
 <div class="viewcode-block" id="one_over_log_t_plus_one"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_log_t_plus_one">[docs]</a><span class="k">def</span> <span class="nf">one_over_log_t_plus_one</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Function `1 / log(t + 1)`.</span>
 
-<span class="sd">    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant</span>
-<span class="sd">    1 in the denominator is the smallest integer such that `f(t = 2) &lt; 1`.</span>
+<span class="sd">    This function is provided as an example of update ratio for</span>
+<span class="sd">    :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. The constant 1 in the denominator is the smallest</span>
+<span class="sd">    integer such that `f(t = 2) &lt; 1`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -786,6 +792,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Number</span>
+<span class="sd">        `1 / log(t + 1)`.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -798,8 +805,9 @@
 <div class="viewcode-block" id="one_over_log_log_t_plus_fourteen"><a class="viewcode-back" href="../../../reference/reference_utils/reference_util.html#poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen">[docs]</a><span class="k">def</span> <span class="nf">one_over_log_log_t_plus_fourteen</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Function `1 / log(log(t + 14))`.</span>
 
-<span class="sd">    This function is provided as an example of update ratio for :meth:`ProfileCardinal.fictitious_play`. The constant</span>
-<span class="sd">    14 in the denominator is the smallest integer such that `f(t = 1) &lt; 1`.</span>
+<span class="sd">    This function is provided as an example of update ratio for</span>
+<span class="sd">    :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. The constant 14 in the denominator is the smallest</span>
+<span class="sd">    integer such that `f(t = 2) &lt; 1`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -808,6 +816,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Number</span>
+<span class="sd">        `1 / log(log(t + 14))`.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -823,8 +832,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    x : Number</span>
-<span class="sd">    y : Number</span>
+<span class="sd">    x,y : Number</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -847,7 +855,7 @@
 <span class="sd">        &gt;&gt;&gt; my_division(0.1, Fraction(5, 2))</span>
 <span class="sd">        0.04</span>
 
-<span class="sd">    If `x` and `y` are integers, decimals, fractions or sympy expressions, then the result is symbolic:</span>
+<span class="sd">    If `x` and `y` are integers, decimals, fractions or `sympy` expressions, then the result is symbolic:</span>
 
 <span class="sd">        &gt;&gt;&gt; my_division(2, Fraction(5, 2))</span>
 <span class="sd">        Fraction(4, 5)</span>
@@ -1068,28 +1076,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

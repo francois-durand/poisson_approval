@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.profiles.ProfileTwelve &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -136,6 +137,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -163,7 +166,7 @@
 <span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.constants.EquilibriumStatus</span> <span class="kn">import</span> <span class="n">EquilibriumStatus</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.iterables.IterableStrategyTwelve</span> <span class="kn">import</span> <span class="n">IterableStrategyTwelve</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileCardinal</span> <span class="kn">import</span> <span class="n">ProfileCardinal</span>
@@ -208,7 +211,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    If the input distribution `d_type_share` is not normalized, the profile will be normalized anyway and a</span>
-<span class="sd">    warning is issued (unless `normalization_warning` is False).</span>
+<span class="sd">    warning will be issued (unless `normalization_warning` is False).</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -324,7 +327,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_d_weak_order_share</span>
 
 <div class="viewcode-block" id="ProfileTwelve.have_ranking_with_utility_above_u"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.have_ranking_with_utility_above_u">[docs]</a>    <span class="k">def</span> <span class="nf">have_ranking_with_utility_above_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and strictly above a given utility for their middle candidate.</span>
+        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and a utility for their middle candidate that is strictly above a</span>
+<span class="sd">        given value.</span>
 
 <span class="sd">        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_above_u`.</span>
 
@@ -349,7 +353,8 @@
         <span class="k">return</span> <span class="n">high_u</span></div>
 
 <div class="viewcode-block" id="ProfileTwelve.have_ranking_with_utility_u"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.have_ranking_with_utility_u">[docs]</a>    <span class="k">def</span> <span class="nf">have_ranking_with_utility_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and a given utility for their middle candidate.</span>
+        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and a utility for their middle candidate that is equal to a given</span>
+<span class="sd">        value.</span>
 
 <span class="sd">        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.</span>
 
@@ -364,7 +369,8 @@
         <span class="k">return</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="ProfileTwelve.have_ranking_with_utility_below_u"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.have_ranking_with_utility_below_u">[docs]</a>    <span class="k">def</span> <span class="nf">have_ranking_with_utility_below_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and strictly below a given utility for their middle candidate.</span>
+        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and a utility for their middle candidate that is strictly below a</span>
+<span class="sd">        given value.</span>
 
 <span class="sd">        Cf. :meth:`ProfileCardinal.have_ranking_with_utility_below_u`.</span>
 
@@ -435,7 +441,7 @@
             <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39; (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover - Only for notebooks</span>
         <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
         <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
 
@@ -444,7 +450,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        other : Object</span>
+<span class="sd">        other : object</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -511,11 +517,11 @@
             <span class="n">share_ij_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_type_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">ranking</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>  <span class="c1"># E.g. ab_c</span>
             <span class="n">d</span><span class="p">[</span><span class="n">ranking</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share_i_jk</span> <span class="o">+</span> <span class="n">share_ij_k</span>
             <span class="n">d</span><span class="p">[</span><span class="n">ranking</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share_ij_k</span>
-        <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">share</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
-                <span class="k">if</span> <span class="n">is_hater</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
-                    <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+        <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">support_in_weak_orders</span><span class="p">:</span>
+            <span class="n">share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+            <span class="k">if</span> <span class="n">is_hater</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
         <span class="k">return</span> <span class="n">d</span>
 
     <span class="nd">@cached_property</span>
@@ -530,7 +536,7 @@
 <span class="sd">            &gt;&gt;&gt; profile.has_majority_type</span>
 <span class="sd">            True</span>
 
-<span class="sd">        This does NOT include weak orders:</span>
+<span class="sd">        This does **not** include weak orders:</span>
 
 <span class="sd">            &gt;&gt;&gt; profile = ProfileTwelve({&#39;ab_c&#39;: Fraction(1, 10)}, d_weak_order_share={&#39;b&gt;a~c&#39;: Fraction(9, 10)})</span>
 <span class="sd">            &gt;&gt;&gt; profile.has_majority_type</span>
@@ -593,7 +599,7 @@
 <span class="sd">            &lt;ab: 1/10, ac: 1/10, b: 3/5, c: 1/5&gt; ==&gt; b</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">voting_rule</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share_weak_voters_sincere</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># For weak orders, strategic = sincere</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ballot_share_weak_voters_strategic</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -629,7 +635,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">voting_rule</span>
         <span class="c1"># Weak orders: these voters are always &quot;sincere&quot;, even in Plurality or Anti-Plurality. For example, in</span>
-        <span class="c1"># Plurality, a voter a~b&gt;c will vote at random for a or b, and this is considered &quot;sincere&quot;.</span>
+        <span class="c1"># Plurality, a voter a~b&gt;c will either vote for a or b, and this is considered &quot;sincere&quot;.</span>
         <span class="n">share_sincere</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="c1"># Rankings</span>
         <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_ballot</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -685,7 +691,7 @@
             <span class="k">if</span> <span class="n">share</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">best_response</span> <span class="o">=</span> <span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span> <span class="o">==</span> <span class="n">INCONCLUSIVE</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">if</span> <span class="n">best_response</span><span class="o">.</span><span class="n">ballot</span> <span class="o">==</span> <span class="n">INCONCLUSIVE</span><span class="p">:</span>  <span class="c1"># pragma: no cover - Should never happen</span>
                 <span class="n">status</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">INCONCLUSIVE</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">type_1</span> <span class="o">=</span> <span class="n">ranking</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">ranking</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># E.g. a_bc</span>
@@ -714,7 +720,7 @@
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
-<span class="sd">        StrategyTwelve</span>
+<span class="sd">        :class:`StrategyTwelve`</span>
 <span class="sd">            All possible pure strategies of the profile.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">IterableStrategyTwelve</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -757,28 +763,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

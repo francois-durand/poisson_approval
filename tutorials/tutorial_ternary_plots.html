@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Ternary Plots &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -111,11 +113,13 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_binary_plots.html">Binary Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_probabilities.html">Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_monte_carlo_fictitious_play.html">Monte-Carlo Fictitious Play</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_iterables.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_more_classes_of_profiles.html">More Classes of Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_asymptotic_developments.html">Asymptotic Developments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
@@ -160,6 +164,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -173,7 +179,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/tutorials/tutorial_ternary_plots.ipynb.txt" rel="nofollow"> View page source</a>
           
         
@@ -471,7 +477,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="SimplexToProfile">
 <h2>SimplexToProfile<a class="headerlink" href="#SimplexToProfile" title="Permalink to this headline">¶</a></h2>
-<p>Poisson Approval relies on the package <code class="docutils literal notranslate"><span class="pre">python-ternary</span></code> to draw plots on the simplex of <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>. The coordinates of a point are denoted <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">left</span></code> because they are respectively equal to 1 at the right, top and left corners of the triangular figure. They typically represent shares of different types in a profile. In order to draw plots, we need a <code class="docutils literal notranslate"><span class="pre">SimplexToProfile</span></code> object that will generate the needed profiles:</p>
+<p>Poisson Approval relies on the package <em>python-ternary</em> to draw plots on the simplex of <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>. The coordinates of a point are denoted <em>right</em>, <em>top</em> and <em>left</em> because they are respectively equal to 1 at the right, top and left corners of the triangular figure. They typically represent shares of different types in a profile. In order to draw plots, we need a <em>SimplexToProfile</em> object that will generate the needed profiles:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -488,11 +494,11 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>The above syntax defines a function <code class="docutils literal notranslate"><span class="pre">simplex_to_profile</span></code> that maps a tuple (right, top, left) to a profile defined as:</p>
+<p>The above syntax defines a function <em>simplex_to_profile</em> that maps a tuple <em>(right, top, left)</em> to a profile defined as:</p>
 <ul class="simple">
-<li><p>The class of profile is ProfileNoisyDiscrete,</p></li>
+<li><p>The class of profile is <em>ProfileNoisyDiscrete</em>,</p></li>
 <li><p>A fixed share 1/10 of voters are of type <span class="math notranslate nohighlight">\((abc, 0.1, 0.01)\)</span>, and a fixed share 1/10 of voters are of type <span class="math notranslate nohighlight">\((abc, 0.9, 0.01)\)</span>,</p></li>
-<li><p>The other voters, i.e. a share 8/10, are distributed between <code class="docutils literal notranslate"><span class="pre">right_type</span></code>, <code class="docutils literal notranslate"><span class="pre">top_type</span></code> and <code class="docutils literal notranslate"><span class="pre">left_type</span></code>, in respective proportions that are given by the input tuple (right, top, left).</p></li>
+<li><p>The other voters, i.e. a share 8/10, are distributed between <em>right_type</em>, <em>top_type</em> and <em>left_type</em>, in respective proportions that are given by the input tuple <em>(right, top, left)</em>.</p></li>
 </ul>
 <p>For example:</p>
 <div class="nbinput docutils container">
@@ -516,7 +522,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Scale">
 <h2>Scale<a class="headerlink" href="#Scale" title="Permalink to this headline">¶</a></h2>
-<p>All the plots require a resolution parameter called <code class="docutils literal notranslate"><span class="pre">scale</span></code>. For example, if <code class="docutils literal notranslate"><span class="pre">scale=10</span></code>, then the simplex is divided into cells of diameter 1/10 and the value of the plotted function is computed at the center of each cell. For more information, cf. the documentation of the package <code class="docutils literal notranslate"><span class="pre">python-ternary</span></code>. In this tutorial, we define a global parameter <code class="docutils literal notranslate"><span class="pre">SCALE</span></code> and we will use it for all the plots.</p>
+<p>All the plots require a resolution parameter called <em>scale</em>. For example, if <em>scale=10</em>, then the simplex is divided into cells of diameter 1/10 and the value of the plotted function is computed at the center of each cell. For more information, cf. the documentation of the package <em>python-ternary</em>. In this tutorial, we define a global parameter <em>SCALE</em> and we will use it for all the plots.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -529,7 +535,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Number-of-Equilibria">
 <h2>Number of Equilibria<a class="headerlink" href="#Number-of-Equilibria" title="Permalink to this headline">¶</a></h2>
-<p>By default, the function <code class="docutils literal notranslate"><span class="pre">ternary_plot_n_equilibria</span></code> computes the ordinal equilibria, i.e. those where all voters having the same ranking cast the same ballot:</p>
+<p>By default, the function <em>ternary_plot_n_equilibria</em> computes the ordinal equilibria, i.e. those where all voters having the same ranking cast the same ballot:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -548,7 +554,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 504x360 with 2 Axes&gt;, TernaryAxesSubplot: 129689306930)
+(&lt;Figure size 504x360 with 2 Axes&gt;, TernaryAxesSubplot: -9223371904852674332)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -558,7 +564,7 @@ div.rendered_html tbody tr:hover {
 <img alt="../_images/tutorials_tutorial_ternary_plots_12_1.png" src="../_images/tutorials_tutorial_ternary_plots_12_1.png" />
 </div>
 </div>
-<p>Using the option <code class="docutils literal notranslate"><span class="pre">meth</span></code>, you can investigate other kinds of equilibria:</p>
+<p>Using the option <em>meth</em>, you can investigate other kinds of equilibria:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -578,7 +584,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 504x360 with 2 Axes&gt;, TernaryAxesSubplot: -9223371907160564960)
+(&lt;Figure size 504x360 with 2 Axes&gt;, TernaryAxesSubplot: 132002423279)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -588,16 +594,16 @@ div.rendered_html tbody tr:hover {
 <img alt="../_images/tutorials_tutorial_ternary_plots_14_1.png" src="../_images/tutorials_tutorial_ternary_plots_14_1.png" />
 </div>
 </div>
-<p>Depending on the class of profile, the possible values of the option <code class="docutils literal notranslate"><span class="pre">meth</span></code> may be:</p>
+<p>Depending on the class of profile, the possible values of the option <em>meth</em> may be:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">analyzed_strategies_ordinal</span></code> (the default),</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">analyzed_strategies_group</span></code> (for profiles where a reasonable notion of group is defined, such as ProfileNoisyDiscrete),</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">analyzed_strategies_pure</span></code> (for discrete profiles such as ProfileDiscrete or ProfileTwelve).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'analyzed_strategies_ordinal'</span></code> (the default),</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'analyzed_strategies_group'</span></code> (for profiles where a reasonable notion of group is defined, such as <em>ProfileNoisyDiscrete</em>),</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'analyzed_strategies_pure'</span></code> (for discrete profiles such as <em>ProfileDiscrete</em> or <em>ProfileTwelve</em>).</p></li>
 </ul>
 </div>
 <div class="section" id="Winners-at-Equilibrium">
 <h2>Winners at Equilibrium<a class="headerlink" href="#Winners-at-Equilibrium" title="Permalink to this headline">¶</a></h2>
-<p>The function <code class="docutils literal notranslate"><span class="pre">ternary_plot_n_equilibria</span></code> works similarly:</p>
+<p>The function <em>ternary_plot_n_equilibria</em> works similarly:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -616,7 +622,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 360x360 with 1 Axes&gt;, TernaryAxesSubplot: 129694769307)
+(&lt;Figure size 360x360 with 1 Axes&gt;, TernaryAxesSubplot: -9223371904852273148)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -646,7 +652,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 360x360 with 1 Axes&gt;, TernaryAxesSubplot: 129694570118)
+(&lt;Figure size 360x360 with 1 Axes&gt;, TernaryAxesSubplot: -9223371904852057000)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -659,7 +665,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Winning-Frequencies-in-Fictitious-Play-or-Iterated-Voting">
 <h2>Winning Frequencies in Fictitious Play or Iterated Voting<a class="headerlink" href="#Winning-Frequencies-in-Fictitious-Play-or-Iterated-Voting" title="Permalink to this headline">¶</a></h2>
-<p>By default, the function <code class="docutils literal notranslate"><span class="pre">ternary_plot_winning_frequencies</span></code> computes the winning frequencies in fictitious play, with an initialization in sincere strategy, and with all update ratios in <span class="math notranslate nohighlight">\(1 / (t + 1)\)</span>:</p>
+<p>By default, the function <em>ternary_plot_winning_frequencies</em> computes the winning frequencies in fictitious play, with an initialization in sincere strategy, and with all update ratios in <span class="math notranslate nohighlight">\(1 / \log(t + 1)\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -675,7 +681,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 360x360 with 2 Axes&gt;, TernaryAxesSubplot: -9223371907159638819)
+(&lt;Figure size 360x360 with 2 Axes&gt;, TernaryAxesSubplot: 132002943727)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -708,34 +714,25 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-d:\github\poisson_approval\poisson_approval\tau_vector\TauVector.py:183: UserWarning: Warning: the input is not normalized, I will normalize it. If you use floats, consider using fractions. To disable this warning, use the parameter normalization_warning=False.
-  warnings.warn(NORMALIZATION_WARNING)
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 360x360 with 2 Axes&gt;, TernaryAxesSubplot: -9223371907158291477)
+(&lt;Figure size 360x360 with 2 Axes&gt;, TernaryAxesSubplot: -9223371904850416903)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_tutorial_ternary_plots_24_2.png" src="../_images/tutorials_tutorial_ternary_plots_24_2.png" />
+<img alt="../_images/tutorials_tutorial_ternary_plots_24_1.png" src="../_images/tutorials_tutorial_ternary_plots_24_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="Convergence-Rate-in-Fictitious-Play-or-Iterated-Voting">
 <h2>Convergence Rate in Fictitious Play or Iterated Voting<a class="headerlink" href="#Convergence-Rate-in-Fictitious-Play-or-Iterated-Voting" title="Permalink to this headline">¶</a></h2>
-<p>The function <code class="docutils literal notranslate"><span class="pre">ternary_plot_convergence</span></code> computes the convergence frequency in fictitious play or iterated voting, which is defined as the proportion of initializations that lead to convergence within <code class="docutils literal notranslate"><span class="pre">n_max_episodes</span></code> iterations. Its syntax is similar to <code class="docutils literal notranslate"><span class="pre">ternary_plot_winning_frequencies</span></code>.</p>
+<p>The function <em>ternary_plot_convergence</em> computes the convergence frequency in fictitious play or iterated voting, which is defined as the proportion of initializations that lead to convergence within <em>n_max_episodes</em> iterations. Its syntax is similar to <em>ternary_plot_winning_frequencies</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -752,7 +749,7 @@ d:\github\poisson_approval\poisson_approval\tau_vector\TauVector.py:183: UserWar
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(&lt;Figure size 504x360 with 2 Axes&gt;, TernaryAxesSubplot: -9223371907158000647)
+(&lt;Figure size 504x360 with 2 Axes&gt;, TernaryAxesSubplot: 132005039936)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -823,7 +820,7 @@ d:\github\poisson_approval\poisson_approval\tau_vector\TauVector.py:183: UserWar
 </pre></div>
 </div>
 </div>
-<p>Then use the method <code class="docutils literal notranslate"><span class="pre">heatmap_intensity</span></code>:</p>
+<p>Then use the method <em>heatmap_intensity</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -848,7 +845,7 @@ d:\github\poisson_approval\poisson_approval\tau_vector\TauVector.py:183: UserWar
 </div>
 <div class="section" id="Advanced-Candidate-Heat-Maps">
 <h2>Advanced Candidate Heat Maps<a class="headerlink" href="#Advanced-Candidate-Heat-Maps" title="Permalink to this headline">¶</a></h2>
-<p>First, define a function that maps a point of the simplex to a array of size 3 (associated with candidates a, b, c):</p>
+<p>First, define a function that maps a point of the simplex to a list of size 3 (associated with candidates <em>a</em>, <em>b</em>, <em>c</em>):</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -862,7 +859,7 @@ d:\github\poisson_approval\poisson_approval\tau_vector\TauVector.py:183: UserWar
 </pre></div>
 </div>
 </div>
-<p>Then use the method <code class="docutils literal notranslate"><span class="pre">heatmap_candidates</span></code>:</p>
+<p>Then use the method <em>heatmap_candidates</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -894,37 +891,29 @@ d:\github\poisson_approval\poisson_approval\tau_vector\TauVector.py:183: UserWar
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="tutorial_binary_plots.html" class="btn btn-neutral float-right" title="Binary Plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="tutorial_tau_vector.html" class="btn btn-neutral float-left" title="TauVector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="tutorial_binary_plots.html" class="btn btn-neutral float-right" title="Binary Plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial_tau_vector.html" class="btn btn-neutral float-left" title="TauVector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

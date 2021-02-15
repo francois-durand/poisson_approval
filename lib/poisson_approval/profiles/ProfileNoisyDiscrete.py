@@ -1,5 +1,5 @@
 import warnings
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
@@ -38,11 +38,11 @@ class ProfileNoisyDiscrete(ProfileCardinalContinuous):
     d_ranking_utility_noise_share : dict of dict
         It maps a ranking to a dict that maps a tuple (utility, noise) to a share of voters. It means that this share
         of voters have this ranking and with a utility for their second candidate that is uniformly distributed in an
-        interval [umin, umax], where umin = max(utility - noise, 0) and umax = min(utility + noise, 1).
+        interval `[umin, umax]`, where `umin = max(utility - noise, 0)` and `umax = min(utility + noise, 1)`.
 
     Notes
     -----
-    If the input distribution is not normalized, the profile will be normalized anyway and a warning is
+    If the input distribution is not normalized, the profile will be normalized anyway and a warning will be
     issued (unless `normalization_warning` is False).
 
     Examples
@@ -166,7 +166,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             # Ranking r, utility u, share s, noise epsilon
             if s == 0:
                 return
-            elif epsilon == 0:  # pragma: no cover
+            elif epsilon == 0:
                 raise ValueError('Noise should be > 0')
             else:
                 self.d_ranking_utility_noise_share[r][(u, epsilon)] = (
@@ -212,7 +212,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
     @cached_property
     def d_ranking_umin_umax_share(self):
-        """dict: Dictionary that maps a ranking to a dictionary that maps a tuple (u_min, u_max) to a share of voters.
+        """dict: Dictionary that maps a ranking to a dictionary that maps a tuple `(u_min, u_max)` to a share of voters.
         """
         return {ranking: {(max(utility - noise, 0), min(utility + noise, 1)): share
                           for (utility, noise), share in d_utility_noise_share.items()}
@@ -293,7 +293,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -302,7 +302,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -380,11 +380,11 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
             for (u_min, u_max), share in d_umin_umax_share.items():
                 d[ranking[0]] += share
                 d[ranking[1]] += share * (u_min + u_max) / 2
-        for weak_order, share in self.d_weak_order_share.items():
-            if share > 0:
-                d[weak_order[0]] += share
-                if is_hater(weak_order):
-                    d[weak_order[2]] += share
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            d[weak_order[0]] += share
+            if is_hater(weak_order):
+                d[weak_order[2]] += share
         return d
 
     @property
@@ -393,7 +393,7 @@ d_weak_order_share={'a~b>c': Fraction(53, 100)})
 
         Yields
         ------
-        StrategyThreshold
+        :class:`StrategyThreshold`
             All possible group strategies of the profile.
         """
         def possible_thresholds(ranking):

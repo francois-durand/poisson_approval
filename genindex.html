@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Index &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
@@ -136,6 +137,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -147,7 +150,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -181,6 +184,8 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
@@ -365,13 +370,17 @@
       </ul></li>
       <li><a href="reference/reference_containers/reference_analyzed_strategies.html#poisson_approval.AnalyzedStrategies">AnalyzedStrategies (class in poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.annotate_condorcet">annotate_condorcet() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.annotate_condorcet">annotate_condorcet() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
 
       <ul>
-        <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.annotate_condorcet">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
+        <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.annotate_condorcet">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.annotate_simplex">annotate_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.annotate_simplex">annotate_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.ANTI_PLURALITY">ANTI_PLURALITY (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.APPROVAL">APPROVAL (in module poisson_approval.constants.basic_constants)</a>
 </li>
       <li><a href="reference/reference_utils/reference_util.html#poisson_approval.utils.Util.array_to_d_candidate_value">array_to_d_candidate_value() (in module poisson_approval.utils.Util)</a>
 </li>
@@ -465,6 +474,14 @@
 </li>
       <li><a href="reference/reference_utils/reference_util_ballots.html#poisson_approval.utils.UtilBallots.ballot_two">ballot_two() (in module poisson_approval.utils.UtilBallots)</a>
 </li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.BALLOTS_WITH_INVERSIONS">BALLOTS_WITH_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.BALLOTS_WITHOUT_INVERSIONS">BALLOTS_WITHOUT_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL">BALLOTS_WITHOUT_INVERSIONS_SORTED_ALPHABETICAL (in module poisson_approval.constants.basic_constants)</a>
+</li>
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.barycenter">barycenter() (poisson_approval.ComputationEngine class method)</a>
 
       <ul>
@@ -473,8 +490,6 @@
         <li><a href="reference/reference_utils/reference_computation_engine_symbolic.html#poisson_approval.ComputationEngineSymbolic.barycenter">(poisson_approval.ComputationEngineSymbolic class method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector.bc">bc() (poisson_approval.TauVector property)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.bc_a">bc_a() (poisson_approval.ProfileTwelve property)</a>
@@ -537,17 +552,17 @@
 </li>
       <li><a href="reference/reference_best_response/reference_best_response_plurality.html#poisson_approval.BestResponsePlurality">BestResponsePlurality (class in poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_figure.html#poisson_approval.binary_figure">binary_figure() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_figure.html#poisson_approval.binary_figure">binary_figure() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_plot_convergence.html#poisson_approval.binary_plot_convergence">binary_plot_convergence() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_plot_convergence.html#poisson_approval.binary_plot_convergence">binary_plot_convergence() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_plot_n_equilibria.html#poisson_approval.binary_plot_n_equilibria">binary_plot_n_equilibria() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_plot_n_equilibria.html#poisson_approval.binary_plot_n_equilibria">binary_plot_n_equilibria() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_plot_winners_at_equilibrium.html#poisson_approval.binary_plot_winners_at_equilibrium">binary_plot_winners_at_equilibrium() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_plot_winners_at_equilibrium.html#poisson_approval.binary_plot_winners_at_equilibrium">binary_plot_winners_at_equilibrium() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_plot_winning_frequencies.html#poisson_approval.binary_plot_winning_frequencies">binary_plot_winning_frequencies() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_plot_winning_frequencies.html#poisson_approval.binary_plot_winning_frequencies">binary_plot_winning_frequencies() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson">BinaryAxesSubplotPoisson (class in poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson">BinaryAxesSubplotPoisson (class in poisson_approval)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -614,6 +629,8 @@
 </li>
       </ul></li>
       <li><a href="reference/reference_utils/reference_util_cache.html#poisson_approval.utils.UtilCache.cached_property">cached_property() (in module poisson_approval.utils.UtilCache)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.CANDIDATES">CANDIDATES (in module poisson_approval.constants.basic_constants)</a>
 </li>
       <li><a href="reference/reference_utils/reference_util.html#poisson_approval.utils.Util.candidates_to_d_candidate_probability">candidates_to_d_candidate_probability() (in module poisson_approval.utils.Util)</a>
 </li>
@@ -719,6 +736,8 @@
         <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.contains_weak_orders">(poisson_approval.ProfileTwelve property)</a>
 </li>
       </ul></li>
+      <li><a href="reference/reference_meta_misc/reference_convergence_test.html#poisson_approval.convergence_test">convergence_test() (in module poisson_approval)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -759,6 +778,24 @@
         <li><a href="reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.d_ballot_share_weak_voters_sincere">(poisson_approval.ProfileOrdinal property)</a>
 </li>
         <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.d_ballot_share_weak_voters_sincere">(poisson_approval.ProfileTwelve property)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.d_ballot_share_weak_voters_strategic">d_ballot_share_weak_voters_strategic() (poisson_approval.Profile method)</a>
+
+      <ul>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileCardinal method)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileCardinalContinuous method)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileDiscrete method)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileHistogram method)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileNoisyDiscrete method)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileOrdinal method)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.d_ballot_share_weak_voters_strategic">(poisson_approval.ProfileTwelve method)</a>
 </li>
       </ul></li>
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.d_candidate_anti_plurality_welfare">d_candidate_anti_plurality_welfare() (poisson_approval.Profile property)</a>
@@ -856,6 +893,14 @@
       <ul>
         <li><a href="reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.d_candidate_welfare">(poisson_approval.ProfileCardinalContinuous property)</a>
 </li>
+        <li><a href="reference/reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete.d_candidate_welfare">(poisson_approval.ProfileDiscrete property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.d_candidate_welfare">(poisson_approval.ProfileHistogram property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.d_candidate_welfare">(poisson_approval.ProfileNoisyDiscrete property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.d_candidate_welfare">(poisson_approval.ProfileTwelve property)</a>
+</li>
       </ul></li>
       <li><a href="reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy.d_ranking_best_response">d_ranking_best_response() (poisson_approval.Strategy property)</a>
 
@@ -870,7 +915,25 @@
 </li>
       </ul></li>
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.d_ranking_share">d_ranking_share() (poisson_approval.Profile property)</a>
+
+      <ul>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.d_ranking_share">(poisson_approval.ProfileCardinal property)</a>
 </li>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.d_ranking_share">(poisson_approval.ProfileCardinalContinuous property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete.d_ranking_share">(poisson_approval.ProfileDiscrete property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.d_ranking_share">(poisson_approval.ProfileHistogram property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.d_ranking_share">(poisson_approval.ProfileNoisyDiscrete property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.d_ranking_share">(poisson_approval.ProfileOrdinal property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.d_ranking_share">(poisson_approval.ProfileTwelve property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_strategies/reference_strategy_ordinal.html#poisson_approval.StrategyOrdinal.d_ranking_t_threshold_ratio_optimistic">d_ranking_t_threshold_ratio_optimistic() (poisson_approval.StrategyOrdinal property)</a>
 
       <ul>
@@ -879,14 +942,28 @@
       </ul></li>
       <li><a href="reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.d_ranking_umin_umax_share">d_ranking_umin_umax_share() (poisson_approval.ProfileNoisyDiscrete property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.d_ranking_utility_noise_share">d_ranking_utility_noise_share (poisson_approval.ProfileNoisyDiscrete attribute)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete.d_ranking_utility_share">d_ranking_utility_share (poisson_approval.ProfileDiscrete attribute)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.d_weak_order_share">d_weak_order_share() (poisson_approval.Profile property)</a>
+
+      <ul>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.d_weak_order_share">(poisson_approval.ProfileCardinal property)</a>
 </li>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.d_weak_order_share">(poisson_approval.ProfileCardinalContinuous property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete.d_weak_order_share">(poisson_approval.ProfileDiscrete property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.d_weak_order_share">(poisson_approval.ProfileHistogram property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_noisy_discrete.html#poisson_approval.ProfileNoisyDiscrete.d_weak_order_share">(poisson_approval.ProfileNoisyDiscrete property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.d_weak_order_share">(poisson_approval.ProfileOrdinal property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.d_weak_order_share">(poisson_approval.ProfileTwelve property)</a>
+</li>
+      </ul></li>
       <li><a href="reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy.deepcopy_with_attached_profile">deepcopy_with_attached_profile() (poisson_approval.Strategy method)</a>
 
       <ul>
@@ -905,7 +982,7 @@
 </li>
       <li><a href="reference/reference_utils/reference_dict_printing_in_order_ignoring_zeros.html#poisson_approval.DictPrintingInOrderIgnoringZeros">DictPrintingInOrderIgnoringZeros (class in poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.display_results">display_results() (poisson_approval.NiceStatsProfileOrdinal method)</a>
+      <li><a href="reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.display_results">display_results() (poisson_approval.NiceStatsProfileOrdinal method)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal.distribution_equilibria">distribution_equilibria() (poisson_approval.ProfileOrdinal method)</a>
 </li>
@@ -1085,7 +1162,7 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.f_point_values_">f_point_values_() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.f_point_values_">f_point_values_() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.factorial">factorial() (poisson_approval.ComputationEngine class method)</a>
 
@@ -1111,7 +1188,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.find_example">find_example() (poisson_approval.NiceStatsProfileOrdinal method)</a>
+      <li><a href="reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.find_example">find_example() (poisson_approval.NiceStatsProfileOrdinal method)</a>
 </li>
       <li><a href="reference/reference_constants/reference_focus.html#poisson_approval.Focus">Focus (class in poisson_approval)</a>
 </li>
@@ -1127,7 +1204,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.gridlines_simplex">gridlines_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.gridlines_simplex">gridlines_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1219,19 +1296,19 @@
         <li><a href="reference/reference_profiles/reference_profile_twelve.html#poisson_approval.ProfileTwelve.have_ranking_with_utility_u">(poisson_approval.ProfileTwelve method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_candidates">heatmap_candidates() (poisson_approval.BinaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_candidates">heatmap_candidates() (poisson_approval.BinaryAxesSubplotPoisson method)</a>
 
       <ul>
-        <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.heatmap_candidates">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
+        <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.heatmap_candidates">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_intensity">heatmap_intensity() (poisson_approval.BinaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_intensity">heatmap_intensity() (poisson_approval.BinaryAxesSubplotPoisson method)</a>
 
       <ul>
-        <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.heatmap_intensity">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
+        <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.heatmap_intensity">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.horizontal_line_simplex">horizontal_line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.horizontal_line_simplex">horizontal_line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1244,6 +1321,8 @@
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.inf">inf (poisson_approval.ComputationEngine attribute)</a>
 </li>
       <li><a href="reference/reference_utils/reference_util.html#poisson_approval.utils.Util.initialize_random_seeds">initialize_random_seeds() (in module poisson_approval.utils.Util)</a>
+</li>
+      <li><a href="reference/reference_meta_misc/reference_is_condorcet.html#poisson_approval.is_condorcet">is_condorcet() (in module poisson_approval)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.is_equilibrium">is_equilibrium() (poisson_approval.Profile method)</a>
 
@@ -1294,6 +1373,8 @@
       <li><a href="reference/reference_utils/reference_util_preferences.html#poisson_approval.utils.UtilPreferences.is_hater">is_hater() (in module poisson_approval.utils.UtilPreferences)</a>
 </li>
       <li><a href="reference/reference_utils/reference_util_preferences.html#poisson_approval.utils.UtilPreferences.is_lover">is_lover() (in module poisson_approval.utils.UtilPreferences)</a>
+</li>
+      <li><a href="reference/reference_meta_misc/reference_is_not_condorcet.html#poisson_approval.is_not_condorcet">is_not_condorcet() (in module poisson_approval)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.is_profile_condorcet">is_profile_condorcet() (poisson_approval.Profile property)</a>
 
@@ -1421,23 +1502,23 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.left_parallel_line_simplex">left_parallel_line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.left_parallel_line_simplex">left_parallel_line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_color_patches">legend_color_patches() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_color_patches">legend_color_patches() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
 
       <ul>
-        <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.legend_color_patches">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
+        <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.legend_color_patches">(poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_palette">legend_palette() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_palette">legend_palette() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
 
       <ul>
-        <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.legend_palette">(poisson_approval.TernaryAxesSubplotPoisson static method)</a>
+        <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.legend_palette">(poisson_approval.TernaryAxesSubplotPoisson static method)</a>
 </li>
       </ul></li>
       <li><a href="reference/reference_events/reference_asymptotic.html#poisson_approval.Asymptotic.limit">limit() (poisson_approval.Asymptotic property)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.line_simplex">line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.line_simplex">line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1473,10 +1554,34 @@
 </li>
       <li><a href="reference/reference_utils/reference_util_masks.html#poisson_approval.utils.UtilMasks.masks_distribution_naive">masks_distribution_naive() (in module poisson_approval.utils.UtilMasks)</a>
 </li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_BALLOT_STATISTICS">MCS_BALLOT_STATISTICS (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_CANDIDATE_WINNING_FREQUENCY">MCS_CANDIDATE_WINNING_FREQUENCY (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_CONVERGES">MCS_CONVERGES (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_DECREASING_SCORES">MCS_DECREASING_SCORES (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_FREQUENCY_CW_WINS">MCS_FREQUENCY_CW_WINS (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_N_EPISODES">MCS_N_EPISODES (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_PROFILE">MCS_PROFILE (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_TAU_INIT">MCS_TAU_INIT (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_UTILITY_THRESHOLDS">MCS_UTILITY_THRESHOLDS (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_WELFARE_LOSSES">MCS_WELFARE_LOSSES (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
       <li>
     module
 
       <ul>
+        <li><a href="reference/reference_constants/reference_basic_constants.html#module-poisson_approval.constants.basic_constants">poisson_approval.constants.basic_constants</a>
+</li>
+        <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#module-poisson_approval.meta_analysis.monte_carlo_fictitious_play">poisson_approval.meta_analysis.monte_carlo_fictitious_play</a>
+</li>
         <li><a href="reference/reference_utils/reference_util.html#module-poisson_approval.utils.Util">poisson_approval.utils.Util</a>
 </li>
         <li><a href="reference/reference_utils/reference_util_ballots.html#module-poisson_approval.utils.UtilBallots">poisson_approval.utils.UtilBallots</a>
@@ -1485,11 +1590,17 @@
 </li>
         <li><a href="reference/reference_utils/reference_util_masks.html#module-poisson_approval.utils.UtilMasks">poisson_approval.utils.UtilMasks</a>
 </li>
+        <li><a href="reference/reference_utils/reference_util_plot.html#module-poisson_approval.utils.UtilPlot">poisson_approval.utils.UtilPlot</a>
+</li>
         <li><a href="reference/reference_utils/reference_util_preferences.html#module-poisson_approval.utils.UtilPreferences">poisson_approval.utils.UtilPreferences</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.monte_carlo_fictitious_play">monte_carlo_fictitious_play() (in module poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting">MonteCarloSetting (class in poisson_approval.meta_analysis.monte_carlo_fictitious_play)</a>
+</li>
       <li><a href="reference/reference_events/reference_event.html#poisson_approval.Event.mu">mu (poisson_approval.Event attribute)</a>
 </li>
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.multiply_with_absorbing_zero">multiply_with_absorbing_zero() (poisson_approval.ComputationEngine class method)</a>
@@ -1514,7 +1625,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.nan">nan (poisson_approval.ComputationEngine attribute)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal">NiceStatsProfileOrdinal (class in poisson_approval)</a>
+      <li><a href="reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal">NiceStatsProfileOrdinal (class in poisson_approval)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1588,6 +1699,14 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.PAIRS_INVERTED">PAIRS_INVERTED (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.PAIRS_WITH_INVERSIONS">PAIRS_WITH_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.PAIRS_WITHOUT_INVERSIONS">PAIRS_WITHOUT_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.PERMUTATIONS">PERMUTATIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
       <li><a href="reference/reference_events/reference_event.html#poisson_approval.Event.phi">phi (poisson_approval.Event attribute)</a>
 </li>
       <li><a href="reference/reference_events/reference_event.html#poisson_approval.Event.phi_ab">phi_ab (poisson_approval.Event attribute)</a>
@@ -1962,8 +2081,6 @@
         <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_abc">(poisson_approval.TauVector property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy.pivot_tjk_acb">pivot_tjk_acb() (poisson_approval.Strategy property)</a>
 
       <ul>
@@ -1976,6 +2093,8 @@
         <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_acb">(poisson_approval.TauVector property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy.pivot_tjk_bac">pivot_tjk_bac() (poisson_approval.Strategy property)</a>
 
       <ul>
@@ -2218,14 +2337,40 @@
       </ul></li>
       <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.plot_cdf">plot_cdf() (poisson_approval.ProfileHistogram method)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_cutoff">plot_cutoff() (poisson_approval.NiceStatsProfileOrdinal method)</a>
+      <li><a href="reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_cutoff">plot_cutoff() (poisson_approval.NiceStatsProfileOrdinal method)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_plot_distribution_scores.html#poisson_approval.plot_distribution_scores">plot_distribution_scores() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_plot_distribution_scores.html#poisson_approval.plot_distribution_scores">plot_distribution_scores() (in module poisson_approval)</a>
 </li>
       <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.plot_histogram">plot_histogram() (poisson_approval.ProfileHistogram method)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_test_strategy">plot_test_strategy() (poisson_approval.NiceStatsProfileOrdinal method)</a>
+      <li><a href="reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_test_strategy">plot_test_strategy() (poisson_approval.NiceStatsProfileOrdinal method)</a>
 </li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_plot_utility_thresholds.html#poisson_approval.plot_utility_thresholds">plot_utility_thresholds() (in module poisson_approval)</a>
+</li>
+      <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_plot_welfare_losses.html#poisson_approval.plot_welfare_losses">plot_welfare_losses() (in module poisson_approval)</a>
+</li>
+      <li><a href="reference/reference_utils/reference_util_plot.html#poisson_approval.utils.UtilPlot.plt_cdf">plt_cdf() (in module poisson_approval.utils.UtilPlot)</a>
+</li>
+      <li><a href="reference/reference_utils/reference_util_plot.html#poisson_approval.utils.UtilPlot.plt_plot_with_error">plt_plot_with_error() (in module poisson_approval.utils.UtilPlot)</a>
+</li>
+      <li><a href="reference/reference_utils/reference_util_plot.html#poisson_approval.utils.UtilPlot.plt_step_with_error">plt_step_with_error() (in module poisson_approval.utils.UtilPlot)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.PLURALITY">PLURALITY (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li>
+    poisson_approval.constants.basic_constants
+
+      <ul>
+        <li><a href="reference/reference_constants/reference_basic_constants.html#module-poisson_approval.constants.basic_constants">module</a>
+</li>
+      </ul></li>
+      <li>
+    poisson_approval.meta_analysis.monte_carlo_fictitious_play
+
+      <ul>
+        <li><a href="reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#module-poisson_approval.meta_analysis.monte_carlo_fictitious_play">module</a>
+</li>
+      </ul></li>
       <li>
     poisson_approval.utils.Util
 
@@ -2252,6 +2397,13 @@
 
       <ul>
         <li><a href="reference/reference_utils/reference_util_masks.html#module-poisson_approval.utils.UtilMasks">module</a>
+</li>
+      </ul></li>
+      <li>
+    poisson_approval.utils.UtilPlot
+
+      <ul>
+        <li><a href="reference/reference_utils/reference_util_plot.html#module-poisson_approval.utils.UtilPlot">module</a>
 </li>
       </ul></li>
       <li>
@@ -2379,12 +2531,12 @@
 </li>
       <li><a href="reference/reference_random_factories/reference_rand_profile_noisy_discrete_uniform.html#poisson_approval.RandProfileNoisyDiscreteUniform">RandProfileNoisyDiscreteUniform (class in poisson_approval)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_random_factories/reference_rand_profile_ordinal_grid_uniform.html#poisson_approval.RandProfileOrdinalGridUniform">RandProfileOrdinalGridUniform (class in poisson_approval)</a>
 </li>
       <li><a href="reference/reference_random_factories/reference_rand_profile_ordinal_uniform.html#poisson_approval.RandProfileOrdinalUniform">RandProfileOrdinalUniform (class in poisson_approval)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_random_factories/reference_rand_profile_twelve_grid_uniform.html#poisson_approval.RandProfileTwelveGridUniform">RandProfileTwelveGridUniform (class in poisson_approval)</a>
 </li>
       <li><a href="reference/reference_random_factories/reference_rand_profile_twelve_uniform.html#poisson_approval.RandProfileTwelveUniform">RandProfileTwelveUniform (class in poisson_approval)</a>
@@ -2405,6 +2557,8 @@
 </li>
       <li><a href="reference/reference_random_factories/reference_rand_tau_vector_uniform.html#poisson_approval.RandTauVectorUniform">RandTauVectorUniform (class in poisson_approval)</a>
 </li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.RANKINGS">RANKINGS (in module poisson_approval.constants.basic_constants)</a>
+</li>
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.Rational">Rational() (poisson_approval.ComputationEngine class method)</a>
 
       <ul>
@@ -2416,16 +2570,20 @@
       <li><a href="reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse.results">results() (poisson_approval.BestResponse property)</a>
 
       <ul>
+        <li><a href="reference/reference_best_response/reference_best_response_anti_plurality.html#poisson_approval.BestResponseAntiPlurality.results">(poisson_approval.BestResponseAntiPlurality property)</a>
+</li>
         <li><a href="reference/reference_best_response/reference_best_response_approval.html#poisson_approval.BestResponseApproval.results">(poisson_approval.BestResponseApproval property)</a>
+</li>
+        <li><a href="reference/reference_best_response/reference_best_response_plurality.html#poisson_approval.BestResponsePlurality.results">(poisson_approval.BestResponsePlurality property)</a>
 </li>
       </ul></li>
       <li><a href="reference/reference_best_response/reference_best_response_approval.html#poisson_approval.BestResponseApproval.results_asymptotic_method">results_asymptotic_method() (poisson_approval.BestResponseApproval property)</a>
 </li>
       <li><a href="reference/reference_best_response/reference_best_response_approval.html#poisson_approval.BestResponseApproval.results_limit_pivot_theorem">results_limit_pivot_theorem() (poisson_approval.BestResponseApproval property)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.right_parallel_line_simplex">right_parallel_line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.right_parallel_line_simplex">right_parallel_line_simplex() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.run">run() (poisson_approval.NiceStatsProfileOrdinal method)</a>
+      <li><a href="reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.run">run() (poisson_approval.NiceStatsProfileOrdinal method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -2479,11 +2637,13 @@
         <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector.scores">(poisson_approval.TauVector property)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.set_title">set_title() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.set_title">set_title() (poisson_approval.BinaryAxesSubplotPoisson static method)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.set_title_padded">set_title_padded() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson.set_title_padded">set_title_padded() (poisson_approval.TernaryAxesSubplotPoisson method)</a>
 </li>
       <li><a href="reference/reference_utils/reference_set_printing_in_order.html#poisson_approval.SetPrintingInOrder">SetPrintingInOrder (class in poisson_approval)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.SETS_OF_RANKINGS_UP_TO_RELABELLING">SETS_OF_RANKINGS_UP_TO_RELABELLING (in module poisson_approval.constants.basic_constants)</a>
 </li>
       <li><a href="reference/reference_strategies/reference_strategy.html#poisson_approval.Strategy.share_double_votes">share_double_votes() (poisson_approval.Strategy property)</a>
 
@@ -2567,7 +2727,7 @@
         <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector.share_single_votes">(poisson_approval.TauVector property)</a>
 </li>
       </ul></li>
-      <li><a href="reference/reference_meta_analysis/reference_simplex_to_profile.html#poisson_approval.SimplexToProfile">SimplexToProfile (class in poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_simplex_to_profile.html#poisson_approval.SimplexToProfile">SimplexToProfile (class in poisson_approval)</a>
 </li>
       <li><a href="reference/reference_utils/reference_computation_engine.html#poisson_approval.ComputationEngine.simplify">simplify() (poisson_approval.ComputationEngine class method)</a>
 
@@ -2602,6 +2762,10 @@
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.standardized_version">standardized_version() (poisson_approval.Profile property)</a>
 
       <ul>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.standardized_version">(poisson_approval.ProfileCardinal property)</a>
+</li>
+        <li><a href="reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.standardized_version">(poisson_approval.ProfileCardinalContinuous property)</a>
+</li>
         <li><a href="reference/reference_profiles/reference_profile_discrete.html#poisson_approval.ProfileDiscrete.standardized_version">(poisson_approval.ProfileDiscrete property)</a>
 </li>
         <li><a href="reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.standardized_version">(poisson_approval.ProfileHistogram property)</a>
@@ -2795,28 +2959,18 @@
       </ul></li>
       <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector">TauVector (class in poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_figure.html#poisson_approval.ternary_figure">ternary_figure() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_figure.html#poisson_approval.ternary_figure">ternary_figure() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_plot_convergence.html#poisson_approval.ternary_plot_convergence">ternary_plot_convergence() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_plot_convergence.html#poisson_approval.ternary_plot_convergence">ternary_plot_convergence() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_plot_n_equilibria.html#poisson_approval.ternary_plot_n_equilibria">ternary_plot_n_equilibria() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_plot_n_equilibria.html#poisson_approval.ternary_plot_n_equilibria">ternary_plot_n_equilibria() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_plot_winners_at_equilibrium.html#poisson_approval.ternary_plot_winners_at_equilibrium">ternary_plot_winners_at_equilibrium() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_plot_winners_at_equilibrium.html#poisson_approval.ternary_plot_winners_at_equilibrium">ternary_plot_winners_at_equilibrium() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_plot_winning_frequencies.html#poisson_approval.ternary_plot_winning_frequencies">ternary_plot_winning_frequencies() (in module poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_plot_winning_frequencies.html#poisson_approval.ternary_plot_winning_frequencies">ternary_plot_winning_frequencies() (in module poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_meta_analysis/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson">TernaryAxesSubplotPoisson (class in poisson_approval)</a>
+      <li><a href="reference/reference_meta_ternary_plots/reference_ternary_axes_subplot_poisson.html#poisson_approval.TernaryAxesSubplotPoisson">TernaryAxesSubplotPoisson (class in poisson_approval)</a>
 </li>
-      <li><a href="reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse.threshold_utility">threshold_utility() (poisson_approval.BestResponse property)</a>
-
-      <ul>
-        <li><a href="reference/reference_best_response/reference_best_response_anti_plurality.html#poisson_approval.BestResponseAntiPlurality.threshold_utility">(poisson_approval.BestResponseAntiPlurality property)</a>
-</li>
-        <li><a href="reference/reference_best_response/reference_best_response_approval.html#poisson_approval.BestResponseApproval.threshold_utility">(poisson_approval.BestResponseApproval property)</a>
-</li>
-        <li><a href="reference/reference_best_response/reference_best_response_plurality.html#poisson_approval.BestResponsePlurality.threshold_utility">(poisson_approval.BestResponsePlurality property)</a>
-</li>
-      </ul></li>
       <li><a href="reference/reference_utils/reference_util.html#poisson_approval.utils.Util.to_callable">to_callable() (in module poisson_approval.utils.Util)</a>
 </li>
       <li><a href="reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse.trio">trio() (poisson_approval.BestResponse property)</a>
@@ -2885,8 +3039,6 @@
         <li><a href="reference/reference_tau_vector/index.html#poisson_approval.TauVector.trio_1t_c">(poisson_approval.TauVector property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse.trio_1t_i">trio_1t_i() (poisson_approval.BestResponse property)</a>
 
       <ul>
@@ -2897,6 +3049,8 @@
         <li><a href="reference/reference_best_response/reference_best_response_plurality.html#poisson_approval.BestResponsePlurality.trio_1t_i">(poisson_approval.BestResponsePlurality property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse.trio_1t_j">trio_1t_j() (poisson_approval.BestResponse property)</a>
 
       <ul>
@@ -3059,12 +3213,44 @@
         <li><a href="reference/reference_best_response/reference_best_response_plurality.html#poisson_approval.BestResponsePlurality.trio_2t_kj">(poisson_approval.BestResponsePlurality property)</a>
 </li>
       </ul></li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.TWELVE_TYPES">TWELVE_TYPES (in module poisson_approval.constants.basic_constants)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/reference_best_response/reference_best_response.html#poisson_approval.BestResponse.utility_threshold">utility_threshold() (poisson_approval.BestResponse property)</a>
+
+      <ul>
+        <li><a href="reference/reference_best_response/reference_best_response_anti_plurality.html#poisson_approval.BestResponseAntiPlurality.utility_threshold">(poisson_approval.BestResponseAntiPlurality property)</a>
+</li>
+        <li><a href="reference/reference_best_response/reference_best_response_approval.html#poisson_approval.BestResponseApproval.utility_threshold">(poisson_approval.BestResponseApproval property)</a>
+</li>
+        <li><a href="reference/reference_best_response/reference_best_response_plurality.html#poisson_approval.BestResponsePlurality.utility_threshold">(poisson_approval.BestResponsePlurality property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.VOTING_RULES">VOTING_RULES (in module poisson_approval.constants.basic_constants)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.WEAK_ORDERS_HATE_WITHOUT_INVERSIONS">WEAK_ORDERS_HATE_WITHOUT_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS">WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
+      <li><a href="reference/reference_constants/reference_basic_constants.html#poisson_approval.constants.basic_constants.WEAK_ORDERS_WITHOUT_INVERSIONS">WEAK_ORDERS_WITHOUT_INVERSIONS (in module poisson_approval.constants.basic_constants)</a>
+</li>
       <li><a href="reference/reference_profiles/reference_profile.html#poisson_approval.Profile.weighted_maj_graph">weighted_maj_graph() (poisson_approval.Profile property)</a>
 
       <ul>
@@ -3115,7 +3301,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/reference_meta_analysis/reference_xyy_to_profile.html#poisson_approval.XyyToProfile">XyyToProfile (class in poisson_approval)</a>
+      <li><a href="reference/reference_meta_binary_plots/reference_xyy_to_profile.html#poisson_approval.XyyToProfile">XyyToProfile (class in poisson_approval)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -3196,28 +3382,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

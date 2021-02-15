@@ -1,8 +1,8 @@
 try:
     from shapely.geometry import Polygon, MultiPolygon
-except OSError:  # pragma: no cover
+except OSError:  # pragma: no cover - Not supposed to happen
     pass
-from poisson_approval.constants.constants import CANDIDATES, PAIRS_WITHOUT_INVERSIONS
+from poisson_approval.constants.basic_constants import CANDIDATES, PAIRS_WITHOUT_INVERSIONS
 from poisson_approval.utils.Util import my_division, my_sign
 from poisson_approval.utils.UtilPreferences import d_candidate_ordinal_utility
 

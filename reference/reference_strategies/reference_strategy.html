@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Strategy &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
@@ -110,7 +111,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
 </ul>
 </li>
@@ -157,6 +161,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -172,7 +178,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/reference/reference_strategies/reference_strategy.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -214,7 +220,7 @@
 <h1>Strategy<a class="headerlink" href="#strategy" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="poisson_approval.Strategy">
-<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">Strategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">profile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">voting_rule</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/strategies/Strategy.html#Strategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Strategy" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">poisson_approval.</span></code><code class="sig-name descname"><span class="pre">Strategy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voting_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/strategies/Strategy.html#Strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Strategy" title="Permalink to this definition">¶</a></dt>
 <dd><p>A strategy profile (abstract class).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -227,20 +233,20 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
 </dl>
 <dl class="py method">
 <dt id="poisson_approval.Strategy.d_ranking_best_response">
-<em class="property">property </em><code class="sig-name descname">d_ranking_best_response</code><a class="headerlink" href="#poisson_approval.Strategy.d_ranking_best_response" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">d_ranking_best_response</span></code><a class="headerlink" href="#poisson_approval.Strategy.d_ranking_best_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.d_ranking_best_response" title="poisson_approval.TauVector.d_ranking_best_response"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.d_ranking_best_response</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.deepcopy_with_attached_profile">
-<code class="sig-name descname">deepcopy_with_attached_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">profile</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/strategies/Strategy.html#Strategy.deepcopy_with_attached_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.Strategy.deepcopy_with_attached_profile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">deepcopy_with_attached_profile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/strategies/Strategy.html#Strategy.deepcopy_with_attached_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.Strategy.deepcopy_with_attached_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deep copy with an attached profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>profile</strong> (<a class="reference internal" href="../reference_profiles/reference_profile.html#poisson_approval.Profile" title="poisson_approval.Profile"><em>Profile</em></a>) – </p>
+<dd class="field-odd"><p><strong>profile</strong> (<a class="reference internal" href="../reference_profiles/reference_profile.html#poisson_approval.Profile" title="poisson_approval.Profile"><em>Profile</em></a>) – The new attached profile.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A deep copy of this strategy, with the attached profile <cite>profile</cite>.</p>
+<dd class="field-even"><p>A deep copy of this strategy, with <cite>profile</cite> attached to it.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#poisson_approval.Strategy" title="poisson_approval.Strategy">Strategy</a></p>
@@ -250,43 +256,43 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.duo_ab">
-<em class="property">property </em><code class="sig-name descname">duo_ab</code><a class="headerlink" href="#poisson_approval.Strategy.duo_ab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">duo_ab</span></code><a class="headerlink" href="#poisson_approval.Strategy.duo_ab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.duo_ab" title="poisson_approval.TauVector.duo_ab"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.duo_ab</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.duo_ac">
-<em class="property">property </em><code class="sig-name descname">duo_ac</code><a class="headerlink" href="#poisson_approval.Strategy.duo_ac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">duo_ac</span></code><a class="headerlink" href="#poisson_approval.Strategy.duo_ac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.duo_ac" title="poisson_approval.TauVector.duo_ac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.duo_ac</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.duo_ba">
-<em class="property">property </em><code class="sig-name descname">duo_ba</code><a class="headerlink" href="#poisson_approval.Strategy.duo_ba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">duo_ba</span></code><a class="headerlink" href="#poisson_approval.Strategy.duo_ba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.duo_ba" title="poisson_approval.TauVector.duo_ba"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.duo_ba</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.duo_bc">
-<em class="property">property </em><code class="sig-name descname">duo_bc</code><a class="headerlink" href="#poisson_approval.Strategy.duo_bc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">duo_bc</span></code><a class="headerlink" href="#poisson_approval.Strategy.duo_bc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.duo_bc" title="poisson_approval.TauVector.duo_bc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.duo_bc</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.duo_ca">
-<em class="property">property </em><code class="sig-name descname">duo_ca</code><a class="headerlink" href="#poisson_approval.Strategy.duo_ca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">duo_ca</span></code><a class="headerlink" href="#poisson_approval.Strategy.duo_ca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.duo_ca" title="poisson_approval.TauVector.duo_ca"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.duo_ca</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.duo_cb">
-<em class="property">property </em><code class="sig-name descname">duo_cb</code><a class="headerlink" href="#poisson_approval.Strategy.duo_cb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">duo_cb</span></code><a class="headerlink" href="#poisson_approval.Strategy.duo_cb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.duo_cb" title="poisson_approval.TauVector.duo_cb"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.duo_cb</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.is_equilibrium">
-<em class="property">property </em><code class="sig-name descname">is_equilibrium</code><a class="headerlink" href="#poisson_approval.Strategy.is_equilibrium" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">is_equilibrium</span></code><a class="headerlink" href="#poisson_approval.Strategy.is_equilibrium" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether this strategy is an equilibrium (in the context of the given profile). Cf.
 <a class="reference internal" href="../reference_profiles/reference_profile.html#poisson_approval.Profile.is_equilibrium" title="poisson_approval.Profile.is_equilibrium"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Profile.is_equilibrium()</span></code></a>.</p>
 <dl class="field-list simple">
@@ -298,175 +304,175 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_strict_ab">
-<em class="property">property </em><code class="sig-name descname">pivot_strict_ab</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_strict_ab</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_strict_ab" title="poisson_approval.TauVector.pivot_strict_ab"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_strict_ab</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_strict_ac">
-<em class="property">property </em><code class="sig-name descname">pivot_strict_ac</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_strict_ac</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_strict_ac" title="poisson_approval.TauVector.pivot_strict_ac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_strict_ac</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_strict_ba">
-<em class="property">property </em><code class="sig-name descname">pivot_strict_ba</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_strict_ba</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_strict_ba" title="poisson_approval.TauVector.pivot_strict_ba"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_strict_ba</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_strict_bc">
-<em class="property">property </em><code class="sig-name descname">pivot_strict_bc</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_bc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_strict_bc</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_bc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_strict_bc" title="poisson_approval.TauVector.pivot_strict_bc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_strict_bc</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_strict_ca">
-<em class="property">property </em><code class="sig-name descname">pivot_strict_ca</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_strict_ca</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_ca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_strict_ca" title="poisson_approval.TauVector.pivot_strict_ca"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_strict_ca</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_strict_cb">
-<em class="property">property </em><code class="sig-name descname">pivot_strict_cb</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_cb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_strict_cb</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_strict_cb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_strict_cb" title="poisson_approval.TauVector.pivot_strict_cb"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_strict_cb</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tij_abc">
-<em class="property">property </em><code class="sig-name descname">pivot_tij_abc</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_abc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tij_abc</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_abc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tij_abc" title="poisson_approval.TauVector.pivot_tij_abc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tij_abc</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tij_acb">
-<em class="property">property </em><code class="sig-name descname">pivot_tij_acb</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_acb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tij_acb</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_acb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tij_acb" title="poisson_approval.TauVector.pivot_tij_acb"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tij_acb</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tij_bac">
-<em class="property">property </em><code class="sig-name descname">pivot_tij_bac</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_bac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tij_bac</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_bac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tij_bac" title="poisson_approval.TauVector.pivot_tij_bac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tij_bac</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tij_bca">
-<em class="property">property </em><code class="sig-name descname">pivot_tij_bca</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_bca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tij_bca</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_bca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tij_bca" title="poisson_approval.TauVector.pivot_tij_bca"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tij_bca</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tij_cab">
-<em class="property">property </em><code class="sig-name descname">pivot_tij_cab</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_cab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tij_cab</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_cab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tij_cab" title="poisson_approval.TauVector.pivot_tij_cab"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tij_cab</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tij_cba">
-<em class="property">property </em><code class="sig-name descname">pivot_tij_cba</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_cba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tij_cba</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tij_cba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tij_cba" title="poisson_approval.TauVector.pivot_tij_cba"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tij_cba</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tjk_abc">
-<em class="property">property </em><code class="sig-name descname">pivot_tjk_abc</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_abc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tjk_abc</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_abc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_abc" title="poisson_approval.TauVector.pivot_tjk_abc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tjk_abc</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tjk_acb">
-<em class="property">property </em><code class="sig-name descname">pivot_tjk_acb</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_acb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tjk_acb</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_acb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_acb" title="poisson_approval.TauVector.pivot_tjk_acb"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tjk_acb</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tjk_bac">
-<em class="property">property </em><code class="sig-name descname">pivot_tjk_bac</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_bac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tjk_bac</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_bac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_bac" title="poisson_approval.TauVector.pivot_tjk_bac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tjk_bac</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tjk_bca">
-<em class="property">property </em><code class="sig-name descname">pivot_tjk_bca</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_bca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tjk_bca</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_bca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_bca" title="poisson_approval.TauVector.pivot_tjk_bca"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tjk_bca</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tjk_cab">
-<em class="property">property </em><code class="sig-name descname">pivot_tjk_cab</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_cab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tjk_cab</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_cab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_cab" title="poisson_approval.TauVector.pivot_tjk_cab"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tjk_cab</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_tjk_cba">
-<em class="property">property </em><code class="sig-name descname">pivot_tjk_cba</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_cba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_tjk_cba</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_tjk_cba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_tjk_cba" title="poisson_approval.TauVector.pivot_tjk_cba"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_tjk_cba</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_weak_ab">
-<em class="property">property </em><code class="sig-name descname">pivot_weak_ab</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_weak_ab</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_weak_ab" title="poisson_approval.TauVector.pivot_weak_ab"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_weak_ab</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_weak_ac">
-<em class="property">property </em><code class="sig-name descname">pivot_weak_ac</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_weak_ac</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_weak_ac" title="poisson_approval.TauVector.pivot_weak_ac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_weak_ac</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_weak_ba">
-<em class="property">property </em><code class="sig-name descname">pivot_weak_ba</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_weak_ba</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_weak_ba" title="poisson_approval.TauVector.pivot_weak_ba"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_weak_ba</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_weak_bc">
-<em class="property">property </em><code class="sig-name descname">pivot_weak_bc</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_bc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_weak_bc</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_bc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_weak_bc" title="poisson_approval.TauVector.pivot_weak_bc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_weak_bc</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_weak_ca">
-<em class="property">property </em><code class="sig-name descname">pivot_weak_ca</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_weak_ca</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_ca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_weak_ca" title="poisson_approval.TauVector.pivot_weak_ca"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_weak_ca</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.pivot_weak_cb">
-<em class="property">property </em><code class="sig-name descname">pivot_weak_cb</code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_cb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pivot_weak_cb</span></code><a class="headerlink" href="#poisson_approval.Strategy.pivot_weak_cb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.pivot_weak_cb" title="poisson_approval.TauVector.pivot_weak_cb"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.pivot_weak_cb</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.print_all_pivots">
-<code class="sig-name descname">print_all_pivots</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.Strategy.print_all_pivots" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">print_all_pivots</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.Strategy.print_all_pivots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.print_all_pivots" title="poisson_approval.TauVector.print_all_pivots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TauVector.print_all_pivots()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.print_weak_pivots">
-<code class="sig-name descname">print_weak_pivots</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.Strategy.print_weak_pivots" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">print_weak_pivots</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#poisson_approval.Strategy.print_weak_pivots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.print_weak_pivots" title="poisson_approval.TauVector.print_weak_pivots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TauVector.print_weak_pivots()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.scores">
-<em class="property">property </em><code class="sig-name descname">scores</code><a class="headerlink" href="#poisson_approval.Strategy.scores" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">scores</span></code><a class="headerlink" href="#poisson_approval.Strategy.scores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.scores" title="poisson_approval.TauVector.scores"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.scores</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.share_double_votes">
-<em class="property">property </em><code class="sig-name descname">share_double_votes</code><a class="headerlink" href="#poisson_approval.Strategy.share_double_votes" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">share_double_votes</span></code><a class="headerlink" href="#poisson_approval.Strategy.share_double_votes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.share_double_votes" title="poisson_approval.TauVector.share_double_votes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.share_double_votes</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.share_sincere">
-<em class="property">property </em><code class="sig-name descname">share_sincere</code><a class="headerlink" href="#poisson_approval.Strategy.share_sincere" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">share_sincere</span></code><a class="headerlink" href="#poisson_approval.Strategy.share_sincere" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of voters that happen to cast a sincere ballot (in the context of the given profile).</p>
 <p>Cf. <a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.share_sincere" title="poisson_approval.ProfileCardinal.share_sincere"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.share_sincere()</span></code></a>. This is defined only for a <a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal" title="poisson_approval.ProfileCardinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileCardinal</span></code></a>.</p>
 <dl class="field-list simple">
@@ -478,7 +484,7 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.share_sincere_among_strategic_voters">
-<em class="property">property </em><code class="sig-name descname">share_sincere_among_strategic_voters</code><a class="headerlink" href="#poisson_approval.Strategy.share_sincere_among_strategic_voters" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">share_sincere_among_strategic_voters</span></code><a class="headerlink" href="#poisson_approval.Strategy.share_sincere_among_strategic_voters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Share of strategic voters that happen to cast a sincere ballot (in the context of the given profile).</p>
 <p>Cf. <a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.share_sincere_among_strategic_voters" title="poisson_approval.ProfileCardinal.share_sincere_among_strategic_voters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.share_sincere_among_strategic_voters()</span></code></a>. This is defined only for a
 <a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal" title="poisson_approval.ProfileCardinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileCardinal</span></code></a>.</p>
@@ -491,13 +497,13 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.share_single_votes">
-<em class="property">property </em><code class="sig-name descname">share_single_votes</code><a class="headerlink" href="#poisson_approval.Strategy.share_single_votes" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">share_single_votes</span></code><a class="headerlink" href="#poisson_approval.Strategy.share_single_votes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.share_single_votes" title="poisson_approval.TauVector.share_single_votes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.share_single_votes</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.tau">
-<em class="property">property </em><code class="sig-name descname">tau</code><a class="headerlink" href="#poisson_approval.Strategy.tau" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tau</span></code><a class="headerlink" href="#poisson_approval.Strategy.tau" title="Permalink to this definition">¶</a></dt>
 <dd><p>The tau-vector associated to this strategy (in the context of the given profile). Cf.
 <a class="reference internal" href="../reference_profiles/reference_profile.html#poisson_approval.Profile.tau" title="poisson_approval.Profile.tau"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Profile.tau()</span></code></a>.</p>
 <dl class="field-list simple">
@@ -509,73 +515,73 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio">
-<em class="property">property </em><code class="sig-name descname">trio</code><a class="headerlink" href="#poisson_approval.Strategy.trio" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio" title="poisson_approval.TauVector.trio"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_1t_a">
-<em class="property">property </em><code class="sig-name descname">trio_1t_a</code><a class="headerlink" href="#poisson_approval.Strategy.trio_1t_a" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_1t_a</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_1t_a" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_1t_a" title="poisson_approval.TauVector.trio_1t_a"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_1t_a</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_1t_b">
-<em class="property">property </em><code class="sig-name descname">trio_1t_b</code><a class="headerlink" href="#poisson_approval.Strategy.trio_1t_b" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_1t_b</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_1t_b" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_1t_b" title="poisson_approval.TauVector.trio_1t_b"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_1t_b</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_1t_c">
-<em class="property">property </em><code class="sig-name descname">trio_1t_c</code><a class="headerlink" href="#poisson_approval.Strategy.trio_1t_c" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_1t_c</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_1t_c" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_1t_c" title="poisson_approval.TauVector.trio_1t_c"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_1t_c</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_2t_ab">
-<em class="property">property </em><code class="sig-name descname">trio_2t_ab</code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ab" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_2t_ab</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_2t_ab" title="poisson_approval.TauVector.trio_2t_ab"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_2t_ab</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_2t_ac">
-<em class="property">property </em><code class="sig-name descname">trio_2t_ac</code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ac" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_2t_ac</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_2t_ac" title="poisson_approval.TauVector.trio_2t_ac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_2t_ac</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_2t_ba">
-<em class="property">property </em><code class="sig-name descname">trio_2t_ba</code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ba" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_2t_ba</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_2t_ba" title="poisson_approval.TauVector.trio_2t_ba"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_2t_ba</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_2t_bc">
-<em class="property">property </em><code class="sig-name descname">trio_2t_bc</code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_bc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_2t_bc</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_bc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_2t_bc" title="poisson_approval.TauVector.trio_2t_bc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_2t_bc</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_2t_ca">
-<em class="property">property </em><code class="sig-name descname">trio_2t_ca</code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ca" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_2t_ca</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_ca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_2t_ca" title="poisson_approval.TauVector.trio_2t_ca"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_2t_ca</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.trio_2t_cb">
-<em class="property">property </em><code class="sig-name descname">trio_2t_cb</code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_cb" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trio_2t_cb</span></code><a class="headerlink" href="#poisson_approval.Strategy.trio_2t_cb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.trio_2t_cb" title="poisson_approval.TauVector.trio_2t_cb"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.trio_2t_cb</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.winners">
-<em class="property">property </em><code class="sig-name descname">winners</code><a class="headerlink" href="#poisson_approval.Strategy.winners" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">winners</span></code><a class="headerlink" href="#poisson_approval.Strategy.winners" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined when a profile is given. Cf. <a class="reference internal" href="../reference_tau_vector/index.html#poisson_approval.TauVector.winners" title="poisson_approval.TauVector.winners"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TauVector.winners</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="poisson_approval.Strategy.">
-<em class="property">property </em><code class="sig-name descname">τ</code><a class="headerlink" href="#poisson_approval.Strategy." title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">τ</span></code><a class="headerlink" href="#poisson_approval.Strategy." title="Permalink to this definition">¶</a></dt>
 <dd><p>The tau-vector (alternate notation). Cf. <a class="reference internal" href="../reference_profiles/reference_profile.html#poisson_approval.Profile." title="poisson_approval.Profile.τ"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Profile.τ()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -593,37 +599,29 @@ voting rule as <cite>profile</cite> if a profile is specified, <code class="docu
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="reference_strategy_twelve.html" class="btn btn-neutral float-right" title="StrategyTwelve" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="Strategies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="reference_strategy_twelve.html" class="btn btn-neutral float-right" title="StrategyTwelve" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Strategies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

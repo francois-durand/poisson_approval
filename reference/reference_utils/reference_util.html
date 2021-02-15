@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Util Module &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
@@ -104,7 +105,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_func.html">computation_engine</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_computation_engine.html">ComputationEngine</a></li>
@@ -118,6 +122,7 @@
 <li class="toctree-l3"><a class="reference internal" href="reference_util_ballots.html">UtilBallots Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_cache.html">UtilCache Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_masks.html">UtilMasks Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_plot.html">UtilPlot Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_preferences.html">UtilPreferences Module</a></li>
 </ul>
 </li>
@@ -166,6 +171,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -181,7 +188,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/reference/reference_utils/reference_util.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -223,11 +230,11 @@
 <span id="util-module"></span><h1>Util Module<a class="headerlink" href="#module-poisson_approval.utils.Util" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.array_to_d_candidate_value">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">array_to_d_candidate_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#array_to_d_candidate_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.array_to_d_candidate_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">array_to_d_candidate_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#array_to_d_candidate_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.array_to_d_candidate_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert an array to a dictionary of candidates and values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>values</strong> (<em>ndarray</em>) – An array of size 3.</p>
+<dd class="field-odd"><p><strong>values</strong> (<em>numpy.ndarray</em>) – An array of size 3.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The corresponding dictionary.</p>
@@ -246,7 +253,7 @@
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.candidates_to_d_candidate_probability">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">candidates_to_d_candidate_probability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#candidates_to_d_candidate_probability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.candidates_to_d_candidate_probability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">candidates_to_d_candidate_probability</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">candidates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#candidates_to_d_candidate_probability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.candidates_to_d_candidate_probability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a set of candidates to a dictionary of probabilities (random tie-break).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -270,18 +277,18 @@ tie-break.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.candidates_to_probabilities">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">candidates_to_probabilities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#candidates_to_probabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.candidates_to_probabilities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">candidates_to_probabilities</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">candidates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#candidates_to_probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.candidates_to_probabilities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a set of candidates to an array of probabilities (random tie-break).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>candidates</strong> (<em>set</em>) – A subset of <code class="docutils literal notranslate"><span class="pre">{'a',</span> <span class="pre">'b',</span> <span class="pre">'c'}</span></code>. Typically: a set of winners.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of size 3. For example, the first coefficient is the probability that candidate <cite>a</cite> win by a random
+<dd class="field-even"><p>Array of size 3. For example, the first coefficient is the probability that candidate <cite>a</cite> wins by a random
 tie-break.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -294,7 +301,7 @@ tie-break.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.d_candidate_value_to_array">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">d_candidate_value_to_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d_candidate_value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#d_candidate_value_to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.d_candidate_value_to_array" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">d_candidate_value_to_array</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_candidate_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#d_candidate_value_to_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.d_candidate_value_to_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a dictionary of candidates and values to an array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -304,7 +311,7 @@ tie-break.</p>
 <dd class="field-even"><p>The corresponding array.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -317,14 +324,14 @@ tie-break.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.give_figure">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">give_figure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">singular</span></em>, <em class="sig-param"><span class="n">plural</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#give_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.give_figure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">give_figure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plural</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#give_figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.give_figure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Combine a number with a unit, whose word can be singular or plural.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – The number.</p></li>
 <li><p><strong>singular</strong> (<em>str</em>) – The singular word.</p></li>
-<li><p><strong>plural</strong> (<em>str</em>) – The plural word. Default: the singular with a final ‘s’.</p></li>
+<li><p><strong>plural</strong> (<em>str</em>) – The plural word. Default: the singular with a final “s”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -349,8 +356,8 @@ tie-break.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.image_distribution">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">image_distribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factory</span></em>, <em class="sig-param"><span class="n">n_samples</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">conditional_on</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#image_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.image_distribution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Distribution of <code class="docutils literal notranslate"><span class="pre">f(something)</span></code> for a random <cite>something</cite>.</p>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">image_distribution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditional_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#image_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.image_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distribution of <cite>f(something)</cite> for a random <cite>something</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -408,7 +415,7 @@ excluded:</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.initialize_random_seeds">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">initialize_random_seeds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#initialize_random_seeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.initialize_random_seeds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">initialize_random_seeds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#initialize_random_seeds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.initialize_random_seeds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the random seeds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,7 +426,7 @@ excluded:</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.isnan">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">isnan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isnan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.isnan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">isnan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isnan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.isnan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is nan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -433,7 +440,7 @@ excluded:</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This extends the usual numpy function <code class="docutils literal notranslate"><span class="pre">isnan</span></code> to fractions and sympy expressions.</p>
+<p>This extends the usual <cite>numpy</cite> function <code class="docutils literal notranslate"><span class="pre">isnan</span></code> to fractions and <cite>sympy</cite> expressions.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
 <span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span>
@@ -447,7 +454,7 @@ excluded:</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.isneginf">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">isneginf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isneginf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.isneginf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">isneginf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isneginf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.isneginf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is negative infinity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -461,7 +468,7 @@ excluded:</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This extends the usual numpy function <code class="docutils literal notranslate"><span class="pre">isneginf</span></code> to fractions and sympy expressions.</p>
+<p>This extends the usual <cite>numpy</cite> function <code class="docutils literal notranslate"><span class="pre">isneginf</span></code> to fractions and <cite>sympy</cite> expressions.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
 <span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span>
@@ -475,7 +482,7 @@ excluded:</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.isposinf">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">isposinf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isposinf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.isposinf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">isposinf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#isposinf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.isposinf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is positive infinity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -489,7 +496,7 @@ excluded:</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This extends the usual numpy function <code class="docutils literal notranslate"><span class="pre">isposinf</span></code> to fractions and sympy expressions.</p>
+<p>This extends the usual <cite>numpy</cite> function <code class="docutils literal notranslate"><span class="pre">isposinf</span></code> to fractions and <cite>sympy</cite> expressions.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
 <span class="gp">... </span>          <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">,</span>
@@ -503,7 +510,7 @@ excluded:</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.iterate_simplex_grid">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">iterate_simplex_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">denominator</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#iterate_simplex_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.iterate_simplex_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">iterate_simplex_grid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denominator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#iterate_simplex_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.iterate_simplex_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over the points in the simplex, with rational coordinates of a given denominator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -538,7 +545,7 @@ denominator given by the iterable.</p></li>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.iterator_integers_fixed_sum">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">iterator_integers_fixed_sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">fixed_sum</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#iterator_integers_fixed_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.iterator_integers_fixed_sum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">iterator_integers_fixed_sum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_sum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#iterator_integers_fixed_sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.iterator_integers_fixed_sum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over vectors of integers with a fixed sum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -566,7 +573,7 @@ denominator given by the iterable.</p></li>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.my_division">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">my_division</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_division" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">my_division</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_division"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_division" title="Permalink to this definition">¶</a></dt>
 <dd><p>Division of two numbers, trying to be exact if it is reasonable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -597,7 +604,7 @@ denominator given by the iterable.</p></li>
 <span class="go">0.04</span>
 </pre></div>
 </div>
-<p>If <cite>x</cite> and <cite>y</cite> are integers, decimals, fractions or sympy expressions, then the result is symbolic:</p>
+<p>If <cite>x</cite> and <cite>y</cite> are integers, decimals, fractions or <cite>sympy</cite> expressions, then the result is symbolic:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="go">Fraction(4, 5)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_division</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.1&#39;</span><span class="p">),</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -619,7 +626,7 @@ denominator given by the iterable.</p></li>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.my_range">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">my_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_range" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">my_range</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterable <cite>range</cite> adapted for fractions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -649,7 +656,7 @@ denominator given by the iterable.</p></li>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.my_sign">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">my_sign</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_sign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_sign" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">my_sign</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#my_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.my_sign" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sign.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -675,7 +682,7 @@ denominator given by the iterable.</p></li>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.normalize_dict_to_0_1">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">normalize_dict_to_0_1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#normalize_dict_to_0_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.normalize_dict_to_0_1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">normalize_dict_to_0_1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#normalize_dict_to_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.normalize_dict_to_0_1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize the values of a dictionary to the interval [0, 1].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -708,16 +715,17 @@ value is 1.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_log_log_t_plus_fourteen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_log_t_plus_fourteen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">one_over_log_log_t_plus_fourteen</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_log_t_plus_fourteen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_log_t_plus_fourteen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function <cite>1 / log(log(t + 14))</cite>.</p>
-<p>This function is provided as an example of update ratio for <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>. The constant
-14 in the denominator is the smallest integer such that <cite>f(t = 1) &lt; 1</cite>.</p>
+<p>This function is provided as an example of update ratio for
+<a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.fictitious_play" title="poisson_approval.ProfileCardinal.fictitious_play"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fictitious_play()</span></code></a>. The constant 14 in the denominator is the smallest
+integer such that <cite>f(t = 2) &lt; 1</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p><cite>1 / log(log(t + 14))</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Number</p>
@@ -732,16 +740,17 @@ value is 1.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.one_over_log_t_plus_one">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_log_t_plus_one</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_t_plus_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_t_plus_one" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">one_over_log_t_plus_one</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_log_t_plus_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_log_t_plus_one" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function <cite>1 / log(t + 1)</cite>.</p>
-<p>This function is provided as an example of update ratio for <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>. The constant
-1 in the denominator is the smallest integer such that <cite>f(t = 2) &lt; 1</cite>.</p>
+<p>This function is provided as an example of update ratio for
+<a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.fictitious_play" title="poisson_approval.ProfileCardinal.fictitious_play"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fictitious_play()</span></code></a>. The constant 1 in the denominator is the smallest
+integer such that <cite>f(t = 2) &lt; 1</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p><cite>1 / log(t + 1)</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Number</p>
@@ -756,15 +765,15 @@ value is 1.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.one_over_sqrt_t">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_sqrt_t</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_sqrt_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_sqrt_t" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">one_over_sqrt_t</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_sqrt_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_sqrt_t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function <cite>1 / sqrt(t)</cite>.</p>
-<p>This function is provided as an example of update ratio for <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>.</p>
+<p>This function is provided as an example of update ratio for <a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.fictitious_play" title="poisson_approval.ProfileCardinal.fictitious_play"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fictitious_play()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p><cite>1 / sqrt(t)</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Number</p>
@@ -779,16 +788,16 @@ value is 1.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.one_over_t">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">one_over_t</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_t" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">one_over_t</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#one_over_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.one_over_t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function <cite>1 / t</cite>.</p>
-<p>When used as an update ratio (cf. <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProfileCardinal.fictitious_play()</span></code>), this amounts to computing the arithmetic
+<p>When used as an update ratio (cf. <a class="reference internal" href="../reference_profiles/reference_profile_cardinal.html#poisson_approval.ProfileCardinal.fictitious_play" title="poisson_approval.ProfileCardinal.fictitious_play"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fictitious_play()</span></code></a>), this amounts to computing the arithmetic
 mean.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>t</strong> (<em>Number</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p><cite>1 / t</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Number</p>
@@ -803,19 +812,19 @@ mean.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.probability">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">probability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factory</span></em>, <em class="sig-param"><span class="n">n_samples</span></em>, <em class="sig-param"><span class="n">test</span></em>, <em class="sig-param"><span class="n">conditional_on</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#probability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.probability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">probability</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditional_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#probability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.probability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Probability that a random <cite>something</cite> meets some given test.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>factory</strong> (<em>callable</em><em> or </em><em>tuple</em>) – <p>This can be:</p>
+<li><p><strong>factory</strong> (<em>callable</em><em> or </em><em>tuple of callable</em>) – <p>This can be:</p>
 <ul>
 <li><p>Either a callable that takes no input and that outputs a (random) <cite>something</cite>,</p></li>
 <li><p>Or a tuple of such factories (cf. examples below).</p></li>
 </ul>
 </p></li>
 <li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples.</p></li>
-<li><p><strong>test</strong> (<em>callable</em><em> or </em><em>tuple</em>) – <p>This can be:</p>
+<li><p><strong>test</strong> (<em>callable</em><em> or </em><em>tuple of callable</em>) – <p>This can be:</p>
 <ul>
 <li><p>Either a function that take as input(s) the output(s) of the factory(ies) and that returns a Boolean.</p></li>
 <li><p>Or a tuple of such functions (cf. examples below).</p></li>
@@ -830,12 +839,12 @@ Default: always True.</p></li>
 <ul class="simple">
 <li><p>Either the probability that the output(s) generated by <cite>factory</cite> meet(s) <cite>test</cite>, conditional on the fact
 that it meets <cite>conditional_on</cite>, based on a Monte-Carlo estimation of <cite>n_samples</cite> trials.</p></li>
-<li><p>Either a tuple giving this probability for each member of <cite>test</cite>, when <cite>test</cite> is a tuple itself.</p></li>
+<li><p>Or a tuple giving this probability for each member of <cite>test</cite>, when <cite>test</cite> is a tuple itself.</p></li>
 </ul>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float or tuple</p>
+<dd class="field-odd"><p>float or tuple of float</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -876,12 +885,12 @@ and the probability that it is greater than .75, conditionally on being greater 
 <span class="go">(0.661, 0.332)</span>
 </pre></div>
 </div>
-<p>When using a tuple of tests, the same samples are used to estimate each probability.</p>
+<p>When using a tuple of tests, the same sample is used to estimate each probability.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.product_dict">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">product_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d_key_possible_values</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#product_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.product_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">product_dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_key_possible_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#product_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.product_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterable: product of dictionaries.</p>
 <p>Source: <a class="reference external" href="https://stackoverflow.com/questions/5228158/cartesian-product-of-a-dictionary-of-lists">https://stackoverflow.com/questions/5228158/cartesian-product-of-a-dictionary-of-lists</a>.</p>
 <dl class="field-list simple">
@@ -909,7 +918,7 @@ are returned this way.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.rand_integers_fixed_sum">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">rand_integers_fixed_sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">fixed_sum</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_integers_fixed_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_integers_fixed_sum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">rand_integers_fixed_sum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_sum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_integers_fixed_sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_integers_fixed_sum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate integers with a given sum (uniformly).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -919,7 +928,7 @@ are returned this way.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A numpy array of <cite>d</cite> integers, whose sum is <cite>fixed_sum</cite>, and drawn uniformly.</p>
+<dd class="field-even"><p>A <cite>numpy</cite> array of <cite>d</cite> integers, whose sum is <cite>fixed_sum</cite>, and drawn uniformly.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
@@ -935,14 +944,14 @@ are returned this way.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.rand_simplex">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">rand_simplex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">6</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_simplex" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">rand_simplex</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_simplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_simplex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a random point in the simplex.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>d</strong> (<em>int</em>) – Number of coordinates. In other words, we consider the simplex of dimension <cite>d - 1</cite>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A numpy array of length <cite>d</cite>, whose sum is 1.</p>
+<dd class="field-even"><p>A <cite>numpy</cite> array of length <cite>d</cite>, whose sum is 1.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
@@ -958,7 +967,7 @@ are returned this way.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.rand_simplex_grid">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">rand_simplex_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">denominator</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_simplex_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_simplex_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">rand_simplex_grid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denominator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#rand_simplex_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.rand_simplex_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a random point in the simplex, with rational coordinates of a given denominator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -968,7 +977,7 @@ are returned this way.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A numpy array of length <cite>d</cite>, whose coordinates are fractions of the given denominator, and whose sum is 1.</p>
+<dd class="field-even"><p>A <cite>numpy</cite> array of length <cite>d</cite>, whose coordinates are fractions of the given denominator, and whose sum is 1.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
@@ -984,7 +993,7 @@ are returned this way.</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.Util.to_callable">
-<code class="sig-prename descclassname">poisson_approval.utils.Util.</code><code class="sig-name descname">to_callable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#to_callable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.Util.to_callable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.Util.</span></code><code class="sig-name descname"><span class="pre">to_callable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/Util.html#to_callable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.Util.to_callable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert to a callable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1022,37 +1031,29 @@ are returned this way.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="reference_util_ballots.html" class="btn btn-neutral float-right" title="UtilBallots Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="reference_set_printing_in_order.html" class="btn btn-neutral float-left" title="SetPrintingInOrder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="reference_util_ballots.html" class="btn btn-neutral float-right" title="UtilBallots Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference_set_printing_in_order.html" class="btn btn-neutral float-left" title="SetPrintingInOrder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

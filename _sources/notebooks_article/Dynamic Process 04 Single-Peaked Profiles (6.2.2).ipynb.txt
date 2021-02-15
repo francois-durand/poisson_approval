@@ -1,0 +1,208 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Dynamic Process: Single-Peaked Profiles (6.2.2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:27.824418Z",
+     "start_time": "2021-02-09T13:45:21.999726Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from poisson_approval import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:27.833381Z",
+     "start_time": "2021-02-09T13:45:27.828394Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "N_SAMPLES = 10000\n",
+    "N_MAX_EPISODES = 1000"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:27.847931Z",
+     "start_time": "2021-02-09T13:45:27.839688Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "RANKINGS_SP = ['abc', 'acb', 'bac', 'cab']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:27.883098Z",
+     "start_time": "2021-02-09T13:45:27.856130Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "rand_profile = RandProfileHistogramUniform(n_bins=1, orders=RANKINGS_SP)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Condorcet consistency:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:28.729042Z",
+     "start_time": "2021-02-09T13:45:27.893753Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "results = monte_carlo_fictitious_play(\n",
+    "    factory=rand_profile,\n",
+    "    n_samples=N_SAMPLES,\n",
+    "    n_max_episodes=N_MAX_EPISODES,\n",
+    "    voting_rules=VOTING_RULES,\n",
+    "    init='random_tau',\n",
+    "    monte_carlo_settings=[\n",
+    "        MCS_FREQUENCY_CW_WINS\n",
+    "    ],\n",
+    "    file_save='sav/single_peaked_profiles.sav',\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:28.741014Z",
+     "start_time": "2021-02-09T13:45:28.731040Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9924"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "float(results[APPROVAL]['mean_frequency_cw_wins'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:28.776796Z",
+     "start_time": "2021-02-09T13:45:28.744005Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.6608"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "float(results[PLURALITY]['mean_frequency_cw_wins'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-02-09T13:45:28.835716Z",
+     "start_time": "2021-02-09T13:45:28.780772Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.7468768805486792"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "float(results[ANTI_PLURALITY]['mean_frequency_cw_wins'])"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": true,
+   "sideBar": true,
+   "skip_h1_title": true,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {},
+   "toc_section_display": true,
+   "toc_window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.best_response.BestResponseAntiPlurality &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -136,6 +137,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -161,26 +164,34 @@
             
   <h1>Source code for poisson_approval.best_response.BestResponseAntiPlurality</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">poisson_approval.best_response.BestResponse</span> <span class="kn">import</span> <span class="n">BestResponse</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
 
 <div class="viewcode-block" id="BestResponseAntiPlurality"><a class="viewcode-back" href="../../../reference/reference_best_response/reference_best_response_anti_plurality.html#poisson_approval.BestResponseAntiPlurality">[docs]</a><span class="k">class</span> <span class="nc">BestResponseAntiPlurality</span><span class="p">(</span><span class="n">BestResponse</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Best response for a given ordinal type of voter in Anti-plurality.</span>
 
-<span class="sd">    The main objective of this class is to compute :attr:`threshold_utility`.</span>
+<span class="sd">    The main objective of this class is to compute :attr:`utility_threshold`.</span>
 
 <span class="sd">    For the sake of consistency with :class:`BestResponseApproval`, it provides the string :attr:`justification`,</span>
 <span class="sd">    indicating which sub-algorithm was used. But since there are no actual sub-algorithms for anti-plurality, the</span>
-<span class="sd">    justification is always the same: &#39;Anti-plurality analysis&#39;.</span>
+<span class="sd">    justification is always the same: ``&#39;Anti-plurality analysis&#39;``.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Cf. :class:`BestResponse`.</span>
+<span class="sd">    tau : TauVector</span>
+<span class="sd">        A tau-vector.</span>
+<span class="sd">    ranking : str</span>
+<span class="sd">        Voter&#39;s ranking, e.g. ``&#39;abc&#39;``.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Cf. :class:`BestResponse`</span>
+<span class="sd">    i, j, k : str</span>
+<span class="sd">        The first (resp. second, third) candidate in `ranking`. E.g. ``a``.</span>
+<span class="sd">    ij, ik, jk : str</span>
+<span class="sd">        The ballots with two candidates. E.g. ``ab``.</span>
+<span class="sd">    tau_i, tau_j, tau_k, tau_ij, tau_ik, tau_jk : Number</span>
+<span class="sd">        The values of the tau-vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">ANTI_PLURALITY_ANALYSIS</span> <span class="o">=</span> <span class="s1">&#39;Anti-plurality analysis&#39;</span>
@@ -188,47 +199,46 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;tuple : Tuple `(utility_threshold, justification)`. Cf. :attr:`utility_threshold` and :attr:`justification`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span>
         <span class="n">tau_minus_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_jk</span>
         <span class="n">tau_minus_j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_ik</span>
         <span class="n">tau_minus_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_ij</span>
         <span class="k">if</span> <span class="n">tau_minus_k</span> <span class="o">&gt;</span> <span class="n">tau_minus_i</span> <span class="ow">and</span> <span class="n">tau_minus_k</span> <span class="o">&gt;</span> <span class="n">tau_minus_j</span><span class="p">:</span>
             <span class="c1"># The best response is `- j`, i.e. `ik`</span>
-            <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">utility_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">tau_minus_i</span> <span class="o">==</span> <span class="n">tau_minus_k</span> <span class="o">&gt;</span> <span class="n">tau_minus_j</span><span class="p">:</span>
-            <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">utility_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># The best response is `- k`, i.e. `ij`</span>
-            <span class="n">threshold_utility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">threshold_utility</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ANTI_PLURALITY_ANALYSIS</span></div>
+            <span class="n">utility_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">utility_threshold</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ANTI_PLURALITY_ANALYSIS</span></div>
 </pre></div>
 
            </div>
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

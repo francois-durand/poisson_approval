@@ -1,9 +1,10 @@
 from poisson_approval.utils.computation_engine import computation_engine
+from poisson_approval.utils.SuperclassMeta import SuperclassMeta
 from poisson_approval.utils.Util import isnan
 from poisson_approval.utils.UtilBallots import sort_ballot
 
 
-class Event:
+class Event(metaclass=SuperclassMeta):
     """An event with all its attributes: magnitudes, offsets, asymptotic if possible (abstract class).
 
     Parameters
@@ -156,6 +157,6 @@ class Event:
                     s += ', phi_' + label + ' = {:.6g}'.format(float(val))
         return '<%s>' % s
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')

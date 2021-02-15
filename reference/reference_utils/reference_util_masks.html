@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>UtilMasks Module &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,17 +32,14 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="UtilPreferences Module" href="reference_util_preferences.html" />
+    <link rel="next" title="UtilPlot Module" href="reference_util_plot.html" />
     <link rel="prev" title="UtilCache Module" href="reference_util_cache.html" /> 
 </head>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
@@ -104,7 +105,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="reference_computation_engine_func.html">computation_engine</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_computation_engine.html">ComputationEngine</a></li>
@@ -118,6 +122,7 @@
 <li class="toctree-l3"><a class="reference internal" href="reference_util_ballots.html">UtilBallots Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_cache.html">UtilCache Module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">UtilMasks Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_util_plot.html">UtilPlot Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_util_preferences.html">UtilPreferences Module</a></li>
 </ul>
 </li>
@@ -166,6 +171,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -181,7 +188,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/reference/reference_utils/reference_util_masks.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -223,7 +230,7 @@
 <span id="utilmasks-module"></span><h1>UtilMasks Module<a class="headerlink" href="#module-poisson_approval.utils.UtilMasks" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.masks_area">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">masks_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf</span></em>, <em class="sig-param"><span class="n">sup</span></em>, <em class="sig-param"><span class="n">masks</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_area" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">masks_area</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_area" title="Permalink to this definition">¶</a></dt>
 <dd><p>Area of some masks (recursive <cite>divide and conquer</cite> implementation).</p>
 <p>We denote by <cite>d</cite> the dimension of the Euclidean space under study.</p>
 <dl class="field-list simple">
@@ -231,22 +238,22 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inf</strong> (<em>list of Number</em>) – A list of <cite>d</cite> numbers. The inf limit of the bounding rectangle in each dimension.</p></li>
 <li><p><strong>sup</strong> (<em>list of Number</em>) – A list of <cite>d</cite> numbers. The sup limit of the bounding rectangle in each dimension.</p></li>
-<li><p><strong>masks</strong> (<em>list of list of tuple</em>) – A list of masks. Each mask is a list of <cite>d</cite> pairs <code class="docutils literal notranslate"><span class="pre">(lim,</span> <span class="pre">direction)</span></code>, where <code class="docutils literal notranslate"><span class="pre">lim</span></code> is the limit
-of the mask, and <code class="docutils literal notranslate"><span class="pre">direction</span></code> is a Boolean: <code class="docutils literal notranslate"><span class="pre">True</span></code> (resp <code class="docutils literal notranslate"><span class="pre">False</span></code>) means that the points of the mask
-meet the condition <code class="docutils literal notranslate"><span class="pre">x_d</span> <span class="pre">&gt;=</span> <span class="pre">lim</span></code> (resp. <code class="docutils literal notranslate"><span class="pre">x_d</span> <span class="pre">&lt;=</span> <span class="pre">lim</span></code>).</p></li>
+<li><p><strong>masks</strong> (<em>list of list of tuple</em>) – A list of masks. Each mask is a list of <cite>d</cite> pairs <cite>(lim, direction)</cite>, where <cite>lim</cite> is the limit
+of the mask, and <cite>direction</cite> is a Boolean: <cite>True</cite> (resp <cite>False</cite>) means that the points of the mask
+meet the condition <cite>x_d &gt;= lim</cite> (resp. <cite>x_d &lt;= lim</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The area of <code class="docutils literal notranslate"><span class="pre">Intersection(bounding</span> <span class="pre">rectangle,</span> <span class="pre">Union(masks))</span></code>.</p>
+<dd class="field-even"><p>The area of <cite>Intersection(bounding rectangle, Union(masks))</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>In the following example, the bounding rectangle is the set of points where <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x_1</span> <span class="pre">&lt;=</span> <span class="pre">1</span> <span class="pre">and</span> <span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x_2</span> <span class="pre">&lt;=</span> <span class="pre">2</span></code>.
-The first mask is the set of points where <code class="docutils literal notranslate"><span class="pre">x_1</span> <span class="pre">&gt;=</span> <span class="pre">0.2</span> <span class="pre">and</span> <span class="pre">x_2</span> <span class="pre">&lt;=</span> <span class="pre">0.6</span></code>. The second mask is the set of points
-where <code class="docutils literal notranslate"><span class="pre">x_1</span> <span class="pre">&lt;=</span> <span class="pre">0.3</span> <span class="pre">and</span> <span class="pre">x_2</span> <span class="pre">&gt;=</span> <span class="pre">0.4</span></code>.</p>
+<p>In the following example, the bounding rectangle is the set of points where <cite>0 &lt;= x_1 &lt;= 1</cite> and <cite>0 &lt;= x_2 &lt;= 2</cite>.
+The first mask is the set of points where <cite>x_1 &gt;= 0.2 and x_2 &lt;= 0.6</cite>. The second mask is the set of points
+where <cite>x_1 &lt;= 0.3 and x_2 &gt;= 0.4</cite>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">area</span> <span class="o">=</span> <span class="n">masks_area</span><span class="p">(</span><span class="n">inf</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sup</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
 <span class="gp">... </span>                  <span class="n">masks</span><span class="o">=</span><span class="p">[[(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">)],</span>
 <span class="gp">... </span>                         <span class="p">[(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">),</span> <span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">)]])</span>
@@ -260,7 +267,7 @@ where <code class="docutils literal notranslate"><span class="pre">x_1</span> <s
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.masks_area_naive">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">masks_area_naive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf</span></em>, <em class="sig-param"><span class="n">sup</span></em>, <em class="sig-param"><span class="n">masks</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_area_naive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_area_naive" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">masks_area_naive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_area_naive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_area_naive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Area of some masks. Naive implementation (used as a sanity test for the recursive implementation)</p>
 <p class="rubric">Notes</p>
 <p>Same specifications as <a class="reference internal" href="#poisson_approval.utils.UtilMasks.masks_area" title="poisson_approval.utils.UtilMasks.masks_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">masks_area()</span></code></a>.</p>
@@ -278,7 +285,7 @@ where <code class="docutils literal notranslate"><span class="pre">x_1</span> <s
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.masks_distribution">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">masks_distribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf</span></em>, <em class="sig-param"><span class="n">sup</span></em>, <em class="sig-param"><span class="n">masks</span></em>, <em class="sig-param"><span class="n">cover_alls</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_distribution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">masks_distribution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cover_alls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_distribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Distribution of the number of masks (recursive <cite>divide and conquer</cite> implementation).</p>
 <p>We denote by <cite>d</cite> the dimension of the Euclidean space under study.</p>
 <dl class="field-list simple">
@@ -286,9 +293,9 @@ where <code class="docutils literal notranslate"><span class="pre">x_1</span> <s
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inf</strong> (<em>list of Number</em>) – A list of <cite>d</cite> numbers. The inf limit of the bounding rectangle in each dimension.</p></li>
 <li><p><strong>sup</strong> (<em>list of Number</em>) – A list of <cite>d</cite> numbers. The sup limit of the bounding rectangle in each dimension.</p></li>
-<li><p><strong>masks</strong> (<em>list of list of tuple</em>) – A list of masks. Each mask is a list of <cite>d</cite> pairs <code class="docutils literal notranslate"><span class="pre">(lim,</span> <span class="pre">direction)</span></code>, where <code class="docutils literal notranslate"><span class="pre">lim</span></code> is the limit
-of the mask, and <code class="docutils literal notranslate"><span class="pre">direction</span></code> is a Boolean: <code class="docutils literal notranslate"><span class="pre">True</span></code> (resp <code class="docutils literal notranslate"><span class="pre">False</span></code>) means that the points of the mask
-meet the condition <code class="docutils literal notranslate"><span class="pre">x_d</span> <span class="pre">&gt;=</span> <span class="pre">lim</span></code> (resp. <code class="docutils literal notranslate"><span class="pre">x_d</span> <span class="pre">&lt;=</span> <span class="pre">lim</span></code>).</p></li>
+<li><p><strong>masks</strong> (<em>list of list of tuple</em>) – A list of masks. Each mask is a list of <cite>d</cite> pairs <cite>(lim, direction)</cite>, where <cite>lim</cite> is the limit
+of the mask, and <cite>direction</cite> is a Boolean: <cite>True</cite> (resp <cite>False</cite>) means that the points of the mask
+meet the condition <cite>x_d &gt;= lim</cite> (resp. <cite>x_d &lt;= lim</cite>).</p></li>
 <li><p><strong>cover_alls</strong> (<em>int</em><em>, </em><em>optional</em>) – If specified, then we consider that we have this number of implicit masks (i.e. not given in the argument
 <cite>masks</cite>) that cover the whole area.</p></li>
 </ul>
@@ -301,9 +308,9 @@ meet the condition <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>In the following example, the bounding rectangle is the set of points where <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x_1</span> <span class="pre">&lt;=</span> <span class="pre">1</span> <span class="pre">and</span> <span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x_2</span> <span class="pre">&lt;=</span> <span class="pre">2</span></code>.
-The first mask is the set of points where <code class="docutils literal notranslate"><span class="pre">x_1</span> <span class="pre">&gt;=</span> <span class="pre">0.2</span> <span class="pre">and</span> <span class="pre">x_2</span> <span class="pre">&lt;=</span> <span class="pre">0.6</span></code>. The second mask is the set of points
-where <code class="docutils literal notranslate"><span class="pre">x_1</span> <span class="pre">&lt;=</span> <span class="pre">0.3</span> <span class="pre">and</span> <span class="pre">x_2</span> <span class="pre">&gt;=</span> <span class="pre">0.4</span></code>.</p>
+<p>In the following example, the bounding rectangle is the set of points where <cite>0 &lt;= x_1 &lt;= 1 and 0 &lt;= x_2 &lt;= 2</cite>.
+The first mask is the set of points where <cite>x_1 &gt;= 0.2 and x_2 &lt;= 0.6</cite>. The second mask is the set of points
+where <cite>x_1 &lt;= 0.3 and x_2 &gt;= 0.4</cite>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">histogram</span> <span class="o">=</span> <span class="n">masks_distribution</span><span class="p">(</span><span class="n">inf</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sup</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
 <span class="gp">... </span>                               <span class="n">masks</span><span class="o">=</span><span class="p">[[(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">)],</span>
 <span class="gp">... </span>                                      <span class="p">[(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">),</span> <span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">)]])</span>
@@ -320,11 +327,11 @@ where <code class="docutils literal notranslate"><span class="pre">x_1</span> <s
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.masks_distribution_naive">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">masks_distribution_naive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf</span></em>, <em class="sig-param"><span class="n">sup</span></em>, <em class="sig-param"><span class="n">masks</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_distribution_naive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_distribution_naive" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">masks_distribution_naive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#masks_distribution_naive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.masks_distribution_naive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Distribution of the number of masks. Naive implementation (used as a sanity test for the recursive
 implementation)</p>
 <p class="rubric">Notes</p>
-<p>Same specifications as <code class="xref py py-meth docutils literal notranslate"><span class="pre">mask_distribution()</span></code>.</p>
+<p>Same specifications as <a class="reference internal" href="#poisson_approval.utils.UtilMasks.masks_distribution" title="poisson_approval.utils.UtilMasks.masks_distribution"><code class="xref py py-meth docutils literal notranslate"><span class="pre">masks_distribution()</span></code></a>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">histogram</span> <span class="o">=</span> <span class="n">masks_distribution_naive</span><span class="p">(</span><span class="n">inf</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sup</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
 <span class="gp">... </span>                                     <span class="n">masks</span><span class="o">=</span><span class="p">[[(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">)],</span>
@@ -342,7 +349,7 @@ implementation)</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.random_mask">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">random_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dim</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#random_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.random_mask" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">random_mask</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#random_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.random_mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Random mask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -359,7 +366,7 @@ implementation)</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.random_masks">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">random_masks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dim</span></em>, <em class="sig-param"><span class="n">n_masks</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#random_masks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.random_masks" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">random_masks</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_masks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#random_masks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.random_masks" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of random masks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -389,7 +396,7 @@ implementation)</p>
 
 <dl class="py function">
 <dt id="poisson_approval.utils.UtilMasks.winners_distribution">
-<code class="sig-prename descclassname">poisson_approval.utils.UtilMasks.</code><code class="sig-name descname">winners_distribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf</span></em>, <em class="sig-param"><span class="n">sup</span></em>, <em class="sig-param"><span class="n">masks_winners</span></em>, <em class="sig-param"><span class="n">histogram</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cover_alls</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#winners_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.winners_distribution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">poisson_approval.utils.UtilMasks.</span></code><code class="sig-name descname"><span class="pre">winners_distribution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks_winners</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cover_alls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/utils/UtilMasks.html#winners_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.utils.UtilMasks.winners_distribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Distribution of the number of winners (recursive <cite>divide and conquer</cite> implementation).</p>
 <p>We denote by <cite>d</cite> the dimension of the Euclidean space under study.</p>
 <dl class="field-list simple">
@@ -397,7 +404,7 @@ implementation)</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inf</strong> (<em>list of Number</em>) – A list of <cite>d</cite> numbers. The inf limit of the bounding rectangle in each dimension.</p></li>
 <li><p><strong>sup</strong> (<em>list of Number</em>) – A list of <cite>d</cite> numbers. The sup limit of the bounding rectangle in each dimension.</p></li>
-<li><p><strong>masks_winners</strong> (<em>list of tuple</em>) – A list of pairs <code class="docutils literal notranslate"><span class="pre">(mask,</span> <span class="pre">winners)</span></code>. A mask is defined as usual (cf. <a class="reference internal" href="#poisson_approval.utils.UtilMasks.masks_area" title="poisson_approval.utils.UtilMasks.masks_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">masks_area()</span></code></a> for instance).
+<li><p><strong>masks_winners</strong> (<em>list of tuple</em>) – A list of pairs <cite>(mask, winners)</cite>. A mask is defined as usual (cf. <a class="reference internal" href="#poisson_approval.utils.UtilMasks.masks_area" title="poisson_approval.utils.UtilMasks.masks_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">masks_area()</span></code></a> for instance).
 A winner is a set of winning candidates in this mask, e.g. <code class="docutils literal notranslate"><span class="pre">{'a',</span> <span class="pre">'b'}</span></code>.</p></li>
 <li><p><strong>histogram</strong> (<em>list</em>) – This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
 the output, it is added to the given list <cite>histogram</cite>.</p></li>
@@ -413,9 +420,9 @@ we have all these candidates winning in the whole area.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>In the following example, the bounding rectangle is the set of points where <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x_1</span> <span class="pre">&lt;=</span> <span class="pre">1</span> <span class="pre">and</span> <span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x_2</span> <span class="pre">&lt;=</span> <span class="pre">2</span></code>.
-The first mask is the set of points where <code class="docutils literal notranslate"><span class="pre">x_1</span> <span class="pre">&gt;=</span> <span class="pre">0.2</span> <span class="pre">and</span> <span class="pre">x_2</span> <span class="pre">&lt;=</span> <span class="pre">0.6</span></code>, where the winner can be <code class="docutils literal notranslate"><span class="pre">{'a'}</span></code>.
-The second mask is the set of points where <code class="docutils literal notranslate"><span class="pre">x_1</span> <span class="pre">&lt;=</span> <span class="pre">0.3</span> <span class="pre">and</span> <span class="pre">x_2</span> <span class="pre">&gt;=</span> <span class="pre">0.4</span></code>, where the winner can be <code class="docutils literal notranslate"><span class="pre">{'b'}</span></code>.</p>
+<p>In the following example, the bounding rectangle is the set of points where <cite>0 &lt;= x_1 &lt;= 1 and 0 &lt;= x_2 &lt;= 2</cite>.
+The first mask is the set of points where <cite>x_1 &gt;= 0.2 and x_2 &lt;= 0.6</cite>, where the winner can be <code class="docutils literal notranslate"><span class="pre">{'a'}</span></code>.
+The second mask is the set of points where <cite>x_1 &lt;= 0.3 and x_2 &gt;= 0.4</cite>, where the winner can be <code class="docutils literal notranslate"><span class="pre">{'b'}</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">histogram</span> <span class="o">=</span> <span class="n">winners_distribution</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">inf</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sup</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">masks_winners</span><span class="o">=</span><span class="p">[([(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">)],</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">}),</span>
@@ -440,37 +447,29 @@ The second mask is the set of points where <code class="docutils literal notrans
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="reference_util_preferences.html" class="btn btn-neutral float-right" title="UtilPreferences Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="reference_util_cache.html" class="btn btn-neutral float-left" title="UtilCache Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="reference_util_plot.html" class="btn btn-neutral float-right" title="UtilPlot Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference_util_cache.html" class="btn btn-neutral float-left" title="UtilCache Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

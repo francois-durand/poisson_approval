@@ -8,6 +8,7 @@ def computation_engine(symbolic):
     Parameters
     ----------
     symbolic : bool
+        Whether symbolic computation should be activated.
 
     Returns
     -------

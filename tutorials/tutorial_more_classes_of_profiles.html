@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>More Classes of Profiles &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -100,6 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorial_ternary_plots.html">Ternary Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_binary_plots.html">Binary Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_probabilities.html">Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_monte_carlo_fictitious_play.html">Monte-Carlo Fictitious Play</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial_iterables.html">Iterables</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">More Classes of Profiles</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ProfileHistogram">ProfileHistogram</a></li>
@@ -115,6 +118,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorial_asymptotic_developments.html">Asymptotic Developments</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
@@ -159,6 +163,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -172,7 +178,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/tutorials/tutorial_more_classes_of_profiles.ipynb.txt" rel="nofollow"> View page source</a>
           
         
@@ -469,15 +475,15 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Up to now, we have always used the class of profiles ProfileNoisyDiscrete. The package provides other kinds of profiles.</p>
+<p>Up to now, we have always used the class of profiles <em>ProfileNoisyDiscrete</em>. The package provides other kinds of profiles.</p>
 <div class="section" id="ProfileHistogram">
 <h2>ProfileHistogram<a class="headerlink" href="#ProfileHistogram" title="Permalink to this headline">¶</a></h2>
-<p>ProfileHistogram is probably the closest class to ProfileNoisyDiscrete, because both are:</p>
+<p><em>ProfileHistogram</em> is probably the closest class to <em>ProfileNoisyDiscrete</em>, because both are:</p>
 <ul class="simple">
-<li><p><em>Cardinal</em>: the voters have explicit utilities (unlike ProfileOrdinal, cf. below).</p></li>
-<li><p><em>Continuous</em>: there is no concentration of voters on a specific utility (unlike ProfileDiscrete, cf. below).</p></li>
+<li><p><em>Cardinal</em>: the voters have explicit utilities (unlike <em>ProfileOrdinal</em>, cf. below).</p></li>
+<li><p><em>Continuous</em>: there is no concentration of voters on a specific utility (unlike <em>ProfileDiscrete</em>, cf. below).</p></li>
 </ul>
-<p>A ProfileHistogram can be defined manually (cf. Reference section), but it is more common to use a random factory:</p>
+<p>A <em>ProfileHistogram</em> can be defined manually (cf. the <em>Reference</em> section), but it is more common to use a random factory:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -499,19 +505,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;abc: 11/100 [Fraction(9, 100) Fraction(3, 50) Fraction(3, 100) Fraction(1, 50)
- Fraction(21, 100) Fraction(1, 5) Fraction(3, 20) Fraction(1, 10)
- Fraction(1, 25) Fraction(1, 10)], acb: 13/100 [Fraction(3, 100) Fraction(13, 100) Fraction(1, 25) Fraction(2, 25)
- Fraction(21, 100) Fraction(3, 20) Fraction(1, 5) Fraction(3, 100)
- Fraction(13, 100) 0], bac: 13/25 [0 Fraction(2, 25) Fraction(3, 100) Fraction(1, 10) Fraction(3, 50)
- Fraction(2, 25) Fraction(7, 20) Fraction(3, 100) Fraction(1, 25)
- Fraction(23, 100)], bca: 1/100 [Fraction(37, 100) Fraction(1, 50) Fraction(1, 25) Fraction(3, 50)
- Fraction(9, 50) Fraction(19, 100) Fraction(3, 100) Fraction(2, 25)
- Fraction(3, 100) 0], cab: 2/25 [Fraction(4, 25) Fraction(1, 5) Fraction(1, 100) Fraction(13, 100)
- Fraction(1, 50) Fraction(13, 100) Fraction(3, 20) Fraction(9, 100)
- Fraction(1, 100) Fraction(1, 10)], cba: 3/20 [Fraction(1, 100) Fraction(29, 50) Fraction(1, 25) Fraction(7, 50)
- Fraction(1, 100) 0 Fraction(1, 100) Fraction(2, 25) Fraction(7, 100)
- Fraction(3, 50)]&gt; (Condorcet winner: b)
+&lt;abc: 3/25 [Fraction(43, 100) 0 Fraction(1, 10) Fraction(1, 25) Fraction(1, 50)
+ Fraction(1, 10) Fraction(2, 25) 0 Fraction(1, 25) Fraction(19, 100)], acb: 19/50 [Fraction(3, 50) Fraction(3, 100) Fraction(7, 100) Fraction(1, 25)
+ Fraction(9, 100) Fraction(2, 25) Fraction(2, 25) Fraction(1, 25)
+ Fraction(12, 25) Fraction(3, 100)], bca: 3/20 [Fraction(1, 20) Fraction(1, 20) Fraction(29, 100) Fraction(17, 100)
+ Fraction(3, 100) Fraction(1, 10) Fraction(1, 50) Fraction(2, 25)
+ Fraction(1, 100) Fraction(1, 5)], cab: 7/100 [Fraction(1, 50) Fraction(33, 100) Fraction(13, 100) Fraction(1, 25) 0
+ Fraction(17, 100) Fraction(13, 100) Fraction(3, 100) Fraction(1, 20)
+ Fraction(1, 10)], cba: 7/25 [Fraction(11, 100) Fraction(3, 50) Fraction(21, 50) Fraction(3, 100)
+ Fraction(9, 50) 0 Fraction(1, 10) 0 0 Fraction(1, 10)]&gt; (Condorcet winner: a, c)
 </pre></div></div>
 </div>
 <p>In this example, the share of voters <span class="math notranslate nohighlight">\(abc\)</span> is:</p>
@@ -530,7 +532,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Fraction(11, 100)
+Fraction(3, 25)
 </pre></div></div>
 </div>
 <p>The distribution of their utility for their middle candidate <span class="math notranslate nohighlight">\(b\)</span> is given by a histogram:</p>
@@ -549,10 +551,9 @@ Fraction(11, 100)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([Fraction(9, 100), Fraction(3, 50), Fraction(3, 100),
-       Fraction(1, 50), Fraction(21, 100), Fraction(1, 5),
-       Fraction(3, 20), Fraction(1, 10), Fraction(1, 25), Fraction(1, 10)],
-      dtype=object)
+array([Fraction(43, 100), 0, Fraction(1, 10), Fraction(1, 25),
+       Fraction(1, 50), Fraction(1, 10), Fraction(2, 25), 0,
+       Fraction(1, 25), Fraction(19, 100)], dtype=object)
 </pre></div></div>
 </div>
 <p>The above notation means for example that for a voter <span class="math notranslate nohighlight">\(abc\)</span>, the probability that her utility for her second candidate <span class="math notranslate nohighlight">\(b\)</span> is in the first of the ten bins (i.e. between 0 and 0.1) is:</p>
@@ -571,7 +572,7 @@ array([Fraction(9, 100), Fraction(3, 50), Fraction(3, 100),
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Fraction(9, 100)
+Fraction(43, 100)
 </pre></div></div>
 </div>
 <p>Voters in a bin are distributed uniformly. This histogram and the CDF of this distribution can be visualized by:</p>
@@ -594,7 +595,7 @@ Fraction(9, 100)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x11bdf97b160&gt;
+&lt;matplotlib.legend.Legend at 0x17affbec208&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -622,7 +623,7 @@ Fraction(9, 100)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;abc: utility-dependent (1/4), acb: utility-dependent (16/25), bac: utility-dependent (19/20), bca: utility-dependent (2/5), cab: utility-dependent (1/10), cba: utility-dependent (9/20)&gt; ==&gt; b
+&lt;abc: utility-dependent (9/20), acb: utility-dependent (3/50), bca: utility-dependent (3/50), cab: utility-dependent (19/100), cba: utility-dependent (97/100)&gt; ==&gt; c
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -646,10 +647,10 @@ EquilibriumStatus.NOT_EQUILIBRIUM
 </div>
 <div class="section" id="ProfileTwelve">
 <h2>ProfileTwelve<a class="headerlink" href="#ProfileTwelve" title="Permalink to this headline">¶</a></h2>
-<p>In a ProfileTwelve, the voters behave as if their utility for their middle candidate was either infinitely close to 0 or to 1. For example, voters with the ranking <span class="math notranslate nohighlight">\(abc\)</span> are split in two categories: voters <code class="docutils literal notranslate"><span class="pre">a_bc</span></code> (whose utility for <span class="math notranslate nohighlight">\(b\)</span> is very low) and voters <code class="docutils literal notranslate"><span class="pre">ab_c</span></code> (whose utility for <span class="math notranslate nohighlight">\(b\)</span> is very high). This can be interpreted in two ways:</p>
+<p>In a <em>ProfileTwelve</em>, the voters behave as if their utility for their middle candidate was either infinitely close to 0 or to 1. For example, voters with the ranking <span class="math notranslate nohighlight">\(abc\)</span> are split in two categories: voters <em>a_bc</em> (whose utility for <span class="math notranslate nohighlight">\(b\)</span> is very low) and voters <em>ab_c</em> (whose utility for <span class="math notranslate nohighlight">\(b\)</span> is very high). This can be interpreted in two ways:</p>
 <ul class="simple">
-<li><p>As a model of their preferences: voters <code class="docutils literal notranslate"><span class="pre">a_bc</span></code> have a utility for <span class="math notranslate nohighlight">\(b\)</span> that is very close to 1,</p></li>
-<li><p>As a behavioral model: when their best response is utility-dependent, voters <code class="docutils literal notranslate"><span class="pre">a_bc</span></code> always choose to vote <span class="math notranslate nohighlight">\(a\)</span> only, no matter the utility threshold of the best response.</p></li>
+<li><p>As a model of their preferences: voters <em>a_bc</em> have a utility for <span class="math notranslate nohighlight">\(b\)</span> that is very close to 1,</p></li>
+<li><p>As a behavioral model: when their best response is utility-dependent, voters <em>a_bc</em> always choose to vote <span class="math notranslate nohighlight">\(a\)</span> only, no matter the utility threshold of the best response.</p></li>
 </ul>
 <p>Create a profile:</p>
 <div class="nbinput docutils container">
@@ -672,7 +673,7 @@ EquilibriumStatus.NOT_EQUILIBRIUM
 &lt;ab_c: 1/10, b_ac: 3/5, c_ab: 1/5, ca_b: 1/10&gt; (Condorcet winner: b)
 </pre></div></div>
 </div>
-<p>Share of voters <code class="docutils literal notranslate"><span class="pre">ab_c</span></code>:</p>
+<p>Share of voters <em>ab_c</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -748,7 +749,7 @@ False
 True
 </pre></div></div>
 </div>
-<p>In addition to the usual StrategyOrdinal and StrategyThreshold, this kind of profile also accepts a StrategyTwelve:</p>
+<p>In addition to the usual <em>StrategyOrdinal</em> and <em>StrategyThreshold</em>, this kind of profile also accepts a <em>StrategyTwelve</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -768,7 +769,7 @@ True
 &lt;abc: ab, bac: b, cab: utility-dependent&gt; ==&gt; b
 </pre></div></div>
 </div>
-<p>In the example above, the strategy for <span class="math notranslate nohighlight">\(cab\)</span> is utility-dependent, meaning that voters <code class="docutils literal notranslate"><span class="pre">c_ba</span></code> vote for <span class="math notranslate nohighlight">\(c\)</span> and voters <code class="docutils literal notranslate"><span class="pre">cb_a</span></code> vote for <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. One can envision it as a threshold strategy, but it is useless to specify the value of the threshold because we’re dealing with a ProfileTwelve.</p>
+<p>In the example above, the strategy for <span class="math notranslate nohighlight">\(cab\)</span> is utility-dependent, meaning that voters <em>c_ba</em> vote for <span class="math notranslate nohighlight">\(c\)</span> and voters <em>cb_a</em> vote for <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. One can envision it as a threshold strategy, but it is useless to specify the value of the threshold because we’re dealing with a <em>ProfileTwelve</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -787,7 +788,7 @@ True
 EquilibriumStatus.EQUILIBRIUM
 </pre></div></div>
 </div>
-<p>Since there is a finite number of pure strategies for a ProfileTwelve, it is possible to analyze them all:</p>
+<p>Since there is a finite number of pure strategies for a <em>ProfileTwelve</em>, it is possible to analyze them all:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -824,7 +825,7 @@ Non-equilibria:
 </div>
 <div class="section" id="ProfileDiscrete">
 <h2>ProfileDiscrete<a class="headerlink" href="#ProfileDiscrete" title="Permalink to this headline">¶</a></h2>
-<p>A ProfileDiscrete is similar to a ProfileNoisyDiscrete, but of course without noise:</p>
+<p>A <em>ProfileDiscrete</em> is similar to a <em>ProfileNoisyDiscrete</em>, but of course without noise:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -850,7 +851,7 @@ Non-equilibria:
 </pre></div></div>
 </div>
 <p>In the above example, the share of voters with ranking <span class="math notranslate nohighlight">\(abc\)</span> and a utility 0.9 for their middle candidate <span class="math notranslate nohighlight">\(b\)</span> is 1/10, the share of voters with ranking <span class="math notranslate nohighlight">\(bac\)</span> and a utility 0.2 for their middle candidate <span class="math notranslate nohighlight">\(a\)</span> is 3/5, etc.</p>
-<p>The difficulty is that there is now a concentration of voters, for example, on <span class="math notranslate nohighlight">\((abc, 0.9)\)</span>. This opens the door to mixed strategies where voters of this type split their ballots between <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(ab\)</span>. To account for this fact, a StrategyThreshold can include ratios of <em>optimistic voters</em>:</p>
+<p>The difficulty is that there is now a concentration of voters, for example, on <span class="math notranslate nohighlight">\((abc, 0.9)\)</span>. This opens the door to mixed strategies where voters of this type split their ballots between <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(ab\)</span>. To account for this fact, a <em>StrategyThreshold</em> can include ratios of <em>optimistic voters</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -879,7 +880,7 @@ Non-equilibria:
 <li><p>A utility threshold of 0.9: they vote for <span class="math notranslate nohighlight">\(a\)</span> (resp. <span class="math notranslate nohighlight">\(ab\)</span>) if their utility for their second candidate <span class="math notranslate nohighlight">\(b\)</span> is lower (resp. greater) than 0.9;</p></li>
 <li><p>An ratio of optimistic voters of 0.7: voters whose utility for <span class="math notranslate nohighlight">\(b\)</span> is equal to the utility threshold 0.9 are split, with 0.7 of them voting for <span class="math notranslate nohighlight">\(a\)</span> and the rest voting for <span class="math notranslate nohighlight">\(ab\)</span>.</p></li>
 </ul>
-<p>Like for ProfileTwelve, there is a finite number of pure strategies, so it is possible to analyze them all:</p>
+<p>Like for <em>ProfileTwelve</em>, there is a finite number of pure strategies, so it is possible to analyze them all:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
@@ -916,7 +917,7 @@ Non-equilibria:
 </div>
 <div class="section" id="ProfileOrdinal">
 <h2>ProfileOrdinal<a class="headerlink" href="#ProfileOrdinal" title="Permalink to this headline">¶</a></h2>
-<p>A ProfileOrdinal is a bit special, in the sense that it does not represent a profile, strictly speaking, but rather a family of profiles that have the same ordinal representation.</p>
+<p>A <em>ProfileOrdinal</em> is a bit special, in the sense that it does not represent a profile, strictly speaking, but rather a family of profiles that have the same ordinal representation.</p>
 <div class="section" id="Definition-and-Strategic-Analysis">
 <h3>Definition and Strategic Analysis<a class="headerlink" href="#Definition-and-Strategic-Analysis" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
@@ -1008,7 +1009,7 @@ Non-equilibria:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;ballot = ab, threshold_utility = 0, justification = Asymptotic method&gt;
+&lt;ballot = ab, utility_threshold = 0, justification = Asymptotic method&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1026,7 +1027,7 @@ Non-equilibria:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;ballot = utility-dependent, threshold_utility = 0.836014, justification = Asymptotic method&gt;
+&lt;ballot = utility-dependent, utility_threshold = 0.836014, justification = Asymptotic method&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1044,10 +1045,10 @@ Non-equilibria:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;ballot = utility-dependent, threshold_utility = 0.163986, justification = Asymptotic method&gt;
+&lt;ballot = utility-dependent, utility_threshold = 0.163986, justification = Asymptotic method&gt;
 </pre></div></div>
 </div>
-<p>What happens here? For example, the best response for voters <span class="math notranslate nohighlight">\(bac\)</span> is utility-dependent, with a utility threshold of 0.84 approximately. The fact that they vote <span class="math notranslate nohighlight">\(b\)</span> in <code class="docutils literal notranslate"><span class="pre">strategy</span></code> is indeed a best response if and only if their utility for their second candidate <span class="math notranslate nohighlight">\(a\)</span> is lower than this value. Overall, <code class="docutils literal notranslate"><span class="pre">strategy</span></code> is an equilibrium if and only if:</p>
+<p>What happens here? For example, the best response for voters <span class="math notranslate nohighlight">\(bac\)</span> is utility-dependent, with a utility threshold of 0.84 approximately. The fact that they vote <span class="math notranslate nohighlight">\(b\)</span> in <em>strategy</em> is indeed a best response if and only if their utility for their second candidate <span class="math notranslate nohighlight">\(a\)</span> is lower than this value. Overall, <em>strategy</em> is an equilibrium if and only if:</p>
 <ul class="simple">
 <li><p>The utility of voters <span class="math notranslate nohighlight">\(bac\)</span> for <span class="math notranslate nohighlight">\(a\)</span> is lower than 0.84,</p></li>
 <li><p>And the utility of voters <span class="math notranslate nohighlight">\(cab\)</span> for <span class="math notranslate nohighlight">\(a\)</span> is lower than 0.16.</p></li>
@@ -1207,37 +1208,29 @@ array([0.86290531, 0.13709469, 0.        , 0.        ])
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="tutorial_asymptotic_developments.html" class="btn btn-neutral float-right" title="Asymptotic Developments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="tutorial_iterables.html" class="btn btn-neutral float-left" title="Iterables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="tutorial_asymptotic_developments.html" class="btn btn-neutral float-right" title="Asymptotic Developments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial_iterables.html" class="btn btn-neutral float-left" title="Iterables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

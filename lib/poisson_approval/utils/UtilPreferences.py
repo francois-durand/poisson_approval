@@ -50,7 +50,8 @@ def is_weak_order(o):
     Returns
     -------
     bool
-        True iff `o` is a string that represent a weak order, i.e. of the form 'a>b~c' (lover) or 'a~b>c' (hater).
+        True iff `o` is a string that represent a weak order, i.e. of the form ``'a>b~c'`` (lover) or ``'a~b>c'``
+        (hater).
 
     Examples
     --------
@@ -96,7 +97,7 @@ def d_candidate_ordinal_utility(order):
     Parameters
     ----------
     order : str
-        For example 'abc' (ranking) or 'a~b>c' (weak order).
+        For example ``'abc'`` (ranking) or ``'a~b>c'`` (weak order).
 
     Returns
     -------

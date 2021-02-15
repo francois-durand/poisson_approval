@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.events.EventTrio &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -121,6 +122,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -239,7 +242,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_phi_xz</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">tau_xz</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ce</span><span class="o">.</span><span class="n">nan</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_phi_yz</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">tau_yz</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ce</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Generic case: we work with floats, not sympy expressions.</span>
+            <span class="c1"># Generic case: we work with floats, not `sympy` expressions.</span>
             <span class="n">tau_x_f</span><span class="p">,</span> <span class="n">tau_y_f</span><span class="p">,</span> <span class="n">tau_z_f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_y</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_z</span><span class="p">)</span>
             <span class="n">tau_xy_f</span><span class="p">,</span> <span class="n">tau_xz_f</span><span class="p">,</span> <span class="n">tau_yz_f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_xy</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_xz</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_yz</span><span class="p">)</span>
             <span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bounds_and_start</span><span class="p">(</span><span class="n">tau_x_f</span><span class="p">,</span> <span class="n">tau_y_f</span><span class="p">,</span> <span class="n">tau_z_f</span><span class="p">,</span>
@@ -281,16 +284,17 @@
 <span class="sd">        ...                             event._tau_xy, event._tau_xz, event._tau_yz)</span>
 <span class="sd">        (0.7071067811865476, 0.7071067811865476, 0.7071067811865476)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SAFETY_EPSILON</span> <span class="o">=</span> <span class="mf">1e-12</span>
 
         <span class="c1"># Use pivot xy</span>
         <span class="n">score_xy_in_pivot_xy</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;score_</span><span class="si">%s</span><span class="s1">_in_duo_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_xy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_xy</span><span class="p">))</span>
         <span class="n">score_z_in_pivot_xy</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;score_</span><span class="si">%s</span><span class="s1">_in_duo_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_xy</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">score_xy_in_pivot_xy</span> <span class="o">&gt;</span> <span class="n">score_z_in_pivot_xy</span><span class="p">:</span>
             <span class="c1"># Easy pivot      =&gt; phi_z &gt; 1 =&gt; x_2 &lt; 1</span>
-            <span class="n">inf</span><span class="p">,</span> <span class="n">sup</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-14</span>
+            <span class="n">inf</span><span class="p">,</span> <span class="n">sup</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">SAFETY_EPSILON</span>
         <span class="k">elif</span> <span class="n">score_xy_in_pivot_xy</span> <span class="o">&lt;</span> <span class="n">score_z_in_pivot_xy</span><span class="p">:</span>
             <span class="c1"># Difficult pivot =&gt; phi_z &lt; 1 =&gt; x_2 &gt; 1</span>
-            <span class="n">inf</span><span class="p">,</span> <span class="n">sup</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-14</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+            <span class="n">inf</span><span class="p">,</span> <span class="n">sup</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">SAFETY_EPSILON</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Tight pivot     =&gt; x_2 = 1</span>
             <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
@@ -310,10 +314,10 @@
             <span class="n">score_y_in_pivot_xz</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;score_</span><span class="si">%s</span><span class="s1">_in_duo_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_xz</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">score_xz_in_pivot_xz</span> <span class="o">&gt;</span> <span class="n">score_y_in_pivot_xz</span><span class="p">:</span>
                 <span class="c1"># Easy pivot      =&gt; phi_y &gt; 1 =&gt; x_1 &lt; 1 =&gt; x_2 &gt; root</span>
-                <span class="n">inf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mf">1e-14</span><span class="p">)</span>
+                <span class="n">inf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="n">SAFETY_EPSILON</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">score_xz_in_pivot_xz</span> <span class="o">&lt;</span> <span class="n">score_y_in_pivot_xz</span><span class="p">:</span>
                 <span class="c1"># Difficult pivot =&gt; phi_y &lt; 1 =&gt; x_1 &gt; 1 =&gt; x_2 &lt; root</span>
-                <span class="n">sup</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sup</span><span class="p">,</span> <span class="n">root</span> <span class="o">-</span> <span class="mf">1e-14</span><span class="p">)</span>
+                <span class="n">sup</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sup</span><span class="p">,</span> <span class="n">root</span> <span class="o">-</span> <span class="n">SAFETY_EPSILON</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Tight pivot     =&gt; x_1 = 1 =&gt; x_2 = root</span>
                 <span class="k">return</span> <span class="n">root</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">root</span>
@@ -333,17 +337,17 @@
             <span class="n">score_x_in_pivot_yz</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="s1">&#39;score_</span><span class="si">%s</span><span class="s1">_in_duo_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_yz</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">score_yz_in_pivot_yz</span> <span class="o">&gt;</span> <span class="n">score_x_in_pivot_yz</span><span class="p">:</span>
                 <span class="c1"># Easy pivot      =&gt; phi_x &gt; 1 =&gt; x_1 * x_2 &gt; 1 =&gt; x_2 &gt; root</span>
-                <span class="n">inf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mf">1e-14</span><span class="p">)</span>
+                <span class="n">inf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="n">SAFETY_EPSILON</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">score_yz_in_pivot_yz</span> <span class="o">&lt;</span> <span class="n">score_x_in_pivot_yz</span><span class="p">:</span>
                 <span class="c1"># Difficult pivot =&gt; phi_x &lt; 1 =&gt; x_1 * x_2 &lt; 1 =&gt; x_2 &lt; root</span>
-                <span class="n">sup</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sup</span><span class="p">,</span> <span class="n">root</span> <span class="o">-</span> <span class="mf">1e-14</span><span class="p">)</span>
+                <span class="n">sup</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sup</span><span class="p">,</span> <span class="n">root</span> <span class="o">-</span> <span class="n">SAFETY_EPSILON</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Tight pivot     =&gt; x_1 * x_2 = 1 =&gt; x_2 = root</span>
                 <span class="k">return</span> <span class="n">root</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">root</span>
 
         <span class="c1"># Conclude</span>
         <span class="k">assert</span> <span class="n">inf</span> <span class="o">&lt;=</span> <span class="n">sup</span>
-        <span class="k">if</span> <span class="n">inf</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isposinf</span><span class="p">(</span><span class="n">sup</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">if</span> <span class="n">inf</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isposinf</span><span class="p">(</span><span class="n">sup</span><span class="p">):</span>  <span class="c1"># pragma: no cover - I found no example of this case.</span>
             <span class="n">start</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">elif</span> <span class="n">inf</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">sup</span> <span class="o">/</span> <span class="mi">2</span>
@@ -352,7 +356,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">inf</span> <span class="o">*</span> <span class="n">sup</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">inf</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">inf</span> <span class="o">=</span> <span class="mf">1e-14</span>
+            <span class="n">inf</span> <span class="o">=</span> <span class="n">SAFETY_EPSILON</span>
         <span class="k">return</span> <span class="n">inf</span><span class="p">,</span> <span class="n">sup</span><span class="p">,</span> <span class="n">start</span></div>
 </pre></div>
 
@@ -360,28 +364,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

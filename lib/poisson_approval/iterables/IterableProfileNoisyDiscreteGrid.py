@@ -1,10 +1,10 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.profiles.ProfileNoisyDiscrete import ProfileNoisyDiscrete
 
 
 class IterableProfileNoisyDiscreteGrid:
-    """Iterate over noisy discrete profile (:class:`ProfileNoisyDiscrete`) defined on a grid.
+    """Iterate over noisy discrete profiles (:class:`ProfileNoisyDiscrete`) defined on a grid.
 
     Parameters
     ----------
@@ -24,7 +24,7 @@ class IterableProfileNoisyDiscreteGrid:
     test : callable, optional
         A function ``ProfileNoisyDiscrete -> bool``. Only profiles meeting this test are given.
     kwargs
-        Additional parameters are passed to `ProfileNoisyDiscrete` when creating the profile.
+        Additional parameters are passed to :class:`ProfileNoisyDiscrete` when creating the profile.
 
     Examples
     --------

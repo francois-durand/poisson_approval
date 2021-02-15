@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>RandProfileOrdinalGridUniform &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
@@ -125,7 +126,10 @@
 <li class="toctree-l3"><a class="reference internal" href="reference_rand_tau_vector_uniform.html">RandTauVectorUniform</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../reference_meta_analysis/index.html">Meta-Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_misc/index.html">Meta-Analysis Misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
 </ul>
 </li>
@@ -172,6 +176,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -187,7 +193,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/reference/reference_random_factories/reference_rand_profile_ordinal_grid_uniform.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -229,7 +235,7 @@
 <h1>RandProfileOrdinalGridUniform<a class="headerlink" href="#randprofileordinalgriduniform" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="poisson_approval.RandProfileOrdinalGridUniform">
-<em class="property">class </em><code class="sig-prename descclassname">poisson_approval.</code><code class="sig-name descname">RandProfileOrdinalGridUniform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">denominator</span></em>, <em class="sig-param"><span class="n">orders</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">d_order_fixed_share</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/random_factories/RandProfileOrdinalGridUniform.html#RandProfileOrdinalGridUniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poisson_approval.RandProfileOrdinalGridUniform" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">poisson_approval.</span></code><code class="sig-name descname"><span class="pre">RandProfileOrdinalGridUniform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">denominator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_order_fixed_share</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/random_factories/RandProfileOrdinalGridUniform.html#RandProfileOrdinalGridUniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.RandProfileOrdinalGridUniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>A random factory of ordinal profiles (<a class="reference internal" href="../reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileOrdinal</span></code></a>), uniform on a grid</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -237,9 +243,9 @@
 <li><p><strong>denominator</strong> (<em>int</em>) – The grain of the grid.</p></li>
 <li><p><strong>orders</strong> (<em>list</em><em>, </em><em>optional</em>) – These orders will have a variable share. They can be rankings, e.g. <code class="docutils literal notranslate"><span class="pre">'abc'</span></code>, or weak orders, e.g.
 <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code>. Default: all rankings.</p></li>
-<li><p><strong>d_order_fixed_share</strong> (<em>dict</em><em>, </em><em>optional.</em>) – A dictionary. For each entry <code class="docutils literal notranslate"><span class="pre">order:</span> <span class="pre">fixed_share</span></code>, this order will have at least this fixed share. The total
+<li><p><strong>d_order_fixed_share</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary. For each entry <code class="docutils literal notranslate"><span class="pre">order:</span> <span class="pre">fixed_share</span></code>, this order will have at least this fixed share. The total
 must be lower or equal to 1.</p></li>
-<li><p><strong>kwargs</strong> (<em>keyword arguments</em>) – These additional arguments will be passed directly to <a class="reference internal" href="../reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileOrdinal</span></code></a>.</p></li>
+<li><p><strong>kwargs</strong> – These additional arguments will be passed directly to <a class="reference internal" href="../reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileOrdinal</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -273,37 +279,29 @@ must be lower or equal to 1.</p></li>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="reference_rand_profile_ordinal_uniform.html" class="btn btn-neutral float-right" title="RandProfileOrdinalUniform" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="reference_rand_profile_noisy_discrete_uniform.html" class="btn btn-neutral float-left" title="RandProfileNoisyDiscreteUniform" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="reference_rand_profile_ordinal_uniform.html" class="btn btn-neutral float-right" title="RandProfileOrdinalUniform" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference_rand_profile_noisy_discrete_uniform.html" class="btn btn-neutral float-left" title="RandProfileNoisyDiscreteUniform" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

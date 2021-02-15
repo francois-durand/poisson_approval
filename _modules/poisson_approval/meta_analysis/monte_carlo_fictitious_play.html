@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>poisson_approval.meta_analysis.monte_carlo_fictitious_play &mdash; Poisson Approval 0.28.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.28.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>poisson_approval.meta_analysis.monte_carlo_fictitious_play</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for poisson_approval.meta_analysis.monte_carlo_fictitious_play</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.random_factories.RandProfileHistogramUniform</span> <span class="kn">import</span> <span class="n">RandProfileHistogramUniform</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">one_over_log_t_plus_one</span>
+
+
+<div class="viewcode-block" id="monte_carlo_fictitious_play"><a class="viewcode-back" href="../../../reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.monte_carlo_fictitious_play">[docs]</a><span class="k">def</span> <span class="nf">monte_carlo_fictitious_play</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_max_episodes</span><span class="p">,</span>
+                                <span class="n">voting_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                <span class="n">init</span><span class="o">=</span><span class="s1">&#39;sincere&#39;</span><span class="p">,</span>
+                                <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                <span class="n">statistics_update_ratio</span><span class="o">=</span><span class="n">one_over_log_t_plus_one</span><span class="p">,</span>
+                                <span class="n">monte_carlo_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                <span class="n">file_save</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                <span class="n">meth</span><span class="o">=</span><span class="s1">&#39;fictitious_play&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Monte-Carlo analysis of fictitious play (or iterated voting).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factory : callable</span>
+<span class="sd">        A factory that returns a (random) profile. Cf. e.g. :class:`~poisson_approval.RandProfileHistogramUniform`, etc.</span>
+<span class="sd">    n_samples : int</span>
+<span class="sd">        The number of profiles drawn.</span>
+<span class="sd">    n_max_episodes : int</span>
+<span class="sd">        Maximum number of episodes for the fictitious play / iterated voting.</span>
+<span class="sd">    voting_rules : list</span>
+<span class="sd">        A list of voting rules. Each profile drawn is analyzed with each voting rule. If None, then use the voting</span>
+<span class="sd">        rule of the profile returned by `factory`.</span>
+<span class="sd">    init : Strategy or TauVector or str</span>
+<span class="sd">        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or</span>
+<span class="sd">        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.</span>
+<span class="sd">    perception_update_ratio,ballot_update_ratio,statistics_update_ratio : callable or Number</span>
+<span class="sd">        Cf. :meth:`~poisson_approval.ProfileCardinal.fictitious_play` or</span>
+<span class="sd">        :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.</span>
+<span class="sd">    monte_carlo_settings : list of :class:`MonteCarloSetting`</span>
+<span class="sd">        Roughly speaking, this gives the information of which statistics will be computed. Cf.</span>
+<span class="sd">        :class:`MonteCarloSetting` for more details.</span>
+<span class="sd">    file_save : str</span>
+<span class="sd">        Name of the file where the results will be stored (using ``pickle``).</span>
+<span class="sd">    meth : str</span>
+<span class="sd">        The name of the method (``&#39;fictitious_play&#39;`` or ``&#39;iterated_voting&#39;``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Key: voting rule (or ``&#39;&#39;`` if `voting_rule` is None). Value: a dictionary whose keys are keywords for the</span>
+<span class="sd">        computed statistics, and whose values are the corresponding outputs. Cf. :class:`MonteCarloSetting`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; meta_results = monte_carlo_fictitious_play(</span>
+<span class="sd">        ...     factory=RandProfileHistogramUniform(n_bins=1),</span>
+<span class="sd">        ...     n_samples=1,</span>
+<span class="sd">        ...     n_max_episodes=10,</span>
+<span class="sd">        ...     voting_rules=VOTING_RULES,</span>
+<span class="sd">        ...     monte_carlo_settings=[</span>
+<span class="sd">        ...         MCS_PROFILE,</span>
+<span class="sd">        ...         MCS_TAU_INIT,</span>
+<span class="sd">        ...         MCS_N_EPISODES,</span>
+<span class="sd">        ...         MCS_CANDIDATE_WINNING_FREQUENCY,</span>
+<span class="sd">        ...         MCS_CONVERGES,</span>
+<span class="sd">        ...         MCS_FREQUENCY_CW_WINS,</span>
+<span class="sd">        ...         MCS_WELFARE_LOSSES,</span>
+<span class="sd">        ...         MCS_UTILITY_THRESHOLDS,</span>
+<span class="sd">        ...         MCS_BALLOT_STATISTICS,</span>
+<span class="sd">        ...         MCS_DECREASING_SCORES,</span>
+<span class="sd">        ...     ],</span>
+<span class="sd">        ... )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">voting_rules</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">voting_rules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">monte_carlo_settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">monte_carlo_settings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">statistics_tau</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">statistics_strategy</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">statistics_post_processing</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">statistics_final_processing</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">monte_carlo_setting</span> <span class="ow">in</span> <span class="n">monte_carlo_settings</span><span class="p">:</span>
+        <span class="n">statistics_tau</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">monte_carlo_setting</span><span class="o">.</span><span class="n">statistics_tau</span><span class="p">)</span>
+        <span class="n">statistics_strategy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">monte_carlo_setting</span><span class="o">.</span><span class="n">statistics_strategy</span><span class="p">)</span>
+        <span class="n">statistics_post_processing</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">monte_carlo_setting</span><span class="o">.</span><span class="n">statistics_post_processing</span><span class="p">)</span>
+        <span class="n">statistics_final_processing</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">monte_carlo_setting</span><span class="o">.</span><span class="n">statistics_final_processing</span><span class="p">)</span>
+
+    <span class="n">meta_results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">voting_rule</span><span class="p">:</span> <span class="p">{</span>
+            <span class="n">statistic_name</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="n">statistics_tau</span><span class="p">,</span> <span class="n">statistics_strategy</span><span class="p">,</span> <span class="n">statistics_post_processing</span><span class="p">,</span> <span class="n">statistics_final_processing</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">statistic_name</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">voting_rule</span> <span class="ow">in</span> <span class="n">voting_rules</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">base_profile</span> <span class="o">=</span> <span class="n">factory</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">voting_rule</span> <span class="ow">in</span> <span class="n">voting_rules</span><span class="p">:</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">base_profile</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">voting_rules</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">base_profile</span>
+            <span class="k">if</span> <span class="n">voting_rule</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">profile</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">=</span> <span class="n">voting_rule</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">n_max_episodes</span><span class="p">,</span>
+                                             <span class="n">perception_update_ratio</span><span class="o">=</span><span class="n">perception_update_ratio</span><span class="p">,</span>
+                                             <span class="n">ballot_update_ratio</span><span class="o">=</span><span class="n">ballot_update_ratio</span><span class="p">,</span>
+                                             <span class="n">winning_frequency_update_ratio</span><span class="o">=</span><span class="n">statistics_update_ratio</span><span class="p">,</span>
+                                             <span class="n">other_statistics_update_ratio</span><span class="o">=</span><span class="n">statistics_update_ratio</span><span class="p">,</span>
+                                             <span class="n">other_statistics_strategy</span><span class="o">=</span><span class="n">statistics_strategy</span><span class="p">,</span>
+                                             <span class="n">other_statistics_tau</span><span class="o">=</span><span class="n">statistics_tau</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">statistic_name</span><span class="p">,</span> <span class="n">statistic_f</span> <span class="ow">in</span> <span class="n">statistics_tau</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">meta_results</span><span class="p">[</span><span class="n">voting_rule</span><span class="p">][</span><span class="n">statistic_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">statistic_name</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">statistic_name</span><span class="p">,</span> <span class="n">statistic_f</span> <span class="ow">in</span> <span class="n">statistics_strategy</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">meta_results</span><span class="p">[</span><span class="n">voting_rule</span><span class="p">][</span><span class="n">statistic_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">statistic_name</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">statistic_name</span><span class="p">,</span> <span class="n">statistic_f</span> <span class="ow">in</span> <span class="n">statistics_post_processing</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">meta_results</span><span class="p">[</span><span class="n">voting_rule</span><span class="p">][</span><span class="n">statistic_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statistic_f</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">voting_rule</span> <span class="ow">in</span> <span class="n">voting_rules</span><span class="p">:</span>
+        <span class="n">meta_results</span><span class="p">[</span><span class="n">voting_rule</span><span class="p">][</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_samples</span>
+        <span class="k">for</span> <span class="n">statistic_name</span><span class="p">,</span> <span class="n">statistic_f</span> <span class="ow">in</span> <span class="n">statistics_final_processing</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">meta_results</span><span class="p">[</span><span class="n">voting_rule</span><span class="p">][</span><span class="n">statistic_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">statistic_f</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="n">voting_rule</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">file_save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_save</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">meta_results</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">meta_results</span></div>
+
+
+<div class="viewcode-block" id="MonteCarloSetting"><a class="viewcode-back" href="../../../reference/reference_meta_monte_carlo_fictitious_play/reference_monte_carlo_fictitious_play.html#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting">[docs]</a><span class="k">class</span> <span class="nc">MonteCarloSetting</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A setting for :func:`monte_carlo_fictitious_play`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    statistics_tau : dict</span>
+<span class="sd">        Key: name of the statistic. Value: a function whose input is a tau-vector, and whose output is a number or a</span>
+<span class="sd">        `numpy` array. This parameter is passed to the argument `other_statistics_tau` of</span>
+<span class="sd">        :meth:`~poisson_approval.ProfileCardinal.iterated_voting` or</span>
+<span class="sd">        :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. For each voting rule and</span>
+<span class="sd">        each profile, the long-run average of the statistic is computed, then stored in a list of length ``n_samples``.</span>
+<span class="sd">        This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]`` (where ``meta_results`` denotes</span>
+<span class="sd">        the results of :func:`monte_carlo_fictitious_play`).</span>
+<span class="sd">    statistics_strategy : dict</span>
+<span class="sd">        Key: name of the statistic. Value: a function whose input is a strategy, and whose output is a number or a</span>
+<span class="sd">        `numpy` array. This parameter is passed to the argument `other_statistics_strategy` of</span>
+<span class="sd">        :meth:`~poisson_approval.ProfileCardinal.iterated_voting` or</span>
+<span class="sd">        :meth:`~poisson_approval.ProfileCardinal.fictitious_play`. For each voting rule and</span>
+<span class="sd">        each profile, the long-run average of the statistic is computed, then stored in a list of length ``n_samples``.</span>
+<span class="sd">        This list is accessible by ``meta_results[voting_rule][name_of_the_statistic]``.</span>
+<span class="sd">    statistics_post_processing : dict</span>
+<span class="sd">        Key: name of the statistic. Value: a function whose input is a pair ``(results, profile)``. Such a statistic</span>
+<span class="sd">        is computed only once for each voting rule and each profile, after iterated voting or fictitious play has ended.</span>
+<span class="sd">        Results are stored in a list of length ``n_samples``, which is accessible by</span>
+<span class="sd">        ``meta_results[voting_rule][name_of_the_statistic]``.</span>
+<span class="sd">    statistics_final_processing : dict</span>
+<span class="sd">        Key: name of the statistic. Value: a function whose input is the ``meta_result`` already computed so far.</span>
+<span class="sd">        Such a statistic is computed only once for each voting rule, after the whole process is finished. It is</span>
+<span class="sd">        accessible by ``meta_results[voting_rule][name_of_the_statistic]``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistics_tau</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">statistics_strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">statistics_post_processing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">statistics_final_processing</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistics_tau</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">statistics_tau</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">statistics_tau</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistics_strategy</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">statistics_strategy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">statistics_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistics_post_processing</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">statistics_post_processing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">statistics_post_processing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistics_final_processing</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">statistics_final_processing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">statistics_final_processing</span></div>
+
+
+<span class="n">MCS_BALLOT_STATISTICS</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_strategy</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;share_single_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">share_single_votes</span><span class="p">),</span>
+        <span class="s1">&#39;share_sincere_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">share_sincere</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;share_double_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;share_single_votes&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;share_insincere_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;share_sincere_votes&#39;</span><span class="p">])</span>
+    <span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;mean_share_single_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;share_single_votes&#39;</span><span class="p">])),</span>
+        <span class="s1">&#39;mean_share_double_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;share_double_votes&#39;</span><span class="p">])),</span>
+        <span class="s1">&#39;mean_share_sincere_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;share_sincere_votes&#39;</span><span class="p">])),</span>
+        <span class="s1">&#39;mean_share_insincere_votes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;share_insincere_votes&#39;</span><span class="p">]))</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Ballot statistics.</span>
+
+<span class="sd">Keyword ``&#39;share_single_votes&#39;``: share of single votes (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;share_double_votes&#39;``: share of double votes (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;share_sincere_votes&#39;``: share of sincere votes (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;share_insincere_votes&#39;``: share of insincere votes (for each profile).</span>
+
+<span class="sd">Keywords ``&#39;mean_share_single_votes&#39;``, ``&#39;mean_share_double_votes&#39;``, ``&#39;mean_share_sincere_votes&#39;``,</span>
+<span class="sd">``&#39;mean_share_insincere_votes&#39;``: corresponding average shares (over all profiles).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_CANDIDATE_WINNING_FREQUENCY</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">])},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;d_candidate_mean_winning_frequency&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">]])</span>
+                                  <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CANDIDATES</span><span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Candidates&#39; winning frequencies.</span>
+
+<span class="sd">Keyword ``&#39;d_candidate_winning_frequency&#39;``: winning frequency for each candidate (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;d_candidate_mean_winning_frequency&#39;``: average winning frequency for each candidate (over all profiles).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_CONVERGES</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;converges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;converges&#39;</span><span class="p">])</span>
+    <span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;mean_converges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;converges&#39;</span><span class="p">]))</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Convergence.</span>
+
+<span class="sd">Keyword ``&#39;converges&#39;``: whether the procedure converges (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;mean_converges&#39;``: rate of convergence (over all profiles).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_DECREASING_SCORES</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_tau</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;decreasing_scores&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">tau</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+    <span class="p">},</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;score_winner&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;decreasing_scores&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="s1">&#39;score_second&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;decreasing_scores&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="s1">&#39;score_loser&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;decreasing_scores&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Decreasing scores.</span>
+
+<span class="sd">Keyword ``&#39;decreasing_scores&#39;``: scores of the candidates, in decreasing order (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;score_winner&#39;``: score of the winner (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;score_second&#39;``: score of the second candidate (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;score_loser&#39;``: score of the loser (for each profile).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_frequency_cw_wins</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">winning_frequency</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">winning_frequency</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winners</span><span class="p">])</span>
+
+
+<span class="n">MCS_FREQUENCY_CW_WINS</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;frequency_cw_wins&#39;</span><span class="p">:</span> <span class="n">_frequency_cw_wins</span><span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;mean_frequency_cw_wins&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;frequency_cw_wins&#39;</span><span class="p">]))</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Winning frequency of the Condorcet winner.</span>
+
+<span class="sd">Keyword ``&#39;frequency_cw_wins&#39;``: winning frequency of the Condorcet winner (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;mean_frequency_cw_wins&#39;``: average winning frequency of the Condorcet winner (over all profiles).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_N_EPISODES</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;n_episodes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;n_episodes&#39;</span><span class="p">])}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Number of episodes.</span>
+
+<span class="sd">Keyword ``&#39;n_episodes&#39;``: the number of episodes (for each profile).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_PROFILE</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;profile&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">profile</span><span class="p">)}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Profile.</span>
+
+<span class="sd">Keyword ``&#39;profile&#39;``: the profile (for each profile).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_TAU_INIT</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;tau_init&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau_init&#39;</span><span class="p">])}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Tau-vector used at initialization.</span>
+
+<span class="sd">Keyword ``&#39;tau_init&#39;``: the tau-vector used at initialization (for each profile).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_UTILITY_THRESHOLDS</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_strategy</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;utility_thresholds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_threshold</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+                                                           <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">]))</span>
+    <span class="p">},</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;weights_rankings&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="p">[</span><span class="n">profile</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span><span class="p">])</span>
+    <span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;p_utility_threshold_0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;utility_thresholds&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;weights_rankings&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
+        <span class="p">))),</span>
+        <span class="s1">&#39;p_utility_threshold_1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;utility_thresholds&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;weights_rankings&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
+        <span class="p">))),</span>
+        <span class="s1">&#39;p_utility_threshold_not_0_or_1&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;p_utility_threshold_0&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;p_utility_threshold_1&#39;</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Utility thresholds.</span>
+
+<span class="sd">Keyword ``&#39;weights_rankings&#39;``: weights of each ranking (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;utility_thresholds&#39;``: utility threshold of each ranking (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;p_utility_threshold_0&#39;``: probability of having a utility threshold equal to 0 (over all profiles and</span>
+<span class="sd">rankings).</span>
+
+<span class="sd">Keyword ``&#39;p_utility_threshold_1&#39;``: probability of having a utility threshold equal to 1 (over all profiles and</span>
+<span class="sd">rankings).</span>
+
+<span class="sd">Keyword ``&#39;p_utility_threshold_not_0_or_1&#39;``: probability of having a utility threshold different from 0 or 1</span>
+<span class="sd">(over all profiles and rankings).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># noinspection PyUnusedLocal</span>
+<span class="k">def</span> <span class="nf">_utilitarian_welfare_losses</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+    <span class="n">max_welfare</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">d_candidate_welfare</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">max_welfare</span> <span class="o">-</span> <span class="n">profile</span><span class="o">.</span><span class="n">d_candidate_welfare</span><span class="p">[</span><span class="n">candidate</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span>
+    <span class="p">]</span>
+
+
+<span class="c1"># noinspection PyUnusedLocal</span>
+<span class="k">def</span> <span class="nf">_plurality_welfare_losses</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+    <span class="n">max_welfare</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">d_candidate_plurality_welfare</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">max_welfare</span> <span class="o">-</span> <span class="n">profile</span><span class="o">.</span><span class="n">d_candidate_plurality_welfare</span><span class="p">[</span><span class="n">candidate</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span>
+    <span class="p">]</span>
+
+
+<span class="c1"># noinspection PyUnusedLocal</span>
+<span class="k">def</span> <span class="nf">_anti_plurality_welfare_losses</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+    <span class="n">max_welfare</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">d_candidate_anti_plurality_welfare</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">max_welfare</span> <span class="o">-</span> <span class="n">profile</span><span class="o">.</span><span class="n">d_candidate_anti_plurality_welfare</span><span class="p">[</span><span class="n">candidate</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span>
+    <span class="p">]</span>
+
+
+<span class="c1"># noinspection PyUnusedLocal</span>
+<span class="k">def</span> <span class="nf">_candidate_winning_frequencies</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_candidate_winning_frequency&#39;</span><span class="p">][</span><span class="n">candidate</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">CANDIDATES</span>
+    <span class="p">]</span>
+
+
+<span class="n">MCS_WELFARE_LOSSES</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;candidate_winning_frequencies&#39;</span><span class="p">:</span> <span class="n">_candidate_winning_frequencies</span><span class="p">,</span>
+        <span class="s1">&#39;utilitarian_welfare_losses&#39;</span><span class="p">:</span> <span class="n">_utilitarian_welfare_losses</span><span class="p">,</span>
+        <span class="s1">&#39;plurality_welfare_losses&#39;</span><span class="p">:</span> <span class="n">_plurality_welfare_losses</span><span class="p">,</span>
+        <span class="s1">&#39;anti_plurality_welfare_losses&#39;</span><span class="p">:</span> <span class="n">_anti_plurality_welfare_losses</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;candidate_winning_frequencies&#39;</span><span class="p">]),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;utilitarian_welfare_losses&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
+        <span class="p">))),</span>
+        <span class="s1">&#39;mean_plurality_welfare_loss&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;candidate_winning_frequencies&#39;</span><span class="p">]),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;plurality_welfare_losses&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
+        <span class="p">))),</span>
+        <span class="s1">&#39;mean_anti_plurality_welfare_loss&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;candidate_winning_frequencies&#39;</span><span class="p">]),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;anti_plurality_welfare_losses&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
+        <span class="p">))),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Welfare losses.</span>
+
+<span class="sd">Keyword ``&#39;candidate_winning_frequencies&#39;``: winning frequency of each candidate (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;utilitarian_welfare_losses&#39;``: utilitarian welfare loss (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;plurality_welfare_losses&#39;``: plurality welfare loss (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;anti_plurality_welfare_losses&#39;``: anti-plurality welfare loss (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;mean_utilitarian_welfare_loss&#39;``: average utilitarian welfare loss (over all profiles).</span>
+
+<span class="sd">Keyword ``&#39;mean_plurality_welfare_loss&#39;``: average plurality welfare loss (over all profiles).</span>
+
+<span class="sd">Keyword ``&#39;mean_anti_plurality_welfare_loss&#39;``: average anti-plurality welfare loss (over all profiles).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, François Durand.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

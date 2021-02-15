@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NiceStatsProfileOrdinal &mdash; Poisson Approval 0.28.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Utils" href="../reference_utils/index.html" />
+    <link rel="prev" title="is_not_condorcet" href="reference_is_not_condorcet.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Poisson Approval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.28.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Poisson Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks_article/index.html">Notebooks for our article</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference_constants/index.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_events/index.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_best_response/index.html">Best Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_tau_vector/index.html">Tau Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_strategies/index.html">Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_profiles/index.html">Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_iterables/index.html">Iterables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_random_factories/index.html">Random Factories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_monte_carlo_fictitious_play/index.html">Monte-Carlo Fictitious Play</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_binary_plots/index.html">Binary Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_meta_ternary_plots/index.html">Ternary Plots</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Meta-Analysis Misc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="reference_convergence_test.html">convergence_test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_is_condorcet.html">is_condorcet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_is_not_condorcet.html">is_not_condorcet</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NiceStatsProfileOrdinal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Poisson Approval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Meta-Analysis Misc</a> &raquo;</li>
+        
+      <li>NiceStatsProfileOrdinal</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/reference_meta_misc/reference_nice_stats_profile_ordinal.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nicestatsprofileordinal">
+<h1>NiceStatsProfileOrdinal<a class="headerlink" href="#nicestatsprofileordinal" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="poisson_approval.NiceStatsProfileOrdinal">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">poisson_approval.</span></code><code class="sig-name descname"><span class="pre">NiceStatsProfileOrdinal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tests_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tests_strategy_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tests_strategy_winners</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditional_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factory_profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/NiceStatsProfileOrdinal.html#NiceStatsProfileOrdinal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.NiceStatsProfileOrdinal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute nice stats on ordinal profiles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tests_profile</strong> (<em>list</em>) – A list of pairs <cite>(test, name)</cite>, where <cite>test</cite> is a function <a class="reference internal" href="../reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileOrdinal</span></code></a> -&gt; <cite>bool</cite>, and <cite>name</cite> is a
+string.</p></li>
+<li><p><strong>tests_strategy</strong> (<em>list</em>) – A list of pairs <cite>(test, name)</cite>, where <cite>test</cite> is a function <a class="reference internal" href="../reference_strategies/reference_strategy_ordinal.html#poisson_approval.StrategyOrdinal" title="poisson_approval.StrategyOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrategyOrdinal</span></code></a> -&gt; <cite>bool</cite>, and <cite>name</cite> is a
+string. For these tests, we compute only the probability that a equilibrium meeting the test exists.</p></li>
+<li><p><strong>tests_strategy_dist</strong> (<em>list</em>) – A list of pairs <cite>(test, name)</cite>, where <cite>test</cite> is a function <a class="reference internal" href="../reference_strategies/reference_strategy_ordinal.html#poisson_approval.StrategyOrdinal" title="poisson_approval.StrategyOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrategyOrdinal</span></code></a> -&gt; <cite>bool</cite>, and <cite>name</cite> is a
+string. For these tests, we compute the distribution of numbers of equilibria meeting the test.</p></li>
+<li><p><strong>tests_strategy_winners</strong> (<em>list</em>) – A list of pairs <cite>(test, name)</cite>, where <cite>test</cite> is a function <a class="reference internal" href="../reference_strategies/reference_strategy_ordinal.html#poisson_approval.StrategyOrdinal" title="poisson_approval.StrategyOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrategyOrdinal</span></code></a> -&gt; <cite>bool</cite>, and <cite>name</cite> is a
+string. For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.</p></li>
+<li><p><strong>conditional_on</strong> (<em>callable</em>) – A function <a class="reference internal" href="../reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileOrdinal</span></code></a> -&gt; <cite>bool</cite>.</p></li>
+<li><p><strong>factory_profiles</strong> (<em>callable</em>) – A callable that inputs nothing and outputs a profile. Default: <a class="reference internal" href="../reference_random_factories/reference_rand_profile_ordinal_uniform.html#poisson_approval.RandProfileOrdinalUniform" title="poisson_approval.RandProfileOrdinalUniform"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandProfileOrdinalUniform</span></code></a>, with its
+default parameters.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The tests in <cite>tests_profile</cite> concern the profile: what proportion of profiles meet the condition?</p>
+<p>The tests in <cite>tests_strategy</cite> concern the strategies, in the cases where they are equilibrium. For each
+ordinal profile, we compute the probability (for a uniform distribution of utilities) that at least one strategy
+is an equilibrium and meets the given condition.</p>
+<p>The tests in <cite>tests_strategy_dist</cite> or <cite>tests_strategy_winners</cite> concern also the strategies, in the cases where
+they are equilibrium.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">initialize_random_seeds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nice_stats</span> <span class="o">=</span> <span class="n">NiceStatsProfileOrdinal</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">tests_profile</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="k">lambda</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">any</span><span class="p">([</span><span class="n">strategy</span> <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">analyzed_strategies_ordinal</span><span class="o">.</span><span class="n">equilibria</span>
+<span class="gp">... </span>                              <span class="k">if</span> <span class="n">strategy</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winners</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">winners</span><span class="p">]),</span>
+<span class="gp">... </span>         <span class="s1">&#39;There exists a true equilibrium electing the CW&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="n">tests_strategy</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="k">lambda</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winners</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">winners</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="s1">&#39;There exists an equilibrium that elects the CW&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="n">tests_strategy_dist</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="k">lambda</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winners</span> <span class="o">==</span> <span class="n">strategy</span><span class="o">.</span><span class="n">winners</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="s1">&#39;There exists an equilibrium that elects the CW&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="n">tests_strategy_winners</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="k">lambda</span> <span class="n">sigma</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Number of possible winners&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="n">conditional_on</span><span class="o">=</span><span class="k">lambda</span> <span class="n">profile</span><span class="p">:</span> <span class="n">profile</span><span class="o">.</span><span class="n">is_profile_condorcet</span> <span class="o">==</span> <span class="mf">1.</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nice_stats</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to display an overview of all the results, you can use <a class="reference internal" href="#poisson_approval.NiceStatsProfileOrdinal.display_results" title="poisson_approval.NiceStatsProfileOrdinal.display_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">display_results()</span></code></a>.</p>
+<p>Plot a <cite>test_strategy</cite> and insert a cutoff according to a <cite>test_profile</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nice_stats</span><span class="o">.</span><span class="n">plot_test_strategy</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="s1">&#39;There exists an equilibrium that elects the CW&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nice_stats</span><span class="o">.</span><span class="n">plot_cutoff</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="s1">&#39;There exists a true equilibrium electing the CW&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Find a particular example or counter-example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">profile</span> <span class="o">=</span> <span class="n">nice_stats</span><span class="o">.</span><span class="n">find_example</span><span class="p">(</span><span class="s1">&#39;There exists a true equilibrium electing the CW&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+<span class="go">&lt;abc: 0.4236547993389047, acb: 0.12122838365799216, bac: 0.0039303209304278885, bca: 0.05394987214431912, cab: 0.1124259903007756, cba: 0.2848106336275805&gt; (Condorcet winner: a)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="poisson_approval.NiceStatsProfileOrdinal.display_results">
+<code class="sig-name descname"><span class="pre">display_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/NiceStatsProfileOrdinal.html#NiceStatsProfileOrdinal.display_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.NiceStatsProfileOrdinal.display_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.NiceStatsProfileOrdinal.find_example">
+<code class="sig-name descname"><span class="pre">find_example</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/NiceStatsProfileOrdinal.html#NiceStatsProfileOrdinal.find_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.NiceStatsProfileOrdinal.find_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find an example profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test</strong> (<em>str</em><em> or </em><em>int</em>) – Name or index of a test in <cite>tests_profile</cite>.</p></li>
+<li><p><strong>value</strong> (<em>bool</em>) – Whether we want an example (True) or a counter-example (False).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A profile for which the test returned <cite>value</cite> in the simulation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../reference_profiles/reference_profile_ordinal.html#poisson_approval.ProfileOrdinal" title="poisson_approval.ProfileOrdinal">ProfileOrdinal</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.NiceStatsProfileOrdinal.plot_cutoff">
+<code class="sig-name descname"><span class="pre">plot_cutoff</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/NiceStatsProfileOrdinal.html#NiceStatsProfileOrdinal.plot_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.NiceStatsProfileOrdinal.plot_cutoff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the cutoff of a test on the profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test</strong> (<em>str</em><em> or </em><em>int</em>) – Name or index of a test in <cite>tests_profile</cite>.</p></li>
+<li><p><strong>left</strong> (<em>str</em>) – Text to be written on the left.</p></li>
+<li><p><strong>right</strong> (<em>str</em>) – Text to be written on the right.</p></li>
+<li><p><strong>style</strong> (<em>str</em>) – Cf. the function <code class="docutils literal notranslate"><span class="pre">plot</span></code> of <cite>matplotlib</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.NiceStatsProfileOrdinal.plot_test_strategy">
+<code class="sig-name descname"><span class="pre">plot_test_strategy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/NiceStatsProfileOrdinal.html#NiceStatsProfileOrdinal.plot_test_strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.NiceStatsProfileOrdinal.plot_test_strategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a test on strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test</strong> (<em>str</em><em> or </em><em>int</em>) – Name or index of a test in <cite>tests_strategy</cite>.</p></li>
+<li><p><strong>ylabel</strong> (<em>bool</em>) – If True, the name is used in the y-label. Otherwise, the label is <cite>P</cite> (probability).</p></li>
+<li><p><strong>legend</strong> (<em>bool</em>) – If True, the legend is displayed.</p></li>
+<li><p><strong>replacement_name</strong> (<em>str</em><em>, </em><em>optional</em>) – If specified, it will be used instead of the test name in the plot.</p></li>
+<li><p><strong>style</strong> (<em>str</em>) – Cf. the function <code class="docutils literal notranslate"><span class="pre">plot</span></code> of <cite>matplotlib</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="poisson_approval.NiceStatsProfileOrdinal.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/meta_analysis/NiceStatsProfileOrdinal.html#NiceStatsProfileOrdinal.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.NiceStatsProfileOrdinal.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the simulations and store the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n_samples</strong> (<em>int</em>) – Number of profiles meeting the precondition <cite>conditional_on</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../reference_utils/index.html" class="btn btn-neutral float-right" title="Utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference_is_not_condorcet.html" class="btn btn-neutral float-left" title="is_not_condorcet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, François Durand.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.random_factories.RandSimplexGridUniform import RandSimplexGridUniform
 from poisson_approval.utils.Util import initialize_random_seeds
 from poisson_approval.profiles.ProfileNoisyDiscrete import ProfileNoisyDiscrete
@@ -18,7 +18,7 @@ class RandProfileNoisyDiscreteGridUniform(RandSimplexGridUniform):
     d_type_fixed_share : dict, optional
         A dictionary. For each entry ``type: fixed_share``, this type will have at least this fixed share. The total
         must be lower or equal to 1.
-    kwargs : keyword arguments
+    kwargs
         These additional arguments will be passed directly to :class:`ProfileNoisyDiscrete`.
 
     Examples

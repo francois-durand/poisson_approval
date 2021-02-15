@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.meta_analysis.NiceStatsProfileOrdinal &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -121,6 +122,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -168,35 +171,36 @@
 
 
 <span class="c1"># noinspection PyUnresolvedReferences</span>
-<div class="viewcode-block" id="NiceStatsProfileOrdinal"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal">[docs]</a><span class="k">class</span> <span class="nc">NiceStatsProfileOrdinal</span><span class="p">:</span>
+<div class="viewcode-block" id="NiceStatsProfileOrdinal"><a class="viewcode-back" href="../../../reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal">[docs]</a><span class="k">class</span> <span class="nc">NiceStatsProfileOrdinal</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Compute nice stats on ordinal profiles.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tests_profile : list</span>
-<span class="sd">        A list of pairs ``(test, name)``. ``test`` is a function ``ProfileOrdinal -&gt; bool``. ``name`` is a</span>
+<span class="sd">        A list of pairs `(test, name)`, where `test` is a function :class:`ProfileOrdinal` -&gt; `bool`, and `name` is a</span>
 <span class="sd">        string.</span>
 <span class="sd">    tests_strategy : list</span>
-<span class="sd">        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -&gt; bool``. ``name`` is a string.</span>
-<span class="sd">        For these tests, we compute only the probability that a equilibrium meeting the test exists.</span>
+<span class="sd">        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -&gt; `bool`, and `name` is a</span>
+<span class="sd">        string. For these tests, we compute only the probability that a equilibrium meeting the test exists.</span>
 <span class="sd">    tests_strategy_dist : list</span>
-<span class="sd">        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -&gt; bool``. ``name`` is a string.</span>
-<span class="sd">        For these tests, we compute the distribution of numbers of equilibria meeting the test.</span>
+<span class="sd">        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -&gt; `bool`, and `name` is a</span>
+<span class="sd">        string. For these tests, we compute the distribution of numbers of equilibria meeting the test.</span>
 <span class="sd">    tests_strategy_winners : list</span>
-<span class="sd">        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -&gt; bool``. ``name`` is a string.</span>
-<span class="sd">        For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.</span>
+<span class="sd">        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -&gt; `bool`, and `name` is a</span>
+<span class="sd">        string. For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.</span>
 <span class="sd">    conditional_on : callable</span>
-<span class="sd">        A function ``ProfileOrdinal -&gt; bool``.</span>
+<span class="sd">        A function :class:`ProfileOrdinal` -&gt; `bool`.</span>
 <span class="sd">    factory_profiles : callable</span>
-<span class="sd">        A callable that inputs nothing and outputs a profile. Default: ``RandProfileOrdinalUniform()``.</span>
+<span class="sd">        A callable that inputs nothing and outputs a profile. Default: :class:`RandProfileOrdinalUniform`, with its</span>
+<span class="sd">        default parameters.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The tests in `tests_profile` concern the profile: what proportions of profiles meet the condition?</span>
+<span class="sd">    The tests in `tests_profile` concern the profile: what proportion of profiles meet the condition?</span>
 
 <span class="sd">    The tests in `tests_strategy` concern the strategies, in the cases where they are equilibrium. For each</span>
 <span class="sd">    ordinal profile, we compute the probability (for a uniform distribution of utilities) that at least one strategy</span>
-<span class="sd">    is an equilibrium and meet the given condition. This is used to draw plots `à la Antonin`.</span>
+<span class="sd">    is an equilibrium and meets the given condition.</span>
 
 <span class="sd">    The tests in `tests_strategy_dist` or `tests_strategy_winners` concern also the strategies, in the cases where</span>
 <span class="sd">    they are equilibrium.</span>
@@ -224,6 +228,16 @@
 <span class="sd">        ...     conditional_on=lambda profile: profile.is_profile_condorcet == 1.</span>
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; nice_stats.run(n_samples=10)</span>
+
+<span class="sd">    In order to display an overview of all the results, you can use :meth:`display_results`.</span>
+
+<span class="sd">    Plot a `test_strategy` and insert a cutoff according to a `test_profile`:</span>
+
+<span class="sd">        &gt;&gt;&gt; nice_stats.plot_test_strategy(test=&#39;There exists an equilibrium that elects the CW&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; nice_stats.plot_cutoff(test=&#39;There exists a true equilibrium electing the CW&#39;)</span>
+
+<span class="sd">    Find a particular example or counter-example:</span>
+
 <span class="sd">        &gt;&gt;&gt; profile = nice_stats.find_example(&#39;There exists a true equilibrium electing the CW&#39;, False)</span>
 <span class="sd">        &gt;&gt;&gt; print(profile)</span>
 <span class="sd">        &lt;abc: 0.4236547993389047, acb: 0.12122838365799216, bac: 0.0039303209304278885, bca: 0.05394987214431912, \</span>
@@ -246,7 +260,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">results_strategy_dist</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">results_strategy_winners</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="NiceStatsProfileOrdinal.run"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
+<div class="viewcode-block" id="NiceStatsProfileOrdinal.run"><a class="viewcode-back" href="../../../reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run the simulations and store the results.</span>
 
 <span class="sd">        Parameters</span>
@@ -266,7 +280,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional_on</span><span class="p">(</span><span class="n">profile</span><span class="p">):</span>
                 <span class="n">i_sample</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">continue</span>  <span class="c1"># pragma: no cover - I do not understand why it pretends not to be covered, whereas it is...</span>
+                <span class="k">continue</span>  <span class="c1"># pragma: no cover - Cannot be covered because of &quot;peephole&quot; optimization</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">profiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tests_profile</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">results_profile</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test</span><span class="p">(</span><span class="n">profile</span><span class="p">))</span>
@@ -283,7 +297,7 @@
         <span class="k">for</span> <span class="n">histogram</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_strategy_winners</span><span class="p">:</span>
             <span class="n">histogram</span> <span class="o">/=</span> <span class="n">n_samples</span></div>
 
-<div class="viewcode-block" id="NiceStatsProfileOrdinal.plot_test_strategy"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_test_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">plot_test_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replacement_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<div class="viewcode-block" id="NiceStatsProfileOrdinal.plot_test_strategy"><a class="viewcode-back" href="../../../reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_test_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">plot_test_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replacement_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot a test on strategy.</span>
 
 <span class="sd">        Parameters</span>
@@ -297,7 +311,7 @@
 <span class="sd">        replacement_name : str, optional</span>
 <span class="sd">            If specified, it will be used instead of the test name in the plot.</span>
 <span class="sd">        style : str</span>
-<span class="sd">            Cf. :meth:`matplotlib.pyplot.plot`.</span>
+<span class="sd">            Cf. the function ``plot`` of `matplotlib`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">i</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tests_strategy</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
@@ -316,7 +330,7 @@
         <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="NiceStatsProfileOrdinal.plot_cutoff"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_cutoff">[docs]</a>    <span class="k">def</span> <span class="nf">plot_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<div class="viewcode-block" id="NiceStatsProfileOrdinal.plot_cutoff"><a class="viewcode-back" href="../../../reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.plot_cutoff">[docs]</a>    <span class="k">def</span> <span class="nf">plot_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot the cutoff of a test on the profile.</span>
 
 <span class="sd">        Parameters</span>
@@ -328,7 +342,7 @@
 <span class="sd">        right : str</span>
 <span class="sd">            Text to be written on the right.</span>
 <span class="sd">        style : str</span>
-<span class="sd">            Cf. :meth:`matplotlib.pyplot.plot`.</span>
+<span class="sd">            Cf. the function ``plot`` of `matplotlib`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">i</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tests_profile</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
@@ -340,7 +354,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="NiceStatsProfileOrdinal.display_results"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.display_results">[docs]</a>    <span class="k">def</span> <span class="nf">display_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<div class="viewcode-block" id="NiceStatsProfileOrdinal.display_results"><a class="viewcode-back" href="../../../reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.display_results">[docs]</a>    <span class="k">def</span> <span class="nf">display_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover - Annoying to test because plt.show() opens plot windows.</span>
         <span class="sd">&quot;&quot;&quot;Display the results.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tests_profile</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;P(</span><span class="si">%s</span><span class="s1">) = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results_profile</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">))</span>
@@ -368,7 +382,7 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="NiceStatsProfileOrdinal.find_example"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.find_example">[docs]</a>    <span class="k">def</span> <span class="nf">find_example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="NiceStatsProfileOrdinal.find_example"><a class="viewcode-back" href="../../../reference/reference_meta_misc/reference_nice_stats_profile_ordinal.html#poisson_approval.NiceStatsProfileOrdinal.find_example">[docs]</a>    <span class="k">def</span> <span class="nf">find_example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find an example profile.</span>
 
 <span class="sd">        Parameters</span>
@@ -395,28 +409,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

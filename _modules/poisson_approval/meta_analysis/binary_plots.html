@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.meta_analysis.binary_plots &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -121,6 +122,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -168,7 +171,7 @@
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_range</span>
 
 
-<div class="viewcode-block" id="binary_figure"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_figure.html#poisson_approval.binary_figure">[docs]</a><span class="k">def</span> <span class="nf">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<div class="viewcode-block" id="binary_figure"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_figure.html#poisson_approval.binary_figure">[docs]</a><span class="k">def</span> <span class="nf">binary_figure</span><span class="p">(</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a binary plot.</span>
 
 <span class="sd">    Parameters</span>
@@ -178,12 +181,12 @@
 <span class="sd">    yscale : Number</span>
 <span class="sd">        The y-scale of the figure. The higher it is, the higher the resolution of the heatmap on y-axis.</span>
 <span class="sd">    size_inches : tuple or str</span>
-<span class="sd">        The horizontal and vertical sizes of the figure, in inches. If &#39;auto&#39;, we will try to do our best.</span>
+<span class="sd">        The horizontal and vertical sizes of the figure, in inches. If ``&#39;auto&#39;``, we will try to do our best.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    figure : matplotlib.figure.Figure</span>
-<span class="sd">    binary_ax : BinaryAxesSubplotPoisson</span>
+<span class="sd">    binary_ax : :class:`BinaryAxesSubplotPoisson`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">binary_ax</span> <span class="o">=</span> <span class="n">BinaryAxesSubplotPoisson</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="n">size_inches</span><span class="p">)</span>
     <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
@@ -194,27 +197,27 @@
     <span class="k">return</span> <span class="n">figure</span><span class="p">,</span> <span class="n">binary_ax</span></div>
 
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson">[docs]</a><span class="k">class</span> <span class="nc">BinaryAxesSubplotPoisson</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson">[docs]</a><span class="k">class</span> <span class="nc">BinaryAxesSubplotPoisson</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Wrapper for binary plots.</span>
 
-<span class="sd">    For some examples, cf. the tutorial in section &quot;Meta-Analysis&quot;.</span>
+<span class="sd">    For some examples, cf. the tutorial on binary plots.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_inches</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xscale</span> <span class="o">=</span> <span class="n">xscale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span> <span class="o">=</span> <span class="n">yscale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size_inches</span> <span class="o">=</span> <span class="n">size_inches</span>
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson.set_title"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.set_title">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.set_title"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.set_title">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Title of the plot.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        Cf. `set_title` in matplotlib.</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        For the parameters, cf. ``set_title`` in `matplotlib`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson.heatmap_intensity"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_intensity">[docs]</a>    <span class="k">def</span> <span class="nf">heatmap_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x_left_label</span><span class="p">,</span> <span class="n">x_right_label</span><span class="p">,</span> <span class="n">y_left_label</span><span class="p">,</span> <span class="n">y_right_label</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.heatmap_intensity"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_intensity">[docs]</a>    <span class="k">def</span> <span class="nf">heatmap_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x_left_label</span><span class="p">,</span> <span class="n">x_right_label</span><span class="p">,</span> <span class="n">y_left_label</span><span class="p">,</span> <span class="n">y_right_label</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                           <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Intensity heatmap.</span>
 
@@ -236,7 +239,19 @@
 <span class="sd">        cmap : str</span>
 <span class="sd">            Colormap. Default: ``&#39;plasma&#39;``.</span>
 <span class="sd">        kwargs</span>
-<span class="sd">            All other keywords arguments are passed to method ``imshow`` of matplotlib.</span>
+<span class="sd">            All other keywords arguments are passed to method ``imshow`` of `matplotlib`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; def f(x, y1, y2):</span>
+<span class="sd">            ...     return (x**2 + y1) / (y2 + 1)</span>
+<span class="sd">            &gt;&gt;&gt; figure, tax = binary_figure(xscale=5, yscale=5)</span>
+<span class="sd">            &gt;&gt;&gt; tax.heatmap_intensity(f,</span>
+<span class="sd">            ...                       x_left_label=&#39;x-left&#39;,</span>
+<span class="sd">            ...                       x_right_label=&#39;x-right&#39;,</span>
+<span class="sd">            ...                       y_left_label=&#39;y-left&#39;,</span>
+<span class="sd">            ...                       y_right_label=&#39;y-right&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; tax.set_title(&#39;An intensity heat map&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">reverse_right</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
@@ -275,7 +290,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_inches</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">5.75</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson.heatmap_candidates"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_candidates">[docs]</a>    <span class="k">def</span> <span class="nf">heatmap_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x_left_label</span><span class="p">,</span> <span class="n">x_right_label</span><span class="p">,</span> <span class="n">y_left_label</span><span class="p">,</span> <span class="n">y_right_label</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.heatmap_candidates"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.heatmap_candidates">[docs]</a>    <span class="k">def</span> <span class="nf">heatmap_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x_left_label</span><span class="p">,</span> <span class="n">x_right_label</span><span class="p">,</span> <span class="n">y_left_label</span><span class="p">,</span> <span class="n">y_right_label</span><span class="p">,</span> <span class="n">reverse_right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                            <span class="n">legend_title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">legend_style</span><span class="o">=</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Heatmap of a function from a 3D vector (x, y1, y2) to a 3D vector.</span>
 
@@ -301,7 +316,24 @@
 <span class="sd">            The style of the legend. The two available options are ``&#39;palette&#39;`` and ``&#39;color_patches&#39;``.</span>
 <span class="sd">            Cf. :meth:`legend_palette` and :meth:`legend_color_patches`.</span>
 <span class="sd">        kwargs</span>
-<span class="sd">            All other keywords arguments are passed to method ``imshow`` of matplotlib.</span>
+<span class="sd">            All other keywords arguments are passed to method ``imshow`` of `matplotlib`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            &gt;&gt;&gt; def g(x, y1, y2):</span>
+<span class="sd">            ...     a = x**.5</span>
+<span class="sd">            ...     b = y1**2</span>
+<span class="sd">            ...     c = 1 - a - b</span>
+<span class="sd">            ...     return [a, b, c]</span>
+<span class="sd">            &gt;&gt;&gt; figure, tax = binary_figure(xscale=5, yscale=5)</span>
+<span class="sd">            &gt;&gt;&gt; tax.heatmap_candidates(g,</span>
+<span class="sd">            ...                        x_left_label=&#39;x-left&#39;,</span>
+<span class="sd">            ...                        x_right_label=&#39;x-right&#39;,</span>
+<span class="sd">            ...                        y_left_label=&#39;y-left&#39;,</span>
+<span class="sd">            ...                        y_right_label=&#39;y-right&#39;,</span>
+<span class="sd">            ...                        legend_title=&#39;Candidates&#39;,</span>
+<span class="sd">            ...                        legend_style=&#39;palette&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; tax.set_title(&#39;A candidate heat map&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">reverse_right</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
@@ -345,7 +377,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">legend_color_patches</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">legend_title</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">m</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson.annotate_condorcet"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.annotate_condorcet">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.annotate_condorcet"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.annotate_condorcet">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">annotate_condorcet</span><span class="p">(</span><span class="n">left_order</span><span class="p">,</span> <span class="n">right_order</span><span class="p">,</span> <span class="n">d_order_fixed_share</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Annotate who is the Condorcet winner depending on the region.</span>
 
@@ -369,7 +401,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">draw_condorcet_intervals</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">left_order</span><span class="p">,</span> <span class="n">right_order</span><span class="p">,</span> <span class="n">d_order_fixed_share</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson.legend_color_patches"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_color_patches">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.legend_color_patches"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_color_patches">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">legend_color_patches</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">all_mixes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a &quot;color patches&quot; legend to the current figure (for candidates heat maps).</span>
 
@@ -378,13 +410,13 @@
 <span class="sd">        title : str</span>
 <span class="sd">            Title of the legend.</span>
 <span class="sd">        all_mixes : bool</span>
-<span class="sd">            If True, then all mixes are indicated in the legend: a + b, a + c, b + c and a + b + c.</span>
-<span class="sd">        data : ndarray, optional</span>
+<span class="sd">            If True, then all mixes are indicated in the legend: `a + b`, `a + c`, `b + c` and `a + b + c`.</span>
+<span class="sd">        data : numpy.ndarray, optional</span>
 <span class="sd">            Array m * n * 3. This is used only if `all_mixes` is False.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        * The color patches for single candidates a, b, c are in the legend anyway.</span>
+<span class="sd">        * The color patches for single candidates `a`, `b`, `c` are in the legend anyway.</span>
 <span class="sd">        * If `all_mixes` is True, then all mixes are indicated in the legend.</span>
 <span class="sd">        * If `all_mixes` is False and `data` is given, then if at least a value is close to a perfect mix (like half</span>
 <span class="sd">          of `a` and half of `b`), then this mix is added to the legend.</span>
@@ -412,7 +444,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span>
                          <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BinaryAxesSubplotPoisson.legend_palette"><a class="viewcode-back" href="../../../reference/reference_meta_analysis/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_palette">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BinaryAxesSubplotPoisson.legend_palette"><a class="viewcode-back" href="../../../reference/reference_meta_binary_plots/reference_binary_axes_subplot_poisson.html#poisson_approval.BinaryAxesSubplotPoisson.legend_palette">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">legend_palette</span><span class="p">(</span><span class="n">title</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a &quot;palette&quot; legend to the current figure (for candidates heat maps).</span>
 
@@ -423,7 +455,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This is rather a hack than a real matplotlib legend. Hence the usual commands to choose the position</span>
+<span class="sd">        This is more a hack than a real `matplotlib` legend. Hence the usual commands to choose the position</span>
 <span class="sd">        of the legend, for example, are not meant to work here.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">old_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -443,28 +475,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

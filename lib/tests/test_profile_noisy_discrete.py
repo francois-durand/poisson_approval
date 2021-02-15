@@ -1,3 +1,4 @@
+import pytest
 from fractions import Fraction
 from poisson_approval import ProfileNoisyDiscrete, StrategyOrdinal, PLURALITY, ANTI_PLURALITY
 
@@ -5,6 +6,11 @@ from poisson_approval import ProfileNoisyDiscrete, StrategyOrdinal, PLURALITY, A
 def test_normalization():
     profile = ProfileNoisyDiscrete({('abc', 0.2, 0.01): 1, ('acb', 0.4, 0.01): 1})
     assert profile.abc == 0.5
+
+
+def test_epsilon_zero():
+    with pytest.raises(ValueError):
+        profile = ProfileNoisyDiscrete({('abc', 0.2): .5, ('acb', 0.4): .5}, noise=0)
 
 
 def test_plurality():

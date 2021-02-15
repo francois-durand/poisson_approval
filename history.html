@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>History &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -53,7 +53,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -93,10 +93,12 @@
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#monte-carlo-fictitious-play">0.29.0 (2021-02-15): Monte-Carlo Fictitious Play</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plurality-and-anti-plurality-welfare">0.28.0 (2020-12-11): Plurality and Anti-Plurality Welfare</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-github-actions">0.27.1 (2020-11-26): Use GitHub actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#analysis-tools">0.27.0 (2020-11-11): Analysis tools</a></li>
@@ -173,6 +175,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -184,7 +188,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/history.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -224,6 +228,75 @@
 </style>
 <div class="section" id="history">
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="monte-carlo-fictitious-play">
+<h2>0.29.0 (2021-02-15): Monte-Carlo Fictitious Play<a class="headerlink" href="#monte-carlo-fictitious-play" title="Permalink to this headline">¶</a></h2>
+<p>Monte-Carlo fictitious play:</p>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">monte_carlo_fictitious_play</span></code>: Monte-Carlo analysis of fictitious play (or iterated voting).</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">MonteCarloSetting</span></code>: setting for <code class="docutils literal notranslate"><span class="pre">monte_carlo_fictitious_play</span></code>.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">MCS_BALLOT_STATISTICS</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_CANDIDATE_WINNING_FREQUENCY</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_CONVERGES</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_DECREASING_SCORES</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MCS_FREQUENCY_CW_WINS</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_N_EPISODES</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_PROFILE</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_TAU_INIT</span></code>, <code class="docutils literal notranslate"><span class="pre">MCS_UTILITY_THRESHOLDS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MCS_WELFARE_LOSSES</span></code>: pre-defined settings for <code class="docutils literal notranslate"><span class="pre">monte_carlo_fictitious_play</span></code>.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plot_utility_thresholds</span></code>: plot the distribution (CDF) of the utility threshold.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plot_welfare_losses</span></code>: plot the distribution (CDF) of the welfare losses, for each voting rule.</p></li>
+<li><p>Modify <code class="docutils literal notranslate"><span class="pre">plot_distribution_scores</span></code>: the new syntax takes advantage of <code class="docutils literal notranslate"><span class="pre">monte_carlo_fictitious_play</span></code>.</p></li>
+</ul>
+<p>Improvement of <code class="docutils literal notranslate"><span class="pre">iterated_voting</span></code> and <code class="docutils literal notranslate"><span class="pre">fictitious_play</span></code>:</p>
+<ul class="simple">
+<li><p>Both methods now takes additional parameters: <code class="docutils literal notranslate"><span class="pre">other_statistics_update_ratio</span></code>, <code class="docutils literal notranslate"><span class="pre">other_statistics_tau</span></code> and
+<code class="docutils literal notranslate"><span class="pre">other_statistics_strategy</span></code>, in order to compute long-run averages of any kind of statistics.</p></li>
+<li><p>New output <code class="docutils literal notranslate"><span class="pre">converges</span></code>: whether the process converges.</p></li>
+<li><p>New output <code class="docutils literal notranslate"><span class="pre">tau_init</span></code>: the actual value of the tau-vector used at initialization (especially useful when
+initialization is random).</p></li>
+<li><p>New results related to the “other statistics” are included in the output dictionary.</p></li>
+</ul>
+<p>Other tools for meta-analysis:</p>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">convergence_test</span></code>: create a convergence test.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">is_condorcet</span></code>: whether a profile has one Condorcet winner.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">is_not_condorcet</span></code>: whether a profile has no Condorcet winner.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">heatmap_candidates</span></code> accepts a new parameter, <code class="docutils literal notranslate"><span class="pre">file_save_data</span></code>, to save into a file the data computed in order
+to prepare the plot. Same for <code class="docutils literal notranslate"><span class="pre">ternary_plot_winners_at_equilibrium</span></code>.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">UtilPlots</span></code> module:</p>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plt_plot_with_error</span></code>: adaptation of <code class="docutils literal notranslate"><span class="pre">plt.plot</span></code> for Monte-Carlo experiments, with error area.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plt_step_with_error</span></code>: adaptation of <code class="docutils literal notranslate"><span class="pre">plt.step</span></code> for Monte-Carlo experiments, with error area.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plt_cdf</span></code>: plot a cumulative distribution function from Monte-Carlo experiments, with error area.</p></li>
+</ul>
+<p>Misc:</p>
+<ul class="simple">
+<li><p>Rename the module <code class="docutils literal notranslate"><span class="pre">constants</span></code> to <code class="docutils literal notranslate"><span class="pre">basic_constants</span></code>.</p></li>
+<li><p>Add constant <code class="docutils literal notranslate"><span class="pre">VOTING_RULES</span></code>: the three voting rules of the package, i.e. Approval, Plurality and Anti-Plurality.</p></li>
+<li><p>Add constant <code class="docutils literal notranslate"><span class="pre">SETS_OF_RANKINGS_UP_TO_RELABELLING</span></code>: all possible sets of rankings, up to relabelling the candidates.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">BestResponse.threshold_utility</span></code> to <code class="docutils literal notranslate"><span class="pre">BestResponse.utility_threshold</span></code> (for consistency with other
+occurrences of the phrase “utility threshold”).</p></li>
+<li><p>Revision of the whole documentation, including the tutorials (typos, missing hyperlinks, etc).</p></li>
+<li><p>In the documentation, add the notebooks related to our research article:
+<em>Voter Coordination in Elections: A Case for Approval Voting</em>.</p></li>
+</ul>
+<p>Fix bugs:</p>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">EventTrio</span></code>: solve a rare bug occurring when an offset ratio is greater but very close to 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Profile.random_tau_undominated</span></code> did not take voters with weak orders into account.</p></li>
+<li><p>In Plurality, voters with a weak order of type “hate” (e.g. <cite>a~b&gt;c</cite>) were treated incorrectly for strategic voting.
+There was a similar bug in Anti-Plurality for voters with a weak order of type “love” (e.g. <cite>a&gt;b~c</cite>). Fixing this bug
+has consequences, in particular, for the method <code class="docutils literal notranslate"><span class="pre">tau_strategic</span></code> of several subclasses of <code class="docutils literal notranslate"><span class="pre">Profile</span></code>, but only
+for profiles involving weak orders, in Plurality or Anti-Plurality.</p></li>
+</ul>
+<p>Fixing the latter bug lead to several collateral modifications concerning the strategies of the voters with a weak
+order of preference:</p>
+<ul class="simple">
+<li><p>All subclasses of <code class="docutils literal notranslate"><span class="pre">Strategy</span></code> now take an additional parameter: <code class="docutils literal notranslate"><span class="pre">d_weak_order_ballot</span></code>, that can be filled in
+the few cases where strategic voting is not automatic for voters with a weak order: “haters” (e.g. <cite>a~b&gt;c</cite>) in
+Plurality and “lovers” (e.g. <cite>a&gt;b~c</cite>) in Anti-Plurality. Note, in particular, that this parameter is not
+used for Approval.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Profile.d_ballot_share_weak_voters_strategic</span></code>: ballot shares due to the weak orders if they vote
+strategically.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Profile.best_responses_to_strategy</span></code> now takes as input a tau-vector (instead of a dictionary of best responses)
+and an optional ratio of optimistic voters.</p></li>
+</ul>
+</div>
 <div class="section" id="plurality-and-anti-plurality-welfare">
 <h2>0.28.0 (2020-12-11): Plurality and Anti-Plurality Welfare<a class="headerlink" href="#plurality-and-anti-plurality-welfare" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -822,35 +895,28 @@ like <code class="docutils literal notranslate"><span class="pre">well_informed_
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="authors.html" class="btn btn-neutral float-left" title="Credits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="authors.html" class="btn btn-neutral float-left" title="Credits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

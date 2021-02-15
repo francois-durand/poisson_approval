@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.profiles.Profile &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -136,6 +137,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -163,7 +166,7 @@
 <span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
-<span class="kn">from</span> <span class="nn">poisson_approval.constants.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.constants.EquilibriumStatus</span> <span class="kn">import</span> <span class="n">EquilibriumStatus</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.containers.AnalyzedStrategies</span> <span class="kn">import</span> <span class="n">AnalyzedStrategies</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.containers.Winners</span> <span class="kn">import</span> <span class="n">Winners</span>
@@ -173,6 +176,7 @@
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.SetPrintingInOrder</span> <span class="kn">import</span> <span class="n">SetPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.tau_vector.TauVector</span> <span class="kn">import</span> <span class="n">TauVector</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.SuperclassMeta</span> <span class="kn">import</span> <span class="n">SuperclassMeta</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span><span class="p">,</span> <span class="n">normalize_dict_to_0_1</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilPreferences</span> <span class="kn">import</span> <span class="n">is_lover</span><span class="p">,</span> <span class="n">d_candidate_ordinal_utility</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">sort_ballot</span><span class="p">,</span> <span class="n">ballot_high_u</span><span class="p">,</span> <span class="n">ballot_low_u</span>
@@ -180,7 +184,7 @@
 
 
 <span class="c1"># noinspection PyUnresolvedReferences</span>
-<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="n">DeleteCacheMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="n">DeleteCacheMixin</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">SuperclassMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A profile of preference (abstract class).</span>
 
 <span class="sd">    Parameters</span>
@@ -198,7 +202,7 @@
 
     <span class="n">voting_rule</span> <span class="o">=</span> <span class="n">property_deleting_cache</span><span class="p">(</span><span class="s1">&#39;_voting_rule&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>  <span class="c1"># pragma: no cover - Only for notebooks</span>
         <span class="c1"># https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output</span>
         <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
 
@@ -231,7 +235,7 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : plurality welfare of each candidate, i.e. share of voters with utility 1.</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : Plurality welfare of each candidate, i.e. share of voters with utility 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">candidate</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span>
             <span class="n">share</span>
@@ -245,7 +249,7 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_anti_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : anti-plurality welfare of each candidate, i.e. share of voters with utility &gt; 0.</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : Anti-plurality welfare of each candidate, i.e. share of voters with utility &gt; 0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DictPrintingInOrder</span><span class="p">({</span><span class="n">candidate</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span>
             <span class="n">share</span>
@@ -259,21 +263,23 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_relative_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : relative plurality welfare of each candidate.</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : Relative plurality welfare of each candidate.</span>
 <span class="sd">            This is similar to :attr:`d_candidate_plurality_welfare`, but renormalized so that the candidate with best</span>
-<span class="sd">            welfare has 1 and the one with worst welfare has 0. In math: relative_welfare = (welfare - min_welfare) /</span>
-<span class="sd">            (max_welfare - min_welfare). In the case where all candidates have the same welfare, by convention,</span>
-<span class="sd">            the relative welfare is 1 for all of them.</span>
+<span class="sd">            welfare has 1 and the one with worst welfare has 0. In math:</span>
+<span class="sd">            `relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)`.</span>
+<span class="sd">            In the case where all candidates have the same welfare, by convention, the relative welfare is 1 for all</span>
+<span class="sd">            of them.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_plurality_welfare</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_candidate_relative_anti_plurality_welfare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : relative anti-plurality welfare of each candidate.</span>
+        <span class="sd">&quot;&quot;&quot;DictPrintingInOrder : Relative anti-plurality welfare of each candidate.</span>
 <span class="sd">            This is similar to :attr:`d_candidate_anti_plurality_welfare`, but renormalized so that the candidate with</span>
 <span class="sd">            best welfare has 1 and the one with worst welfare has 0. In math:</span>
-<span class="sd">            relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare). In the case where all candidates</span>
-<span class="sd">            have the same welfare, by convention, the relative welfare is 1 for all of them.</span>
+<span class="sd">            `relative_welfare = (welfare - min_welfare) / (max_welfare - min_welfare)`.</span>
+<span class="sd">            In the case where all candidates have the same welfare, by convention, the relative welfare is 1 for all</span>
+<span class="sd">            of them.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">normalize_dict_to_0_1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_candidate_anti_plurality_welfare</span><span class="p">)</span>
 
@@ -281,7 +287,7 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">weighted_maj_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;np.ndarray : Weighted majority graph.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;numpy.ndarray : Weighted majority graph.&quot;&quot;&quot;</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">abc</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">acb</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cab</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bac</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bca</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">cba</span>
               <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="s1">&#39;a&gt;b~c&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="s1">&#39;b~c&gt;a&#39;</span><span class="p">]</span>
               <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="s1">&#39;a~c&gt;b&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="s1">&#39;b&gt;a~c&#39;</span><span class="p">])</span>
@@ -302,8 +308,8 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">is_profile_condorcet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;float : Whether the profile is Condorcet. 1. means there is a strict Condorcet winner, 0.5 means there are</span>
-<span class="sd">        one or more weak Condorcet winner(s), 0. means there is no Condorcet winner.</span>
+        <span class="sd">&quot;&quot;&quot;float : Whether the profile is Condorcet. By convention, ``1.`` means there is a strict Condorcet winner,</span>
+<span class="sd">        ``0.5`` means there are one or more weak Condorcet winner(s), ``0.`` means there is no Condorcet winner.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weighted_maj_graph</span>
         <span class="n">min_score</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="nb">min</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="nb">min</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span>
@@ -401,21 +407,22 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_ballot_share_weak_voters_fanatic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;dict : Ballot shares due to the weak orders if they vote fanatically</span>
+        <span class="sd">&quot;&quot;&quot;dict : Ballot shares due to the weak orders if they vote fanatically.</span>
 
-<span class="sd">        Voters of the type ``&#39;a&gt;b~c&#39;``:</span>
+<span class="sd">        Voters of type ``&#39;a&gt;b~c&#39;`` (`lovers`):</span>
 
 <span class="sd">        * In Approval or Plurality, they vote for `a`.</span>
 <span class="sd">        * In Anti-plurality, half of them vote for `ab` (i.e. against `c`) and half of them vote for `ac` (i.e.</span>
 <span class="sd">          against `b`).</span>
 
-<span class="sd">        Voters of the type ``&#39;a~b&gt;c&#39;``:</span>
+<span class="sd">        Voters of type ``&#39;a~b&gt;c&#39;`` (`haters`):</span>
 
 <span class="sd">        * In Approval or Plurality, half of them vote for `a` and half of them vote for `b`.</span>
 <span class="sd">        * In Anti-plurality, they vote for `ab` (i.e. against `c`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">ballot</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">BALLOTS_WITHOUT_INVERSIONS</span><span class="p">}</span>
-        <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">support_in_weak_orders</span><span class="p">:</span>
+            <span class="n">share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">is_lover</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">PLURALITY</span><span class="p">}:</span>
                     <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
@@ -436,21 +443,22 @@
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">d_ballot_share_weak_voters_sincere</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;dict : Ballot shares due to the weak orders if they vote sincerely</span>
+        <span class="sd">&quot;&quot;&quot;dict : Ballot shares due to the weak orders if they vote sincerely.</span>
 
-<span class="sd">        Voters of the type ``&#39;a&gt;b~c&#39;``:</span>
+<span class="sd">        Voters of type ``&#39;a&gt;b~c&#39;`` (`lovers`):</span>
 
 <span class="sd">        * In Approval or Plurality, they vote for `a`.</span>
 <span class="sd">        * In Anti-plurality, half of them vote for `ab` (i.e. against `c`) and half of them vote for `ac` (i.e.</span>
 <span class="sd">          against `b`).</span>
 
-<span class="sd">        Voters of the type ``&#39;a~b&gt;c&#39;``:</span>
+<span class="sd">        Voters of type ``&#39;a~b&gt;c&#39;`` (`haters`):</span>
 
 <span class="sd">        * In Approval or Anti-plurality, they vote for `ab` (i.e. against `c`).</span>
 <span class="sd">        * In Plurality, half of them vote for `a` and half of them vote for `b`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">ballot</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">BALLOTS_WITHOUT_INVERSIONS</span><span class="p">}</span>
-        <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">support_in_weak_orders</span><span class="p">:</span>
+            <span class="n">share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">is_lover</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">PLURALITY</span><span class="p">}:</span>
                     <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
@@ -469,6 +477,44 @@
                     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">return</span> <span class="n">d</span>
 
+<div class="viewcode-block" id="Profile.d_ballot_share_weak_voters_strategic"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile.d_ballot_share_weak_voters_strategic">[docs]</a>    <span class="k">def</span> <span class="nf">d_ballot_share_weak_voters_strategic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict : Ballot shares due to the weak orders if they vote strategically.</span>
+
+<span class="sd">        For voters with a weak order, strategic voting is the same as sincere voting, except in two cases:</span>
+
+<span class="sd">        * For voters of type ``&#39;a~b&gt;c&#39;`` (`haters`)`in Plurality, who have two dominant strategies: vote for `a` or `b`.</span>
+<span class="sd">        * For voters of type ``&#39;a&gt;b~c&#39;`` (`lovers`) in Anti-Plurality, who have two dominant strategies: vote</span>
+<span class="sd">          against `b` or `c` (i.e. respectively for `ac` or `ab`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">ballot</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">BALLOTS_WITHOUT_INVERSIONS</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">support_in_weak_orders</span><span class="p">:</span>
+            <span class="n">share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">is_lover</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">PLURALITY</span><span class="p">}:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+                    <span class="n">ballot</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">ballot</span> <span class="o">==</span> <span class="n">SPLIT</span><span class="p">:</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span> <span class="o">+=</span> <span class="n">my_division</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">4</span><span class="p">])]</span> <span class="o">+=</span> <span class="n">my_division</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># is_hater(weak_order)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">PLURALITY</span><span class="p">:</span>
+                    <span class="n">ballot</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">ballot</span> <span class="o">==</span> <span class="n">SPLIT</span><span class="p">:</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">my_division</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">my_division</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">ANTI_PLURALITY</span><span class="p">}:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
 <div class="viewcode-block" id="Profile.is_equilibrium"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile.is_equilibrium">[docs]</a>    <span class="k">def</span> <span class="nf">is_equilibrium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Whether a strategy is an equilibrium in this profile.</span>
 
@@ -484,13 +530,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Profile.best_responses_to_strategy"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile.best_responses_to_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">best_responses_to_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_ranking_best_response</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.best_responses_to_strategy"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile.best_responses_to_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">best_responses_to_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">ratio_optimistic</span><span class="o">=</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;Convert best responses to a :class:`StrategyThreshold`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        d_ranking_best_response : dict</span>
-<span class="sd">            Key: ranking. Value: :class:`BestResponse`.</span>
+<span class="sd">        tau : TauVector</span>
+<span class="sd">            Tau-vector.</span>
+<span class="sd">        ratio_optimistic</span>
+<span class="sd">            The value of `ratio_optimistic` to use. Default: 1/2.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -498,19 +546,48 @@
 <span class="sd">            The conversion of the best responses into a strategy. Only the rankings present in this profile are</span>
 <span class="sd">            mentioned in the strategy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">StrategyThreshold</span><span class="p">({</span>
-            <span class="n">ranking</span><span class="p">:</span> <span class="n">best_response</span><span class="o">.</span><span class="n">threshold_utility</span>
-            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">best_response</span> <span class="ow">in</span> <span class="n">d_ranking_best_response</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="p">},</span> <span class="n">ratio_optimistic</span><span class="o">=</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span></div>
+        <span class="c1"># Deal with weak orders</span>
+        <span class="n">d_weak_order_ballot</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">PLURALITY</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="n">WEAK_ORDERS_HATE_WITHOUT_INVERSIONS</span><span class="p">:</span>  <span class="c1"># i~j&gt;k</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                        <span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="k">elif</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                        <span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">SPLIT</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">weak_order</span> <span class="ow">in</span> <span class="n">WEAK_ORDERS_LOVE_WITHOUT_INVERSIONS</span><span class="p">:</span>  <span class="c1"># i&gt;j~k</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>  <span class="c1"># Then vote against `j`</span>
+                        <span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">sort_ballot</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tau</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>  <span class="c1"># Then vote against `k`</span>
+                        <span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">sort_ballot</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">d_weak_order_ballot</span><span class="p">[</span><span class="n">weak_order</span><span class="p">]</span> <span class="o">=</span> <span class="n">SPLIT</span>
+        <span class="c1"># Finish the job</span>
+        <span class="k">return</span> <span class="n">StrategyThreshold</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="n">ranking</span><span class="p">:</span> <span class="n">best_response</span><span class="o">.</span><span class="n">utility_threshold</span>
+                <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">best_response</span> <span class="ow">in</span> <span class="n">tau</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">d_weak_order_ballot</span><span class="o">=</span><span class="n">d_weak_order_ballot</span><span class="p">,</span> <span class="n">ratio_optimistic</span><span class="o">=</span><span class="n">ratio_optimistic</span><span class="p">,</span>
+            <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span>
+        <span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">strategies_ordinal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterator: ordinal strategies of the profile.</span>
+        <span class="sd">&quot;&quot;&quot;Iterator: Ordinal strategies of the profile.</span>
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
-<span class="sd">        StrategyOrdinal</span>
+<span class="sd">        :class:`StrategyOrdinal`</span>
 <span class="sd">            All possible ordinal strategies for this profile.</span>
 
 <span class="sd">        Examples</span>
@@ -521,11 +598,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">strategies_pure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterator: pure strategies of the profile.</span>
+        <span class="sd">&quot;&quot;&quot;Iterator: Pure strategies of the profile.</span>
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
-<span class="sd">        Strategy</span>
+<span class="sd">        :class:`Strategy`</span>
 <span class="sd">            All possible pure strategies of the profile. This is implemented only for discrete profiles such</span>
 <span class="sd">            as :class:`ProfileTwelve` or :class:`ProfileDiscrete`.</span>
 
@@ -537,11 +614,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">strategies_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterator: group strategies of the profile.</span>
+        <span class="sd">&quot;&quot;&quot;Iterator: Group strategies of the profile.</span>
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
-<span class="sd">        Strategy</span>
+<span class="sd">        :class:`Strategy`</span>
 <span class="sd">            All possible group strategies of the profile. This is implemented only for profiles where we consider</span>
 <span class="sd">            that there is a natural notion of group, such as :class:`ProfileNoisyDiscrete`.</span>
 
@@ -579,7 +656,7 @@
                 <span class="n">equilibria</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">UTILITY_DEPENDENT</span><span class="p">:</span>
                 <span class="n">utility_dependent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">INCONCLUSIVE</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="n">EquilibriumStatus</span><span class="o">.</span><span class="n">INCONCLUSIVE</span><span class="p">:</span>  <span class="c1"># pragma: no cover - Should never happen</span>
                 <span class="n">inconclusive</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Met an inconclusive case: </span><span class="se">\n</span><span class="s1">profile = </span><span class="si">%r</span><span class="se">\n</span><span class="s1">strategy = </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
@@ -616,15 +693,12 @@
     <span class="k">def</span> <span class="nf">order_and_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Order and label of a discrete type.</span>
 
-<span class="sd">        Helper method for the ternary plots. Implemented only for subclasses of Profile where the initialization</span>
-<span class="sd">        is made with a dictionary that maps types to voter share, such as :class:`ProfileNoisyDiscrete` or</span>
-<span class="sd">        :class:`ProfileOrdinal`, but unlike :class:`ProfileHistogram` (where a second dictionary is needed for the</span>
-<span class="sd">        histograms).</span>
+<span class="sd">        Helper method for the ternary plots.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        t : object</span>
-<span class="sd">            A type. Any type that is accepted at a key in the initialization dictionary.</span>
+<span class="sd">            A type. Any type that is accepted as a key in the initialization dictionary.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -665,7 +739,7 @@
 <div class="viewcode-block" id="Profile.random_tau_undominated"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile.html#poisson_approval.Profile.random_tau_undominated">[docs]</a>    <span class="k">def</span> <span class="nf">random_tau_undominated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Random tau based on undominated ballots.</span>
 
-<span class="sd">        This is used, for example, in :meth:`ProfileCardinal.iterated_voting`.</span>
+<span class="sd">        This is used, for example, in :meth:`~poisson_approval.ProfileCardinal.iterated_voting`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -679,6 +753,25 @@
             <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
             <span class="n">d</span><span class="p">[</span><span class="n">ballot_low_u</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">share</span>
             <span class="n">d</span><span class="p">[</span><span class="n">ballot_high_u</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">share</span>
+        <span class="k">for</span> <span class="n">weak_order</span><span class="p">,</span> <span class="n">share</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_weak_order_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">is_lover</span><span class="p">(</span><span class="n">weak_order</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">PLURALITY</span><span class="p">}:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">ANTI_PLURALITY</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">share</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">4</span><span class="p">])]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">share</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># is_hater(weak_order)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">==</span> <span class="n">PLURALITY</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">share</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">share</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="ow">in</span> <span class="p">{</span><span class="n">APPROVAL</span><span class="p">,</span> <span class="n">ANTI_PLURALITY</span><span class="p">}:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">weak_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">weak_order</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span> <span class="o">+=</span> <span class="n">share</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">return</span> <span class="n">TauVector</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic</span><span class="p">)</span></div></div>
 
 
@@ -697,28 +790,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

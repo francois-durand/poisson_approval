@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>poisson_approval.profiles.ProfileCardinalContinuous &mdash; Poisson Approval 0.28.0 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Poisson Approval
+            <a href="../../../index.html" class="icon icon-home"> Poisson Approval
           
 
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks_article/index.html">Notebooks for our article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
@@ -121,6 +122,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -168,27 +171,31 @@
 <div class="viewcode-block" id="ProfileCardinalContinuous"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous">[docs]</a><span class="k">class</span> <span class="nc">ProfileCardinalContinuous</span><span class="p">(</span><span class="n">ProfileCardinal</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A cardinal profile of preference with no atom (abstract class).</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    Cf. :class:`ProfileCardinal`.</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For parameters and attributes, cf. :class:`ProfileCardinal`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">is_continuous</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="ProfileCardinalContinuous.have_ranking_with_utility_u"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.have_ranking_with_utility_u">[docs]</a>    <span class="k">def</span> <span class="nf">have_ranking_with_utility_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and a given utility for their middle candidate.</span>
+        <span class="sd">&quot;&quot;&quot;Share of voters who have a given ranking and a utility for their middle candidate that is equal to a given</span>
+<span class="sd">        value.</span>
 
 <span class="sd">        Since it is a continuous profile, this method always returns 0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="ProfileCardinalContinuous.best_responses_to_strategy"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.best_responses_to_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">best_responses_to_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_ranking_best_response</span><span class="p">):</span>
+<div class="viewcode-block" id="ProfileCardinalContinuous.best_responses_to_strategy"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_cardinal_continuous.html#poisson_approval.ProfileCardinalContinuous.best_responses_to_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">best_responses_to_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">ratio_optimistic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert best responses to a :class:`StrategyThreshold`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        d_ranking_best_response : dict</span>
-<span class="sd">            Key: ranking. Value: :class:`BestResponse`.</span>
+<span class="sd">        tau : TauVector</span>
+<span class="sd">            Tau-vector.</span>
+<span class="sd">        ratio_optimistic</span>
+<span class="sd">            The value of `ratio_optimistic` to use. Default: None (since it is a `ProfileCardinalContinuous`, we</span>
+<span class="sd">            do not care about this value).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -196,40 +203,33 @@
 <span class="sd">            The conversion of the best responses into a strategy. Only the rankings present in this profile are</span>
 <span class="sd">            mentioned in the strategy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># The only difference with parent class is that ratio_optimistic is not specified because we don&#39;t care.</span>
-        <span class="k">return</span> <span class="n">StrategyThreshold</span><span class="p">({</span>
-            <span class="n">ranking</span><span class="p">:</span> <span class="n">best_response</span><span class="o">.</span><span class="n">threshold_utility</span>
-            <span class="k">for</span> <span class="n">ranking</span><span class="p">,</span> <span class="n">best_response</span> <span class="ow">in</span> <span class="n">d_ranking_best_response</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="p">},</span> <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">voting_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span><span class="p">)</span></div></div>
+        <span class="c1"># Only difference with the parent class: the default value of ratio_optimistic</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">best_responses_to_strategy</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">ratio_optimistic</span><span class="o">=</span><span class="n">ratio_optimistic</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, François Durand
+        &#169; Copyright 2019, François Durand.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
