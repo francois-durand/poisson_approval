@@ -470,7 +470,7 @@ class ProfileTwelve(ProfileCardinal):
         """
         assert self.voting_rule == strategy.voting_rule
         # Weak orders: these voters are always "sincere", even in Plurality or Anti-Plurality. For example, in
-        # Plurality, a voter a~b>c will vote at random for a or b, and this is considered "sincere".
+        # Plurality, a voter a~b>c will either vote for a or b, and this is considered "sincere".
         share_sincere = sum(self.d_weak_order_share.values())
         # Rankings
         for ranking, ballot in strategy.d_ranking_ballot.items():
