@@ -20,6 +20,7 @@ Antonin Macé and Matías Núñez). The references inside parentheses correspond
    Dynamic Process 08.a Robustness to the Share of Updating Voters (C.1)
    Dynamic Process 08.b Robustness to the Share of Updating Voters (with CW) (C.1)
    Dynamic Process 09 Robustness to the Distribution of Preference Intensities (C.2)
+   Dynamic Process 10 Robustness to the Initial Poll (C.3)
    Divided Preferences AV (6.2.3)
    Divided Preferences PL (6.2.3)
    Divided Preferences APL (C.4)
