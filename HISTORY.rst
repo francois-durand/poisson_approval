@@ -2,6 +2,76 @@
 History
 =======
 
+------------------------------------------------
+0.29.0 (2021-02-15): Monte-Carlo Fictitious Play
+------------------------------------------------
+
+Monte-Carlo fictitious play:
+
+* Add ``monte_carlo_fictitious_play``: Monte-Carlo analysis of fictitious play (or iterated voting).
+* Add ``MonteCarloSetting``: setting for ``monte_carlo_fictitious_play``.
+* Add ``MCS_BALLOT_STATISTICS``, ``MCS_CANDIDATE_WINNING_FREQUENCY``, ``MCS_CONVERGES``, ``MCS_DECREASING_SCORES``,
+  ``MCS_FREQUENCY_CW_WINS``, ``MCS_N_EPISODES``, ``MCS_PROFILE``, ``MCS_TAU_INIT``, ``MCS_UTILITY_THRESHOLDS``,
+  ``MCS_WELFARE_LOSSES``: pre-defined settings for ``monte_carlo_fictitious_play``.
+* Add ``plot_utility_thresholds``: plot the distribution (CDF) of the utility threshold.
+* Add ``plot_welfare_losses``: plot the distribution (CDF) of the welfare losses, for each voting rule.
+* Modify ``plot_distribution_scores``: the new syntax takes advantage of ``monte_carlo_fictitious_play``.
+
+Improvement of ``iterated_voting`` and ``fictitious_play``:
+
+* Both methods now takes additional parameters: ``other_statistics_update_ratio``, ``other_statistics_tau`` and
+  ``other_statistics_strategy``, in order to compute long-run averages of any kind of statistics.
+* New output ``converges``: whether the process converges.
+* New output ``tau_init``: the actual value of the tau-vector used at initialization (especially useful when
+  initialization is random).
+* New results related to the "other statistics" are included in the output dictionary.
+
+Other tools for meta-analysis:
+
+* Add ``convergence_test``: create a convergence test.
+* Add ``is_condorcet``: whether a profile has one Condorcet winner.
+* Add ``is_not_condorcet``: whether a profile has no Condorcet winner.
+* ``heatmap_candidates`` accepts a new parameter, ``file_save_data``, to save into a file the data computed in order
+  to prepare the plot. Same for ``ternary_plot_winners_at_equilibrium``.
+
+``UtilPlots`` module:
+
+* Add ``plt_plot_with_error``: adaptation of ``plt.plot`` for Monte-Carlo experiments, with error area.
+* Add ``plt_step_with_error``: adaptation of ``plt.step`` for Monte-Carlo experiments, with error area.
+* Add ``plt_cdf``: plot a cumulative distribution function from Monte-Carlo experiments, with error area.
+
+Misc:
+
+* Rename the module ``constants`` to ``basic_constants``.
+* Add constant ``VOTING_RULES``: the three voting rules of the package, i.e. Approval, Plurality and Anti-Plurality.
+* Add constant ``SETS_OF_RANKINGS_UP_TO_RELABELLING``: all possible sets of rankings, up to relabelling the candidates.
+* Rename ``BestResponse.threshold_utility`` to ``BestResponse.utility_threshold`` (for consistency with other
+  occurrences of the phrase "utility threshold").
+* Revision of the whole documentation, including the tutorials (typos, missing hyperlinks, etc).
+* In the documentation, add the notebooks related to our research article:
+  *Voter Coordination in Elections: A Case for Approval Voting*.
+
+Fix bugs:
+
+* In ``EventTrio``: solve a rare bug occurring when an offset ratio is greater but very close to 1.
+* ``Profile.random_tau_undominated`` did not take voters with weak orders into account.
+* In Plurality, voters with a weak order of type "hate" (e.g. `a~b>c`) were treated incorrectly for strategic voting.
+  There was a similar bug in Anti-Plurality for voters with a weak order of type "love" (e.g. `a>b~c`). Fixing this bug
+  has consequences, in particular, for the method ``tau_strategic`` of several subclasses of ``Profile``, but only
+  for profiles involving weak orders, in Plurality or Anti-Plurality.
+
+Fixing the latter bug lead to several collateral modifications concerning the strategies of the voters with a weak
+order of preference:
+
+* All subclasses of ``Strategy`` now take an additional parameter: ``d_weak_order_ballot``, that can be filled in
+  the few cases where strategic voting is not automatic for voters with a weak order: "haters" (e.g. `a~b>c`) in
+  Plurality and "lovers" (e.g. `a>b~c`) in Anti-Plurality. Note, in particular, that this parameter is not
+  used for Approval.
+* Add ``Profile.d_ballot_share_weak_voters_strategic``: ballot shares due to the weak orders if they vote
+  strategically.
+* ``Profile.best_responses_to_strategy`` now takes as input a tau-vector (instead of a dictionary of best responses)
+  and an optional ratio of optimistic voters.
+
 ---------------------------------------------------------
 0.28.0 (2020-12-11): Plurality and Anti-Plurality Welfare
 ---------------------------------------------------------
