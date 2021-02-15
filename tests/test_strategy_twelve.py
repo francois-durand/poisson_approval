@@ -1,4 +1,5 @@
-from poisson_approval import StrategyTwelve, PLURALITY, ANTI_PLURALITY, UTILITY_DEPENDENT
+import pytest
+from poisson_approval import StrategyTwelve, APPROVAL, PLURALITY, ANTI_PLURALITY, UTILITY_DEPENDENT, SPLIT
 
 
 def test_strategy_twelve_plurality():
@@ -29,3 +30,30 @@ def test_strategy_twelve_anti_plurality():
         'ab'
     """
     pass
+
+
+def test_strategy_twelve_with_weak_order():
+    # APPROVAL
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'},
+                                  d_weak_order_ballot={'a~b>c': SPLIT}, voting_rule=APPROVAL)
+    # PLURALITY
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'},
+                                  d_weak_order_ballot={'a>b~c': SPLIT}, voting_rule=PLURALITY)
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'},
+                                  d_weak_order_ballot={'not a weak order': 'a'}, voting_rule=PLURALITY)
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'b'},
+                                  d_weak_order_ballot={'a~b>c': 'non-existing ballot'}, voting_rule=PLURALITY)
+    # ANTI_PLURALITY
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'ab'},
+                                  d_weak_order_ballot={'a~b>c': SPLIT}, voting_rule=ANTI_PLURALITY)
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'ab'},
+                                  d_weak_order_ballot={'not a weak order': 'a'}, voting_rule=ANTI_PLURALITY)
+    with pytest.raises(ValueError):
+        strategy = StrategyTwelve({'abc': 'utility-dependent', 'bac': 'ab'},
+                                  d_weak_order_ballot={'a>b~c': 'non-existing ballot'}, voting_rule=ANTI_PLURALITY)

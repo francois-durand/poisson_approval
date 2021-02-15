@@ -263,6 +263,6 @@ def test_d_ranking_best_response():
         >>> from fractions import Fraction
         >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)}, symbolic=True)
         >>> tau.d_ranking_best_response['abc']
-        <ballot = a, threshold_utility = 1, justification = Asymptotic method>
+        <ballot = a, utility_threshold = 1, justification = Asymptotic method>
     """
     pass

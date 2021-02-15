@@ -10,6 +10,7 @@ Tutorials
    tutorial_ternary_plots
    tutorial_binary_plots
    tutorial_probabilities
+   tutorial_monte_carlo_fictitious_play
    tutorial_iterables
    tutorial_more_classes_of_profiles
    tutorial_asymptotic_developments

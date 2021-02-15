@@ -1,5 +1,5 @@
 import warnings
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
@@ -42,7 +42,7 @@ class ProfileDiscrete(ProfileCardinal):
 
     Notes
     -----
-    If the input distribution is not normalized, the profile will be normalized anyway and a warning is
+    If the input distribution is not normalized, the profile will be normalized anyway and a warning will be
     issued (unless `normalization_warning` is False).
 
     Examples
@@ -247,7 +247,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -256,7 +256,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -332,11 +332,11 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             for utility, share in d_utility_share.items():
                 d[ranking[0]] += share
                 d[ranking[1]] += utility * share
-        for weak_order, share in self.d_weak_order_share.items():
-            if share > 0:
-                d[weak_order[0]] += share
-                if is_hater(weak_order):
-                    d[weak_order[2]] += share
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            d[weak_order[0]] += share
+            if is_hater(weak_order):
+                d[weak_order[2]] += share
         return d
 
     @property
@@ -345,7 +345,7 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
 
         Yields
         ------
-        StrategyThreshold
+        :class:`StrategyThreshold`
             All possible pure strategies of the profile.
         """
         def possible_thresholds(ranking):

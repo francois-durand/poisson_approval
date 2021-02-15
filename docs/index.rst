@@ -8,6 +8,7 @@ Welcome to Poisson Approval's documentation!
    readme
    getting_started
    tutorials/index
+   notebooks_article/index
    reference/index
    contributing
    authors

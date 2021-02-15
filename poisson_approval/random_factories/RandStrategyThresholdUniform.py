@@ -1,5 +1,5 @@
 import numpy as np
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.Util import initialize_random_seeds
@@ -11,6 +11,7 @@ class RandStrategyThresholdUniform:
     Parameters
     ----------
     profile : Profile, optional
+        The attached profile.
     voting_rule : str, optional
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same
         voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.

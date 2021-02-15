@@ -11,9 +11,9 @@ class Asymptotic:
     ----------
     mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Coefficient of the term in `n` (called "magnitude").
-    mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
+    nu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Coefficient of the term in `log n`.
-    mu : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
+    xi : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
         Constant coefficient.
     symbolic : bool
         Whether the computations are symbolic or numeric.
@@ -21,11 +21,11 @@ class Asymptotic:
     Attributes
     ----------
     μ : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
-        Alias for :attr:`mu`.
+        Alias for `mu`.
     ν : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
-        Alias for :attr:`nu`.
+        Alias for `nu`.
     ξ : Number, ``sp.nan``, ``np.nan``, ``- sp.oo`` or ``- np.inf``
-        Alias for :attr:`xi`.
+        Alias for `xi`.
 
     Notes
     -----
@@ -101,7 +101,7 @@ class Asymptotic:
             return "exp(- inf)"
 
         def nice(x, suffix):
-            # x : coefficient, suffix : sympy expression
+            # x : coefficient, suffix : `sympy` expression
             if isnan(x):
                 return ' + ?' if suffix == 1 else ' + ? %s' % suffix
             if x == 0:
@@ -150,7 +150,7 @@ class Asymptotic:
         s = "exp(%s)" % s
         return s
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -170,7 +170,8 @@ class Asymptotic:
             >>> Asymptotic(mu=0, nu=-1, xi=np.nan).limit
             0
 
-        ``nan`` means that the limit is unknown:
+        `nan` means that the limit is unknown:
+
             >>> Asymptotic(mu=0, nu=0, xi=np.nan).limit
             nan
         """
@@ -325,15 +326,15 @@ class Asymptotic:
         ----------
         other : Asymptotic
         *args
-            Cf. :func:`math.isclose`.
+            Cf. ``math.isclose``.
         **kwargs
-            Cf. :func:`math.isclose`.
+            Cf. ``math.isclose``.
 
         Returns
         -------
         bool
             True if this asymptotic development can reasonably be considered equal to `other`. Cf.
-             :meth:`ComputationEngine.look_equal`.
+            :meth:`ComputationEngine.look_equal`.
 
         Examples
         --------

@@ -60,7 +60,7 @@ def test_best_response_plurality():
         pivot_ki_easy_or_tight = True
         pivot_jk_easy_or_tight = False
         pivot_kj_easy_or_tight = False
-        threshold_utility = 1
+        utility_threshold = 1
         justification = Plurality analysis
         ballot = a
     """

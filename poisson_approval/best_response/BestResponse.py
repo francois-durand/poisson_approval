@@ -1,13 +1,14 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
+from poisson_approval.utils.SuperclassMeta import SuperclassMeta
 from poisson_approval.utils.Util import isnan
 from poisson_approval.utils.UtilBallots import ballot_low_u, ballot_high_u
 from poisson_approval.utils.UtilCache import cached_property
 
 
-class BestResponse:
+class BestResponse(metaclass=SuperclassMeta):
     """Best response for a given ordinal type of voter (abstract class).
 
-    The main objective of this class is to compute :attr:`threshold_utility`. The subclasses implement the
+    The main objective of this class is to compute :attr:`utility_threshold`. The subclasses implement the
     best response in a specific voting rule.
 
     Parameters
@@ -61,32 +62,32 @@ class BestResponse:
 
     @cached_property
     def duo_ij(self):
-        """EventDuo : The duo ij."""
+        """EventDuo : The duo `ij`."""
         return getattr(self.tau, 'duo_' + self.ij)
 
     @cached_property
     def duo_ik(self):
-        """EventDuo : The duo ik."""
+        """EventDuo : The duo `ik`."""
         return getattr(self.tau, 'duo_' + self.ik)
 
     @cached_property
     def duo_ji(self):
-        """EventDuo : The duo ji."""
+        """EventDuo : The duo `ji`."""
         return getattr(self.tau, 'duo_' + self.ji)
 
     @cached_property
     def duo_jk(self):
-        """EventDuo : The duo jk."""
+        """EventDuo : The duo `jk`."""
         return getattr(self.tau, 'duo_' + self.jk)
 
     @cached_property
     def duo_ki(self):
-        """EventDuo : The duo ki."""
+        """EventDuo : The duo `ki`."""
         return getattr(self.tau, 'duo_' + self.ki)
 
     @cached_property
     def duo_kj(self):
-        """EventDuo : The duo kj."""
+        """EventDuo : The duo `kj`."""
         return getattr(self.tau, 'duo_' + self.kj)
 
     # Weak pivots
@@ -94,32 +95,32 @@ class BestResponse:
 
     @cached_property
     def pivot_weak_ij(self):
-        """EventPivotWeak : The weak pivot ij."""
+        """EventPivotWeak : The weak pivot `ij`."""
         return getattr(self.tau, 'pivot_weak_' + self.ij)
 
     @cached_property
     def pivot_weak_ik(self):
-        """EventPivotWeak : The weak pivot ik."""
+        """EventPivotWeak : The weak pivot `ik`."""
         return getattr(self.tau, 'pivot_weak_' + self.ik)
 
     @cached_property
     def pivot_weak_ji(self):
-        """EventPivotWeak : The weak pivot ji."""
+        """EventPivotWeak : The weak pivot `ji`."""
         return getattr(self.tau, 'pivot_weak_' + self.ji)
 
     @cached_property
     def pivot_weak_jk(self):
-        """EventPivotWeak : The weak pivot jk."""
+        """EventPivotWeak : The weak pivot `jk`."""
         return getattr(self.tau, 'pivot_weak_' + self.jk)
 
     @cached_property
     def pivot_weak_ki(self):
-        """EventPivotWeak : The weak pivot ki."""
+        """EventPivotWeak : The weak pivot `ki`."""
         return getattr(self.tau, 'pivot_weak_' + self.ki)
 
     @cached_property
     def pivot_weak_kj(self):
-        """EventPivotWeak : The weak pivot kj."""
+        """EventPivotWeak : The weak pivot `kj`."""
         return getattr(self.tau, 'pivot_weak_' + self.kj)
 
     # Strict pivots
@@ -127,32 +128,32 @@ class BestResponse:
 
     @cached_property
     def pivot_strict_ij(self):
-        """EventPivotStrict: The strict pivot ij."""
+        """EventPivotStrict: The strict pivot `ij`."""
         return getattr(self.tau, 'pivot_strict_' + self.ij)
 
     @cached_property
     def pivot_strict_ik(self):
-        """EventPivotStrict: The strict pivot ik."""
+        """EventPivotStrict: The strict pivot `ik`."""
         return getattr(self.tau, 'pivot_strict_' + self.ik)
 
     @cached_property
     def pivot_strict_ji(self):
-        """EventPivotStrict: The strict pivot ji."""
+        """EventPivotStrict: The strict pivot `ji`."""
         return getattr(self.tau, 'pivot_strict_' + self.ji)
 
     @cached_property
     def pivot_strict_jk(self):
-        """EventPivotStrict: The strict pivot jk."""
+        """EventPivotStrict: The strict pivot `jk`."""
         return getattr(self.tau, 'pivot_strict_' + self.jk)
 
     @cached_property
     def pivot_strict_ki(self):
-        """EventPivotStrict: The strict pivot ki."""
+        """EventPivotStrict: The strict pivot `ki`."""
         return getattr(self.tau, 'pivot_strict_' + self.ki)
 
     @cached_property
     def pivot_strict_kj(self):
-        """EventPivotStrict: The strict pivot kj."""
+        """EventPivotStrict: The strict pivot `kj`."""
         return getattr(self.tau, 'pivot_strict_' + self.kj)
 
     # Personalized pivots tij
@@ -160,32 +161,32 @@ class BestResponse:
 
     @cached_property
     def pivot_tij_ijk(self):
-        """EventPivotTij: The first personalized pivot for voters ijk."""
+        """EventPivotTij: The first personalized pivot for voters `ijk`."""
         return getattr(self.tau, 'pivot_tij_' + self.i + self.j + self.k)
 
     @cached_property
     def pivot_tij_ikj(self):
-        """EventPivotTij: The first personalized pivot for voters ikj."""
+        """EventPivotTij: The first personalized pivot for voters `ikj`."""
         return getattr(self.tau, 'pivot_tij_' + self.i + self.k + self.j)
 
     @cached_property
     def pivot_tij_jik(self):
-        """EventPivotTij: The first personalized pivot for voters jik."""
+        """EventPivotTij: The first personalized pivot for voters `jik`."""
         return getattr(self.tau, 'pivot_tij_' + self.j + self.i + self.k)
 
     @cached_property
     def pivot_tij_jki(self):
-        """EventPivotTij: The first personalized pivot for voters jki."""
+        """EventPivotTij: The first personalized pivot for voters `jki`."""
         return getattr(self.tau, 'pivot_tij_' + self.j + self.k + self.i)
 
     @cached_property
     def pivot_tij_kij(self):
-        """EventPivotTij: The first personalized pivot for voters kij."""
+        """EventPivotTij: The first personalized pivot for voters `kij`."""
         return getattr(self.tau, 'pivot_tij_' + self.k + self.i + self.j)
 
     @cached_property
     def pivot_tij_kji(self):
-        """EventPivotTij: The first personalized pivot for voters kji."""
+        """EventPivotTij: The first personalized pivot for voters `kji`."""
         return getattr(self.tau, 'pivot_tij_' + self.k + self.j + self.i)
 
     # Personalized pivots tjk
@@ -193,32 +194,32 @@ class BestResponse:
 
     @cached_property
     def pivot_tjk_ijk(self):
-        """EventPivotTjk: The second personalized pivot for voters ijk."""
+        """EventPivotTjk: The second personalized pivot for voters `ijk`."""
         return getattr(self.tau, 'pivot_tjk_' + self.i + self.j + self.k)
 
     @cached_property
     def pivot_tjk_ikj(self):
-        """EventPivotTjk: The second personalized pivot for voters ikj."""
+        """EventPivotTjk: The second personalized pivot for voters `ikj`."""
         return getattr(self.tau, 'pivot_tjk_' + self.i + self.k + self.j)
 
     @cached_property
     def pivot_tjk_jik(self):
-        """EventPivotTjk: The second personalized pivot for voters jik."""
+        """EventPivotTjk: The second personalized pivot for voters `jik`."""
         return getattr(self.tau, 'pivot_tjk_' + self.j + self.i + self.k)
 
     @cached_property
     def pivot_tjk_jki(self):
-        """EventPivotTjk: The second personalized pivot for voters jki."""
+        """EventPivotTjk: The second personalized pivot for voters `jki`."""
         return getattr(self.tau, 'pivot_tjk_' + self.j + self.k + self.i)
 
     @cached_property
     def pivot_tjk_kij(self):
-        """EventPivotTjk: The second personalized pivot for voters kij."""
+        """EventPivotTjk: The second personalized pivot for voters `kij`."""
         return getattr(self.tau, 'pivot_tjk_' + self.k + self.i + self.j)
 
     @cached_property
     def pivot_tjk_kji(self):
-        """EventPivotTjk: The second personalized pivot for voters kji."""
+        """EventPivotTjk: The second personalized pivot for voters `kji`."""
         return getattr(self.tau, 'pivot_tjk_' + self.k + self.j + self.i)
 
     # Shortcuts for the personalized pivots for voters ijk
@@ -226,14 +227,14 @@ class BestResponse:
 
     @cached_property
     def pivot_tij(self):
-        """EventPivotTij : The `personalized pivot` between candidates i and j. This is just another notation for
+        """EventPivotTij : The `personalized pivot` between candidates `i` and `j`. This is just another notation for
         :attr:`pivot_tij_ijk`.
         """
         return getattr(self.tau, 'pivot_tij_' + self.ranking)
 
     @cached_property
     def pivot_tjk(self):
-        """EventPivotTjk : The `personalized pivot` between candidates j and k. This is just another notation for
+        """EventPivotTjk : The `personalized pivot` between candidates `j` and `k`. This is just another notation for
         :attr:`pivot_tjk_ijk`.
         """
         return getattr(self.tau, 'pivot_tjk_' + self.ranking)
@@ -269,32 +270,32 @@ class BestResponse:
 
     @cached_property
     def trio_2t_ij(self):
-        """EventTrio2t: The second `personalized trio` (where candidates i and j have one vote less)."""
+        """EventTrio2t: The second `personalized trio` (where candidates `i` and `j` have one vote less)."""
         return getattr(self.tau, 'trio_2t_' + self.ij)
 
     @cached_property
     def trio_2t_ik(self):
-        """EventTrio2t: The second `personalized trio` (where candidates i and k have one vote less)."""
+        """EventTrio2t: The second `personalized trio` (where candidates `i` and `k` have one vote less)."""
         return getattr(self.tau, 'trio_2t_' + self.ik)
 
     @cached_property
     def trio_2t_ji(self):
-        """EventTrio2t: The second `personalized trio` (where candidates j and i have one vote less)."""
+        """EventTrio2t: The second `personalized trio` (where candidates `j` and `i` have one vote less)."""
         return getattr(self.tau, 'trio_2t_' + self.ji)
 
     @cached_property
     def trio_2t_jk(self):
-        """EventTrio2t: The second `personalized trio` (where candidates j and k have one vote less)."""
+        """EventTrio2t: The second `personalized trio` (where candidates `j` and `k` have one vote less)."""
         return getattr(self.tau, 'trio_2t_' + self.jk)
 
     @cached_property
     def trio_2t_ki(self):
-        """EventTrio2t: The second `personalized trio` (where candidates k and i have one vote less)."""
+        """EventTrio2t: The second `personalized trio` (where candidates `k` and `i` have one vote less)."""
         return getattr(self.tau, 'trio_2t_' + self.ki)
 
     @cached_property
     def trio_2t_kj(self):
-        """EventTrio2t: The second `personalized trio` (where candidates k and j have one vote less)."""
+        """EventTrio2t: The second `personalized trio` (where candidates `k` and `j` have one vote less)."""
         return getattr(self.tau, 'trio_2t_' + self.kj)
 
     # Shortcuts for the personalized trios for voters ijk
@@ -349,11 +350,12 @@ class BestResponse:
 
     @cached_property
     def results(self):
-        """tuple (threshold_utility, justification) : Cf. :attr:`threshold_utility` and :attr:`justification`."""
+        """tuple : Tuple `(utility_threshold, justification)`. Cf. :attr:`utility_threshold` and :attr:`justification`.
+        """
         raise NotImplementedError
 
     @cached_property
-    def threshold_utility(self):
+    def utility_threshold(self):
         """Number : The threshold value of the utility for the second candidate (where the optimal ballot changes)."""
         return self.results[0]
 
@@ -366,20 +368,20 @@ class BestResponse:
     def ballot(self):
         """str : This can be a valid ballot or ``'utility-dependent'``.
         """
-        if isnan(self.threshold_utility):
-            raise AssertionError('Unable to compute threshold utility')  # pragma: no cover
-        elif self.ce.look_equal(self.threshold_utility, 1):
+        if isnan(self.utility_threshold):
+            raise AssertionError('Unable to compute utility threshold')  # pragma: no cover - Should never happen
+        elif self.ce.look_equal(self.utility_threshold, 1):
             return ballot_low_u(self.ranking, self.voting_rule)
-        elif self.ce.look_equal(self.threshold_utility, 0, abs_tol=1E-9):
+        elif self.ce.look_equal(self.utility_threshold, 0, abs_tol=1E-9):
             return ballot_high_u(self.ranking, self.voting_rule)
         else:
-            assert 0 <= self.threshold_utility <= 1
+            assert 0 <= self.utility_threshold <= 1
             return UTILITY_DEPENDENT
 
     def __repr__(self):
         return '<' + ', '.join([
             'ballot = %s' % self.ballot,
-            'threshold_utility = {:.6g}'.format(float(self.threshold_utility)),
+            'utility_threshold = {:.6g}'.format(float(self.utility_threshold)),
             'justification = %s' % self.justification,
         ]) + '>'
 
@@ -447,7 +449,7 @@ class BestResponse:
         s += 'pivot_ki_easy_or_tight = %s\n' % self.pivot_ki_easy_or_tight
         s += 'pivot_jk_easy_or_tight = %s\n' % self.pivot_jk_easy_or_tight
         s += 'pivot_kj_easy_or_tight = %s\n' % self.pivot_kj_easy_or_tight
-        s += 'threshold_utility = %s\n' % self.threshold_utility
+        s += 'utility_threshold = %s\n' % self.utility_threshold
         s += 'justification = %s\n' % self.justification
         s += 'ballot = %s' % self.ballot
         return s

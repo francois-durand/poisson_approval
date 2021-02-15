@@ -64,9 +64,9 @@ class ComputationEngineNumeric(ComputationEngine):
         Returns
         -------
         Number
-            The result of ``(1 - ratio_b) * a + ratio_b * b``. The added value of this function is to preserve the type
+            The result of `(1 - ratio_b) * a + ratio_b * b`. The added value of this function is to preserve the type
             of `a` (resp. `b`) when `ratio_b` is 0 (resp. 1). If `b` and `ratio_b` are iterable, return
-            ``(1 - sum(ratio_b)) * a + sum(ratio_b * b)``.
+            `(1 - sum(ratio_b)) * a + sum(ratio_b * b)`.
 
         Examples
         --------

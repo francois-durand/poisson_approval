@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.profiles.ProfileHistogram import ProfileHistogram
 
@@ -23,7 +23,7 @@ class IterableProfileHistogramGrid:
     test : callable, optional
         A function ``ProfileHistogram -> bool``. Only profiles meeting this test are given.
     kwargs
-        Additional parameters are passed to `ProfileHistogram` when creating the profile.
+        Additional parameters are passed to :class:`ProfileHistogram` when creating the profile.
 
     Examples
     --------

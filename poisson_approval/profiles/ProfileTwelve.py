@@ -1,7 +1,7 @@
 import warnings
 import itertools
 from fractions import Fraction
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.iterables.IterableStrategyTwelve import IterableStrategyTwelve
 from poisson_approval.profiles.ProfileCardinal import ProfileCardinal
@@ -46,7 +46,7 @@ class ProfileTwelve(ProfileCardinal):
     Notes
     -----
     If the input distribution `d_type_share` is not normalized, the profile will be normalized anyway and a
-    warning is issued (unless `normalization_warning` is False).
+    warning will be issued (unless `normalization_warning` is False).
 
     Examples
     --------
@@ -162,7 +162,8 @@ class ProfileTwelve(ProfileCardinal):
         return self._d_weak_order_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly above a
+        given value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_above_u`.
 
@@ -187,7 +188,8 @@ class ProfileTwelve(ProfileCardinal):
         return high_u
 
     def have_ranking_with_utility_u(self, ranking, u):
-        """Share of voters who have a given ranking and a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is equal to a given
+        value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_u`.
 
@@ -202,7 +204,8 @@ class ProfileTwelve(ProfileCardinal):
         return 0
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly below a
+        given value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_below_u`.
 
@@ -273,7 +276,7 @@ class ProfileTwelve(ProfileCardinal):
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -282,7 +285,7 @@ class ProfileTwelve(ProfileCardinal):
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -349,11 +352,11 @@ class ProfileTwelve(ProfileCardinal):
             share_ij_k = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
             d[ranking[0]] += share_i_jk + share_ij_k
             d[ranking[1]] += share_ij_k
-        for weak_order, share in self.d_weak_order_share.items():
-            if share > 0:
-                d[weak_order[0]] += share
-                if is_hater(weak_order):
-                    d[weak_order[2]] += share
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            d[weak_order[0]] += share
+            if is_hater(weak_order):
+                d[weak_order[2]] += share
         return d
 
     @cached_property
@@ -368,7 +371,7 @@ class ProfileTwelve(ProfileCardinal):
             >>> profile.has_majority_type
             True
 
-        This does NOT include weak orders:
+        This does **not** include weak orders:
 
             >>> profile = ProfileTwelve({'ab_c': Fraction(1, 10)}, d_weak_order_share={'b>a~c': Fraction(9, 10)})
             >>> profile.has_majority_type
@@ -431,7 +434,7 @@ class ProfileTwelve(ProfileCardinal):
             <ab: 1/10, ac: 1/10, b: 3/5, c: 1/5> ==> b
         """
         assert self.voting_rule == strategy.voting_rule
-        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
+        t = self.d_ballot_share_weak_voters_strategic(strategy)
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] == 0:
                 continue
@@ -467,7 +470,7 @@ class ProfileTwelve(ProfileCardinal):
         """
         assert self.voting_rule == strategy.voting_rule
         # Weak orders: these voters are always "sincere", even in Plurality or Anti-Plurality. For example, in
-        # Plurality, a voter a~b>c will vote at random for a or b, and this is considered "sincere".
+        # Plurality, a voter a~b>c will either vote for a or b, and this is considered "sincere".
         share_sincere = sum(self.d_weak_order_share.values())
         # Rankings
         for ranking, ballot in strategy.d_ranking_ballot.items():
@@ -523,7 +526,7 @@ class ProfileTwelve(ProfileCardinal):
             if share == 0:
                 continue
             best_response = d_ranking_best_response[ranking]
-            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover
+            if best_response.ballot == INCONCLUSIVE:  # pragma: no cover - Should never happen
                 status = min(status, EquilibriumStatus.INCONCLUSIVE)
             else:
                 type_1 = ranking[:1] + '_' + ranking[1:]  # E.g. a_bc
@@ -552,7 +555,7 @@ class ProfileTwelve(ProfileCardinal):
 
         Yields
         ------
-        StrategyTwelve
+        :class:`StrategyTwelve`
             All possible pure strategies of the profile.
         """
         return IterableStrategyTwelve(profile=self)

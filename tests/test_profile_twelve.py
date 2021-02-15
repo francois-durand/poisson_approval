@@ -1,7 +1,8 @@
+import pytest
 from pytest import fixture
 from fractions import Fraction
 from poisson_approval import ProfileTwelve, StrategyTwelve, StrategyOrdinal, EquilibriumStatus, \
-    PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT
+    APPROVAL, PLURALITY, ANTI_PLURALITY, TauVector, initialize_random_seeds, UTILITY_DEPENDENT, SPLIT
 
 
 def test_iterative_voting_verbose():
@@ -71,28 +72,75 @@ def test_not_equilibrium(my_profile, my_strategy):
     assert my_profile.is_equilibrium(my_strategy) == EquilibriumStatus.NOT_EQUILIBRIUM
 
 
-def test_iterated_voting_without_convergence():
+def test_iterated_voting_with_cycle():
     """
-        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
+        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-        >>> result = my_profile.iterated_voting(init=my_strategy, n_max_episodes=1, ballot_update_ratio=1)
+        >>> def share_double_votes_t(tau):
+        ...     return tau.ab + tau.ac + tau.bc
+        >>> def share_double_votes_s(strategy):
+        ...     return strategy.share_double_votes
+        >>> result = my_profile.iterated_voting(
+        ...     init=my_strategy, n_max_episodes=10, ballot_update_ratio=1,
+        ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
+        ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
         >>> result['cycle_taus_actual']
-        []
+        [TauVector({'ab': 1}, voting_rule='Anti-plurality'), TauVector({'ac': 1}, voting_rule='Anti-plurality')]
         >>> result['d_candidate_winning_frequency']
-        {'a': Fraction(1, 1)}
+        {'a': Fraction(1, 2), 'b': Fraction(1, 4), 'c': Fraction(1, 4)}
+        >>> result['share_double_votes_t']
+        1.0
+        >>> result['share_double_votes_s']
+        1.0
     """
     pass
 
 
-def test_fictitious_play_without_convergence(my_profile, my_strategy):
+def test_iterated_voting_without_convergence():
     """
-        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1})
+        >>> my_profile = ProfileTwelve(
+        ...     d_type_share={'ab_c': Fraction(2, 5), 'c_ba': Fraction(2, 5), 'ca_b': Fraction(1, 5)})
+        >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'a', 'cab': 'ac', 'cba': 'bc'})
+        >>> def share_double_votes_t(tau):
+        ...     return tau.ab + tau.ac + tau.bc
+        >>> def share_double_votes_s(strategy):
+        ...     return strategy.share_double_votes
+        >>> result = my_profile.iterated_voting(
+        ...     init=my_strategy, n_max_episodes=4, ballot_update_ratio=1,
+        ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
+        ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
+        >>> result['cycle_taus_actual']
+        []
+        >>> result['d_candidate_winning_frequency']
+        {'a': Fraction(1, 8), 'c': Fraction(7, 8)}
+        >>> result['share_double_votes_t']  # doctest: +ELLIPSIS
+        0.4499999...
+        >>> result['share_double_votes_s']
+        Fraction(9, 20)
+    """
+    pass
+
+
+def test_fictitious_play_without_convergence():
+    """
+        >>> my_profile = ProfileTwelve(d_type_share={'a_bc': 1, 'ab_c': 1}, voting_rule=ANTI_PLURALITY)
         >>> my_strategy = StrategyTwelve(d_ranking_ballot={'abc': 'ab'})
-        >>> result = my_profile.fictitious_play(init=my_strategy, n_max_episodes=1)
+        >>> def share_double_votes_t(tau):
+        ...     return tau.ab + tau.ac + tau.bc
+        >>> def share_double_votes_s(strategy):
+        ...     return strategy.share_double_votes
+        >>> result = my_profile.fictitious_play(
+        ...     init=my_strategy, n_max_episodes=10,
+        ...     other_statistics_tau={'share_double_votes_t': share_double_votes_t},
+        ...     other_statistics_strategy={'share_double_votes_s': share_double_votes_s})
         >>> print(result['tau'])
         None
         >>> result['d_candidate_winning_frequency']
-        {'a': Fraction(1, 1)}
+        {'a': Fraction(1, 2), 'b': Fraction(1, 4), 'c': Fraction(1, 4)}
+        >>> result['share_double_votes_t']
+        Fraction(1, 1)
+        >>> result['share_double_votes_s']
+        Fraction(1, 1)
     """
     pass
 
@@ -165,6 +213,25 @@ TauVector({'ab': Fraction(2, 5), 'ac': Fraction(1, 5), 'bc': Fraction(2, 5)}))
         >>> profile._initializer('random_tau_undominated')
         (None, TauVector({'a': 0.8444218515250481, 'ab': 0.15557814847495188}))
     """
+    with pytest.warns(Warning):
+        ProfileTwelve({'a_bc': 1}, symbolic=True)._initializer(init='random_tau')
+    with pytest.raises(ValueError):
+        ProfileTwelve({'a_bc': 1})._initializer(init='unexpected argument')
+
+
+def test_random_tau_undominated_with_weak_orders():
+    """
+        >>> initialize_random_seeds()
+        >>> profile = ProfileTwelve({'a>b~c': Fraction(9, 10), 'b~c>a': Fraction(1, 10)}, voting_rule=APPROVAL)
+        >>> profile.random_tau_undominated()
+        TauVector({'a': 0.9, 'bc': 0.1})
+        >>> profile = ProfileTwelve({'a>b~c': Fraction(9, 10), 'b~c>a': Fraction(1, 10)}, voting_rule=PLURALITY)
+        >>> profile.random_tau_undominated()
+        TauVector({'a': 0.9, 'b': 0.06183689966753317, 'c': 0.03816310033246684}, voting_rule='Plurality')
+        >>> profile = ProfileTwelve({'a>b~c': Fraction(9, 10), 'b~c>a': Fraction(1, 10)}, voting_rule=ANTI_PLURALITY)
+        >>> profile.random_tau_undominated()
+        TauVector({'ab': 0.6568485734341158, 'ac': 0.24315142656588423, 'bc': 0.1}, voting_rule='Anti-plurality')
+    """
     pass
 
 
@@ -231,5 +298,39 @@ def test_share_sincere_among_strategic_voters_anti_plurality():
         >>> strategy = StrategyTwelve({'abc': 'ac'}, profile=profile)
         >>> profile.share_sincere_among_strategic_voters(strategy)
         0
+    """
+    pass
+
+
+def test_d_ballot_share_weak_voters_strategic():
+    """
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a~b>c': 0.5, 'a~c>b': 0.3, 'b>a~c': 0.2},
+        ...                                                 voting_rule=PLURALITY)
+        >>> strategy = StrategyTwelve({}, d_weak_order_ballot={'a~b>c': 'a', 'a~c>b': SPLIT}, profile=profile)
+        >>> profile.d_ballot_share_weak_voters_strategic(strategy)
+        {'a': 0.65, 'b': 0.2, 'c': 0.15, 'ab': 0, 'ac': 0, 'bc': 0}
+
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a>b~c': 0.5, 'b>a~c': 0.3, 'a~c>b': 0.2},
+        ...                                                 voting_rule=ANTI_PLURALITY)
+        >>> strategy = StrategyTwelve({}, d_weak_order_ballot={'a>b~c': 'ab', 'b>a~c': SPLIT}, profile=profile)
+        >>> profile.d_ballot_share_weak_voters_strategic(strategy)
+        {'a': 0, 'b': 0, 'c': 0, 'ab': 0.65, 'ac': 0.2, 'bc': 0.15}
+    """
+    pass
+
+
+def test_best_responses_to_strategy():
+    """
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a~b>c': 0.5, 'a~c>b': 0.3, 'b~c>a': 0.2},
+        ...                                                 voting_rule=PLURALITY)
+        >>> tau = TauVector({'a': 0.4, 'b': 0.2, 'c': 0.4}, voting_rule=PLURALITY)
+        >>> profile.best_responses_to_strategy(tau)
+        StrategyThreshold({}, d_weak_order_ballot={'a~b>c': 'a', 'a~c>b': 'Split', 'b~c>a': 'c'}, voting_rule='Plurality')
+
+        >>> profile = ProfileTwelve({}, d_weak_order_share={'a>b~c': 0.5, 'b>a~c': 0.3, 'c>a~b': 0.2},
+        ...                                                 voting_rule=ANTI_PLURALITY)
+        >>> tau = TauVector({'ab': 0.2, 'ac': 0.6, 'bc': 0.2}, voting_rule=ANTI_PLURALITY)
+        >>> profile.best_responses_to_strategy(tau)
+        StrategyThreshold({}, d_weak_order_ballot={'a>b~c': 'ab', 'b>a~c': 'Split', 'c>a~b': 'bc'}, voting_rule='Anti-plurality')
     """
     pass

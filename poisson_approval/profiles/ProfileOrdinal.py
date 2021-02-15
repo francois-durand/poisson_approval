@@ -1,7 +1,7 @@
 import warnings
 import itertools
 import numpy as np
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.constants.EquilibriumStatus import EquilibriumStatus
 from poisson_approval.profiles.Profile import Profile
 from poisson_approval.random_factories.RandStrategyOrdinalUniform import RandStrategyOrdinalUniform
@@ -30,7 +30,7 @@ class ProfileOrdinal(Profile):
         candidates ``a`` and ``b`` equally and prefer them to candidate ``c``.
     normalization_warning : bool
         Whether a warning should be issued if the input distribution is not normalized.
-    well_informed_voters : bool.
+    well_informed_voters : bool
         If True (default), it is the usual model. If False, voters "see" only the candidates' expected scores and
         believe that the scores follow independent Poisson distributions. This option has an effect only for Approval
         (neither for Plurality nor Anti-plurality).
@@ -44,7 +44,7 @@ class ProfileOrdinal(Profile):
     Notes
     -----
     If the input distribution `d_ranking_share` is not normalized, the profile will be normalized anyway and a
-    warning is issued (unless `normalization_warning` is False).
+    warning will be issued (unless `normalization_warning` is False).
 
     Examples
     --------
@@ -189,7 +189,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -198,7 +198,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -259,15 +259,16 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
 
         Parameters
         ----------
-        strategy : an argument accepted by :meth:`tau_strategic`
+        strategy
+            An argument accepted by :meth:`tau_strategic`.
 
         Returns
         -------
         TauVector
-            A share :attr:`ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters
+            A share `ratio_fanatic` of voters vote only for their top candidate, and the rest of the voters
             vote strategically (in the sense of :meth:`tau_strategic`). In other words, this tau-vector
-            is the barycenter of ``tau_fanatic`` and ``tau_strategic(strategy)``, with respective
-            weights ``self.ratio_fanatic`` and ``1 - self.ratio_fanatic``.
+            is the barycenter of `tau_fanatic` and `tau_strategic(strategy)`, with respective
+            weights `self.ratio_fanatic` and `1 - self.ratio_fanatic`.
 
         Examples
         --------
@@ -344,7 +345,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
             <a: 7/16, b: 3/8, c: 3/16> ==> a
         """
         assert self.voting_rule == strategy.voting_rule
-        t = self.d_ballot_share_weak_voters_sincere.copy()  # For weak orders, strategic = sincere
+        t = self.d_ballot_share_weak_voters_strategic(strategy)
         for ranking, ballot in strategy.d_ranking_ballot.items():
             if self.d_ranking_share[ranking] > 0:
                 t[ballot] += self.d_ranking_share[ranking]
@@ -383,7 +384,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
                 continue
             best_response = d_ranking_best_response[ranking]
             if best_response.ballot == INCONCLUSIVE:
-                status = min(status, EquilibriumStatus.INCONCLUSIVE)  # pragma: no cover
+                status = min(status, EquilibriumStatus.INCONCLUSIVE)  # pragma: no cover - Should never happen
             elif best_response.ballot == UTILITY_DEPENDENT:
                 status = min(status, EquilibriumStatus.UTILITY_DEPENDENT)
             elif strategy.d_ranking_ballot[ranking] != best_response.ballot:
@@ -423,7 +424,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
-            [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
+            [(strategy.d_ranking_best_response[ranking].utility_threshold, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
@@ -461,7 +462,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         support = sorted(self.support_in_rankings)
         dim = len(support)
         masks = [
-            [(strategy.d_ranking_best_response[ranking].threshold_utility, len(strategy.d_ranking_ballot[ranking]) == 2)
+            [(strategy.d_ranking_best_response[ranking].utility_threshold, len(strategy.d_ranking_ballot[ranking]) == 2)
              for ranking in support]
             for strategy in self.analyzed_strategies_ordinal.utility_dependent if test(strategy)
         ]
@@ -506,7 +507,7 @@ well_informed_voters=False, ratio_fanatic=Fraction(1, 10))
         dim = len(support)
         masks_winners = [
             (
-                [(strategy.d_ranking_best_response[ranking].threshold_utility,
+                [(strategy.d_ranking_best_response[ranking].utility_threshold,
                   len(strategy.d_ranking_ballot[ranking]) == 2)
                  for ranking in support],
                 strategy.winners

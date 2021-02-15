@@ -12,29 +12,30 @@ class NiceStatsProfileOrdinal:
     Parameters
     ----------
     tests_profile : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``ProfileOrdinal -> bool``. ``name`` is a
+        A list of pairs `(test, name)`, where `test` is a function :class:`ProfileOrdinal` -> `bool`, and `name` is a
         string.
     tests_strategy : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
-        For these tests, we compute only the probability that a equilibrium meeting the test exists.
+        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -> `bool`, and `name` is a
+        string. For these tests, we compute only the probability that a equilibrium meeting the test exists.
     tests_strategy_dist : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
-        For these tests, we compute the distribution of numbers of equilibria meeting the test.
+        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -> `bool`, and `name` is a
+        string. For these tests, we compute the distribution of numbers of equilibria meeting the test.
     tests_strategy_winners : list
-        A list of pairs ``(test, name)``. ``test`` is a function ``StrategyOrdinal -> bool``. ``name`` is a string.
-        For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.
+        A list of pairs `(test, name)`, where `test` is a function :class:`StrategyOrdinal` -> `bool`, and `name` is a
+        string. For these tests, we compute the distribution of numbers of winners in equilibria meeting the test.
     conditional_on : callable
-        A function ``ProfileOrdinal -> bool``.
+        A function :class:`ProfileOrdinal` -> `bool`.
     factory_profiles : callable
-        A callable that inputs nothing and outputs a profile. Default: ``RandProfileOrdinalUniform()``.
+        A callable that inputs nothing and outputs a profile. Default: :class:`RandProfileOrdinalUniform`, with its
+        default parameters.
 
     Notes
     -----
-    The tests in `tests_profile` concern the profile: what proportions of profiles meet the condition?
+    The tests in `tests_profile` concern the profile: what proportion of profiles meet the condition?
 
     The tests in `tests_strategy` concern the strategies, in the cases where they are equilibrium. For each
     ordinal profile, we compute the probability (for a uniform distribution of utilities) that at least one strategy
-    is an equilibrium and meet the given condition. This is used to draw plots `à la Antonin`.
+    is an equilibrium and meets the given condition.
 
     The tests in `tests_strategy_dist` or `tests_strategy_winners` concern also the strategies, in the cases where
     they are equilibrium.
@@ -62,6 +63,16 @@ class NiceStatsProfileOrdinal:
         ...     conditional_on=lambda profile: profile.is_profile_condorcet == 1.
         ... )
         >>> nice_stats.run(n_samples=10)
+
+    In order to display an overview of all the results, you can use :meth:`display_results`.
+
+    Plot a `test_strategy` and insert a cutoff according to a `test_profile`:
+
+        >>> nice_stats.plot_test_strategy(test='There exists an equilibrium that elects the CW')
+        >>> nice_stats.plot_cutoff(test='There exists a true equilibrium electing the CW')
+
+    Find a particular example or counter-example:
+
         >>> profile = nice_stats.find_example('There exists a true equilibrium electing the CW', False)
         >>> print(profile)
         <abc: 0.4236547993389047, acb: 0.12122838365799216, bac: 0.0039303209304278885, bca: 0.05394987214431912, \
@@ -104,7 +115,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
             if self.conditional_on(profile):
                 i_sample += 1
             else:
-                continue  # pragma: no cover - I do not understand why it pretends not to be covered, whereas it is...
+                continue  # pragma: no cover - Cannot be covered because of "peephole" optimization
             self.profiles.append(profile.d_ranking_share)
             for i, (test, _) in enumerate(self.tests_profile):
                 self.results_profile[i].append(test(profile))
@@ -121,7 +132,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         for histogram in self.results_strategy_winners:
             histogram /= n_samples
 
-    def plot_test_strategy(self, test, ylabel=True, legend=False, replacement_name=None, style=''):  # pragma: no cover
+    def plot_test_strategy(self, test, ylabel=True, legend=False, replacement_name=None, style=''):
         """Plot a test on strategy.
 
         Parameters
@@ -135,7 +146,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         replacement_name : str, optional
             If specified, it will be used instead of the test name in the plot.
         style : str
-            Cf. :meth:`matplotlib.pyplot.plot`.
+            Cf. the function ``plot`` of `matplotlib`.
         """
         if isinstance(test, str):
             i = [name for _, name in self.tests_strategy].index(test)
@@ -154,7 +165,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         if legend:
             plt.legend()
 
-    def plot_cutoff(self, test, left='', right='', style=''):  # pragma: no cover
+    def plot_cutoff(self, test, left='', right='', style=''):
         """Plot the cutoff of a test on the profile.
 
         Parameters
@@ -166,7 +177,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         right : str
             Text to be written on the right.
         style : str
-            Cf. :meth:`matplotlib.pyplot.plot`.
+            Cf. the function ``plot`` of `matplotlib`.
         """
         if isinstance(test, str):
             i = [name for _, name in self.tests_profile].index(test)
@@ -178,7 +189,7 @@ cab: 0.1124259903007756, cba: 0.2848106336275805> (Condorcet winner: a)
         plt.text((1 - x) / 2, 0.1, left, horizontalalignment='center', verticalalignment='center')
         plt.text(1 - x / 2, 0.1, right, horizontalalignment='center', verticalalignment='center')
 
-    def display_results(self):  # pragma: no cover
+    def display_results(self):  # pragma: no cover - Annoying to test because plt.show() opens plot windows.
         """Display the results."""
         for i, (_, name) in enumerate(self.tests_profile):
             print('P(%s) = %s' % (name, np.sum(self.results_profile[i]) / self.n_samples))

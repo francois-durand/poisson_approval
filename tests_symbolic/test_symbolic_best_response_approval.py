@@ -60,7 +60,7 @@ def test_best_response_approval():
         pivot_ki_easy_or_tight = False
         pivot_jk_easy_or_tight = False
         pivot_kj_easy_or_tight = False
-        threshold_utility = 1
+        utility_threshold = 1
         justification = Easy vs difficult pivot
         ballot = a
     """

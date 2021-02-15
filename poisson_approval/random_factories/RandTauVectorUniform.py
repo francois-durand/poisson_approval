@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.random_factories.RandSimplexUniform import RandSimplexUniform
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.Util import initialize_random_seeds
@@ -15,7 +15,7 @@ class RandTauVectorUniform(RandSimplexUniform):
     d_ballot_fixed_share : dict, optional
         A dictionary. For each entry ``ballot: fixed_share``, this ballot will have at least this fixed share. The total
         must be lower or equal to 1.
-    kwargs : keyword arguments
+    kwargs
         These additional arguments will be passed directly to :class:`TauVector`.
 
     Examples

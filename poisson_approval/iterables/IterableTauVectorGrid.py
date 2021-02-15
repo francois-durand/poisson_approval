@@ -1,4 +1,4 @@
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.iterables.IterableSimplexGrid import IterableSimplexGrid
 from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.UtilBallots import allowed_ballots
@@ -23,7 +23,7 @@ class IterableTauVectorGrid:
     test : callable, optional
         A function ``TauVector -> bool``. Only tau-vector meeting this test are given.
     kwargs
-        Additional parameters are passed to `TauVector` when creating the tau-vector.
+        Additional parameters are passed to :class:`TauVector` when creating the tau-vector.
 
     Examples
     --------

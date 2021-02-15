@@ -1,5 +1,5 @@
 from itertools import product
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.Strategy import Strategy
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.utils.Util import my_division
@@ -15,13 +15,16 @@ class IterableStrategyThresholdGrid:
     denominator_ratio_optimistic : int or iterable, optional
         The grain(s) of the grid for the ratios of optimistic voters.
     profile : Profile, optional
+        The attached profile.
     voting_rule : str, optional
         The voting rule. Possible values are ``APPROVAL``, ``PLURALITY`` and ``ANTI_PLURALITY``. Default: the same
         voting rule as `profile` if a profile is specified, ``APPROVAL`` otherwise.
     d_ranking_fixed_strategy : dict
         Key: ranking. Value: fixed strategy. Cf. examples below.
-    test : callable.
+    test : callable
         A function ``StrategyThreshold -> bool``. Only strategies meeting this test are given.
+    kwargs
+        Additional parameters are passed to :class:`StrategyThreshold` when creating the strategy.
 
     Examples
     --------

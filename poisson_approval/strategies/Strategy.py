@@ -1,9 +1,10 @@
 from copy import deepcopy
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
+from poisson_approval.utils.SuperclassMeta import SuperclassMeta
 from poisson_approval.utils.UtilCache import cached_property, DeleteCacheMixin, property_deleting_cache
 
 
-class Strategy(DeleteCacheMixin):
+class Strategy(DeleteCacheMixin, metaclass=SuperclassMeta):
     """A strategy profile (abstract class).
 
     Parameters
@@ -31,7 +32,7 @@ class Strategy(DeleteCacheMixin):
                 return APPROVAL
         return voting_rule
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -41,11 +42,12 @@ class Strategy(DeleteCacheMixin):
         Parameters
         ----------
         profile : Profile
+            The new attached profile.
 
         Returns
         -------
         Strategy
-            A deep copy of this strategy, with the attached profile `profile`.
+            A deep copy of this strategy, with `profile` attached to it.
         """
         strategy = deepcopy(self)
         strategy.profile = profile

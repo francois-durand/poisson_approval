@@ -77,7 +77,7 @@ class EventTrio(Event):
             self._phi_xz = ce.S(1) if tau_xz > 0 else ce.nan
             self._phi_yz = ce.S(1) if tau_yz > 0 else ce.nan
         else:
-            # Generic case: we work with floats, not sympy expressions.
+            # Generic case: we work with floats, not `sympy` expressions.
             tau_x_f, tau_y_f, tau_z_f = float(tau_x), float(tau_y), float(tau_z)
             tau_xy_f, tau_xz_f, tau_yz_f = float(tau_xy), float(tau_xz), float(tau_yz)
             inf, sup, start = self._get_bounds_and_start(tau_x_f, tau_y_f, tau_z_f,
@@ -119,16 +119,17 @@ class EventTrio(Event):
         ...                             event._tau_xy, event._tau_xz, event._tau_yz)
         (0.7071067811865476, 0.7071067811865476, 0.7071067811865476)
         """
+        SAFETY_EPSILON = 1e-12
 
         # Use pivot xy
         score_xy_in_pivot_xy = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_xy, self._label_xy))
         score_z_in_pivot_xy = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_z, self._label_xy))
         if score_xy_in_pivot_xy > score_z_in_pivot_xy:
             # Easy pivot      => phi_z > 1 => x_2 < 1
-            inf, sup = 0, 1 - 1e-14
+            inf, sup = 0, 1 - SAFETY_EPSILON
         elif score_xy_in_pivot_xy < score_z_in_pivot_xy:
             # Difficult pivot => phi_z < 1 => x_2 > 1
-            inf, sup = 1 + 1e-14, np.inf
+            inf, sup = 1 + SAFETY_EPSILON, np.inf
         else:
             # Tight pivot     => x_2 = 1
             return 1, 1, 1
@@ -148,10 +149,10 @@ class EventTrio(Event):
             score_y_in_pivot_xz = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_y, self._label_xz))
             if score_xz_in_pivot_xz > score_y_in_pivot_xz:
                 # Easy pivot      => phi_y > 1 => x_1 < 1 => x_2 > root
-                inf = max(inf, root + 1e-14)
+                inf = max(inf, root + SAFETY_EPSILON)
             elif score_xz_in_pivot_xz < score_y_in_pivot_xz:
                 # Difficult pivot => phi_y < 1 => x_1 > 1 => x_2 < root
-                sup = min(sup, root - 1e-14)
+                sup = min(sup, root - SAFETY_EPSILON)
             else:
                 # Tight pivot     => x_1 = 1 => x_2 = root
                 return root, root, root
@@ -171,17 +172,17 @@ class EventTrio(Event):
             score_x_in_pivot_yz = getattr(self.tau, 'score_%s_in_duo_%s' % (self._label_x, self._label_yz))
             if score_yz_in_pivot_yz > score_x_in_pivot_yz:
                 # Easy pivot      => phi_x > 1 => x_1 * x_2 > 1 => x_2 > root
-                inf = max(inf, root + 1e-14)
+                inf = max(inf, root + SAFETY_EPSILON)
             elif score_yz_in_pivot_yz < score_x_in_pivot_yz:
                 # Difficult pivot => phi_x < 1 => x_1 * x_2 < 1 => x_2 < root
-                sup = min(sup, root - 1e-14)
+                sup = min(sup, root - SAFETY_EPSILON)
             else:
                 # Tight pivot     => x_1 * x_2 = 1 => x_2 = root
                 return root, root, root
 
         # Conclude
         assert inf <= sup
-        if inf == 0 and np.isposinf(sup):  # pragma: no cover
+        if inf == 0 and np.isposinf(sup):  # pragma: no cover - I found no example of this case.
             start = 1
         elif inf == 0:
             start = sup / 2
@@ -190,5 +191,5 @@ class EventTrio(Event):
         else:
             start = np.sqrt(inf * sup)
         if inf == 0:
-            inf = 1e-14
+            inf = SAFETY_EPSILON
         return inf, sup, start

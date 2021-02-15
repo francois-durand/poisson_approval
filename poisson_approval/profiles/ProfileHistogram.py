@@ -2,7 +2,7 @@ import warnings
 import numpy as np
 from fractions import Fraction
 from matplotlib import pyplot as plt
-from poisson_approval.constants.constants import *
+from poisson_approval.constants.basic_constants import *
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
@@ -45,7 +45,7 @@ class ProfileHistogram(ProfileCardinalContinuous):
 
     Notes
     -----
-    If the input distribution is not normalized, the profile will be normalized anyway and a warning is
+    If the input distribution is not normalized, the profile will be normalized anyway and a warning will be
     issued (unless `normalization_warning` is False).
 
     Examples
@@ -213,7 +213,8 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         return self._d_weak_order_share
 
     def have_ranking_with_utility_above_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly above a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly above a
+        given value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_above_u`.
 
@@ -235,7 +236,8 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         return self.ce.simplify(self.d_ranking_share[ranking] - self.have_ranking_with_utility_below_u(ranking, u))
 
     def have_ranking_with_utility_below_u(self, ranking, u):
-        """Share of voters who have a given ranking and strictly below a given utility for their middle candidate.
+        """Share of voters who have a given ranking and a utility for their middle candidate that is strictly below a
+        given value.
 
         Cf. :meth:`ProfileCardinal.have_ranking_with_utility_below_u`.
 
@@ -322,7 +324,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             result += ' (%s)' % self.voting_rule
         return result
 
-    def _repr_pretty_(self, p, cycle):  # pragma: no cover
+    def _repr_pretty_(self, p, cycle):  # pragma: no cover - Only for notebooks
         # https://stackoverflow.com/questions/41453624/tell-ipython-to-use-an-objects-str-instead-of-repr-for-output
         p.text(str(self) if not cycle else '...')
 
@@ -331,7 +333,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
         Parameters
         ----------
-        other : Object
+        other : object
 
         Returns
         -------
@@ -419,11 +421,11 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             for i, relative_share in enumerate(histogram):
                 utility = (i + Fraction(1, 2)) / n_bins
                 d[ranking[1]] += utility * share_ranking * relative_share
-        for weak_order, share in self.d_weak_order_share.items():
-            if share > 0:
-                d[weak_order[0]] += share
-                if is_hater(weak_order):
-                    d[weak_order[2]] += share
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            d[weak_order[0]] += share
+            if is_hater(weak_order):
+                d[weak_order[2]] += share
         return d
 
     def plot_cdf(self, ranking, x_label=None, y_label=None, **kwargs):
@@ -438,7 +440,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         y_label
             The label for y-axis. If not specified, an appropriate label is provided.
         kwargs
-            The additional keyword arguments are passed to :meth:`pyplot.plot`.
+            The additional keyword arguments are passed to the function ``plot`` of `matplotlib`.
 
         Examples
         --------
@@ -473,7 +475,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
         y_label
             The label for y-axis. If not specified, an appropriate label is provided.
         kwargs
-            The additional keyword arguments are passed to :meth:`pyplot.plot`.
+            The additional keyword arguments are passed to the function ``plot`` of `matplotlib`.
 
         Examples
         --------
@@ -500,7 +502,7 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
 
         Yields
         ------
-        StrategyThreshold
+        :class:`StrategyThreshold`
             All possible group strategies of the profile. Each bin of each histogram is considered as a "group" of
             voters. In other words, the considered strategies are all the threshold strategies where for each ranking,
             the corresponding threshold is at a limit between two bins of the histogram.

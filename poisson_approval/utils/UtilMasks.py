@@ -48,20 +48,20 @@ def masks_area(inf, sup, masks):
     sup : list of Number
         A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
     masks : list of list of tuple
-        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
-        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
-        meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
+        A list of masks. Each mask is a list of `d` pairs `(lim, direction)`, where `lim` is the limit
+        of the mask, and `direction` is a Boolean: `True` (resp `False`) means that the points of the mask
+        meet the condition `x_d >= lim` (resp. `x_d <= lim`).
 
     Returns
     -------
     float
-        The area of ``Intersection(bounding rectangle, Union(masks))``.
+        The area of `Intersection(bounding rectangle, Union(masks))`.
 
     Examples
     --------
-    In the following example, the bounding rectangle is the set of points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
-    The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``. The second mask is the set of points
-    where ``x_1 <= 0.3 and x_2 >= 0.4``.
+    In the following example, the bounding rectangle is the set of points where `0 <= x_1 <= 1` and `0 <= x_2 <= 2`.
+    The first mask is the set of points where `x_1 >= 0.2 and x_2 <= 0.6`. The second mask is the set of points
+    where `x_1 <= 0.3 and x_2 >= 0.4`.
 
         >>> area = masks_area(inf=[0, 0], sup=[1, 2],
         ...                   masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],
@@ -94,7 +94,7 @@ def masks_distribution_naive(inf, sup, masks):
 
     Notes
     -----
-    Same specifications as :meth:`mask_distribution`.
+    Same specifications as :meth:`masks_distribution`.
 
     Examples
     --------
@@ -135,9 +135,9 @@ def masks_distribution(inf, sup, masks, cover_alls=0):
     sup : list of Number
         A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
     masks : list of list of tuple
-        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
-        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
-        meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
+        A list of masks. Each mask is a list of `d` pairs `(lim, direction)`, where `lim` is the limit
+        of the mask, and `direction` is a Boolean: `True` (resp `False`) means that the points of the mask
+        meet the condition `x_d >= lim` (resp. `x_d <= lim`).
     cover_alls : int, optional
         If specified, then we consider that we have this number of implicit masks (i.e. not given in the argument
         `masks`) that cover the whole area.
@@ -149,9 +149,9 @@ def masks_distribution(inf, sup, masks, cover_alls=0):
 
     Examples
     --------
-    In the following example, the bounding rectangle is the set of points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
-    The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``. The second mask is the set of points
-    where ``x_1 <= 0.3 and x_2 >= 0.4``.
+    In the following example, the bounding rectangle is the set of points where `0 <= x_1 <= 1 and 0 <= x_2 <= 2`.
+    The first mask is the set of points where `x_1 >= 0.2 and x_2 <= 0.6`. The second mask is the set of points
+    where `x_1 <= 0.3 and x_2 >= 0.4`.
 
         >>> histogram = masks_distribution(inf=[0, 0], sup=[1, 2],
         ...                                masks=[[(Fraction(2, 10), True), (Fraction(6, 10), False)],
@@ -183,9 +183,9 @@ def _masks_distribution_aux(inf, sup, masks, histogram=None, cover_alls=0):
     sup : list of Number
         A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
     masks : list of list of tuple
-        A list of masks. Each mask is a list of `d` pairs ``(lim, direction)``, where ``lim`` is the limit
-        of the mask, and ``direction`` is a Boolean: ``True`` (resp ``False``) means that the points of the mask
-        meet the condition ``x_d >= lim`` (resp. ``x_d <= lim``).
+        A list of masks. Each mask is a list of `d` pairs `(lim, direction)`, where `lim` is the limit
+        of the mask, and `direction` is a Boolean: `True` (resp `False`) means that the points of the mask
+        meet the condition `x_d >= lim` (resp. `x_d <= lim`).
     histogram : list, optional
         This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
         the output, it is added to the given list `histogram`.
@@ -236,7 +236,7 @@ def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=Non
     sup : list of Number
         A list of `d` numbers. The sup limit of the bounding rectangle in each dimension.
     masks_winners : list of tuple
-        A list of pairs ``(mask, winners)``. A mask is defined as usual (cf. :meth:`masks_area` for instance).
+        A list of pairs `(mask, winners)`. A mask is defined as usual (cf. :meth:`masks_area` for instance).
         A winner is a set of winning candidates in this mask, e.g. ``{'a', 'b'}``.
     histogram : list
         This parameter should only be used for recursive calls. If specified, then instead of creating a new list for
@@ -252,9 +252,9 @@ def winners_distribution(inf, sup, masks_winners, histogram=None, cover_alls=Non
 
     Examples
     --------
-    In the following example, the bounding rectangle is the set of points where ``0 <= x_1 <= 1 and 0 <= x_2 <= 2``.
-    The first mask is the set of points where ``x_1 >= 0.2 and x_2 <= 0.6``, where the winner can be ``{'a'}``.
-    The second mask is the set of points where ``x_1 <= 0.3 and x_2 >= 0.4``, where the winner can be ``{'b'}``.
+    In the following example, the bounding rectangle is the set of points where `0 <= x_1 <= 1 and 0 <= x_2 <= 2`.
+    The first mask is the set of points where `x_1 >= 0.2 and x_2 <= 0.6`, where the winner can be ``{'a'}``.
+    The second mask is the set of points where `x_1 <= 0.3 and x_2 >= 0.4`, where the winner can be ``{'b'}``.
 
         >>> histogram = winners_distribution(
         ...     inf=[0, 0], sup=[1, 2],
