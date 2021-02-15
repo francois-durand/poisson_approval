@@ -352,11 +352,11 @@ class ProfileTwelve(ProfileCardinal):
             share_ij_k = self.d_type_share[ranking[:2] + '_' + ranking[2:]]  # E.g. ab_c
             d[ranking[0]] += share_i_jk + share_ij_k
             d[ranking[1]] += share_ij_k
-        for weak_order, share in self.d_weak_order_share.items():
-            if share > 0:
-                d[weak_order[0]] += share
-                if is_hater(weak_order):
-                    d[weak_order[2]] += share
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            d[weak_order[0]] += share
+            if is_hater(weak_order):
+                d[weak_order[2]] += share
         return d
 
     @cached_property

@@ -332,11 +332,11 @@ ratio_sincere=Fraction(1, 10), ratio_fanatic=Fraction(1, 5))
             for utility, share in d_utility_share.items():
                 d[ranking[0]] += share
                 d[ranking[1]] += utility * share
-        for weak_order, share in self.d_weak_order_share.items():
-            if share > 0:
-                d[weak_order[0]] += share
-                if is_hater(weak_order):
-                    d[weak_order[2]] += share
+        for weak_order in self.support_in_weak_orders:
+            share = self.d_weak_order_share[weak_order]
+            d[weak_order[0]] += share
+            if is_hater(weak_order):
+                d[weak_order[2]] += share
         return d
 
     @property
