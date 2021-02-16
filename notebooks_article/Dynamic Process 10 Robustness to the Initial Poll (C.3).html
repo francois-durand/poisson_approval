@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Dynamic Process: Robustness to the Initial Poll (C.3) &mdash; Poisson Approval 0.29.0 documentation</title>
+  <title>Dynamic Process: Robustness to the Initial Poll (C.3) &mdash; Poisson Approval 0.29.1 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.29.0
+                0.29.1
               </div>
             
           
@@ -511,13 +511,9 @@ div.rendered_html tbody tr:hover {
         <span class="n">RandProfileHistogramUniform</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
         <span class="n">test</span><span class="o">=</span><span class="n">is_condorcet</span><span class="p">,</span> <span class="n">n_trials_max</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;fanatic&#39;</span><span class="p">:</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">N_SAMPLES</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">monte_carlo_fictitious_play</span><span class="p">(</span>
         <span class="n">factory</span><span class="o">=</span><span class="n">rand_profile</span><span class="p">,</span>
-        <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
+        <span class="n">n_samples</span><span class="o">=</span><span class="n">N_SAMPLES</span><span class="p">,</span>
         <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">N_MAX_EPISODES</span><span class="p">,</span>
         <span class="n">voting_rules</span><span class="o">=</span><span class="n">VOTING_RULES</span><span class="p">,</span>
         <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
@@ -569,15 +565,15 @@ div.rendered_html tbody tr:hover {
   <tbody>
     <tr>
       <th>uniform undominated</th>
-      <td>0.99999</td>
-      <td>0.8153</td>
-      <td>0.492174</td>
+      <td>0.999974</td>
+      <td>0.8170</td>
+      <td>0.489474</td>
     </tr>
     <tr>
       <th>expressive</th>
-      <td>1.00000</td>
-      <td>1.0000</td>
-      <td>0.119479</td>
+      <td>0.999990</td>
+      <td>0.9681</td>
+      <td>0.488994</td>
     </tr>
   </tbody>
 </table>
@@ -595,13 +591,9 @@ div.rendered_html tbody tr:hover {
 <span class="n">table_welfare_loss</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Distribution of tau^0&#39;</span>
 <span class="k">for</span> <span class="n">init_name</span><span class="p">,</span> <span class="n">init</span> <span class="ow">in</span> <span class="n">inits</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">rand_profile</span> <span class="o">=</span> <span class="n">RandProfileHistogramUniform</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;fanatic&#39;</span><span class="p">:</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">N_SAMPLES</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">monte_carlo_fictitious_play</span><span class="p">(</span>
         <span class="n">factory</span><span class="o">=</span><span class="n">rand_profile</span><span class="p">,</span>
-        <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
+        <span class="n">n_samples</span><span class="o">=</span><span class="n">N_SAMPLES</span><span class="p">,</span>
         <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">N_MAX_EPISODES</span><span class="p">,</span>
         <span class="n">voting_rules</span><span class="o">=</span><span class="n">VOTING_RULES</span><span class="p">,</span>
         <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
@@ -654,15 +646,15 @@ div.rendered_html tbody tr:hover {
   <tbody>
     <tr>
       <th>uniform undominated</th>
-      <td>0.006647</td>
-      <td>0.032771</td>
-      <td>9.865703e-02</td>
+      <td>0.006502</td>
+      <td>0.030931</td>
+      <td>0.099204</td>
     </tr>
     <tr>
       <th>expressive</th>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>9.324705e-86</td>
+      <td>0.006553</td>
+      <td>0.008550</td>
+      <td>0.099098</td>
     </tr>
   </tbody>
 </table>
