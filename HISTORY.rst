@@ -2,6 +2,12 @@
 History
 =======
 
+-----------------------------------------------------
+0.29.1 (2021-02-16): Notebook on Confidence Intervals
+-----------------------------------------------------
+
+* Update the notebook on confidence intervals in the documentation.
+
 ------------------------------------------------
 0.29.0 (2021-02-15): Monte-Carlo Fictitious Play
 ------------------------------------------------
