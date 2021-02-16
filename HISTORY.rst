@@ -2,6 +2,12 @@
 History
 =======
 
+---------------------------------------------------------------
+0.29.2 (2021-02-16): Notebook on Robustness to the Initial Poll
+---------------------------------------------------------------
+
+* Update the notebook on the robustness to the initial poll in the documentation.
+
 -----------------------------------------------------
 0.29.1 (2021-02-16): Notebook on Confidence Intervals
 -----------------------------------------------------
