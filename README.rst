@@ -16,7 +16,7 @@ Poisson Approval
         :alt: Documentation Status
 
 .. image:: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs/badge.svg
-        :target: https://codecov.io/gh/francois-durand/poisson_approval/branch/master/graphs
+        :target: https://codecov.io/gh/francois-durand/poisson_approval/tree/master
         :alt: Code Coverage
 
 
