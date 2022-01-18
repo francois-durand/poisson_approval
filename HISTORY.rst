@@ -2,6 +2,12 @@
 History
 =======
 
+-----------------------------------------------------------
+0.29.3 (2022-01-18): Patch test for latest release of SymPy
+-----------------------------------------------------------
+
+* Correct a unit test due to a change of behavior in the latest release of SymPy.
+
 ---------------------------------------------------------------
 0.29.2 (2021-02-16): Notebook on Robustness to the Initial Poll
 ---------------------------------------------------------------
