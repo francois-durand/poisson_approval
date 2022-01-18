@@ -1,75 +1,40 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Dynamic Process: Base Case (6.2.1, 6.2.4, 6.3, C.2, C.3, C.7) &mdash; Poisson Approval 0.29.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>Dynamic Process: Base Case (6.2.1, 6.2.4, 6.3, C.2, C.3, C.7) &mdash; Poisson Approval 0.29.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Dynamic Process: Condorcet Profiles (6.2.1, 6.2.2, C.5)" href="Dynamic%20Process%2002%20Condorcet%20Profiles%20%286.2.1%2C%206.2.2%2C%20C.5%29.html" />
     <link rel="prev" title="Ordinal Equilibria: Condorcet Consistency of Approval Voting (5.1)" href="Ordinal%20Equilibria%20Condorcet%20Consistency%20of%20Approval%20Voting%20%285.1%29.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> Poisson Approval
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.29.1
+                0.29.2
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -77,19 +42,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Poisson Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
@@ -129,73 +83,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">Poisson Approval</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="index.html">Notebooks for our article</a> &raquo;</li>
-        
       <li>Dynamic Process: Base Case (6.2.1, 6.2.4, 6.3, C.2, C.3, C.7)</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/notebooks_article/Dynamic Process 01 Base Case (6.2.1, 6.2.4, 6.3, C.2, C.3, C.7).ipynb.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   
 <style>
 /* CSS for nbsphinx extension */
@@ -406,7 +318,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
+.prompt .copybtn {
     display: none;
 }
 
@@ -466,14 +378,13 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Dynamic-Process:-Base-Case-(6.2.1,-6.2.4,-6.3,-C.2,-C.3,-C.7)">
-<h1>Dynamic Process: Base Case (6.2.1, 6.2.4, 6.3, C.2, C.3, C.7)<a class="headerlink" href="#Dynamic-Process:-Base-Case-(6.2.1,-6.2.4,-6.3,-C.2,-C.3,-C.7)" title="Permalink to this headline">¶</a></h1>
+<section id="Dynamic-Process:-Base-Case-(6.2.1,-6.2.4,-6.3,-C.2,-C.3,-C.7)">
+<h1>Dynamic Process: Base Case (6.2.1, 6.2.4, 6.3, C.2, C.3, C.7)<a class="headerlink" href="#Dynamic-Process:-Base-Case-(6.2.1,-6.2.4,-6.3,-C.2,-C.3,-C.7)" title="Permalink to this headline"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">poisson_approval</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
@@ -482,8 +393,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="mi">10000</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">N_MAX_EPISODES</span> <span class="o">=</span> <span class="mi">1000</span>
 </pre></div>
 </div>
@@ -492,8 +402,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">rand_profile</span> <span class="o">=</span> <span class="n">RandProfileHistogramUniform</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rand_profile</span> <span class="o">=</span> <span class="n">RandProfileHistogramUniform</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -501,8 +410,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span> <span class="o">=</span> <span class="n">monte_carlo_fictitious_play</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">monte_carlo_fictitious_play</span><span class="p">(</span>
     <span class="n">factory</span><span class="o">=</span><span class="n">rand_profile</span><span class="p">,</span>
     <span class="n">n_samples</span><span class="o">=</span><span class="n">N_SAMPLES</span><span class="p">,</span>
     <span class="n">n_max_episodes</span><span class="o">=</span><span class="n">N_MAX_EPISODES</span><span class="p">,</span>
@@ -520,14 +428,13 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Convergence-(6.2.1)">
-<h2>Convergence (6.2.1)<a class="headerlink" href="#Convergence-(6.2.1)" title="Permalink to this headline">¶</a></h2>
+<section id="Convergence-(6.2.1)">
+<h2>Convergence (6.2.1)<a class="headerlink" href="#Convergence-(6.2.1)" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_converges&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_converges&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -544,8 +451,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_converges&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_converges&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -562,8 +468,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">ANTI_PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_converges&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">ANTI_PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_converges&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -576,15 +481,14 @@ div.rendered_html tbody tr:hover {
 0.0
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Welfare-Losses-(6.2.4,-C.2,-C.3)">
-<h2>Welfare Losses (6.2.4, C.2, C.3)<a class="headerlink" href="#Welfare-Losses-(6.2.4,-C.2,-C.3)" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Welfare-Losses-(6.2.4,-C.2,-C.3)">
+<h2>Welfare Losses (6.2.4, C.2, C.3)<a class="headerlink" href="#Welfare-Losses-(6.2.4,-C.2,-C.3)" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -601,8 +505,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -619,8 +522,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">ANTI_PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">ANTI_PLURALITY</span><span class="p">][</span><span class="s1">&#39;mean_utilitarian_welfare_loss&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -637,8 +539,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plot_welfare_losses</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s1">&#39;utilitarian_welfare_losses&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_welfare_losses</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s1">&#39;utilitarian_welfare_losses&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;img/fUWelfare.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -654,8 +555,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plot_welfare_losses</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s1">&#39;plurality_welfare_losses&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_welfare_losses</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s1">&#39;plurality_welfare_losses&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;img/fPLWelfare.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -671,8 +571,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plot_welfare_losses</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s1">&#39;anti_plurality_welfare_losses&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_welfare_losses</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s1">&#39;anti_plurality_welfare_losses&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;img/fAPLWelfare.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -684,15 +583,14 @@ div.rendered_html tbody tr:hover {
 <img alt="../_images/notebooks_article_Dynamic_Process_01_Base_Case_(6.2.1,_6.2.4,_6.3,_C.2,_C.3,_C.7)_15_0.png" src="../_images/notebooks_article_Dynamic_Process_01_Base_Case_(6.2.1,_6.2.4,_6.3,_C.2,_C.3,_C.7)_15_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Utility-Thresholds-(6.3,-C.7)">
-<h2>Utility Thresholds (6.3, C.7)<a class="headerlink" href="#Utility-Thresholds-(6.3,-C.7)" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Utility-Thresholds-(6.3,-C.7)">
+<h2>Utility Thresholds (6.3, C.7)<a class="headerlink" href="#Utility-Thresholds-(6.3,-C.7)" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plot_utility_thresholds</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">APPROVAL</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_utility_thresholds</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">APPROVAL</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;img/fThresholds.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -708,8 +606,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;p_utility_threshold_0&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;p_utility_threshold_0&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -726,8 +623,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;p_utility_threshold_1&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;p_utility_threshold_1&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -744,8 +640,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;p_utility_threshold_not_0_or_1&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;p_utility_threshold_not_0_or_1&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -758,15 +653,14 @@ div.rendered_html tbody tr:hover {
 0.3430450532105924
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Ballot-Statistics-(6.3)">
-<h2>Ballot Statistics (6.3)<a class="headerlink" href="#Ballot-Statistics-(6.3)" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Ballot-Statistics-(6.3)">
+<h2>Ballot Statistics (6.3)<a class="headerlink" href="#Ballot-Statistics-(6.3)" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_share_single_votes&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_share_single_votes&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -783,8 +677,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_share_double_votes&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="n">APPROVAL</span><span class="p">][</span><span class="s1">&#39;mean_share_double_votes&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -797,15 +690,14 @@ div.rendered_html tbody tr:hover {
 0.3185135072333639
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Scores-of-the-Candidates-(6.3)">
-<h2>Scores of the Candidates (6.3)<a class="headerlink" href="#Scores-of-the-Candidates-(6.3)" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Scores-of-the-Candidates-(6.3)">
+<h2>Scores of the Candidates (6.3)<a class="headerlink" href="#Scores-of-the-Candidates-(6.3)" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plot_distribution_scores</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">APPROVAL</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution_scores</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">APPROVAL</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;img/fScores.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -822,10 +714,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">ProfileHistogram</span><span class="p">({(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="o">.</span><span class="mi">33</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;acb&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="o">.</span><span class="mi">01</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;bac&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="o">.</span><span class="mi">08</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;bca&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="o">.</span><span class="mi">08</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;cab&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="o">.</span><span class="mi">02</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;cba&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="o">.</span><span class="mi">48</span><span class="p">})</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">ProfileHistogram</span><span class="p">({(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="mf">.33</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;acb&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="mf">.01</span><span class="p">,</span>
+                            <span class="p">(</span><span class="s1">&#39;bac&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="mf">.08</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;bca&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="mf">.08</span><span class="p">,</span>
+                            <span class="p">(</span><span class="s1">&#39;cab&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="mf">.02</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;cba&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="p">)):</span> <span class="mf">.48</span><span class="p">})</span>
 <span class="n">profile</span>
 </pre></div>
 </div>
@@ -844,8 +735,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="nb">print</span><span class="p">()</span>
@@ -862,7 +752,7 @@ div.rendered_html tbody tr:hover {
     <span class="n">scores</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Results: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">results</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Scores: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scores</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scores</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">5</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scores</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mf">.5</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">break</span>
 </pre></div>
 </div>
@@ -878,55 +768,38 @@ Results: {&#39;converges&#39;: True, &#39;tau&#39;: TauVector({&#39;a&#39;: 0.33
 Scores: {a: 0.36, b: 0.64, c: 0.51}
 </pre></div></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Dynamic%20Process%2002%20Condorcet%20Profiles%20%286.2.1%2C%206.2.2%2C%20C.5%29.html" class="btn btn-neutral float-right" title="Dynamic Process: Condorcet Profiles (6.2.1, 6.2.2, C.5)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Ordinal%20Equilibria%20Condorcet%20Consistency%20of%20Approval%20Voting%20%285.1%29.html" class="btn btn-neutral float-left" title="Ordinal Equilibria: Condorcet Consistency of Approval Voting (5.1)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Dynamic%20Process%2002%20Condorcet%20Profiles%20%286.2.1%2C%206.2.2%2C%20C.5%29.html" class="btn btn-neutral float-right" title="Dynamic Process: Condorcet Profiles (6.2.1, 6.2.2, C.5)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, François Durand.
-
-    </p>
+    <p>&#169; Copyright 2019, François Durand.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
