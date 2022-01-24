@@ -537,6 +537,14 @@ phi_ab = 0.707107>
         raise NotImplementedError
 
     @cached_property
+    def is_best_response_ordinal(self):
+        """bool : Whether the best responses of all rankings are ordinal (not utility-dependent)."""
+        return all([
+            best_response.is_ordinal
+            for best_response in self.d_ranking_best_response.values()
+        ])
+
+    @cached_property
     def score_ab_in_duo_ab(self):
         """Number : Common score of `a` and `b` in duo `ab`."""
         return (self.ce.multiply_with_absorbing_zero(self.a, self.duo_ab.phi_a)
