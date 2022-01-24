@@ -37,6 +37,9 @@ class Focus:
     def __repr__(self):
         return self.r
 
+    def __hash__(self):
+        return hash(self.r)
+
     def __eq__(self, other):
         """
             >>> Focus.DIRECT == Focus.DIRECT

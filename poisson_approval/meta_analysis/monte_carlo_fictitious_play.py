@@ -1,3 +1,4 @@
+from collections import Counter
 import numpy as np
 import pickle
 from copy import deepcopy
@@ -230,6 +231,51 @@ MonteCarloSetting: Convergence.
 Keyword ``'converges'``: whether the procedure converges (for each profile).
 
 Keyword ``'mean_converges'``: rate of convergence (over all profiles).
+"""
+
+
+MCS_FOCUS = MonteCarloSetting(
+    statistics_post_processing={
+        'focus': (lambda results, profile: (
+            None if results['tau'] is None else results['tau'].focus
+        ))
+    },
+    statistics_final_processing={
+        'focus_stats': (lambda meta_results: (
+            {k: v / len(meta_results['focus']) for k, v in Counter(meta_results['focus']).items()}
+        ))
+    }
+)
+"""
+MonteCarloSetting: Focus of the equilibrium.
+
+Keyword ``'focus'``: focus of the equilibrium, or None if no convergence (for each profile).
+
+Keyword ``'focus_stats'``: dictionary. Key: a focus or None. Value: proportion of profiles.
+"""
+
+
+MCS_IS_ORDINAL_EQ = MonteCarloSetting(
+    statistics_post_processing={
+        'ordinal_eq': (lambda results, profile: (
+            None if results['tau'] is None else results['tau'].is_best_response_ordinal
+        ))
+    },
+    statistics_final_processing={
+        'ordinal_eq_stats': (lambda meta_results: ({
+            k: v / len(meta_results['ordinal_eq'])
+            for k, v in Counter(meta_results['ordinal_eq']).items()
+        }))
+    }
+)
+"""
+MonteCarloSetting: Whether the equilibrium is ordinal.
+
+Keyword ``'ordinal_eq'``: whether the equilibrium is ordinal, or None if no convergence (for each
+profile).
+
+Keyword ``'ordinal_eq_stats'``: dictionary. Key: true (ordinal), false (cardinal) or None (no
+convergence). Value: proportion of profiles.
 """
 
 
