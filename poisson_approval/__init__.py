@@ -116,8 +116,9 @@ from poisson_approval.meta_analysis.binary_shortcuts import binary_plot_n_equili
 from poisson_approval.meta_analysis.convergence_test import convergence_test
 from poisson_approval.meta_analysis.is_condorcet import is_condorcet
 from poisson_approval.meta_analysis.is_not_condorcet import is_not_condorcet
-from poisson_approval.meta_analysis.monte_carlo_fictitious_play import monte_carlo_fictitious_play, \
-    MCS_BALLOT_STATISTICS, MCS_CONVERGES, MCS_DECREASING_SCORES, \
+from poisson_approval.meta_analysis.monte_carlo_fictitious_play import \
+    monte_carlo_fictitious_play, MonteCarloSetting, \
+    MCS_BALLOT_STATISTICS, MCS_CONVERGES, MCS_FOCUS, MCS_IS_ORDINAL_EQ, MCS_DECREASING_SCORES, \
     MCS_FREQUENCY_CW_WINS, MCS_PROFILE, MCS_TAU_INIT, MCS_WELFARE_LOSSES, \
     MCS_UTILITY_THRESHOLDS, MCS_CANDIDATE_WINNING_FREQUENCY, MCS_N_EPISODES
 from poisson_approval.meta_analysis.plot_welfare_losses import plot_welfare_losses
