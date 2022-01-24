@@ -459,6 +459,24 @@ warning will be issued (unless <cite>normalization_warning</cite> is False).</p>
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="poisson_approval.TauVector.is_best_response_ordinal">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_best_response_ordinal</span></span><a class="headerlink" href="#poisson_approval.TauVector.is_best_response_ordinal" title="Permalink to this definition"></a></dt>
+<dd><p>Whether the best responses of all rankings are ordinal (not utility-dependent).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span> <span class="o">=</span> <span class="n">TauVector</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="s1">&#39;ab&#39;</span><span class="p">:</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span><span class="o">.</span><span class="n">is_best_response_ordinal</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="poisson_approval.TauVector.is_standardized">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_standardized</span></span><a class="headerlink" href="#poisson_approval.TauVector.is_standardized" title="Permalink to this definition"></a></dt>
 <dd><p>Whether the profile is standardized or not. Cf. <a class="reference internal" href="#poisson_approval.TauVector.standardized_version" title="poisson_approval.TauVector.standardized_version"><code class="xref py py-meth docutils literal notranslate"><span class="pre">standardized_version()</span></code></a>.</p>

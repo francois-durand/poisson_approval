@@ -114,6 +114,16 @@
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span>
 
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Thanks to the hash, we can use a focus as a dictionary key:</span>
+
+<span class="sd">            &gt;&gt;&gt; d = {Focus.DIRECT: 42, Focus.FORWARD_FOCUSED:51}</span>
+<span class="sd">            &gt;&gt;&gt; d[Focus.DIRECT]</span>
+<span class="sd">            42</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            &gt;&gt;&gt; Focus.DIRECT == Focus.DIRECT</span>

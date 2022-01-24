@@ -75,7 +75,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for poisson_approval.meta_analysis.monte_carlo_fictitious_play</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
@@ -139,6 +140,8 @@
 <span class="sd">        ...         MCS_N_EPISODES,</span>
 <span class="sd">        ...         MCS_CANDIDATE_WINNING_FREQUENCY,</span>
 <span class="sd">        ...         MCS_CONVERGES,</span>
+<span class="sd">        ...         MCS_FOCUS,</span>
+<span class="sd">        ...         MCS_IS_ORDINAL_EQ,</span>
 <span class="sd">        ...         MCS_FREQUENCY_CW_WINS,</span>
 <span class="sd">        ...         MCS_WELFARE_LOSSES,</span>
 <span class="sd">        ...         MCS_UTILITY_THRESHOLDS,</span>
@@ -307,6 +310,51 @@
 <span class="sd">Keyword ``&#39;converges&#39;``: whether the procedure converges (for each profile).</span>
 
 <span class="sd">Keyword ``&#39;mean_converges&#39;``: rate of convergence (over all profiles).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_FOCUS</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;focus&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">focus</span>
+        <span class="p">))</span>
+    <span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;focus_stats&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;focus&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Counter</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;focus&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="p">))</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Focus of the equilibrium.</span>
+
+<span class="sd">Keyword ``&#39;focus&#39;``: focus of the equilibrium, or None if no convergence (for each profile).</span>
+
+<span class="sd">Keyword ``&#39;focus_stats&#39;``: dictionary. Key: a focus or None. Value: proportion of profiles.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">MCS_IS_ORDINAL_EQ</span> <span class="o">=</span> <span class="n">MonteCarloSetting</span><span class="p">(</span>
+    <span class="n">statistics_post_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;ordinal_eq&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">results</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">is_best_response_ordinal</span>
+        <span class="p">))</span>
+    <span class="p">},</span>
+    <span class="n">statistics_final_processing</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;ordinal_eq_stats&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">meta_results</span><span class="p">:</span> <span class="p">({</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;ordinal_eq&#39;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Counter</span><span class="p">(</span><span class="n">meta_results</span><span class="p">[</span><span class="s1">&#39;ordinal_eq&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}))</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">MonteCarloSetting: Whether the equilibrium is ordinal.</span>
+
+<span class="sd">Keyword ``&#39;ordinal_eq&#39;``: whether the equilibrium is ordinal, or None if no convergence (for each</span>
+<span class="sd">profile).</span>
+
+<span class="sd">Keyword ``&#39;ordinal_eq_stats&#39;``: dictionary. Key: true (ordinal), false (cardinal) or None (no</span>
+<span class="sd">convergence). Value: proportion of profiles.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 

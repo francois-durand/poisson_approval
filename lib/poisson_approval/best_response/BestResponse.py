@@ -378,6 +378,13 @@ class BestResponse(metaclass=SuperclassMeta):
             assert 0 <= self.utility_threshold <= 1
             return UTILITY_DEPENDENT
 
+    @cached_property
+    def is_ordinal(self):
+        """bool : Whether the best response is purely ordinal (or utility-dependent).
+        """
+        return (self.ce.look_equal(self.utility_threshold, 1)
+                or self.ce.look_equal(self.utility_threshold, 0, abs_tol=1E-9))
+
     def __repr__(self):
         return '<' + ', '.join([
             'ballot = %s' % self.ballot,

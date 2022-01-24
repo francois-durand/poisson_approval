@@ -173,6 +173,8 @@ computed statistics, and whose values are the corresponding outputs. Cf. <a clas
 <span class="gp">... </span>        <span class="n">MCS_N_EPISODES</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">MCS_CANDIDATE_WINNING_FREQUENCY</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">MCS_CONVERGES</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">MCS_FOCUS</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">MCS_IS_ORDINAL_EQ</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">MCS_FREQUENCY_CW_WINS</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">MCS_WELFARE_LOSSES</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">MCS_UTILITY_THRESHOLDS</span><span class="p">,</span>
@@ -252,6 +254,34 @@ accessible by <code class="docutils literal notranslate"><span class="pre">meta_
 <dd><p>Convergence.</p>
 <p>Keyword <code class="docutils literal notranslate"><span class="pre">'converges'</span></code>: whether the procedure converges (for each profile).</p>
 <p>Keyword <code class="docutils literal notranslate"><span class="pre">'mean_converges'</span></code>: rate of convergence (over all profiles).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting" title="poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting">MonteCarloSetting</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_FOCUS">
+<span class="sig-prename descclassname"><span class="pre">poisson_approval.meta_analysis.monte_carlo_fictitious_play.</span></span><span class="sig-name descname"><span class="pre">MCS_FOCUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_FOCUS" title="Permalink to this definition"></a></dt>
+<dd><p>Focus of the equilibrium.</p>
+<p>Keyword <code class="docutils literal notranslate"><span class="pre">'focus'</span></code>: focus of the equilibrium, or None if no convergence (for each profile).</p>
+<p>Keyword <code class="docutils literal notranslate"><span class="pre">'focus_stats'</span></code>: dictionary. Key: a focus or None. Value: proportion of profiles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting" title="poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting">MonteCarloSetting</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_IS_ORDINAL_EQ">
+<span class="sig-prename descclassname"><span class="pre">poisson_approval.meta_analysis.monte_carlo_fictitious_play.</span></span><span class="sig-name descname"><span class="pre">MCS_IS_ORDINAL_EQ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MCS_IS_ORDINAL_EQ" title="Permalink to this definition"></a></dt>
+<dd><p>Whether the equilibrium is ordinal.</p>
+<p>Keyword <code class="docutils literal notranslate"><span class="pre">'ordinal_eq'</span></code>: whether the equilibrium is ordinal, or None if no convergence (for each
+profile).</p>
+<p>Keyword <code class="docutils literal notranslate"><span class="pre">'ordinal_eq_stats'</span></code>: dictionary. Key: true (ordinal), false (cardinal) or None (no
+convergence). Value: proportion of profiles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting" title="poisson_approval.meta_analysis.monte_carlo_fictitious_play.MonteCarloSetting">MonteCarloSetting</a></p>
