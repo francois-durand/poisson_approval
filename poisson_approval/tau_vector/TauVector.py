@@ -538,7 +538,15 @@ phi_ab = 0.707107>
 
     @cached_property
     def is_best_response_ordinal(self):
-        """bool : Whether the best responses of all rankings are ordinal (not utility-dependent)."""
+        """bool : Whether the best responses of all rankings are ordinal (not utility-dependent).
+
+        Examples
+        --------
+            >>> from fractions import Fraction
+            >>> tau = TauVector({'a': Fraction(1, 10), 'ab': Fraction(3, 5), 'c': Fraction(3, 10)})
+            >>> tau.is_best_response_ordinal
+            True
+        """
         return all([
             best_response.is_ordinal
             for best_response in self.d_ranking_best_response.values()

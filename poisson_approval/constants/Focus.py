@@ -38,6 +38,13 @@ class Focus:
         return self.r
 
     def __hash__(self):
+        """
+        Thanks to the hash, we can use a focus as a dictionary key:
+
+            >>> d = {Focus.DIRECT: 42, Focus.FORWARD_FOCUSED:51}
+            >>> d[Focus.DIRECT]
+            42
+        """
         return hash(self.r)
 
     def __eq__(self, other):
