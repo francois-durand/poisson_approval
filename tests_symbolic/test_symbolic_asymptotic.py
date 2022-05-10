@@ -103,7 +103,7 @@ def test_add():
         >>> print(Asymptotic(mu=42, nu=2, xi=69, symbolic=True) + Asymptotic(mu=42, nu=51, xi=3, symbolic=True))
         exp(42*n + 51*log(n) + 3 + o(1))
         >>> print(Asymptotic(mu=42, nu=2, xi=4, symbolic=True) + Asymptotic(mu=42, nu=2, xi=3, symbolic=True))
-        exp(42*n + 2*log(n) + log(1 + E) + 3 + o(1))
+        exp(42*n + 2*log(n) + log(exp(3) + exp(4)) + o(1))
         >>> print(Asymptotic(mu=42, nu=2, xi=4, symbolic=True) + 1)
         exp(42*n + 2*log(n) + 4 + o(1))
         >>> print(1 + Asymptotic(mu=42, nu=2, xi=4, symbolic=True))

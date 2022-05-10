@@ -2,6 +2,29 @@
 History
 =======
 
+--------------------------------------------------------------------------
+0.30.0 (2022-01-24): Equilibrium Properties in Monte Carlo Fictitious Play
+--------------------------------------------------------------------------
+
+* Add new Monte-Carlo settings:
+
+  * ``MCS_FOCUS``: focus of the equilibrium.
+  * ``MCS_IS_ORDINAL_EQ``: whether the equilibrium is ordinal.
+
+* Add ``BestResponse.is_ordinal``: whether the best response is purely ordinal.
+* Add ``TauVector.is_best_response_ordinal``: whether the best responses of all rankings are ordinal.
+* Object of the class ``Focus`` are now hashable.
+* For developers:
+
+  * Add a local coverage report.
+  * The run configuration to generate the documentation is stored as a project file.
+
+-----------------------------------------------------------
+0.29.3 (2022-01-18): Patch test for latest release of SymPy
+-----------------------------------------------------------
+
+* Correct a unit test due to a change of behavior in the latest release of SymPy.
+
 ---------------------------------------------------------------
 0.29.2 (2021-02-16): Notebook on Robustness to the Initial Poll
 ---------------------------------------------------------------
