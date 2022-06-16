@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -317,6 +318,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -325,10 +327,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -340,12 +346,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -373,7 +382,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="More-Classes-of-Profiles">
-<h1>More Classes of Profiles<a class="headerlink" href="#More-Classes-of-Profiles" title="Permalink to this headline"></a></h1>
+<h1>More Classes of Profiles<a class="headerlink" href="#More-Classes-of-Profiles" title="Permalink to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -386,7 +395,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Up to now, we have always used the class of profiles <em>ProfileNoisyDiscrete</em>. The package provides other kinds of profiles.</p>
 <section id="ProfileHistogram">
-<h2>ProfileHistogram<a class="headerlink" href="#ProfileHistogram" title="Permalink to this headline"></a></h2>
+<h2>ProfileHistogram<a class="headerlink" href="#ProfileHistogram" title="Permalink to this heading"></a></h2>
 <p><em>ProfileHistogram</em> is probably the closest class to <em>ProfileNoisyDiscrete</em>, because both are:</p>
 <ul class="simple">
 <li><p><em>Cardinal</em>: the voters have explicit utilities (unlike <em>ProfileOrdinal</em>, cf. below).</p></li>
@@ -548,7 +557,7 @@ EquilibriumStatus.NOT_EQUILIBRIUM
 </div>
 </section>
 <section id="ProfileTwelve">
-<h2>ProfileTwelve<a class="headerlink" href="#ProfileTwelve" title="Permalink to this headline"></a></h2>
+<h2>ProfileTwelve<a class="headerlink" href="#ProfileTwelve" title="Permalink to this heading"></a></h2>
 <p>In a <em>ProfileTwelve</em>, the voters behave as if their utility for their middle candidate was either infinitely close to 0 or to 1. For example, voters with the ranking <span class="math notranslate nohighlight">\(abc\)</span> are split in two categories: voters <em>a_bc</em> (whose utility for <span class="math notranslate nohighlight">\(b\)</span> is very low) and voters <em>ab_c</em> (whose utility for <span class="math notranslate nohighlight">\(b\)</span> is very high). This can be interpreted in two ways:</p>
 <ul class="simple">
 <li><p>As a model of their preferences: voters <em>a_bc</em> have a utility for <span class="math notranslate nohighlight">\(b\)</span> that is very close to 1,</p></li>
@@ -718,7 +727,7 @@ Non-equilibria:
 <p>All other features are defined as usual.</p>
 </section>
 <section id="ProfileDiscrete">
-<h2>ProfileDiscrete<a class="headerlink" href="#ProfileDiscrete" title="Permalink to this headline"></a></h2>
+<h2>ProfileDiscrete<a class="headerlink" href="#ProfileDiscrete" title="Permalink to this heading"></a></h2>
 <p>A <em>ProfileDiscrete</em> is similar to a <em>ProfileNoisyDiscrete</em>, but of course without noise:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -807,10 +816,10 @@ Non-equilibria:
 <p>All other features are defined as usual.</p>
 </section>
 <section id="ProfileOrdinal">
-<h2>ProfileOrdinal<a class="headerlink" href="#ProfileOrdinal" title="Permalink to this headline"></a></h2>
+<h2>ProfileOrdinal<a class="headerlink" href="#ProfileOrdinal" title="Permalink to this heading"></a></h2>
 <p>A <em>ProfileOrdinal</em> is a bit special, in the sense that it does not represent a profile, strictly speaking, but rather a family of profiles that have the same ordinal representation.</p>
 <section id="Definition-and-Strategic-Analysis">
-<h3>Definition and Strategic Analysis<a class="headerlink" href="#Definition-and-Strategic-Analysis" title="Permalink to this headline"></a></h3>
+<h3>Definition and Strategic Analysis<a class="headerlink" href="#Definition-and-Strategic-Analysis" title="Permalink to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
@@ -940,7 +949,7 @@ Non-equilibria:
 </ul>
 </section>
 <section id="Probability-computations">
-<h3>Probability computations<a class="headerlink" href="#Probability-computations" title="Permalink to this headline"></a></h3>
+<h3>Probability computations<a class="headerlink" href="#Probability-computations" title="Permalink to this heading"></a></h3>
 <p>The following functions compute probabilities. They are based on the assumption that voters <span class="math notranslate nohighlight">\(abc\)</span> have the <strong>same</strong> utility for their second candidate <span class="math notranslate nohighlight">\(b\)</span> and that it is drawn uniformly in [0, 1]. And similarly for voters <span class="math notranslate nohighlight">\(acb\)</span>, <span class="math notranslate nohighlight">\(bac\)</span>, etc.</p>
 <p>Probability that there exists an equilibrium:</p>
 <div class="nbinput docutils container">

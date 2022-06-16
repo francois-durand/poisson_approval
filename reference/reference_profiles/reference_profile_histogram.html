@@ -14,6 +14,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -130,7 +131,7 @@
 }
 </style>
 <section id="profilehistogram">
-<h1>ProfileHistogram<a class="headerlink" href="#profilehistogram" title="Permalink to this headline"></a></h1>
+<h1>ProfileHistogram<a class="headerlink" href="#profilehistogram" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="poisson_approval.ProfileHistogram">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">poisson_approval.</span></span><span class="sig-name descname"><span class="pre">ProfileHistogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_ranking_share</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_ranking_histogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_weak_order_share</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_sincere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_fanatic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voting_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Approval'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/ProfileHistogram.html#ProfileHistogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.ProfileHistogram" title="Permalink to this definition"></a></dt>
@@ -777,6 +778,31 @@ ratio of optimistic voters must be specified.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../reference_constants/reference_equilibrium_status.html#poisson_approval.EquilibriumStatus" title="poisson_approval.EquilibriumStatus">EquilibriumStatus</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="poisson_approval.ProfileHistogram.is_equilibrium_stable">
+<span class="sig-name descname"><span class="pre">is_equilibrium_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/poisson_approval/profiles/ProfileHistogram.html#ProfileHistogram.is_equilibrium_stable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#poisson_approval.ProfileHistogram.is_equilibrium_stable" title="Permalink to this definition"></a></dt>
+<dd><p>Whether a forward-focused equilibrium strategy is stable in this profile.</p>
+<p>Limitations of the current implementation:</p>
+<ul class="simple">
+<li><p>The profile has only one bin per ranking, i.e. the utility distribution is uniform on [0, 1].</p></li>
+<li><p>All voters are strategic (no sincere or fanatic).</p></li>
+<li><p>The voting rule is Approval voting.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>strategy</strong> (<a class="reference internal" href="../reference_strategies/reference_strategy_threshold.html#poisson_approval.StrategyThreshold" title="poisson_approval.StrategyThreshold"><em>StrategyThreshold</em></a>) – A strategy that is assumed to be a forward-focused equilibrium for this profile (this method does not
+check if it is indeed the case).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True iff the equilibrium is stable, which is a sufficient condition to be an equilibrium in the sense
+of Myerson.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

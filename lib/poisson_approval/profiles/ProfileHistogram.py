@@ -3,11 +3,14 @@ import numpy as np
 from fractions import Fraction
 from matplotlib import pyplot as plt
 from poisson_approval.constants.basic_constants import *
+from poisson_approval.constants.Focus import Focus
 from poisson_approval.strategies.StrategyThreshold import StrategyThreshold
 from poisson_approval.profiles.ProfileCardinalContinuous import ProfileCardinalContinuous
+from poisson_approval.tau_vector.TauVector import TauVector
 from poisson_approval.utils.DictPrintingInOrder import DictPrintingInOrder
 from poisson_approval.utils.DictPrintingInOrderIgnoringZeros import DictPrintingInOrderIgnoringZeros
 from poisson_approval.utils.Util import my_division, product_dict
+from poisson_approval.utils.UtilBallots import sort_ballot
 from poisson_approval.utils.UtilPreferences import sort_weak_order, is_weak_order, is_hater
 from poisson_approval.utils.UtilCache import cached_property
 
@@ -545,3 +548,68 @@ d_weak_order_share={'a~c>b': Fraction(3, 10)})
             return t[0], '$r(%s)$' % t[0]
         else:
             return cls.order_and_label_weak(t)
+
+    def is_equilibrium_stable(self, strategy):
+        """Whether a forward-focused equilibrium strategy is stable in this profile.
+
+        Limitations of the current implementation:
+
+        * The profile has only one bin per ranking, i.e. the utility distribution is uniform on [0, 1].
+        * All voters are strategic (no sincere or fanatic).
+        * The voting rule is Approval voting.
+
+        Parameters
+        ----------
+        strategy: StrategyThreshold
+            A strategy that is assumed to be a forward-focused equilibrium for this profile (this method does not
+            check if it is indeed the case).
+
+        Returns
+        -------
+        bool
+            True iff the equilibrium is stable, which is a sufficient condition to be an equilibrium in the sense
+            of Myerson.
+        """
+        # We do not check if it is an equilibrium, because it may be only approximately the case when
+        # using the result from fictitious play.
+        tau_original = self.tau(strategy)
+        if tau_original.focus in {Focus.DIRECT, Focus.BACKWARD_FOCUSED, Focus.UNFOCUSED}:
+            raise NotImplementedError
+        if any([len(lst) > 1 for lst in self.d_ranking_histogram.values()]):
+            raise NotImplementedError
+        if self.ratio_sincere > 0 or self.ratio_fanatic > 0:
+            raise NotImplementedError
+        if self.voting_rule != APPROVAL:
+            raise NotImplementedError
+        # From here:
+        # 1) The strategy is a forward-focused equilibrium,
+        # 2) There is one bin per ranking, i.e. the utility distribution is uniform on [0, 1].
+        # 3) All voters are strategic (no sincere or fanatic).
+        # 4) The voting rule is Approval voting.
+        # ranking = next(ranking for ranking, ballot in strategy.d_ranking_ballot.items() if ballot == UTILITY_DEPENDENT)
+        ranking = next(
+            ranking for ranking in RANKINGS
+            if 0 < strategy.d_ranking_best_response[ranking].utility_threshold < 1
+        )
+        role_a, role_c, role_b = ranking
+        tau = TauVector({
+            'a': tau_original.d_ballot_share[role_a],
+            'b': tau_original.d_ballot_share[role_b],
+            'c': tau_original.d_ballot_share[role_c],
+            'ab': tau_original.d_ballot_share[sort_ballot(role_a + role_b)],
+            'ac': tau_original.d_ballot_share[sort_ballot(role_a + role_c)],
+            'bc': tau_original.d_ballot_share[sort_ballot(role_b + role_c)],
+        })
+        u = strategy.d_ranking_threshold[ranking]
+        d_tau_a = self.d_ranking_share[role_a + role_c + role_b]
+        d_tau_ac = - d_tau_a
+        d_tau_bc = self.d_ranking_share[role_b + role_c + role_a]
+        d_tau_b = - d_tau_bc
+        d_phi_ac = (tau.trio.phi_ac / 2) * (d_tau_b / tau.b - d_tau_ac / tau.ac)
+        d_phi_bc = (tau.trio.phi_bc / 2) * (d_tau_a / tau.a - d_tau_bc / tau.bc)
+        d_psi_c = (tau.trio.psi_c / 2) * (d_tau_a / tau.a + d_tau_b / tau.b - d_tau_ac / tau.ac - d_tau_bc / tau.bc)
+        d_g_1 = -3 / (tau.trio.phi_ac - 1) - 3 * (1 - u) * d_phi_ac / (tau.trio.phi_ac - 1) ** 2
+        d_g_2 = - 3 / (tau.trio.phi_bc - 1) + 3 * u * d_phi_bc / (tau.trio.phi_bc - 1) ** 2
+        d_g_3 = (- 2) * (1 + 1 / (1 + tau.trio.psi_c)) + (1 - 2 * u) * (-1) * d_psi_c / (1 + tau.trio.psi_c) ** 2
+        d_g = d_g_1 + d_g_2 + d_g_3
+        return np.abs(d_g) > 1E-4

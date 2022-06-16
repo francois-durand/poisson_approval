@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -317,6 +318,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -325,10 +327,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -340,12 +346,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -373,7 +382,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Binary-Plots">
-<h1>Binary Plots<a class="headerlink" href="#Binary-Plots" title="Permalink to this headline"></a></h1>
+<h1>Binary Plots<a class="headerlink" href="#Binary-Plots" title="Permalink to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -384,7 +393,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="XyyToProfile">
-<h2>XyyToProfile<a class="headerlink" href="#XyyToProfile" title="Permalink to this headline"></a></h2>
+<h2>XyyToProfile<a class="headerlink" href="#XyyToProfile" title="Permalink to this heading"></a></h2>
 <p>In Poisson Approval, we call <em>binary plot</em> a graphical study of some profiles that are based on two rankings, denoted <em>left_ranking</em> and <em>right_ranking</em>, in various proportions, and where the utility of the voters for their second candidate also varies. To achieve this, we need an <em>XyyToProfile</em> object that will generate the profiles:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -429,7 +438,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Scale">
-<h2>Scale<a class="headerlink" href="#Scale" title="Permalink to this headline"></a></h2>
+<h2>Scale<a class="headerlink" href="#Scale" title="Permalink to this heading"></a></h2>
 <p>All the plots require two resolution parameters called <em>xscale</em> and <em>yscale</em>. For example, if <em>xscale = yscale = 10</em>, then the x-axis and the y-axis are divided into cells of diameter 1/10 and the value of the plotted function is computed at the center of each cell. In this tutorial, we define global parameters <em>XSCALE</em> and <em>YSCALE</em> and we will use them for all the plots.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -442,7 +451,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Number-of-Equilibria">
-<h2>Number of Equilibria<a class="headerlink" href="#Number-of-Equilibria" title="Permalink to this headline"></a></h2>
+<h2>Number of Equilibria<a class="headerlink" href="#Number-of-Equilibria" title="Permalink to this heading"></a></h2>
 <p>By default, the function <em>binary_plot_n_equilibria</em> computes the ordinal equilibria, i.e. those where all voters having the same ranking cast the same ballot:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -510,7 +519,7 @@ div.rendered_html tbody tr:hover {
 </ul>
 </section>
 <section id="Winners-at-Equilibrium">
-<h2>Winners at Equilibrium<a class="headerlink" href="#Winners-at-Equilibrium" title="Permalink to this headline"></a></h2>
+<h2>Winners at Equilibrium<a class="headerlink" href="#Winners-at-Equilibrium" title="Permalink to this heading"></a></h2>
 <p>The function <em>binary_plot_n_equilibria</em> works similarly:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -572,7 +581,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Winning-Frequencies-in-Fictitious-Play-or-Iterated-Voting">
-<h2>Winning Frequencies in Fictitious Play or Iterated Voting<a class="headerlink" href="#Winning-Frequencies-in-Fictitious-Play-or-Iterated-Voting" title="Permalink to this headline"></a></h2>
+<h2>Winning Frequencies in Fictitious Play or Iterated Voting<a class="headerlink" href="#Winning-Frequencies-in-Fictitious-Play-or-Iterated-Voting" title="Permalink to this heading"></a></h2>
 <p>By default, the function *binary_plot_winning_frequencies computes the winning frequencies in fictitious play, with an initialization in sincere strategy, and with all update ratios in <span class="math notranslate nohighlight">\(1 / \log(t + 1)\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -642,7 +651,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Convergence-Rate-in-Fictitious-Play-or-Iterated-Voting">
-<h2>Convergence Rate in Fictitious Play or Iterated Voting<a class="headerlink" href="#Convergence-Rate-in-Fictitious-Play-or-Iterated-Voting" title="Permalink to this headline"></a></h2>
+<h2>Convergence Rate in Fictitious Play or Iterated Voting<a class="headerlink" href="#Convergence-Rate-in-Fictitious-Play-or-Iterated-Voting" title="Permalink to this heading"></a></h2>
 <p>The function <em>binary_plot_convergence</em> computes the convergence frequency in fictitious play or iterated voting, which is defined as the proportion of initializations that lead to convergence within <em>n_max_episodes</em> iterations. Its syntax is similar to <em>binary_plot_winning_frequencies</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -673,7 +682,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Advanced-Intensity-Heat-Maps">
-<h2>Advanced Intensity Heat Maps<a class="headerlink" href="#Advanced-Intensity-Heat-Maps" title="Permalink to this headline"></a></h2>
+<h2>Advanced Intensity Heat Maps<a class="headerlink" href="#Advanced-Intensity-Heat-Maps" title="Permalink to this heading"></a></h2>
 <p>First, define a function that maps a point <span class="math notranslate nohighlight">\((x, y1, y2)\)</span> to a number:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -708,7 +717,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Advanced-Candidate-Heat-Maps">
-<h2>Advanced Candidate Heat Maps<a class="headerlink" href="#Advanced-Candidate-Heat-Maps" title="Permalink to this headline"></a></h2>
+<h2>Advanced Candidate Heat Maps<a class="headerlink" href="#Advanced-Candidate-Heat-Maps" title="Permalink to this heading"></a></h2>
 <p>First, define a function that maps a point <span class="math notranslate nohighlight">\((x, y1, y2)\)</span> to a list of size 3 (associated with candidates <em>a</em>, <em>b</em>, <em>c</em>):</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:

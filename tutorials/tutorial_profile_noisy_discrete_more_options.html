@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -312,6 +313,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -320,10 +322,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -335,12 +341,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -368,7 +377,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="ProfileNoisyDiscrete:-More-Options">
-<h1>ProfileNoisyDiscrete: More Options<a class="headerlink" href="#ProfileNoisyDiscrete:-More-Options" title="Permalink to this headline"></a></h1>
+<h1>ProfileNoisyDiscrete: More Options<a class="headerlink" href="#ProfileNoisyDiscrete:-More-Options" title="Permalink to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -379,7 +388,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Weak-orders">
-<h2>Weak orders<a class="headerlink" href="#Weak-orders" title="Permalink to this headline"></a></h2>
+<h2>Weak orders<a class="headerlink" href="#Weak-orders" title="Permalink to this heading"></a></h2>
 <p>The profile can contains weak orders. Voters of the form <code class="docutils literal notranslate"><span class="pre">'a&gt;b~c'</span></code> (<em>lovers</em>) always vote for their top candidate, and voters of the form <code class="docutils literal notranslate"><span class="pre">'a~b&gt;c'</span></code> (<em>haters</em>) always vote for their two top candidates.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -477,7 +486,7 @@ True
 </div>
 </section>
 <section id="Expressive-voters">
-<h2>Expressive voters<a class="headerlink" href="#Expressive-voters" title="Permalink to this headline"></a></h2>
+<h2>Expressive voters<a class="headerlink" href="#Expressive-voters" title="Permalink to this heading"></a></h2>
 <p>Two kinds of expressive voters are defined:</p>
 <ul class="simple">
 <li><p><em>Sincere</em> voters vote for their top candidate anyway, and vote for their second candidate if and only if their utility for her is strictly greater than 0.5.</p></li>
@@ -613,7 +622,7 @@ Non-equilibria:
 </div>
 </section>
 <section id="Other-Voting-Rules:-Plurality-and-Anti-Plurality">
-<h2>Other Voting Rules: Plurality and Anti-Plurality<a class="headerlink" href="#Other-Voting-Rules:-Plurality-and-Anti-Plurality" title="Permalink to this headline"></a></h2>
+<h2>Other Voting Rules: Plurality and Anti-Plurality<a class="headerlink" href="#Other-Voting-Rules:-Plurality-and-Anti-Plurality" title="Permalink to this heading"></a></h2>
 <p>In addition to Approval, the package also implements Plurality and Anti-plurality.</p>
 <p>For Plurality, you just need to specify <code class="docutils literal notranslate"><span class="pre">voting_rule=pa.PLURALITY</span></code> when you define a Profile or a Strategy:</p>
 <div class="nbinput docutils container">

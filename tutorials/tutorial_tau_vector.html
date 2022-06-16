@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -314,6 +315,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -322,10 +324,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -337,12 +343,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -370,7 +379,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="TauVector">
-<h1>TauVector<a class="headerlink" href="#TauVector" title="Permalink to this headline"></a></h1>
+<h1>TauVector<a class="headerlink" href="#TauVector" title="Permalink to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -381,7 +390,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="A-Tau-Vector-and-its-Basic-Properties">
-<h2>A Tau-Vector and its Basic Properties<a class="headerlink" href="#A-Tau-Vector-and-its-Basic-Properties" title="Permalink to this headline"></a></h2>
+<h2>A Tau-Vector and its Basic Properties<a class="headerlink" href="#A-Tau-Vector-and-its-Basic-Properties" title="Permalink to this heading"></a></h2>
 <p>The most usual way to define a tau-vector (ballot shares) is to deduce it from applying a given strategy in a given profile, like in the tutorial on <em>ProfileNoisyDiscrete</em>. That being said, a tau-vector can also be defined directly:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -482,7 +491,7 @@ Fraction(3, 5)
 </div>
 </section>
 <section id="Events:-Duos,-Pivots-and-Trios">
-<h2>Events: Duos, Pivots and Trios<a class="headerlink" href="#Events:-Duos,-Pivots-and-Trios" title="Permalink to this headline"></a></h2>
+<h2>Events: Duos, Pivots and Trios<a class="headerlink" href="#Events:-Duos,-Pivots-and-Trios" title="Permalink to this heading"></a></h2>
 <p>An <em>Event</em> provides the asymptotic development of the probability when the expected number of voters <span class="math notranslate nohighlight">\(n\)</span> tend to infinity, as well as the offsets for each type of ballot.</p>
 <p>Duo between <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>:</p>
 <p>(<span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> have the same score, but not necessarily higher than <span class="math notranslate nohighlight">\(c\)</span>.)</p>
@@ -744,7 +753,7 @@ duo_bc:  &lt;asymptotic = exp(- 0.0514719 n - 0.5 log n - 0.836813 + o(1)), phi_
 </div>
 </section>
 <section id="Best-Responses">
-<h2>Best Responses<a class="headerlink" href="#Best-Responses" title="Permalink to this headline"></a></h2>
+<h2>Best Responses<a class="headerlink" href="#Best-Responses" title="Permalink to this heading"></a></h2>
 <p>The <em>focus</em> of a tau-vector is defined as:</p>
 <ul class="simple">
 <li><p><em>Direct</em>: the three weak pivots have distinct magnitudes.</p></li>
@@ -875,7 +884,7 @@ Focus.DIRECT
 </div>
 </section>
 <section id="Strategy-with-Attached-Profile-and-Implicit-Tau">
-<h2>Strategy with Attached Profile and Implicit Tau<a class="headerlink" href="#Strategy-with-Attached-Profile-and-Implicit-Tau" title="Permalink to this headline"></a></h2>
+<h2>Strategy with Attached Profile and Implicit Tau<a class="headerlink" href="#Strategy-with-Attached-Profile-and-Implicit-Tau" title="Permalink to this heading"></a></h2>
 <p>As mentioned in the tutorial on <em>ProfileNoisyDiscrete</em>, you can define a strategy with an attached profile:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -986,7 +995,7 @@ trio:  &lt;asymptotic = exp(- 0.151472 n - 0.5 log n - 0.836813 + o(1)), phi_a =
 </div>
 </section>
 <section id="Symbolic-Computation">
-<h2>Symbolic Computation<a class="headerlink" href="#Symbolic-Computation" title="Permalink to this headline"></a></h2>
+<h2>Symbolic Computation<a class="headerlink" href="#Symbolic-Computation" title="Permalink to this heading"></a></h2>
 <p>Up to now, all the computations we made were numeric. When defining a profile or a tau-vector, you can use the option <code class="docutils literal notranslate"><span class="pre">symbolic=True</span></code>. In that case, all computations will be symbolic if possible. Note, however, that this option is much slower than numeric computation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:

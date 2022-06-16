@@ -13,6 +13,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -80,11 +81,14 @@
 <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.constants.basic_constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.constants.Focus</span> <span class="kn">import</span> <span class="n">Focus</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.strategies.StrategyThreshold</span> <span class="kn">import</span> <span class="n">StrategyThreshold</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.profiles.ProfileCardinalContinuous</span> <span class="kn">import</span> <span class="n">ProfileCardinalContinuous</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.tau_vector.TauVector</span> <span class="kn">import</span> <span class="n">TauVector</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrder</span> <span class="kn">import</span> <span class="n">DictPrintingInOrder</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.DictPrintingInOrderIgnoringZeros</span> <span class="kn">import</span> <span class="n">DictPrintingInOrderIgnoringZeros</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.Util</span> <span class="kn">import</span> <span class="n">my_division</span><span class="p">,</span> <span class="n">product_dict</span>
+<span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilBallots</span> <span class="kn">import</span> <span class="n">sort_ballot</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilPreferences</span> <span class="kn">import</span> <span class="n">sort_weak_order</span><span class="p">,</span> <span class="n">is_weak_order</span><span class="p">,</span> <span class="n">is_hater</span>
 <span class="kn">from</span> <span class="nn">poisson_approval.utils.UtilCache</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
@@ -621,7 +625,72 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;$r(</span><span class="si">%s</span><span class="s1">)$&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label_weak</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div></div>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">order_and_label_weak</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProfileHistogram.is_equilibrium_stable"><a class="viewcode-back" href="../../../reference/reference_profiles/reference_profile_histogram.html#poisson_approval.ProfileHistogram.is_equilibrium_stable">[docs]</a>    <span class="k">def</span> <span class="nf">is_equilibrium_stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether a forward-focused equilibrium strategy is stable in this profile.</span>
+
+<span class="sd">        Limitations of the current implementation:</span>
+
+<span class="sd">        * The profile has only one bin per ranking, i.e. the utility distribution is uniform on [0, 1].</span>
+<span class="sd">        * All voters are strategic (no sincere or fanatic).</span>
+<span class="sd">        * The voting rule is Approval voting.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strategy: StrategyThreshold</span>
+<span class="sd">            A strategy that is assumed to be a forward-focused equilibrium for this profile (this method does not</span>
+<span class="sd">            check if it is indeed the case).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True iff the equilibrium is stable, which is a sufficient condition to be an equilibrium in the sense</span>
+<span class="sd">            of Myerson.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We do not check if it is an equilibrium, because it may be only approximately the case when</span>
+        <span class="c1"># using the result from fictitious play.</span>
+        <span class="n">tau_original</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">focus</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Focus</span><span class="o">.</span><span class="n">DIRECT</span><span class="p">,</span> <span class="n">Focus</span><span class="o">.</span><span class="n">BACKWARD_FOCUSED</span><span class="p">,</span> <span class="n">Focus</span><span class="o">.</span><span class="n">UNFOCUSED</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_histogram</span><span class="o">.</span><span class="n">values</span><span class="p">()]):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_sincere</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio_fanatic</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting_rule</span> <span class="o">!=</span> <span class="n">APPROVAL</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="c1"># From here:</span>
+        <span class="c1"># 1) The strategy is a forward-focused equilibrium,</span>
+        <span class="c1"># 2) There is one bin per ranking, i.e. the utility distribution is uniform on [0, 1].</span>
+        <span class="c1"># 3) All voters are strategic (no sincere or fanatic).</span>
+        <span class="c1"># 4) The voting rule is Approval voting.</span>
+        <span class="c1"># ranking = next(ranking for ranking, ballot in strategy.d_ranking_ballot.items() if ballot == UTILITY_DEPENDENT)</span>
+        <span class="n">ranking</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="n">ranking</span> <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">RANKINGS</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_best_response</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span><span class="o">.</span><span class="n">utility_threshold</span> <span class="o">&lt;</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">role_a</span><span class="p">,</span> <span class="n">role_c</span><span class="p">,</span> <span class="n">role_b</span> <span class="o">=</span> <span class="n">ranking</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">TauVector</span><span class="p">({</span>
+            <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">role_a</span><span class="p">],</span>
+            <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">role_b</span><span class="p">],</span>
+            <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">role_c</span><span class="p">],</span>
+            <span class="s1">&#39;ab&#39;</span><span class="p">:</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">role_a</span> <span class="o">+</span> <span class="n">role_b</span><span class="p">)],</span>
+            <span class="s1">&#39;ac&#39;</span><span class="p">:</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">role_a</span> <span class="o">+</span> <span class="n">role_c</span><span class="p">)],</span>
+            <span class="s1">&#39;bc&#39;</span><span class="p">:</span> <span class="n">tau_original</span><span class="o">.</span><span class="n">d_ballot_share</span><span class="p">[</span><span class="n">sort_ballot</span><span class="p">(</span><span class="n">role_b</span> <span class="o">+</span> <span class="n">role_c</span><span class="p">)],</span>
+        <span class="p">})</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">d_ranking_threshold</span><span class="p">[</span><span class="n">ranking</span><span class="p">]</span>
+        <span class="n">d_tau_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">role_a</span> <span class="o">+</span> <span class="n">role_c</span> <span class="o">+</span> <span class="n">role_b</span><span class="p">]</span>
+        <span class="n">d_tau_ac</span> <span class="o">=</span> <span class="o">-</span> <span class="n">d_tau_a</span>
+        <span class="n">d_tau_bc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_ranking_share</span><span class="p">[</span><span class="n">role_b</span> <span class="o">+</span> <span class="n">role_c</span> <span class="o">+</span> <span class="n">role_a</span><span class="p">]</span>
+        <span class="n">d_tau_b</span> <span class="o">=</span> <span class="o">-</span> <span class="n">d_tau_bc</span>
+        <span class="n">d_phi_ac</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">phi_ac</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_tau_b</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="n">d_tau_ac</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">ac</span><span class="p">)</span>
+        <span class="n">d_phi_bc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">phi_bc</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_tau_a</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">a</span> <span class="o">-</span> <span class="n">d_tau_bc</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">bc</span><span class="p">)</span>
+        <span class="n">d_psi_c</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi_c</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_tau_a</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="n">d_tau_b</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="n">d_tau_ac</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">ac</span> <span class="o">-</span> <span class="n">d_tau_bc</span> <span class="o">/</span> <span class="n">tau</span><span class="o">.</span><span class="n">bc</span><span class="p">)</span>
+        <span class="n">d_g_1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">phi_ac</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="n">d_phi_ac</span> <span class="o">/</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">phi_ac</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">d_g_2</span> <span class="o">=</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">phi_bc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">u</span> <span class="o">*</span> <span class="n">d_phi_bc</span> <span class="o">/</span> <span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">phi_bc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">d_g_3</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi_c</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">d_psi_c</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">tau</span><span class="o">.</span><span class="n">trio</span><span class="o">.</span><span class="n">psi_c</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">d_g</span> <span class="o">=</span> <span class="n">d_g_1</span> <span class="o">+</span> <span class="n">d_g_2</span> <span class="o">+</span> <span class="n">d_g_3</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d_g</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1E-4</span></div></div>
 </pre></div>
 
            </div>
