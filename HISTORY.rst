@@ -2,6 +2,13 @@
 History
 =======
 
+--------------------------------------------
+0.31.0 (2022-06-16): Stability of Equilibria
+--------------------------------------------
+
+* Add `ProfileHistogram.is_equilibrium_stable`: whether a forward-focused equilibrium strategy is stable in this
+  profile (which is a sufficient condition for it to be an equilibrium in the sense of Myerson).
+
 --------------------------------------------------------------------------
 0.30.0 (2022-01-24): Equilibrium Properties in Monte Carlo Fictitious Play
 --------------------------------------------------------------------------
